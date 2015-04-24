@@ -1,1 +1,8 @@
 db.ini
+*~
+*.bak
+files/fullsize/*
+files/original/*
+files/square_thumbnails/*
+files/theme_uploads/*
+files/thumbnails/*
