@@ -1,14 +1,21 @@
+# --- Datenbank-Secret
 /db.ini
+# --- SSL-Redirect (funktioniert u.U. lokal nicht)
+/.htaccess
 
+# --- Mac
 .DS_Store
 
+# --- Backup-Dateien
 /*~
 /*.bak
 
+# --- Omeka (Image-)Uploads
 /files/fullsize/*
 /files/original/*
 /files/square_thumbnails/*
 /files/theme_uploads/*
 /files/thumbnails/*
 
+# --- Omeka WebDAV-Verzeichnis
 /plugins/Dropbox/files/*
