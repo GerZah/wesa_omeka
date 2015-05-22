@@ -38,20 +38,15 @@ echo __('Here you can relate this item to another item and delete existing '
     <tr class="item-relations-entry">
         <td><?php echo __('This Item'); ?></td>
         <td><?php echo get_view()->formSelect('item_relations_property_id[]', null, array('multiple' => false), $formSelectProperties); ?></td>
-        <td><?php echo __('Item ID'); ?> <?php echo get_view()->formText('item_relations_item_relation_object_item_id[]', null, array('size' => 8)); ?></td>
+        <td>
+					<?php echo __('ID / Selector'); ?> <input type="checkbox" class="itemRelationsIdSelector"><br>
+					<span class="item_relations_idbox">
+						<?php echo __('Item ID'); ?> <?php echo get_view()->formText('item_relations_item_relation_object_item_id[]', null, array('size' => 8)); ?>
+					</span>
+				</td>
         <td><span style="color:#ccc;">n/a</span></td>
     </tr>
     </tbody>
 </table>
 <button type="button" class="item-relations-add-relation"><?php echo __('Add a Relation'); ?></button>
-<script type="text/javascript">
-jQuery(document).ready(function () {
-    jQuery('.item-relations-add-relation').click(function () {
-        var oldRow = jQuery('.item-relations-entry').last();
-        var newRow = oldRow.clone();
-        oldRow.after(newRow);
-        var inputs = newRow.find('input, select');
-        inputs.val('');
-    });
-});
-</script>
+<script type="text/javascript" src="<?php echo PUBLIC_BASE_URL; ?>/plugins/ItemRelations/item_relations_script.js"></script>
