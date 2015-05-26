@@ -2,6 +2,8 @@ jQuery(document).ready(function () {
 
 	var $ = jQuery; // use noConflict version of jQuery as the short $ within this block
 
+	var lightbox = lity();
+
 	// --- START: moved from <script> block formerly located at the bottom of item_relations_form.php
 	$('.item-relations-add-relation').click(function () {
 		var oldRow = $('.item-relations-entry').last();
@@ -29,7 +31,9 @@ jQuery(document).ready(function () {
 		var isChecked=$(this).is(':checked');
 		// console.log( isChecked );
 
-		if (isChecked) { $(this).siblings().hide(); } else { $(this).siblings().show(); }
+		// if (isChecked) { $(this).siblings().hide(); } else { $(this).siblings().show(); }
+
+		if (isChecked) { lightbox(); }
 
 	}
 
