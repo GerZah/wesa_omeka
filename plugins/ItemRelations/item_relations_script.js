@@ -22,19 +22,17 @@ jQuery(document).ready(function () {
 
 	// Init click events with form elements etc.
 	function itemRelationsJsInit() {
-		$(".itemRelationsIdSelector").click(itemRelationsSelectorClick); // toggle item ID / select box
+		console.log("itemRelationsJsInit");
+		$("#selectObjectIdHref").click(selectObjectIdHrefClick);
+		$("#allItemIds").change(allItemIdsChange);
 	}
 
-	// toggle item ID / select box for current new object relation
-	function itemRelationsSelectorClick() {
+	function selectObjectIdHrefClick() {
+		console.log("selectObjectIdHrefClick");
+	}
 
-		var isChecked=$(this).is(':checked');
-		// console.log( isChecked );
-
-		// if (isChecked) { $(this).siblings().hide(); } else { $(this).siblings().show(); }
-
-		if (isChecked) { lightbox(); }
-
+	function allItemIdsChange() {
+		console.log("allItemIdsChange - "+this.value);
 	}
 
 } );

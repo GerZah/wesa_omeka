@@ -39,8 +39,7 @@ echo __('Here you can relate this item to another item and delete existing '
         <td><?php echo __('This Item'); ?></td>
         <td><?php echo get_view()->formSelect('item_relations_property_id[]', null, array('multiple' => false), $formSelectProperties); ?></td>
         <td>
-					<!-- <?php echo __('ID / Selector'); ?> <input type="checkbox" class="itemRelationsIdSelector"><br> -->
-					<a href="#inline" data-lity><?php echo __('Select Object ID'); ?></a><br>
+					<a href="#selectObjectId" id="selectObjectIdHref" data-lity>[<?php echo __('Select Object ID'); ?>]</a><br>
 					<span class="item_relations_idbox">
 						<?php echo __('Item ID'); ?> <?php echo get_view()->formText('item_relations_item_relation_object_item_id[]', null, array('size' => 8)); ?>
 					</span>
@@ -54,6 +53,57 @@ echo __('Here you can relate this item to another item and delete existing '
 <script type="text/javascript" src="<?php echo PUBLIC_BASE_URL; ?>/plugins/ItemRelations/lity/lity.min.js"></script>
 <link href="<?php echo PUBLIC_BASE_URL; ?>/plugins/ItemRelations/item_relations_styles.css" rel="stylesheet">
 <script type="text/javascript" src="<?php echo PUBLIC_BASE_URL; ?>/plugins/ItemRelations/item_relations_script.js"></script>
-<div id="inline" class="itemRelInlineBlock" class="lity-hide">
-Inline content
+<div id="selectObjectId" class="lity-hide">
+<?php
+	$db = get_db();
+	// Alle Items mitsamt ID, Titel uind Item-Typ(-Namen) heranschaffen
+	$sql = "SELECT items.id,text,itemtypes.name
+					FROM {$db->Item} items
+					LEFT JOIN {$db->Element_Texts} elementtexts on (items.id=elementtexts.id)
+					LEFT JOIN {$db->Item_Types} itemtypes on (items.item_type_id=itemtypes.id)
+					WHERE true
+					ORDER BY itemtypes.name ASC, text ASC";
+
+	$items = $db->fetchAll($sql);
+
+	# echo "<pre>"; print_r($items); echo "</pre>\n"; # DEBUG
+	echo "<script type='text/javascript'>\n";
+	echo "var items=[\n"; # Alle Items in ein JavaScript-Array schreiben, auf dem später die Anwendung arbeitet
+	foreach($items as $item) {
+		foreach (array_keys($item) as $key) {
+			if (!$item[$key]) { $item[$key]=0; } # Leere Ausgaben auf 0 transformieren
+			if (intval($item[$key])!==$item[$key]) { $item[$key]="'".$item[$key]."'"; } # Nicht-Integer in Hochkommata
+		}
+		echo "[[".implode("],[", $item)."]],\n"; # Item als neues Array-Element in eigenem Array
+	}
+	echo "];\n";
+	echo "</script>\n";
+?>
+	<form action="#">
+		<?php echo __("All Items"); ?>:
+		<select id="allItemIds">
+			<option value=""><?php echo __("Select Below");?></option> <!-- disabled="disabled" -->
+<?php
+			$opencat=false;
+			$lastcat=null;
+
+			foreach($items as $item) {
+				if ( ($opencat) and ($lastcat!=$item["name"]) ) {
+					echo "</optgroup>\n";
+					$opencat=false;
+				}
+				if (!$opencat) {
+					echo "<optgroup label='".
+								__("Item Type")." \"".
+								( $item["name"] ? $item["name"] : __("[n/a]") ).
+								"\"'>\n";
+					$opencat=true;
+				}
+				$lastcat!=$item["name"];
+				echo "<option value='".$item["id"]."'>".$item["text"]."</option>\n";
+			}
+			echo "</optgroup>\n";
+?>
+		</select>
+	</form>
 </div>
