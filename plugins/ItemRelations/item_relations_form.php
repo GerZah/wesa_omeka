@@ -41,7 +41,7 @@ echo __('Here you can relate this item to another item and delete existing '
         <td>
 					<span class="item_relations_idbox">
 						<?php echo __('Item ID'); ?><br>
-						<a href="#selectObjectId" id="selectObjectIdHref" data-lity>[<?php echo __('Select ID'); ?>]</a><br>
+						<a href="#" class="selectObjectIdHref">[<?php echo __('Select ID'); ?>]</a><br>
 						<?php echo get_view()->formText('item_relations_item_relation_object_item_id[]', null, array('size' => 8)); ?>
 					</span>
 				</td>
@@ -57,7 +57,7 @@ echo __('Here you can relate this item to another item and delete existing '
 <div id="selectObjectId" class="lity-hide">
 <?php
 	$db = get_db();
-	// Alle Items mitsamt ID, Titel uind Item-Typ(-Namen) heranschaffen
+	// Fetch all items together with their IDs, titles, and item type (names)
 	$sql = "SELECT items.id,text,itemtypes.name
 					FROM {$db->Item} items
 					LEFT JOIN {$db->Element_Texts} elementtexts on (items.id=elementtexts.id)
@@ -69,13 +69,13 @@ echo __('Here you can relate this item to another item and delete existing '
 
 	# echo "<pre>"; print_r($items); echo "</pre>\n"; # DEBUG
 	echo "<script type='text/javascript'>\n";
-	echo "var items=[\n"; # Alle Items in ein JavaScript-Array schreiben, auf dem später die Anwendung arbeitet
+	echo "var items=[\n"; // Put all items into a JavaScript array, that will later be used via jQuery
 	foreach($items as $item) {
 		foreach (array_keys($item) as $key) {
-			if (!$item[$key]) { $item[$key]=0; } # Leere Ausgaben auf 0 transformieren
-			if (intval($item[$key])!==$item[$key]) { $item[$key]="'".$item[$key]."'"; } # Nicht-Integer in Hochkommata
+			if (!$item[$key]) { $item[$key]=0; } # Transform all empty values to zero
+			if (intval($item[$key])!==$item[$key]) { $item[$key]="'".$item[$key]."'"; } # Non-ints i.e. string into apostrophes
 		}
-		echo "[[".implode("],[", $item)."]],\n"; # Item als neues Array-Element in eigenem Array
+		echo "[[".implode("],[", $item)."]],\n"; # Item as a new array element - with its components in another array
 	}
 	echo "];\n";
 	echo "</script>\n";
