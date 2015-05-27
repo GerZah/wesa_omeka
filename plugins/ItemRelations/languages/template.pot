@@ -101,7 +101,15 @@ msgstr ""
 msgid "This Item"
 msgstr ""
 
-#: item_relations_form.php:46
+#: item_relations_form.php:44
+msgid "Select ID"
+msgstr ""
+
+#: item_relations_form.php:48
+msgid "[n/a]"
+msgstr ""
+
+#: item_relations_form.php:51
 msgid "Add a Relation"
 msgstr ""
 

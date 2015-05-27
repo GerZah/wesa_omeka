@@ -39,12 +39,13 @@ echo __('Here you can relate this item to another item and delete existing '
         <td><?php echo __('This Item'); ?></td>
         <td><?php echo get_view()->formSelect('item_relations_property_id[]', null, array('multiple' => false), $formSelectProperties); ?></td>
         <td>
-					<a href="#selectObjectId" id="selectObjectIdHref" data-lity>[<?php echo __('Select Object ID'); ?>]</a><br>
 					<span class="item_relations_idbox">
-						<?php echo __('Item ID'); ?> <?php echo get_view()->formText('item_relations_item_relation_object_item_id[]', null, array('size' => 8)); ?>
+						<?php echo __('Item ID'); ?><br>
+						<a href="#selectObjectId" id="selectObjectIdHref" data-lity>[<?php echo __('Select ID'); ?>]</a><br>
+						<?php echo get_view()->formText('item_relations_item_relation_object_item_id[]', null, array('size' => 8)); ?>
 					</span>
 				</td>
-        <td><span style="color:#ccc;">n/a</span></td>
+        <td><span style="color:#ccc;"><?php echo __("[n/a]") ?></span></td>
     </tr>
     </tbody>
 </table>
