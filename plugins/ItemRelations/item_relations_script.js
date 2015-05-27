@@ -33,10 +33,6 @@ jQuery(document).ready(function () {
 		console.log("selectObjectIdHrefClick");
 		my_input=$(this).closest(".item_relations_idbox").find("input");
 		lightbox.open("#selectObjectId");
-		/*
-		$(my_input).css("background-color","red");
-		$(my_input).val(42);
-		*/
 		return false;
 	}
 

@@ -80,10 +80,9 @@ echo __('Here you can relate this item to another item and delete existing '
 	echo "];\n";
 	echo "</script>\n";
 ?>
-	<form action="#">
 		<?php echo __("All Items"); ?>:
-		<select id="allItemIds">
-			<option value=""><?php echo __("Select Below");?></option> <!-- disabled="disabled" -->
+	<select id="allItemIds">
+		<option value=""><?php echo __("Select Below");?></option> <!-- disabled="disabled" -->
 <?php
 			$opencat=false;
 			$lastcat=null;
@@ -105,6 +104,5 @@ echo __('Here you can relate this item to another item and delete existing '
 			}
 			echo "</optgroup>\n";
 ?>
-		</select>
-	</form>
+	</select>
 </div>
