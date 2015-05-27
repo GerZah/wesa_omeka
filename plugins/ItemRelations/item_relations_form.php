@@ -69,7 +69,7 @@ echo __('Here you can relate this item to another item and delete existing '
 
 	# echo "<pre>"; print_r($items); echo "</pre>\n"; # DEBUG
 	echo "<script type='text/javascript'>\n";
-	echo "var items=[\n"; // Put all items into a JavaScript array, that will later be used via jQuery
+	echo "var allItemsArr=[\n"; // Put all items into a JavaScript array, that will later be used via jQuery
 	foreach($items as $item) {
 		foreach (array_keys($item) as $key) {
 			if (!$item[$key]) { $item[$key]=0; } # Transform all empty values to zero
@@ -78,31 +78,12 @@ echo __('Here you can relate this item to another item and delete existing '
 		echo "[[".implode("],[", $item)."]],\n"; # Item as a new array element - with its components in another array
 	}
 	echo "];\n";
+	echo "var selectBelowTxt='".__("Select Below")."';\n";
+	echo "var itemTypeTxt='".__("Item Type")."';\n";
+	echo "var nATxt='".__("[n/a]")."';\n";
 	echo "</script>\n";
 ?>
 		<?php echo __("All Items"); ?>:
 	<select id="allItemIds">
-		<option value=""><?php echo __("Select Below");?></option> <!-- disabled="disabled" -->
-<?php
-			$opencat=false;
-			$lastcat=null;
-
-			foreach($items as $item) {
-				if ( ($opencat) and ($lastcat!=$item["name"]) ) {
-					echo "</optgroup>\n";
-					$opencat=false;
-				}
-				if (!$opencat) {
-					echo "<optgroup label='".
-								__("Item Type")." \"".
-								( $item["name"] ? $item["name"] : __("[n/a]") ).
-								"\"'>\n";
-					$opencat=true;
-				}
-				$lastcat!=$item["name"];
-				echo "<option value='".$item["id"]."'>".$item["text"]."</option>\n";
-			}
-			echo "</optgroup>\n";
-?>
 	</select>
 </div>

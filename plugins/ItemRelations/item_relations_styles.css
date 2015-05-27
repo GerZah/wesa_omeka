@@ -1,8 +1,8 @@
 #selectObjectId {
-	// display:block;
+	// display:block !IMPORTANT; 
 	background:#fff;
 	padding:1.5em;
-	width:500px;
-	height:500px;
+	width:400px;
+	height:150px;
 	overflow:scroll;
 }
