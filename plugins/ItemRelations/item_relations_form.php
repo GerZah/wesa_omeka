@@ -54,11 +54,10 @@ echo __('Here you can relate this item to another item and delete existing '
 <script type="text/javascript" src="<?php echo PUBLIC_BASE_URL; ?>/plugins/ItemRelations/lity/lity.min.js"></script>
 <link href="<?php echo PUBLIC_BASE_URL; ?>/plugins/ItemRelations/item_relations_styles.css" rel="stylesheet">
 <script type="text/javascript" src="<?php echo PUBLIC_BASE_URL; ?>/plugins/ItemRelations/item_relations_script.js"></script>
-<div id="selectObjectId" class="lity-hide">
 <?php
 	$db = get_db();
-	// Fetch all items together with their IDs, titles, and item type (names)
-	$sql = "SELECT items.id,text,itemtypes.name
+	// Fetch all items together with their IDs, titles, and item type IDs and names
+	$sql = "SELECT items.id, text, items.item_type_id, itemtypes.name, UNIX_TIMESTAMP(modified)
 					FROM {$db->Item} items
 					LEFT JOIN {$db->Element_Texts} elementtexts on (items.id=elementtexts.id)
 					LEFT JOIN {$db->Item_Types} itemtypes on (items.item_type_id=itemtypes.id)
@@ -73,17 +72,15 @@ echo __('Here you can relate this item to another item and delete existing '
 	foreach($items as $item) {
 		foreach (array_keys($item) as $key) {
 			if (!$item[$key]) { $item[$key]=0; } # Transform all empty values to zero
-			if (intval($item[$key])!==$item[$key]) { $item[$key]="'".$item[$key]."'"; } # Non-ints i.e. string into apostrophes
+			if (intval($item[$key])!==$item[$key]) { $item[$key]="'".htmlspecialchars($item[$key], ENT_QUOTES)."'"; } # Non-ints i.e. string into apostrophes
 		}
 		echo "[[".implode("],[", $item)."]],\n"; # Item as a new array element - with its components in another array
 	}
 	echo "];\n";
+	echo "var allItemsTxt='".__("All Items")."';\n";
 	echo "var selectBelowTxt='".__("Select Below")."';\n";
 	echo "var itemTypeTxt='".__("Item Type")."';\n";
 	echo "var nATxt='".__("[n/a]")."';\n";
 	echo "</script>\n";
 ?>
-		<?php echo __("All Items"); ?>:
-	<select id="allItemIds">
-	</select>
-</div>
+<div id="lightboxJsContent" class="lity-hide"></div>

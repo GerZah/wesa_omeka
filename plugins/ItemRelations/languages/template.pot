@@ -109,8 +109,12 @@ msgstr ""
 msgid "[n/a]"
 msgstr ""
 
-#: item_relations_form.php:51
+#: item_relations_form.php:52
 msgid "Add a Relation"
+msgstr ""
+
+#: item_relations_form.php:80
+msgid "All Items"
 msgstr ""
 
 #: models/ItemRelationsProperty.php:62

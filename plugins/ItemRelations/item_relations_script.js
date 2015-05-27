@@ -25,7 +25,6 @@ jQuery(document).ready(function () {
 	function itemRelationsJsInit() {
 		console.log("itemRelationsJsInit");
 		$(".selectObjectIdHref").click(selectObjectIdHrefClick);
-		$("#allItemIds").change(allItemIdsChange);
 	}
 
 	// Init "popup" i.e. lightbox with values
@@ -34,36 +33,68 @@ jQuery(document).ready(function () {
 
 		my_input=$(this).closest(".item_relations_idbox").find("input"); // Find and store target ID box
 
+		allItemsSelect="<select id='allItemIds'>"+"</select>"; // Fill all items selector
 
-		// Initialize All Items selector from array
-		$("#allItemIds").empty();
+		$("#lightboxJsContent").empty().append("<div id='selectObjectId'>"+ // Generate lightbox content
+																						"<p><a href='#' id='selectObjectSortName'>[Name]</a> / "+ // +#+#+# missing i18n
+																						"<a href='#' id='selectObjectSortTimestamp'>[Timestamp]</a></p>"+ // +#+#+# missing i18n
+																						allItemsTxt+": "+
+																						allItemsSelect+
+																						"</div>")
 
-		$("#allItemIds").append("<option value=''>"+selectBelowTxt+"</option>");
+		$("#allItemIds").change(allItemIdsChange);
+		$("#selectObjectSortName").click(selectObjectSortName);
+		$("#selectObjectSortTimestamp").click(selectObjectSortTimestamp);
+		selectObjectSortName();
+
+		lightbox.open("#selectObjectId"); // and off we go
+
+		return false;
+	}
+
+	// Fill the select box as given in PHP Array
+	function selectObjectSortName() {
+		console.log("selectObjectSortName");
+		$("#allItemIds").empty().append(allItemsOptions(allItemsArr));
+		return false;
+	}
+
+	// Fill the select box by descending timestamp within each item type
+	function selectObjectSortTimestamp() {
+		console.log("selectObjectSortTimestamp");
+		var tmparr=allItemsArr.slice();
+		tmparr.sort(function(a,b) {
+			var catdiff=a[2]-b[2];
+			return ( catdiff==0 ? (b[4]-a[4]) : catdiff );
+		});
+		$("#allItemIds").empty().append(allItemsOptions(tmparr));
+		return false;
+	}
+
+	function allItemsOptions(allItemsArr_loc) {
+		console.log("allItemsOptions");
+
 		var opencat=false;
-		var lastcat=null;
+		var lastcat=-1;
 
-		var allItemsOptions="";
-		$.each(allItemsArr, function (itemIndex, item) { // all items
+		var result="<option value=''>"+selectBelowTxt+"</option>";
+		$.each(allItemsArr_loc, function (itemIndex, item) { // all items
 
-				if ( (opencat) && (String(lastcat)!==String(item[2])) ) { // open group, but new category title?
-					allItemsOptions+="</optgroup>";
+				if ( (opencat) && (lastcat!=item[2]) ) { // open group, but new category title?
+					result+="</optgroup>";
 					opencat=false;
 				}
 				if (!opencat) { // no currently open group?
-					var groupname=( item[2]!='0' ? item[2] : nATxt);
-					allItemsOptions+="<optgroup label='"+itemTypeTxt+" \""+groupname+"\"'>";
+					var groupname=( item[3]!='0' ? item[3] : nATxt);
+					result+="<optgroup label='"+itemTypeTxt+" \""+groupname+"\"'>";
 					opencat=true;
 				}
-				lastcat=item[2];
-				allItemsOptions+="<option value='"+item[0]+"'>"+item[1]+"</option>";
+				lastcat=Number(item[2]);
+				result+="<option value='"+item[0]+"'>"+item[1]+"</option>";
 
 			} );
-		allItemsOptions+="</optgroup>";
-
-		$("#allItemIds").append(allItemsOptions);
-
-		lightbox.open("#selectObjectId"); // and off we go
-		return false;
+		result+="</optgroup>";
+		return result;
 	}
 
 	function allItemIdsChange() {
