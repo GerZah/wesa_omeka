@@ -130,7 +130,11 @@ msgid "Name (asc)"
 msgstr ""
 
 #: models/ItemRelationsProperty.php:89
-msgid "Filter"
+msgid "Search Term"
+msgstr ""
+
+#: models/ItemRelationsProperty.php:90
+msgid "Reset"
 msgstr ""
 
 #: models/ItemRelationsProperty.php:62

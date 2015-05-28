@@ -86,7 +86,8 @@ echo __('Here you can relate this item to another item and delete existing '
 	echo "var nameAscTxt='".__("Name (asc)")."';\n";
 	echo "var itemTypesTxt='".__("Item Types")."';\n";
 	echo "var allTxt='".__("Alle")."';\n";
-	echo "var filterTxt='".__("Filter")."';\n";
+	echo "var searchTermTxt='".__("Search Term")."';\n";
+	echo "var resetTxt='".__("Reset")."';\n";
 	echo "</script>\n";
 ?>
 <div id="lightboxJsContent" class="lity-hide"></div>

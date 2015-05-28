@@ -18,23 +18,21 @@ jQuery(document).ready(function () {
 		var inputs = newRow.find('input, select');
 		inputs.val('');
 		// additions: whenever adding a row, re-initialize click events etc.
-		console.log("my item-relations-add-relation");
 		itemRelationsJsInit();
 	});
 	// --- END: moved from <script> block formerly located at the bottom of item_relations_form.php
 
 	itemRelationsJsInit(); // Init click events with form elements etc.
 
+	// -------------------------------------------------
+
 	// Init click events with form elements etc.
 	function itemRelationsJsInit() {
-		console.log("itemRelationsJsInit");
 		$(".selectObjectIdHref").click(selectObjectIdHrefClick);
 	}
 
 	// Init "popup" i.e. lightbox with values
 	function selectObjectIdHrefClick() {
-		console.log("selectObjectIdHrefClick");
-
 		my_input=$(this).closest(".item_relations_idbox").find("input"); // Find and store target ID box
 
 		filterItemTyp = -1; // Default: Don't filter item type for selector
@@ -55,16 +53,21 @@ jQuery(document).ready(function () {
 																						"</fieldset>"+
 																						"</p>"+
 																						"<p>"+allItemsSelect+"</p>"+
-																						"<p>"+filterTxt+": <input type='text' id='filterText' size='24' maxlength='24'>"+"</p>"+
+																						"<p>"+
+																								searchTermTxt+
+																								": <input type='text' id='searchTerm' size='24' maxlength='24'> "+
+																								" <button type='button' id='resetBtn'>"+resetTxt+"</button>"+
+																						"</p>"+
 																						"</div>")
 
 		$("#itemTypeIds").change(itemTypeIdsChange);
 		$("#allItemIds").change(allItemIdsChange);
-		$("#filterText").on("input",filterTextChange);
+		$("#searchTerm").on("input",searchTermChange);
+		$("#resetBtn").click("input",resetBtnClick);
 
 		$('input:radio[name=itemsListSort]').change(function() {
 				curListOrder=this.value;
-				updatelist();
+				updateList();
 			});
 		selectObjectSortTimestamp(); // fill item selector
 		// finally fill item type selector, based on item selector pre-processing
@@ -75,7 +78,9 @@ jQuery(document).ready(function () {
 		return false;
 	}
 
-	function updatelist() {
+	// -------------------------------------------------
+
+	function updateList() {
 		switch (curListOrder) {
 			case "timestamp" : selectObjectSortTimestamp(); break;
 			case "name" : selectObjectSortName(); break;
@@ -84,16 +89,13 @@ jQuery(document).ready(function () {
 
 	// Fill the select box as given in PHP Array
 	function selectObjectSortName() {
-		console.log("selectObjectSortName");
 		$("#allItemIds").empty().append(allItemsOptions(allItemsArr));
 		return false;
 	}
 
 	// Fill the select box by descending timestamp within each item type
 	function selectObjectSortTimestamp() {
-		console.log("selectObjectSortTimestamp");
 		if (allItemsSortedArr==null) { // no pre-sorted array yet
-			console.log("sorting");
 			allItemsSortedArr=allItemsArr.slice(); // correct operation to copy an array
 			allItemsSortedArr.sort(function(a,b) { // sort it via compare function
 				var catdiff=a[2]-b[2];  // different category? then sort asc for that
@@ -104,22 +106,10 @@ jQuery(document).ready(function () {
 		return false;
 	}
 
-	// generate <option>...</option> tages corresponding the existing item types
-	function itemTypeOptions() {
-		console.log("itemTypeOptions");
-		var result="<option value='-1'>"+allTxt+"</option>";
-		$.each(itemTypes, function (itemIndex, item) { // all items
-			if (typeof item != 'undefined') {
-				result+="<option value='"+itemIndex+"'>"+item+"</option>";
-			}
-		});
-		return result;
-	}
+	// -------------------------------------------------
 
 	// generate all <option>...</option> tags matching the current filter / search / sort order
 	function allItemsOptions(ItemsArr) {
-		console.log("allItemsOptions");
-
 		var opencat=false;
 		var lastcat=-1;
 
@@ -134,8 +124,9 @@ jQuery(document).ready(function () {
 			// item type filter defined? Is current item of this type or not?
 			if ( (filterItemTyp>=0) && (item[2]-filterItemTyp!=0) ) { showThisItem=false; }
 
+			// does the filter edit field contain a search term?
 			if ( (showThisItem) && (curFilter!="") ) {
-				if (String(item[1]).indexOf(curFilter)==-1) { showThisItem=false; }
+				if (String(item[1]).toLowerCase().indexOf(curFilter)==-1) { showThisItem=false; }
 			}
 
 			if (showThisItem) {
@@ -155,31 +146,52 @@ jQuery(document).ready(function () {
 
 		});
 		result+="</optgroup>";
-		if (fillItemTypes) { console.log(itemTypes); }
 		return result;
 	}
 
+	// generate <option>...</option> tages corresponding the existing item types
+	function itemTypeOptions() {
+		var result="<option value='-1'>"+allTxt+"</option>";
+		$.each(itemTypes, function (itemIndex, item) { // all items
+			if (typeof item != 'undefined') {
+				result+="<option value='"+itemIndex+"'>"+item+"</option>";
+			}
+		});
+		return result;
+	}
+
+	// -------------------------------------------------
+
 	// select item type callback
 	function itemTypeIdsChange() {
-		console.log("itemTypeIdsChange - "+this.value);
 		filterItemTyp=this.value;
-		updatelist();
+		updateList();
 		return false;
 	}
 
 	// select item callback -> transfer selected item back into edit field and close
 	function allItemIdsChange() {
-		console.log("allItemIdsChange - "+this.value);
-		$(my_input).val(this.value);
-		lightbox.close();
-		$("#selectObjectId").css("background-color","yellow");
+		// console.log("allItemIdsChange - "+this.value);
+		if (this.value!="") {
+			$(my_input).val(this.value);
+			lightbox.close();
+		}
 		return false;
 	}
 
-	function filterTextChange() {
-		console.log("filterTextChange - "+this.value);
-		curFilter=this.value;
-		updatelist();
+	// callback whenver the content of the edit field changes
+	function searchTermChange() {
+		var curtext=String($("#searchTerm").val());
+		// console.log("searchTermChange - "+curtext);
+		curFilter=curtext.trim().toLowerCase();
+		updateList();
+	}
+
+	function resetBtnClick() {
+		// console.log("resetBtnClick");
+		$("#searchTerm").val("");
+		searchTermChange();
+		return false;
 	}
 
 } );
