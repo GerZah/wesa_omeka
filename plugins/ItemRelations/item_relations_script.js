@@ -120,8 +120,6 @@ jQuery(document).ready(function () {
 	function allItemsOptions(ItemsArr) {
 		console.log("allItemsOptions");
 
-		// +#+#+# limit list output according to curFilter
-
 		var opencat=false;
 		var lastcat=-1;
 
@@ -135,6 +133,10 @@ jQuery(document).ready(function () {
 
 			// item type filter defined? Is current item of this type or not?
 			if ( (filterItemTyp>=0) && (item[2]-filterItemTyp!=0) ) { showThisItem=false; }
+
+			if ( (showThisItem) && (curFilter!="") ) {
+				if (String(item[1]).indexOf(curFilter)==-1) { showThisItem=false; }
+			}
 
 			if (showThisItem) {
 				if ( (opencat) && (lastcat!=item[2]) ) { // open group, but new category title?
@@ -177,7 +179,7 @@ jQuery(document).ready(function () {
 	function filterTextChange() {
 		console.log("filterTextChange - "+this.value);
 		curFilter=this.value;
-		updatelist(); // +#+#+# limit list output according to curFilter
+		updatelist();
 	}
 
 } );
