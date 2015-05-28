@@ -77,10 +77,16 @@ echo __('Here you can relate this item to another item and delete existing '
 		echo "[[".implode("],[", $item)."]],\n"; # Item as a new array element - with its components in another array
 	}
 	echo "];\n";
-	echo "var allItemsTxt='".__("All Items")."';\n";
+	// echo "var allItemsTxt='".__("All Items")."';\n";
 	echo "var selectBelowTxt='".__("Select Below")."';\n";
 	echo "var itemTypeTxt='".__("Item Type")."';\n";
 	echo "var nATxt='".__("[n/a]")."';\n";
+	echo "var sortWithinItemTypeByTxt='".__("Sort within item types by")."';\n";
+	echo "var updDateDescTxt='".__("Last Update (desc)")."';\n";
+	echo "var nameAscTxt='".__("Name (asc)")."';\n";
+	echo "var itemTypesTxt='".__("Item Types")."';\n";
+	echo "var allTxt='".__("Alle")."';\n";
+	echo "var filterTxt='".__("Filter")."';\n";
 	echo "</script>\n";
 ?>
 <div id="lightboxJsContent" class="lity-hide"></div>

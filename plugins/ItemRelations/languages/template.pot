@@ -117,6 +117,22 @@ msgstr ""
 msgid "All Items"
 msgstr ""
 
+#: models/ItemRelationsProperty.php:84
+msgid "Sort within item types by"
+msgstr ""
+
+#: models/ItemRelationsProperty.php:85
+msgid "Last Update (desc)"
+msgstr ""
+
+#: models/ItemRelationsProperty.php:86
+msgid "Name (asc)"
+msgstr ""
+
+#: models/ItemRelationsProperty.php:89
+msgid "Filter"
+msgstr ""
+
 #: models/ItemRelationsProperty.php:62
 msgid "[unknown]"
 msgstr ""

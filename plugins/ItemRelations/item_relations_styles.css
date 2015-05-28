@@ -3,6 +3,10 @@
 	background:#fff;
 	padding:1.5em;
 	width:400px;
-	height:150px;
+	height:450px;
 	overflow:scroll;
 }
+
+#allItemIds { width:25em; }
+
+.inlineselect { display: inline-block; }
