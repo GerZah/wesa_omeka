@@ -120,15 +120,15 @@ class ElementTypesPlugin extends Omeka_Plugin_AbstractPlugin
             && $controller === 'items'
             && in_array($action, array('add', 'edit')))
         {
+            queue_js_file('jquery.plugin.min');
             queue_js_file('jquery.mousewheel.min');
             queue_js_file('jquery.calendars.min');
-            queue_js_file('jquery.calendars.plus.min');
             queue_js_file('jquery.calendars-de');
-            queue_css_file('jquery.calendars.picker');
-            queue_js_file('jquery.plugin.min');
+            queue_js_file('jquery.calendars.plus.min');
+            queue_js_file('jquery.calendars.julian.min');
             queue_js_file('jquery.calendars.picker.min');
             queue_js_file('jquery.calendars.picker-de');
-            queue_js_file('jquery.calendars.julian.min');
+            queue_css_file('jquery.calendars.picker');
             queue_js_file('date');
         }
     }
