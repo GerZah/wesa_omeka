@@ -13,39 +13,73 @@ jQuery(document).bind("omeka:elementformload", function() {
 		thisHere.calendarsPicker({
 			dateFormat: format,
 			firstDay: 1,
+			yearRange: 'any',
 			rangeSelect: true,
 			calendar: $.calendars.instance('gregorian', 'de'),
-			showTrigger: '<button type="button" class="trigger">…</button>',
+			showOnFocus: false,
+			// showTrigger: '<button type="button" class="trigger">…</button>',
 		});
 
 		var gredJulId = "gregJul"+thisHere.attr("id");
 
 		thisHere.parent().children("#"+gredJulId).remove();
-		thisHere.parent().append("<select id='"+gredJulId+"' style='width:30%'>"+
-														"<option value='gregorian'>Gregorianisch</option>"+
-														"<option value='julian'>Julianisch</option>"+
-														"</select>");
 
-		$("#"+gredJulId).change(
-			function() {
-				var calendar = $.calendars.instance($(this).val(), 'de'); 
-				var convert = function(value) { 
-					return (!value || typeof value != 'object' ?
-										value : calendar.fromJD(value.toJD())); 
-				}; 
+		thisHere.parent().append("<span id='"+gredJulId+"'>"+
+															"<br><strong>Kalenderblatt:</strong> "+
+															"<a href='#' class='editGregLink'>[Gregorianisch]</a> "+
+															"<a href='#' class='editJuliLink'>[Julianisch]</a>"+
+															"<br><strong>Konvertieren:</strong> "+
+															"<a href='#' class='convGregLink'>→ [Gregorianisch]</a> "+
+															"<a href='#' class='convJuliLink'>→ [Julianisch]</a>"+
+															"</span>");
 
-				var myPicker = $(this).parent().find(".is-calendarsPicker");
-				var current = myPicker.calendarsPicker('option'); 
-				myPicker.calendarsPicker('option', {calendar: calendar, 
-								onSelect: null, onChangeMonthYear: null, 
-								defaultDate: convert(current.defaultDate), 
-								minDate: convert(current.minDate), 
-								maxDate: convert(current.maxDate)}). 
-						calendarsPicker('option', 
-								{onSelect: current.onSelect, 
-								onChangeMonthYear: current.onChangeMonthYear}); 
+		var thisDateEdit = thisHere.parent().find(".is-calendarsPicker");
+
+		$("#"+gredJulId+" .editGregLink").click( function() { return editGregJuli("gregorian"); } );
+		$("#"+gredJulId+" .editJuliLink").click( function() { return editGregJuli("julian"); } );
+
+		$("#"+gredJulId+" .convGregLink").click( function() { return convGregJuli("gregorian"); } );
+		$("#"+gredJulId+" .convJuliLink").click( function() { return convGregJuli("julian"); } );
+
+		// -----------------------------
+
+		function setGregJuli(to) {
+			var myCalendar = $.calendars.instance(to, 'de');
+			thisDateEdit.calendarsPicker("option", { calendar: myCalendar } );
+		}
+
+		// -----------------------------
+
+		function editGregJuli(what) {
+			setGregJuli(what);
+			thisDateEdit.calendarsPicker("show");
+			return false;
+		}
+
+		// -----------------------------
+
+		function convGregJuli(to) {
+			var from=(to=='gregorian' ? 'julian' : 'gregorian');
+
+			setGregJuli(from);
+			thisDateEdit.calendarsPicker("show");
+
+			var curdate=thisDateEdit.calendarsPicker('getDate');
+
+			var toCalendar=$.calendars.instance(to, 'de');
+			var newdate=new Array();
+
+			for (var i = 0; i < curdate.length; i++) {
+				newdate[i] = toCalendar.fromJD(curdate[i].toJD());
 			}
-		);
+
+			setGregJuli(to);                                   
+			thisDateEdit.calendarsPicker('setDate', newdate);
+
+			return false;
+		}
+
+		// -----------------------------
 
 	});
 });
