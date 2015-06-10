@@ -9,7 +9,7 @@ jQuery(document).bind("omeka:elementformload", function() {
 		var isSpan=(thisHere.val().indexOf(" - ")!=-1);
 
 		thisHere.closest(".input-block").css("width","100%");
-		thisHere.css("width","50%");
+		thisHere.css("width","45%");
 
 		var format = thisHere.attr("data-format") || "yy-mm-dd";
 		thisHere.calendarsPicker({
@@ -17,9 +17,8 @@ jQuery(document).bind("omeka:elementformload", function() {
 			firstDay: 1,
 			yearRange: 'any',
 			rangeSelect: isSpan,
-			calendar: $.calendars.instance('gregorian', 'de'),
+			calendar: $.calendars.instance('gregorian', elTypesLocale),
 			showOnFocus: false,
-			// showTrigger: '<button type="button" class="trigger">…</button>',
 		});
 
 		var gredJulId = "gregJul"+thisHere.attr("id");
@@ -29,12 +28,14 @@ jQuery(document).bind("omeka:elementformload", function() {
 
 		var isChecked = (isSpan ? "checked" : "");
 		thisHere.parent().append("<span id='"+gredJulId+"'> "+
-															"<button type='button' class='editGregLink'>G</button>"+
-															"<button type='button' class='editJuliLink'>J</button>"+
-															"<input type='checkbox' id='"+timespanId+"' "+isChecked+"> Zeitspanne"+
-															"<br><strong>Konvertieren:</strong> "+
-															"<a href='#' class='convGregLink'>→ [Gregorianisch]</a> "+
-															"<a href='#' class='convJuliLink'>→ [Julianisch]</a>"+
+															"<button type='button' class='editGregLink'>"+
+																				elTypesGregorian.substr(0,1)+"</button>"+
+															"<button type='button' class='editJuliLink'>"+
+																				elTypesJulian.substr(0,1)+"</button>"+
+															"<input type='checkbox' id='"+timespanId+"' "+isChecked+"> "+elTypesTimeSpan+
+															"<br><strong>"+elTypesConvert+":</strong> "+
+															"<a href='#' class='convGregLink'>→ ["+elTypesGregorian+"]</a> "+
+															"<a href='#' class='convJuliLink'>→ ["+elTypesJulian+"]</a>"+
 															"</span>");
 
 		var thisDateEdit = thisHere.parent().find(".is-calendarsPicker");
@@ -50,7 +51,7 @@ jQuery(document).bind("omeka:elementformload", function() {
 		// -----------------------------
 
 		function setGregJuli(to) {
-			var myCalendar = $.calendars.instance(to, 'de');
+			var myCalendar = $.calendars.instance(to, elTypesLocale);
 			thisDateEdit.calendarsPicker("option", { calendar: myCalendar } );
 		}
 
@@ -91,7 +92,7 @@ jQuery(document).bind("omeka:elementformload", function() {
 
 			var curdate=thisDateEdit.calendarsPicker('getDate');
 
-			var toCalendar=$.calendars.instance(to, 'de');
+			var toCalendar=$.calendars.instance(to, elTypesLocale);
 			var newdate=new Array();
 
 			for (var i = 0; i < curdate.length; i++) {
