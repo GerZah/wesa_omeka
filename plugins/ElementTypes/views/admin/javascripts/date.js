@@ -6,6 +6,8 @@ jQuery(document).bind("omeka:elementformload", function() {
 
 		var thisHere=$(this);
 
+		var isSpan=(thisHere.val().indexOf(" - ")!=-1);
+
 		thisHere.closest(".input-block").css("width","100%");
 		thisHere.css("width","50%");
 
@@ -14,20 +16,22 @@ jQuery(document).bind("omeka:elementformload", function() {
 			dateFormat: format,
 			firstDay: 1,
 			yearRange: 'any',
-			rangeSelect: true,
+			rangeSelect: isSpan,
 			calendar: $.calendars.instance('gregorian', 'de'),
 			showOnFocus: false,
 			// showTrigger: '<button type="button" class="trigger">…</button>',
 		});
 
 		var gredJulId = "gregJul"+thisHere.attr("id");
+		var timespanId = "timespan"+thisHere.attr("id");
 
 		thisHere.parent().children("#"+gredJulId).remove();
 
-		thisHere.parent().append("<span id='"+gredJulId+"'>"+
-															"<br><strong>Kalenderblatt:</strong> "+
-															"<a href='#' class='editGregLink'>[Gregorianisch]</a> "+
-															"<a href='#' class='editJuliLink'>[Julianisch]</a>"+
+		var isChecked = (isSpan ? "checked" : "");
+		thisHere.parent().append("<span id='"+gredJulId+"'> "+
+															"<button type='button' class='editGregLink'>G</button>"+
+															"<button type='button' class='editJuliLink'>J</button>"+
+															"<input type='checkbox' id='"+timespanId+"' "+isChecked+"> Zeitspanne"+
 															"<br><strong>Konvertieren:</strong> "+
 															"<a href='#' class='convGregLink'>→ [Gregorianisch]</a> "+
 															"<a href='#' class='convJuliLink'>→ [Julianisch]</a>"+
@@ -37,6 +41,8 @@ jQuery(document).bind("omeka:elementformload", function() {
 
 		$("#"+gredJulId+" .editGregLink").click( function() { return editGregJuli("gregorian"); } );
 		$("#"+gredJulId+" .editJuliLink").click( function() { return editGregJuli("julian"); } );
+
+		$("#"+timespanId).change(switchTimespan);
 
 		$("#"+gredJulId+" .convGregLink").click( function() { return convGregJuli("gregorian"); } );
 		$("#"+gredJulId+" .convJuliLink").click( function() { return convGregJuli("julian"); } );
@@ -54,6 +60,25 @@ jQuery(document).bind("omeka:elementformload", function() {
 			setGregJuli(what);
 			thisDateEdit.calendarsPicker("show");
 			return false;
+		}
+
+		// -----------------------------
+
+		function switchTimespan() {
+			var isSpan = $(this).is(':checked');
+			thisDateEdit.calendarsPicker("option", { rangeSelect: isSpan } );
+
+			var curValue=thisDateEdit.val();
+
+			if (curValue) {
+				var curSep=curValue.indexOf(" - ");
+				var currentlySpan=(curSep!=-1);
+	
+				if (currentlySpan!=isSpan) {
+					if (isSpan) { thisDateEdit.val(curValue+" - "+curValue); }
+					else { thisDateEdit.val(curValue.substr(0,curSep)); }
+				}
+			}
 		}
 
 		// -----------------------------
