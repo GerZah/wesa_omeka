@@ -29,12 +29,21 @@ class ConditionalElementsPlugin extends Omeka_Plugin_AbstractPlugin {
 				$controller === 'items' &&
 				in_array($action, array('add',  'edit'))) {
 
-			// -----------------------
-			// Before including the conditionalelements.js, THIS is the place to output
-			// a <script>...</script> tag that will create and populate a dependencies
-			// JavaScript array. That way, the code in there will attach all the
-			// necessary onChange events and also initialize the page view accordingly.
-			// -----------------------
+			// ------------------------------------------
+			// An array of dependencies:
+			// Each dependency is represented by a "dependent", a "term", and a "dependee".
+			// ... meaning: If and only if the "dependent"'s value equals the "term", the "dependee" will be visible.
+			 // Example: Only if element 54 contains "- Anderer -", field 60 will become visible.
+			echo <<<EOT
+<script>
+	var dependencies=[
+		["54", "- Anderer -", "60"],
+	];
+</script>
+
+EOT;
+			// ... Ultimately, this array should be filled from a JSON encoded database setting.
+			// ------------------------------------------
 
 			queue_js_file('conditionalelements');
 
