@@ -38,6 +38,8 @@ class ConditionalElementsPlugin extends Omeka_Plugin_AbstractPlugin {
 <script>
 	var dependencies=[
 		["54", "- Anderer -", "60"],
+		["61", "Private Organisation", "62"],
+		["61", "Öffentliche Organisation", "63"],
 	];
 </script>
 

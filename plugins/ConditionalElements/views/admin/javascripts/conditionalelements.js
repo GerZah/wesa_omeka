@@ -22,6 +22,7 @@ jQuery(document).bind("omeka:elementformload", function() {
 			});
 			if (hideAndEmptyDependee) {
 				$("#element-"+dependee+" textarea").each(function(index) { $(this).val(""); });
+				$("#element-"+dependee+" select").each(function(index) { $(this).val(null); });
 				$("#element-"+dependee).hide(200);
 			}
 			else { $("#element-"+dependee).show(200); }
