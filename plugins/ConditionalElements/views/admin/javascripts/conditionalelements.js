@@ -2,8 +2,8 @@ jQuery(document).bind("omeka:elementformload", function() {
 
 	var $ = jQuery; // use noConflict version of jQuery as the short $ within this block
 
-	if (typeof dependencies !== 'undefined') { 
-		$.each(dependencies, function(i, dependency) {
+	if (typeof conditionalElementsDep !== 'undefined') { 
+		$.each(conditionalElementsDep, function(i, dependency) {
 			establishDependency(dependency[0], dependency[1], dependency[2]);
 		});
 	}
