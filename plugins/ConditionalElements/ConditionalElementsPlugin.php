@@ -31,8 +31,8 @@ class ConditionalElementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
 			// ------------------------------------------
 			// An array of dependencies:
-			// Each dependency is represented by a "dependent", a "term", and a "dependee".
-			// ... meaning: If and only if the "dependent"'s value equals the "term", the "dependee" will be visible.
+			// Each dependency is represented by a "dependee", a "term", and a "dependent".
+			// ... meaning: If and only if the "dependee"'s value equals the "term", the "dependent" will be visible.
 			// Example: Only if element 53 contains "- Anderes Land -", field 59 will become visible.
 
 			// Create sample settings and store them in a setting
