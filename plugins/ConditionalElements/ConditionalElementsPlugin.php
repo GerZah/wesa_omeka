@@ -1,7 +1,5 @@
 <?php
 
-# Test comment
-
 /**
  * @file
  * Conditional Elements plugin main file.
