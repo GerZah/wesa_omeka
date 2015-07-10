@@ -164,7 +164,7 @@ jQuery(document).bind("omeka:elementformload", function() {
 			}
 
 			else {
-				defineCalPrefix(from);
+				defineCalPrefix(to);
 				setCalPrefix();
 			}
 		}
