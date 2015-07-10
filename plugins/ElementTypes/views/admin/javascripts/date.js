@@ -33,9 +33,7 @@ jQuery(document).bind("omeka:elementformload", function() {
 																		"<strong>"+pickerStatusText+"</strong>"+
 																		"</td></tr>");
 			},
-			onClose: function(dates) {
-				if ( (calPrefix) && (thisHere.val()) ) { thisHere.val(calPrefix+" "+thisHere.val()); }
-			},
+			onClose: setCalPrefix,
 		});
 
 		var gredJulId = "gregJul"+thisHere.attr("id");
@@ -65,7 +63,7 @@ jQuery(document).bind("omeka:elementformload", function() {
 
 		// -----------------------------
 
-		function setGregJuli(to) {
+		function setPickerToGregJuli(to) {
 			var myCalendar = $.calendars.instance(to, elTypesLocale);
 			thisDateEdit.calendarsPicker("option", { calendar: myCalendar } );
 			pickerStatusText=(to=="gregorian" ? elTypesGregorian : elTypesJulian);
@@ -73,7 +71,7 @@ jQuery(document).bind("omeka:elementformload", function() {
 
 		// -----------------------------
 
-		function removeCurPrefix(thisDateEdit) {
+		function removeCalPrefix(thisDateEdit) {
 			var curPrefix=thisDateEdit.val().substr(0,prefixLen);
 			if ( (curPrefix==gregPrefix) || (curPrefix==julPrefix) ) {
 				thisDateEdit.val(thisDateEdit.val().substr(prefixLen+1))
@@ -82,20 +80,25 @@ jQuery(document).bind("omeka:elementformload", function() {
 
 		// -----------------------------
 
-		function setNewCalPrefix(what) {
+		function defineCalPrefix(what) {
 			calPrefix=(what=="gregorian" ? gregPrefix : julPrefix);
+		}
+
+		function setCalPrefix() {
+			if ( (calPrefix) && (thisHere.val()) ) { thisHere.val(calPrefix+" "+thisHere.val()); }
 		}
 
 		// -----------------------------
 
 		function editGregJuli(what) {
-			setGregJuli(what);
+			event.preventDefault();
 
-			setNewCalPrefix(what);
-			removeCurPrefix(thisDateEdit);
+			setPickerToGregJuli(what);
+
+			removeCalPrefix(thisDateEdit);
+			defineCalPrefix(what);
 
 			thisDateEdit.calendarsPicker("show");
-			return false;
 		}
 
 		// -----------------------------
@@ -126,27 +129,64 @@ jQuery(document).bind("omeka:elementformload", function() {
 		// -----------------------------
 
 		function convGregJuli(to) {
+			event.preventDefault();
+
 			var from=(to=='gregorian' ? 'julian' : 'gregorian');
 
-			setNewCalPrefix(to);
-			removeCurPrefix(thisDateEdit);
+			removeCalPrefix(thisDateEdit);
 
-			setGregJuli(from);
-			thisDateEdit.calendarsPicker("show");
+			var canConvert=true;
 
-			var curdate=thisDateEdit.calendarsPicker('getDate');
-
-			var toCalendar=$.calendars.instance(to, elTypesLocale);
-			var newdate=new Array();
-
-			for (var i = 0; i < curdate.length; i++) {
-				newdate[i] = toCalendar.fromJD(curdate[i].toJD());
+			if (to=="julian") {
+				var curdate=thisDateEdit.calendarsPicker('getDate');
+				for (var i = 0; i < curdate.length; i++) {
+					canConvert=( (canConvert) && (canConvToJulian(curdate[i])) );
+				}
 			}
 
-			setGregJuli(to);
-			thisDateEdit.calendarsPicker('setDate', newdate);
+			if (canConvert) {
+				setPickerToGregJuli(from);
+				thisDateEdit.calendarsPicker("show");
+	
+				var curdate=thisDateEdit.calendarsPicker('getDate');
+	
+				var toCalendar=$.calendars.instance(to, elTypesLocale);
+				var newdate=new Array();
+	
+				for (var i = 0; i < curdate.length; i++) {
+					newdate[i]=curdate[i];
+					newdate[i] = toCalendar.fromJD(curdate[i].toJD());
+				}
+	
+				setPickerToGregJuli(to);
+				defineCalPrefix(to);
+				thisDateEdit.calendarsPicker('setDate', newdate);
+			}
 
-			return false;
+			else {
+				defineCalPrefix(from);
+				setCalPrefix();
+			}
+		}
+
+		// -----------------------------
+
+		function canConvToJulian(date) {
+			var result=true;
+
+			var dateString=String(date);
+
+			var year=parseInt(dateString.substr(0,4));
+			var month=parseInt(dateString.substr(5,2));
+			var day=parseInt(dateString.substr(8,2));
+
+			if (year<1582) { result=false; }
+			else if ( (year==1582) && (month<10) ) { result=false; }
+			else if ( (year==1582) && (month==10) && (day<15) ) { result=false; }
+
+			console.log(year+" | "+month+" | "+day+" = "+result);
+
+			return result;
 		}
 
 		// -----------------------------
