@@ -1,45 +1,46 @@
 # Translation for the Exhibit Builder plugin for Omeka.
 # Copyright (C) 2014 Roy Rosenzweig Center for History and New Media
 # This file is distributed under the same license as the Omeka package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# 
+# Translators:
+# Tel, 2014
 msgid ""
 msgstr ""
-"Project-Id-Version: Item Relations\n"
+"Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-ItemRelations/issues\n"
 "POT-Creation-Date: 2014-01-13 12:59-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2014-06-04 22:49+0000\n"
+"Last-Translator: Tel\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/omeka/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: ItemRelationsPlugin.php:357 ItemRelationsPlugin.php:407
 #: views/admin/common/item-relations-show.php:2
 #: views/public/common/item-relations-show.php:2
 #: views/shared/common/item-relations-advanced-search.php:3
 msgid "Item Relations"
-msgstr ""
+msgstr "Relações entre os itens"
 
 #: ItemRelationsPlugin.php:361
 msgid "Subjects"
-msgstr ""
+msgstr "Sujeitos"
 
 #: ItemRelationsPlugin.php:363 item_relations_form.php:17
 #: views/shared/common/item-relations-advanced-search.php:17
 msgid "Object"
-msgstr ""
+msgstr "Objetos"
 
 #: ItemRelationsPlugin.php:368
 msgid "These Items"
-msgstr ""
+msgstr "Esses itens"
 
 #: ItemRelationsPlugin.php:371 item_relations_form.php:41
 msgid "Item ID"
-msgstr ""
+msgstr "Identificação do item"
 
 #: config_form.php:3
 msgid "Append to Public Items Show"
@@ -72,9 +73,9 @@ msgstr ""
 #: item_relations_form.php:6
 #, php-format
 msgid ""
-"Here you can relate this item to another item and delete existing relations. "
-"For descriptions of the relations, see the %s page. Invalid item IDs will be "
-"ignored."
+"Here you can relate this item to another item and delete existing relations."
+" For descriptions of the relations, see the %s page. Invalid item IDs will "
+"be ignored."
 msgstr ""
 
 #: item_relations_form.php:24 item_relations_form.php:34
