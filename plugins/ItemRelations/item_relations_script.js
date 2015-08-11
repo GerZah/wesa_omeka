@@ -74,11 +74,15 @@ jQuery(document).ready(function () {
     $('#add-relation').click(function () {
         var oldRow = $('.item-relations-entry').last();
         var newRow = oldRow.clone();
+				var provideRelationComments = ($('#relation_comment').length > 0);
         newRow.toggleClass('hidden');
         newRow.find('.item-relations-property').html($('#new_relation_property_id').find(':selected').html());
         var new_url = newRow.find('.item-relations-object a').attr('href');
         newRow.find('.item-relations-object a').attr('href', new_url + $('#new_relation_object_item_id').val());
         newRow.find('.item-relations-object a').text($('#object_title').text());
+				if (provideRelationComments) {
+					newRow.find('.item-relations-comment').text($('#relation_comment').val());
+				}
         var hidden = [];
         hidden.push('<input type="hidden" name="item_relations_property_id[]" value="');
         hidden.push($('#new_relation_property_id').val());
@@ -86,6 +90,11 @@ jQuery(document).ready(function () {
         hidden.push('<input type="hidden" name="item_relations_item_relation_object_item_id[]" value="');
         hidden.push($('#new_relation_object_item_id').val());
         hidden.push('">');
+				if (provideRelationComments) {
+	        hidden.push('<input type="hidden" name="item_relations_item_relation_relation_comment[]" value="');
+	        hidden.push($('#relation_comment').val());
+	        hidden.push('">');
+				}
         newRow.find('.item-relations-hidden').html(hidden.join(''));
         oldRow.before(newRow);
     });

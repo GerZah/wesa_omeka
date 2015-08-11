@@ -7,14 +7,16 @@ echo __('Here you can relate this item to another item and delete existing '
      . 'relations. For descriptions of the relations, see the %s page. Invalid '
      . 'item IDs will be ignored.', $link
 );
+$provideRelationComments = get_option('item_relations_provide_relation_comments');
 ?>
 </p>
 <table>
     <thead>
     <tr>
-        <th><?php echo __('Subject'); ?></th>
+        <th><?php echo __('Subject '); ?></th>
         <th><?php echo __('Relation'); ?></th>
         <th><?php echo __('Object'); ?></th>
+        <?php if ($provideRelationComments): ?><th><?php echo __('Comment'); ?></th><?php endif; ?>
         <th><?php echo __('Delete'); ?></th>
     </tr>
     </thead>
@@ -24,6 +26,7 @@ echo __('Here you can relate this item to another item and delete existing '
         <td><?php echo __('This Item'); ?></td>
         <td><?php echo $subjectRelation['relation_text']; ?></td>
         <td><a href="<?php echo url('items/show/' . $subjectRelation['object_item_id']); ?>" target="_blank"><?php echo $subjectRelation['object_item_title']; ?></a></td>
+        <?php if ($provideRelationComments): ?><td><?php echo $subjectRelation['relation_comment']; ?></td><?php endif; ?>
         <td><input type="checkbox" name="item_relations_item_relation_delete[]" value="<?php echo $subjectRelation['item_relation_id']; ?>" /></td>
     </tr>
     <?php endforeach; ?>
@@ -32,6 +35,7 @@ echo __('Here you can relate this item to another item and delete existing '
         <td><a href="<?php echo url('items/show/' . $objectRelation['subject_item_id']); ?>" target="_blank"><?php echo $objectRelation['subject_item_title']; ?></a></td>
         <td><?php echo $objectRelation['relation_text']; ?></td>
         <td><?php echo __('This Item'); ?></td>
+        <?php if ($provideRelationComments): ?><td><?php echo $objectRelation['relation_comment']; ?></td><?php endif; ?>
         <td><input type="checkbox" name="item_relations_item_relation_delete[]" value="<?php echo $objectRelation['item_relation_id']; ?>" /></td>
     </tr>
     <?php endforeach; ?>
@@ -39,6 +43,7 @@ echo __('Here you can relate this item to another item and delete existing '
         <td><?php echo __('This Item'); ?><span class="item-relations-hidden"></span></td>
         <td class="item-relations-property"></td>
         <td class="item-relations-object"><a href="<?php echo url('items/show/'); ?>" target="_blank">.</a></td>
+        <?php if ($provideRelationComments): ?><td class="item-relations-comment"></td><?php endif; ?>
         <td><span style="color:#ccc;"><?php echo __("[n/a]") ?></span></td>
     </tr>
     </tbody>
@@ -51,7 +56,7 @@ $db = get_db();
 $sql = "SELECT id, name from {$db->Item_Types} ORDER BY id";
 $itemtypes = $db->fetchAll($sql);
 $m = array(
-    '-1' => 'All',
+    '-1' => "- ".__('All')." -",
 );
 foreach ($itemtypes as $type) {
     $m[$type['id']] = $type['name'];
@@ -70,10 +75,10 @@ foreach ($itemtypes as $type) {
     <?php echo __('Item Sort'); ?>:
     <fieldset>
         <input type="radio" name="itemsListSort" id="new_selectObjectSortTimestamp" value="timestamp" checked>
-        <label for="selectObjectSortTimeStamp">Most recently updated</label>
+        <label for="selectObjectSortTimeStamp"><?php echo __("Most recently updated"); ?></label>
 
         <input type="radio" name="itemsListSort" id="new_selectObjectSortName" value="name">
-        <label for="selectObjectSortName">Alphabetically</label>
+        <label for="selectObjectSortName"><?php echo __("Alphabetically"); ?></label>
     </fieldset>
     </p>
 
@@ -92,6 +97,14 @@ foreach ($itemtypes as $type) {
 
     <ul id="lookup-results">
     </ul>
+
+<?php if ($provideRelationComments): ?>
+
+<br>
+		<p><?php echo __('Comment'); ?>:	<?php echo get_view()->formText('relation_comment', null, array('size' => 8)); ?></p>
+
+<?php endif; ?>
+
 
     <a href="#" id="add-relation" class="green button" data-lity-close><?php echo __('Add Relation'); ?></a>
 </div>
