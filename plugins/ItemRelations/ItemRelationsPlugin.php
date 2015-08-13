@@ -23,6 +23,7 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
         'initialize',
         'after_save_item',
         'admin_items_show',
+        'admin_items_show_sidebar',
         'admin_items_search',
         'admin_items_batch_edit_form',
         'items_batch_edit_custom',
@@ -43,6 +44,7 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
      */
     protected $_options = array(
         'item_relations_public_append_to_items_show' => 1,
+        'item_relations_admin_sidebar_or_maincontent' => 'sidebar', // maincontent
         'item_relations_provide_relation_comments' => 0,
         'item_relations_relation_format' => 'prefix_local_part'
     );
@@ -153,6 +155,7 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
     public static function hookConfigForm()
     {
         $publicAppendToItemsShow = get_option('item_relations_public_append_to_items_show');
+        $adminSidebarOrMaincontent = get_option('item_relations_admin_sidebar_or_maincontent');
         $provideRelationComments = get_option('item_relations_provide_relation_comments');
         $relationFormat = get_option('item_relations_relation_format');
 
@@ -166,6 +169,8 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
     {
         set_option('item_relations_public_append_to_items_show',
             (int)(boolean) $_POST['item_relations_public_append_to_items_show']);
+        set_option('item_relations_admin_sidebar_or_maincontent',
+            $_POST['item_relations_admin_sidebar_or_maincontent']);
         set_option('item_relations_provide_relation_comments',
             (int)(boolean) $_POST['item_relations_provide_relation_comments']);
         set_option('item_relations_relation_format',
@@ -271,18 +276,43 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
     }
 
     /**
-     * Display item relations on the admin items show page.
+     * Display item relations on the admin items show page underneath main content.
      *
      * @param Item $item
      */
-    public function hookAdminItemsShow($args) // _sidebar
+    public function hookAdminItemsShow($args)
     {
-        $item = $args['item'];
+        $adminSidebarOrMaincontent = get_option('item_relations_admin_sidebar_or_maincontent');
+        if ($adminSidebarOrMaincontent == "maincontent"):
 
-        echo common('item-relations-show', array(
-            'subjectRelations' => self::prepareSubjectRelations($item),
-            'objectRelations' => self::prepareObjectRelations($item)
-        ));
+          $item = $args['item'];
+
+          echo common('item-relations-show', array(
+              'subjectRelations' => self::prepareSubjectRelations($item),
+              'objectRelations' => self::prepareObjectRelations($item)
+          ));
+
+      endif;
+    }
+
+    /**
+     * Display item relations on the admin items show page in the side bar in the lower right.
+     *
+     * @param Item $item
+     */
+    public function hookAdminItemsShowSidebar($args)
+    {
+        $adminSidebarOrMaincontent = get_option('item_relations_admin_sidebar_or_maincontent');
+        if ($adminSidebarOrMaincontent != "maincontent"):
+
+          $item = $args['item'];
+
+          echo common('item-relations-show', array(
+              'subjectRelations' => self::prepareSubjectRelations($item),
+              'objectRelations' => self::prepareObjectRelations($item)
+          ));
+
+      endif;
     }
 
     /**
