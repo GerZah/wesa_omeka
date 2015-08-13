@@ -33,8 +33,20 @@
 
 	// -----------------------------------------------
 	
-	$csv = array_map('str_getcsv', file('Test-Export.csv'));
+	#$csv = @array_map('str_getcsv', @file('CitaviWeSa_edited.csv'));
 
+	$csv=array();
+
+	$file = fopen('CitaviWeSa.csv', 'r');
+	while (($csv[] = fgetcsv($file)) !== FALSE) { }
+	fclose($file);
+
+	# print_r($csv);
+
+	#if (!$csv) { die("CSV file error."); }
+
+	// -----------------------------------------------
+	
 	$headers=array(); // Sanity state
 
 	$firstline=true;
@@ -49,18 +61,24 @@
 
 		else {
 
+			# print_r($line);
+
 			// http://omeka.readthedocs.org/en/eb3/Reference/libraries/globals/insert_item.html
 			$metaData = array("item_type_id" => $importItemTypeID);
 			$elementTexts = array(
 				'Dublin Core' => array(
-  				// 'Title' => array( array('text' => $line[$headers["Titel"]], 'html' => false), array('text' => "foo", 'html' => false), ),
-  				'Title' => array( array('text' => $line[$headers["Titel"]], 'html' => false) ),
-  				'Description' => array( array('text' => $line[$headers["Untertitel"]], 'html' => false) ),
   				'Creator' => array( array('text' => $line[$headers["Autor, Herausgeber oder Institution"]], 'html' => false) ),
-  				'Type' => array( array('text' => $line[$headers["Dokumententyp"]], 'html' => false) ),
-  				'Date' => array( array('text' => $line[$headers["Jahr ermittelt"]], 'html' => false) ),
-  				'Publisher' => array( array('text' => $line[$headers["Verlag"]], 'html' => false) ),
-  				'Identifier' => array( array('text' => $line[$headers["ISBN"]], 'html' => false) ),
+  				'Title' => array( array('text' => $line[$headers["Titel"]], 'html' => false),
+														array('text' => $line[$headers["Untertitel"]], 'html' => false) ),
+				),
+				'Item Type Metadata' => array(
+  				'Jahr ermittelt' => array( array('text' => $line[$headers["Jahr ermittelt"]], 'html' => false) ),
+  				'Dokumententyp' => array( array('text' => $line[$headers["Dokumententyp"]], 'html' => false) ),
+  				'Ort' => array( array('text' => $line[$headers["Ort"]], 'html' => false) ),
+  				'Zeitschrift/Zeitung' => array( array('text' => $line[$headers["Zeitschrift/Zeitung"]], 'html' => false) ),
+  				'Band' => array( array('text' => $line[$headers["Band"]], 'html' => false) ),
+  				'Nummer' => array( array('text' => $line[$headers["Nummer"]], 'html' => false) ),
+  				'Seiten von-bis' => array( array('text' => $line[$headers["Seiten von–bis"]], 'html' => false) ),
 				)
 			);
 			print_r($elementTexts);
