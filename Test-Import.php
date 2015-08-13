@@ -38,7 +38,7 @@
 	$csv=array();
 
 	$file = fopen('CitaviWeSa.csv', 'r');
-	while (($csv[] = fgetcsv($file)) !== FALSE) { }
+	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
 	# print_r($csv);
