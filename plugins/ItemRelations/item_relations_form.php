@@ -53,7 +53,7 @@ $provideRelationComments = get_option('item_relations_provide_relation_comments'
 
 <?php
 $db = get_db();
-$sql = "SELECT id, name from {$db->Item_Types} ORDER BY id";
+$sql = "SELECT id, name from {$db->Item_Types} ORDER BY name";
 $itemtypes = $db->fetchAll($sql);
 $m = array(
     '-1' => "- ".__('All')." -",
