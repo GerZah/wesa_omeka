@@ -2,7 +2,7 @@
 $pageTitle = __('Browse Dependents');
 echo head(array('title' => $pageTitle,'bodyclass' => 'dependent')); ?>
 <div class="table-actions">
-    <a href="<?php echo html_escape(url('conditional-elements/index/add')); ?>" class="add green button"><?php echo __('Add dependent'); ?></a>
+    <a href="<?php echo html_escape(url('conditional-elements/index/add')); ?>" class="add green button"><?php echo __('Add dependency'); ?></a>
 </div>
 <table>
     <thead>
@@ -17,16 +17,13 @@ echo head(array('title' => $pageTitle,'bodyclass' => 'dependent')); ?>
 $json=get_option('conditional_elements_dependencies');
 if (!$json) { $json="null"; }
 $dependencies = json_decode($json,true);
-$trial= json_decode($json);
 $ids = array();
 foreach ($dependencies as $d){
 $ids[]=$d[0];
 $ids[]=$d[2];
-
 }
 $ids=array_unique($ids);
 $ids_verb = implode(",",$ids);
-
 $db = get_db();
 $select = "SELECT id, name FROM $db->Element WHERE id in ($ids_verb)";
 $results = $db->fetchAll($select);
@@ -101,6 +98,6 @@ foreach ($dependencies as $dep){
   });
   </script>
   <div class="table-actions">
-      <a href="<?php echo html_escape(url('conditional-elements/index/add')); ?>" class="add green button"><?php echo __('Add dependent'); ?></a>
+      <a href="<?php echo html_escape(url('conditional-elements/index/add')); ?>" class="add green button"><?php echo __('Add dependency'); ?></a>
   </div>
 <?php echo foot(); ?>

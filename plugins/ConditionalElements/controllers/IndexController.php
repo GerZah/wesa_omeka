@@ -14,7 +14,7 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
 {
       public function indexAction() {
           $this->_helper->db->setDefaultModelName('ConditionalElements');
-      }
+        }
        public function editAction()
         {
             $dependent_id = $this->_getParam('dependent_id');
@@ -51,31 +51,27 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
 
           if ($this->getRequest()->isPost()) {
                   try{
-                    $dependent = $_POST['dependent'];
-                    $term =$_POST['term'];
-                    $dependee = $_POST['dependee'];
                     $json=get_option('conditional_elements_dependencies');
                     if (!$json) { $json="null"; }
-                    $data = json_decode($json, 1);
-                    $newdata = array('0'=>$dependent, '1' => $term, '2'=>$dependee);
-                    $data[] = $newdata;
-                    $json= json_encode($data);
-
-                    $this->_helper->flashMessenger(__('The dependency "%s" was successfully added.', $dependee), 'success');
-                    $this->_helper->redirector('show', null, null, array('id'=>$dependee_id));
+                    $dependencies = json_decode($json);
+                    $existingdependent = $_POST['existingdependent'];
+                    $newdependent =$_POST['newdependent'];
+                    $this->_helper->flashMessenger(__('The dependent "%s" was successfully added.', $existingdependent), 'success');
                   } catch (Omeka_Validate_Exception $e) {
-                      $dependee_id->delete();
                       $this->_helper->flashMessenger($e);
                   }
               } else {
                   $this->_helper->flashMessenger(__('There were errors found in your form. Please edit and resubmit.'), 'error');
               }
 
-          // specify view variables
-      //    $this->view->form = $form;
-      //    $this->view->item_type = $conditionalElements;
         }
 
+        public function dependeeAction()
+         {
+         }
+         public function termAction()
+          {
+          }
 
         protected function _getName($id) {
           $db = get_db();
