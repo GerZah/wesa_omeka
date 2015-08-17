@@ -23,16 +23,11 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
             $this->view->term = $this->_getParam('term');
             $this->view->dependent = $this->_getName($dependent_id);
 
-            // get the item type
-            $itemType = $this->_helper->db->findById();
-
-            // edit the item type
-            $form = $this->_getForm($itemType);
             if ($this->getRequest()->isPost()) {
                 if ($form->isValid($_POST)) {
                     try{
                         $form->saveFromPost();
-                        $this->_helper->flashMessenger(__('The item type "%s" was successfully updated.', $itemType->name), 'success');
+                        $this->_helper->flashMessenger(__('The dependency "%s" was successfully updated.', $itemType->name), 'success');
                         $this->_helper->redirector('show', null, null, array('id'=>$itemType->id));
                     } catch (Omeka_Validate_Exception $e) {
                         $this->_helper->flashMessenger($e);
@@ -42,7 +37,6 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
                 }
             }
 
-            $this->view->form = $form;
             $this->view->conditional_elements = $conditionalElements;
 
            }
@@ -56,6 +50,7 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
                     $dependencies = json_decode($json);
                     $existingdependent = $_POST['existingdependent'];
                     $newdependent =$_POST['newdependent'];
+                //    $simpleVocabTerm->terms = $this->_sanitizeTerms($terms);
                     $this->_helper->flashMessenger(__('The dependent "%s" was successfully added.', $existingdependent), 'success');
                   } catch (Omeka_Validate_Exception $e) {
                       $this->_helper->flashMessenger($e);
@@ -110,13 +105,22 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
             return __('The dependency "%s" was successfully added!', $conditionalElements->name);
         }
 
-        private function _getForm($conditionalElements)
+
+        /**
+         * Sanitize the terms for insertion into the database.
+         *
+         * @param string $terms
+         * @return string
+         */
+        private function _sanitizeTerms($terms)
         {
-            require_once APP_DIR . '/forms/ItemTypes.php';
-            $form = new Omeka_Form_ConditionalElements;
-            $form->setConditionalElements($conditionalElements);
-            fire_plugin_hook('conditional-elements_form', array('form' => $form));
-            return $form;
+            $termsArr = explode("\n", $terms);
+            $termsArr = array_map('trim', $termsArr); // trim all values
+            $termsArr = array_filter($termsArr); // remove empty values
+            $termsArr = array_unique($termsArr); // remove duplicate values
+            $terms = implode("\n", $termsArr);
+            $terms = trim($terms);
+            return $terms;
         }
 
 }

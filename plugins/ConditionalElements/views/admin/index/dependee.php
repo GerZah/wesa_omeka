@@ -10,28 +10,37 @@ echo flash();
          <div class="field">
            <p>You have chosen the dependent:</p>
            <?php
-           echo $this->formText('existingdependent', $_POST['existingdependent']); ?>
+           echo $this->formText('dependent', $_POST['dependent']); ?>
            </div>
-      <div class="field">
+           <div class="field">
             <?php echo $this->formLabel('dependee', __('Choose an existing dependee')); ?>
-          <div class="inputs six columns omega">
-           <?php  $json=get_option('conditional_elements_dependencies');
+           <div class="inputs six columns omega">
+            <?php
+            $json=get_option('conditional_elements_dependencies');
             if (!$json) { $json="null"; }
-            $dependencies = json_decode($json);
-            echo $this->formSelect('existingdependee', null, array(), $dependencies);
-             ?>
+            $dependencies = json_decode($json,true);
+            $ids = array();
+            foreach ($dependencies as $d){
+            $ids[]=$d[0];
+            }
+            $ids=array_unique($ids);
+            $ids_verb = implode(",",$ids);
+            $db = get_db();
+            $select = "SELECT es.name AS name, es.id AS id, e.element_id AS vocab_id
+            FROM {$db->Element} es
+            JOIN {$db->SimpleVocabTerm} e
+            ON es.id = e.element_id
+            WHERE es.id NOT in ($ids_verb) ORDER BY name";
+            $results = $db->fetchAll($select);
+            $dependent = array();
+            foreach($results as $result) {
+             $dependee[] = $result['name'];
+            }
+            echo $this->formSelect('dependee', null , array(), $dependee);
+            ?>
           </div>
-      </div>
-      <div class="field">
-        <div class="one column alpha">
-          <?php echo $this->formLabel('newdependee', __('Add new Dependee')); ?>
-        </div>
-          <div class="inputs six columns omega">
-            <?php // do a matching to check for existing dependents ?>
-            <input type="text" name="newdependee" id="newdependee" class="textinput" />
           </div>
-      </div>
-          </fieldset>
+  </fieldset>
   </section>
   <section class="three columns omega">
       <div id="save" class="panel">

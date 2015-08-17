@@ -64,13 +64,11 @@ foreach ($dependencies as $dep){
         </td>
         <td>
           <ul class="action-links group">
-            <li><a class="edit" href="<?php echo $this->url('conditional-elements/index/edit', array('dependent_id'=>$dependent_id,'term'=>$term,'dependee_id'=>$dependee_id )); ?>">
-            <?php echo __('Edit'); ?>
-              </a></li>
-            <li>
-              <li><a class="edit" href="<?php echo $this->url('conditional-elements/index/delete', array('dependent_id'=>$dependent_id,'term'=>$term,'dependee_id'=>$dependee_id )); ?>">
-                <?php echo __('Delete'); ?>
-              </a></li>
+          <li>
+            <a class="edit" href="<?php echo $this->url('conditional-elements/index/delete', array('dependent_id'=>$dependent_id,'term'=>$term,'dependee_id'=>$dependee_id )); ?>">
+              <?php echo __('Delete'); ?>
+            </a>
+          </li>
           </ul>
         <?php }; ?>
           </td>

@@ -18,21 +18,25 @@ echo flash();
             <?php
             $json=get_option('conditional_elements_dependencies');
             if (!$json) { $json="null"; }
-            $dependencies = json_decode($json);
-            echo $this->formSelect('existingdependent', null, array(), $dependencies);
+            $dependencies = json_decode($json,true);
+            $ids = array();
+            foreach ($dependencies as $d){
+            $ids[]=$d[2];
+            }
+            $ids=array_unique($ids);
+            $ids_verb = implode(",",$ids);
+            $db = get_db();
+            $select = "SELECT id, name FROM $db->Element WHERE id NOT in ($ids_verb) ORDER BY name";
+            $results = $db->fetchAll($select);
+            $dependent = array();
+            foreach($results as $result) {
+             $dependent[] = $result['name'];
+            }
+            echo $this->formSelect('dependent', null , array(), $dependent);
             ?>
           </div>
       </div>
-      <div class="field">
-        <div class="one column alpha">
-          <?php echo $this->formLabel('newdependent', __('Add new Dependent')); ?>
-        </div>
-          <div class="inputs six columns omega">
-            <?php // do a matching to check for existing dependents ?>
-            <input type="text" name="newdependent" id="newdependent" class="textinput" />
-          </div>
-      </div>
-          </fieldset>
+  </fieldset>
   </section>
   <section class="three columns omega">
       <div id="save" class="panel">
