@@ -14,51 +14,12 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
 {
       public function indexAction() {
           $this->_helper->db->setDefaultModelName('ConditionalElements');
+          $dependent_id = $this->_getParam('dependent_id');
+
         }
-       public function editAction()
-        {
-            $dependent_id = $this->_getParam('dependent_id');
-            $dependee_id = $this->_getParam('dependee_id');
-            $this->view->dependee = $this->_getName($dependee_id);
-            $this->view->term = $this->_getParam('term');
-            $this->view->dependent = $this->_getName($dependent_id);
 
-            if ($this->getRequest()->isPost()) {
-                if ($form->isValid($_POST)) {
-                    try{
-                        $form->saveFromPost();
-                        $this->_helper->flashMessenger(__('The dependency "%s" was successfully updated.', $itemType->name), 'success');
-                        $this->_helper->redirector('show', null, null, array('id'=>$itemType->id));
-                    } catch (Omeka_Validate_Exception $e) {
-                        $this->_helper->flashMessenger($e);
-                    }
-                } else {
-                    $this->_helper->flashMessenger(__('There were errors found in your form. Please edit and resubmit.'), 'error');
-                }
-            }
-
-            $this->view->conditional_elements = $conditionalElements;
-
-           }
         public function addAction()
         {
-
-          if ($this->getRequest()->isPost()) {
-                  try{
-                    $json=get_option('conditional_elements_dependencies');
-                    if (!$json) { $json="null"; }
-                    $dependencies = json_decode($json);
-                    $existingdependent = $_POST['existingdependent'];
-                    $newdependent =$_POST['newdependent'];
-                //    $simpleVocabTerm->terms = $this->_sanitizeTerms($terms);
-                    $this->_helper->flashMessenger(__('The dependent "%s" was successfully added.', $existingdependent), 'success');
-                  } catch (Omeka_Validate_Exception $e) {
-                      $this->_helper->flashMessenger($e);
-                  }
-              } else {
-                  $this->_helper->flashMessenger(__('There were errors found in your form. Please edit and resubmit.'), 'error');
-              }
-
         }
 
         public function dependeeAction()
@@ -66,47 +27,63 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
          }
          public function termAction()
           {
+      /*      if ($this->getRequest()->isPost()) {
+                    try{
+                      $json=get_option('conditional_elements_dependencies');
+                      if (!$json) { $json="null"; }
+                      $dependencies = json_decode($json);
+                      $dependent = _sanitizeTerms($_POST['dependentName']);
+                      $dependee = _sanitizeTerms($_POST['dependeeName']);
+                      $term = _sanitizeTerms($_POST['term']);
+
+                      $this->_sanitizeTerms($terms);
+                      $this->_helper->flashMessenger(__('The dependent "%s" was successfully added.', $dependent), 'success');
+                    } catch (Omeka_Validate_Exception $e) {
+                        $this->_helper->flashMessenger($e);
+                    }
+                } else {
+                    $this->_helper->flashMessenger(__('There were errors found in your form. Please edit and resubmit.'), 'error');
+                }*/
+
           }
 
-        protected function _getName($id) {
-          $db = get_db();
-          $sql = "SELECT name FROM $db->Element where  id = ?";
-          $params = array($id);
-          return $db->fetchOne($sql, $params);
+          public function saveAction()
+          {
 
-        }
+          }
 
         public function deleteAction()
         {
-            throw new Omeka_Controller_Exception_404;
-        }
+          if ($this->getRequest()->isPost()) {
+             try{
+                $dependent_id = $this->_getParam('dependent_id');
 
+                $json=get_option('conditional_elements_dependencies');
+                if (!$json) { $json="null"; }
+                $json_obj = json_decode($json,true);
+                foreach ($json_obj as $key => $value) {
+                    if (in_array($dependent_id, $value)) {
+                        unset($json_obj[$key]);
+                    }
+                }
+                $json_obj = json_encode($json_obj);
+                $this->_redirectAfterDelete($record);
 
-        protected function _redirectAfterAdd($conditionalElements)
-        {
-            $this->_redirect("conditional-elements/edit/{$conditionalElements->id}");
-        }
+                $this->_helper->flashMessenger(__('The dependency is successfully deleted.'), 'success');
 
-        protected function _getDeleteConfirmMessage($record)
-        {
-            return __('This will delete the element set and all elements assigned to '
-                 . 'the element set. Items will lose all metadata that is specific '
-                 . 'to this element set.');
-        }
+              } catch (Omeka_Validate_Exception $e) {
+                  $this->_helper->flashMessenger($e);
+              }
+              } else {
+              $this->_helper->flashMessenger(__('There were errors deleting the dependencies. Please try again later.'), 'error');
+              }
+            }
         protected function _redirectAfterDelete($record)
-        {
-            // Redirect back to the item show page for this file
-            $this->_helper->flashMessenger(__('The file was successfully deleted.'), 'success');
-            $this->_helper->redirector('show', 'items', null, array('id'=>$record->item_id));
-        }
+              {
+                  $this->_helper->flashMessenger(__('The dependency is successfully deleted.'), 'success');
+              }
 
-        protected function _getAddSuccessMessage($conditionalElements)
-        {
-            return __('The dependency "%s" was successfully added!', $conditionalElements->name);
-        }
-
-
-        /**
+         /**
          * Sanitize the terms for insertion into the database.
          *
          * @param string $terms
@@ -122,5 +99,17 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
             $terms = trim($terms);
             return $terms;
         }
+
+        /**
+         * Return the delete confirm message for deleting a record.
+         *
+         * @param Omeka_Record_AbstractRecord $record
+         * @return string
+         */
+        protected function _getDeleteConfirmMessage($record)
+        {
+            return 'Delete';
+        }
+
 
 }

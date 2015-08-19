@@ -34,7 +34,7 @@ echo flash();
             $results = $db->fetchAll($select);
             $dependent = array();
             foreach($results as $result) {
-             $dependee[] = $result['name'];
+             $dependee[$result['name']] = $result['name'];
             }
             echo $this->formSelect('dependee', null , array(), $dependee);
             ?>

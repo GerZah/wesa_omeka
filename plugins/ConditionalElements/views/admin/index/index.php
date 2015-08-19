@@ -65,9 +65,7 @@ foreach ($dependencies as $dep){
         <td>
           <ul class="action-links group">
           <li>
-            <a class="edit" href="<?php echo $this->url('conditional-elements/index/delete', array('dependent_id'=>$dependent_id,'term'=>$term,'dependee_id'=>$dependee_id )); ?>">
-              <?php echo __('Delete'); ?>
-            </a>
+                <a href="#" data-href="<?php echo $this->url('conditional-elements/index/delete', array('dependent_id'=>$dependent_id)); ?>" data-toggle="modal" data-target="#confirm-delete">Delete</a>
           </li>
           </ul>
         <?php }; ?>
@@ -95,7 +93,7 @@ foreach ($dependencies as $dep){
   function getCellValue(row, index){ return $(row).children('td').eq(index).html() }
   });
   </script>
-  <div class="table-actions">
+    <div class="table-actions">
       <a href="<?php echo html_escape(url('conditional-elements/index/add')); ?>" class="add green button"><?php echo __('Add dependency'); ?></a>
   </div>
 <?php echo foot(); ?>

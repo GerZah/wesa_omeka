@@ -11,9 +11,6 @@ echo flash();
            <p>Choose dependents from the existing list:</p>
          </div>
       <div class="field">
-          <div class="one column alpha">
-            <?php echo $this->formLabel('dependent', __('Dependent')); ?>
-          </div>
           <div class="inputs six columns omega">
             <?php
             $json=get_option('conditional_elements_dependencies');
@@ -30,7 +27,7 @@ echo flash();
             $results = $db->fetchAll($select);
             $dependent = array();
             foreach($results as $result) {
-             $dependent[] = $result['name'];
+             $dependent[$result['name']] = $result['name'];
             }
             echo $this->formSelect('dependent', null , array(), $dependent);
             ?>
