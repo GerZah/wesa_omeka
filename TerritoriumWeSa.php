@@ -3,7 +3,7 @@
 	header('Content-type: text/plain; charset=utf-8');
 	// -----------------------------------------------
 
-	define("importItemType", "Literatur");
+	define("importItemType", "Territorium");
 
 	// -----------------------------------------------
 
@@ -37,7 +37,7 @@
 
 	$csv=array();
 
-	$file = fopen('CitaviWeSa.csv', 'r');
+	$file = fopen('TerritoriumWeSa.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
@@ -63,31 +63,19 @@
 
 			# print_r($line);
 
-			$autor = $line[$headers["Autor, Herausgeber oder Institution"]];
 			$titel = $line[$headers["Titel"]];
-			$untertitel = $line[$headers["Untertitel"]];
-			$jahr = $line[$headers["Jahr ermittelt"]];
-
-			$kurztitel = shortenString($autor, 20)." / " . $jahr . " (" . shortenString("$titel - $untertitel", 30) . ")";
+			$datum = $line[$headers["Datum"]];
+			$datum2 = $line[$headers["Datum 2"]];
 
 			// http://omeka.readthedocs.org/en/eb3/Reference/libraries/globals/insert_item.html
 			$metaData = array("item_type_id" => $importItemTypeID);
 			$elementTexts = array(
 				'Dublin Core' => array(
   				# 'Creator' => array( array('text' => $autor, 'html' => false) ),
-  				'Title' => array( array('text' => $kurztitel, 'html' => false),
-														array('text' => $titel, 'html' => false),
-														array('text' => $untertitel, 'html' => false) ),
+  				'Title' => array( array('text' => $titel, 'html' => false) ),
 				),
 				'Item Type Metadata' => array(
-  				'Autor, Herausgeber oder Institution' => array( array('text' => $autor, 'html' => false) ),
-  				'Jahr ermittelt' => array( array('text' => $jahr, 'html' => false) ),
-  				'Dokumententyp' => array( array('text' => $line[$headers["Dokumententyp"]], 'html' => false) ),
-  				'Ort' => array( array('text' => $line[$headers["Ort"]], 'html' => false) ),
-  				'Zeitschrift/Zeitung' => array( array('text' => $line[$headers["Zeitschrift/Zeitung"]], 'html' => false) ),
-  				'Band' => array( array('text' => $line[$headers["Band"]], 'html' => false) ),
-  				'Nummer' => array( array('text' => $line[$headers["Nummer"]], 'html' => false) ),
-  				'Seiten von-bis' => array( array('text' => $line[$headers["Seiten von–bis"]], 'html' => false) ),
+  				'Datum' => array( array('text' => $datum, 'html' => false), array('text' => $datum2, 'html' => false),  ),
 				)
 			);
 			print_r($elementTexts);
@@ -95,17 +83,4 @@
 
 		}
 	}
-
-function shortenString($string, $length) {
-	$result = $string;
-
-	if (strlen($string) > $length) {
-		$padding = '[…]';
-		$padLength = strlen($padding);
-		$result = substr($string, 0, $length-$padLength) . $padding;
-	}
-
-	return $result;
-}
-
 ?>
