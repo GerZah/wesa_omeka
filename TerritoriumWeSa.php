@@ -64,19 +64,17 @@
 			# print_r($line);
 
 			$titel = $line[$headers["Titel"]];
-			$datum = $line[$headers["Datum"]];
-			$datum2 = $line[$headers["Datum 2"]];
+			# $kommentar = $line[$headers["Kommentar"]];
 
 			// http://omeka.readthedocs.org/en/eb3/Reference/libraries/globals/insert_item.html
 			$metaData = array("item_type_id" => $importItemTypeID);
 			$elementTexts = array(
 				'Dublin Core' => array(
-  				# 'Creator' => array( array('text' => $autor, 'html' => false) ),
   				'Title' => array( array('text' => $titel, 'html' => false) ),
 				),
-				'Item Type Metadata' => array(
-  				'Datum' => array( array('text' => $datum, 'html' => false), array('text' => $datum2, 'html' => false),  ),
-				)
+				//'Item Type Metadata' => array(
+  			//	'Anmerkungen' => array( array('text' => $kommentar, 'html' => false) ),
+				//)
 			);
 			print_r($elementTexts);
 			insert_item($metaData, $elementTexts);
