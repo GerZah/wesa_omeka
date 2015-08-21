@@ -13,6 +13,7 @@ echo head(array('title' => $pageTitle,'bodyclass' => 'dependent')); ?>
             <th><?php echo __('Actions'); ?></th>
         </tr>
     </thead>
+    <tbody>
 <?php
 $json=get_option('conditional_elements_dependencies');
 if (!$json) { $json="null"; }
@@ -39,7 +40,6 @@ foreach ($dependencies as $dep){
 
 		if ( (isset($data[$dependee_id])) and (isset($data[$dependent_id])) ) {
 ?>
-    <tbody>
       <tr>
         <td><?php echo $data[$dependee_id]; ?>
         </td>
@@ -52,11 +52,11 @@ foreach ($dependencies as $dep){
                 <a href="#" data-href="<?php echo $this->url('conditional-elements/index/delete', array('dependent_id'=>$dependent_id)); ?>" data-toggle="modal" data-target="#confirm-delete">Delete</a>
           </li>
           </ul>
-        <?php
-		}
-}; ?>
           </td>
       </tr>
+<?php
+		}
+}; ?>
       </tbody>
   </table>
   <script>
