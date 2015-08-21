@@ -36,31 +36,15 @@ foreach ($dependencies as $dep){
     $dependee_id = $dep[0];
     $term = $dep[1];
     $dependent_id = $dep[2];
+
+		if ( (isset($data[$dependee_id])) and (isset($data[$dependent_id])) ) {
 ?>
     <tbody>
       <tr>
-        <td>
-        <?php
-          if(isset($data[$dependee_id])){
-            echo $data[$dependee_id];
-          }
-          else {
-            echo "";
-          }
-         ?>
+        <td><?php echo $data[$dependee_id]; ?>
         </td>
-        <td>
-        <?php echo $term; ?>
-        </td>
-        <td>
-        <?php
-          if(isset($data[$dependent_id])){
-            echo $data[$dependent_id];
-          }
-          else {
-            echo "";
-          }
-         ?>
+        <td><?php echo $term; ?></td>
+        <td><?php echo $data[$dependent_id]; ?>
         </td>
         <td>
           <ul class="action-links group">
@@ -68,7 +52,9 @@ foreach ($dependencies as $dep){
                 <a href="#" data-href="<?php echo $this->url('conditional-elements/index/delete', array('dependent_id'=>$dependent_id)); ?>" data-toggle="modal" data-target="#confirm-delete">Delete</a>
           </li>
           </ul>
-        <?php }; ?>
+        <?php
+		}
+}; ?>
           </td>
       </tr>
       </tbody>
