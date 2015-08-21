@@ -32,7 +32,6 @@ echo flash();
             }
             $term = explode("\n", $terms);
             echo $this->formSelect('term', null, array(), $term);
-
              ?>
           </div>
         </div>

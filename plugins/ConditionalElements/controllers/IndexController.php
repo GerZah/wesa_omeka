@@ -15,7 +15,6 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
       public function indexAction() {
           $this->_helper->db->setDefaultModelName('ConditionalElements');
           $dependent_id = $this->_getParam('dependent_id');
-
         }
 
         public function addAction()
@@ -27,47 +26,50 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
          }
          public function termAction()
           {
-      /*      if ($this->getRequest()->isPost()) {
-                    try{
-                      $json=get_option('conditional_elements_dependencies');
-                      if (!$json) { $json="null"; }
-                      $dependencies = json_decode($json);
-                      $dependent = _sanitizeTerms($_POST['dependentName']);
-                      $dependee = _sanitizeTerms($_POST['dependeeName']);
-                      $term = _sanitizeTerms($_POST['term']);
+            if ($this->getRequest()->isPost()) {
+                      try{
+                         $json=get_option('conditional_elements_dependencies');
+                         if (!$json) { $json="null"; }
+                         $dependencies[] = json_decode($json,true);
+                        // $dependent = _sanitizeTerms($_POST['dependentName']); Andere Finanziers
+                        // $dependee = _sanitizeTerms($_POST['dependeeName']);   Handwerksbetrieb
+                        // $term = _sanitizeTerms($_POST['term']);               Bildhauer
+                        //
 
-                      $this->_sanitizeTerms($terms);
-                      $this->_helper->flashMessenger(__('The dependent "%s" was successfully added.', $dependent), 'success');
-                    } catch (Omeka_Validate_Exception $e) {
-                        $this->_helper->flashMessenger($e);
-                    }
-                } else {
-                    $this->_helper->flashMessenger(__('There were errors found in your form. Please edit and resubmit.'), 'error');
-                }*/
-
+                        $custom = array('0'=>'111', '1' => 'Bildhauer', '2' => '143');
+                        $dependencies[] = $custom;
+                        $json= json_encode($dependencies);
+                      //  set_option('conditional_elements_dependencies', $json);
+                        var_dump($json);
+                        $this->_helper->flashMessenger(__('The dependent "%s" was successfully added.',$custom[2]), 'success');
+                        } catch (Omeka_Validate_Exception $e) {
+                          $this->_helper->flashMessenger($e);
+                      }
+                  } else {
+                      $this->_helper->flashMessenger(__('There were errors found in your form. Please edit and resubmit.'), 'error');
+                  }
           }
-
           public function saveAction()
           {
 
           }
-
-        public function deleteAction()
+          public function deleteAction()
         {
           if ($this->getRequest()->isPost()) {
              try{
-                $dependent_id = $this->_getParam('dependent_id');
-
-                $json=get_option('conditional_elements_dependencies');
-                if (!$json) { $json="null"; }
-                $json_obj = json_decode($json,true);
-                foreach ($json_obj as $key => $value) {
-                    if (in_array($dependent_id, $value)) {
-                        unset($json_obj[$key]);
-                    }
-                }
-                $json_obj = json_encode($json_obj);
-                $this->_redirectAfterDelete($record);
+               $dependent_id = $this->_getParam('dependent_id');
+               //$dependent_id = '59';
+               $json=get_option('conditional_elements_dependencies');
+               if (!$json) { $json="null"; }
+               $json_obj = json_decode($json,true);
+               foreach ($json_obj as $key => $value) {
+                   if (in_array($dependent_id, $value)) {
+                       unset($json_obj[$key]);
+                   }
+               }
+               $json_obj = json_encode($json_obj);
+               var_dump($json_obj);
+                //$this->_redirectAfterDelete($record);
 
                 $this->_helper->flashMessenger(__('The dependency is successfully deleted.'), 'success');
 
