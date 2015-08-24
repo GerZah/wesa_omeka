@@ -99,10 +99,12 @@
 function shortenString($string, $length) {
 	$result = $string;
 
-	if (strlen($string) > $length) {
+	$enc = "utf8";
+
+	if (mb_strlen($string, $enc) > $length) {
 		$padding = '[…]';
-		$padLength = strlen($padding);
-		$result = substr($string, 0, $length-$padLength) . $padding;
+		$padLength = mb_strlen($padding, $enc);
+		$result = mb_substr($string, 0, $length-$padLength, $enc) . $padding;
 	}
 
 	return $result;
