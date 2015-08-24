@@ -80,7 +80,7 @@ class ConditionalElementsPlugin extends Omeka_Plugin_AbstractPlugin {
 			// Retrieve dependencies from Database
 			/* */
 			$json=get_option('conditional_elements_dependencies');
-			if (!$json) { $json="null"; } else { $json = $this->removeOutdatedDependencies($json); }
+			if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
 			/* */
 
 			echo "<script>var conditionalElementsDep=$json;</script>";
@@ -91,7 +91,7 @@ class ConditionalElementsPlugin extends Omeka_Plugin_AbstractPlugin {
 	} # public function hookAdminHead()
 
 	// Check JSON array of existing dependencies for non-existent dependents / dependees and filter them
-	private function removeOutdatedDependencies($json) {
+	private function _removeOutdatedDependencies($json) {
 
 		$result = $json;
 		// echo "Pre JSON: $result<br>\n";
