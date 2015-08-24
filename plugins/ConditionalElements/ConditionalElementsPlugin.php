@@ -80,7 +80,7 @@ class ConditionalElementsPlugin extends Omeka_Plugin_AbstractPlugin {
 			// Retrieve dependencies from Database
 			/* */
 			$json=get_option('conditional_elements_dependencies');
-			if (!$json) { $json="null"; }
+			if (!$json) { $json="null"; } else { $json = $this->removeOutdatedDependencies($json); }
 			/* */
 
 			echo "<script>var conditionalElementsDep=$json;</script>";
@@ -89,5 +89,39 @@ class ConditionalElementsPlugin extends Omeka_Plugin_AbstractPlugin {
 			queue_js_file('conditionalelements');
 		} # if ($module === 'default' ...
 	} # public function hookAdminHead()
+
+	// Check JSON array of existing dependencies for non-existent dependents / dependees and filter them
+	private function removeOutdatedDependencies($json) {
+
+		$result = $json;
+		// echo "Pre JSON: $result<br>\n";
+
+		if ($json) {
+
+			$existing_ids = array();
+			$db = get_db();
+			$select = "SELECT id FROM $db->Element";
+			$ids = $db->fetchAll($select);
+			foreach($ids as $id) { $existing_ids[$id["id"]] = true; }
+
+			$arr = json_decode($result);
+			// echo "<pre>==== Pre Array = ".count($arr).": "; print_r($arr); echo "</pre>\n";
+
+			$newarr = array();
+
+			foreach(array_keys($arr) as $idx) {
+				if ( isset($existing_ids[$arr[$idx][0]]) and isset($existing_ids[$arr[$idx][2]]) ) {
+					$newarr[] = $arr[$idx];
+				}
+			}
+			// echo "<pre>==== Post Array = ".count($newarr).": "; print_r($newarr); echo "</pre>\n";
+
+			$result=json_encode($newarr);
+		} # if ($json)
+
+		// echo "Post JSON: $result<br>\n"; die();
+		return $result;
+
+	}
 
 } # class
