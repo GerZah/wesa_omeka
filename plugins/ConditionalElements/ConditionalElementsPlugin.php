@@ -109,9 +109,9 @@ class ConditionalElementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
 			$newarr = array();
 
-			foreach(array_keys($arr) as $idx) {
-				if ( isset($existing_ids[$arr[$idx][0]]) and isset($existing_ids[$arr[$idx][2]]) ) {
-					$newarr[] = $arr[$idx];
+			foreach($arr as $dep) {
+				if ( isset($existing_ids[$dep[0]]) and isset($existing_ids[$dep[2]]) ) {
+					$newarr[] = $dep;
 				}
 			}
 			// echo "<pre>==== Post Array = ".count($newarr).": "; print_r($newarr); echo "</pre>\n";
