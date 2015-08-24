@@ -90,7 +90,9 @@ class ConditionalElementsPlugin extends Omeka_Plugin_AbstractPlugin {
 		} # if ($module === 'default' ...
 	} # public function hookAdminHead()
 
-	// Check JSON array of existing dependencies for non-existent dependents / dependees and filter them
+	/**
+	 * Check JSON array of existing dependencies for non-existent dependents / dependees and filter them
+	 */
 	private function _removeOutdatedDependencies($json) {
 
 		$result = $json;
