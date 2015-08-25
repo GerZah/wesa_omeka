@@ -324,7 +324,7 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
             'formSelectProperties' => get_table_options('ItemRelationsProperty'))
         );
     }
-    
+
     /**
      * Save the item relations after saving an item add/edit form.
      *
@@ -377,28 +377,43 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
         $select = $args['select'];
         $params = $args['params'];
 
-        if (isset($params['item_relations_property_id'])
-            && is_numeric($params['item_relations_property_id'])
+        // Set the field on which to join.
+        if (isset($params['item_relations_clause_part'])
+            && $params['item_relations_clause_part'] == 'object'
         ) {
+            $onField = 'object_item_id';
+        } else {
+            $onField = 'subject_item_id';
+        }
+
+        $filter_relation=( isset($params['item_relations_property_id']) && is_numeric($params['item_relations_property_id']) );
+        $filter_comment=( isset($params['item_relations_comment']) && (trim($params['item_relations_comment'])) );
+
+        if ( $filter_relation || $filter_comment ) {
+
             $db = $this->_db;
-            // Set the field on which to join.
-            if (isset($params['item_relations_clause_part'])
-                && $params['item_relations_clause_part'] == 'object'
-            ) {
-                $onField = 'object_item_id';
-            } else {
-                $onField = 'subject_item_id';
-            }
             $select
                 ->join(
                     array('item_relations_relations' => $db->ItemRelationsRelation),
                     "item_relations_relations.$onField = items.id",
                     array()
-                )
-                ->where('item_relations_relations.property_id = ?',
-                    $params['item_relations_property_id']
                 );
+
+            if ($filter_relation) {
+                $select->where('item_relations_relations.property_id = ?',
+                                $params['item_relations_property_id']);
+            }
+
+            if ($filter_comment) {
+                $select->where('item_relations_relations.relation_comment LIKE ?',
+                                "%".trim($params['item_relations_comment'])."%" );
+            }
+
         }
+
+        # echo "<pre>"; print_r($select); die("</pre>");
+
+        // $select->where('items.id = ?', 2);
     }
 
     /**

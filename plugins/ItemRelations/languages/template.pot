@@ -198,13 +198,19 @@ msgstr ""
 msgid "Local Part"
 msgstr ""
 
-#: views/shared/common/item-relations-advanced-search.php:8
+#: views/shared/common/item-relations-advanced-search.php:11
 msgid ""
 "Filter this search for items with the selected relation. For example, when "
 "selecting \"Subject\" items with the \"hasPart\" relation, the search will "
 "return all items that have parts. When selecting \"Object\" items with the "
 "same relation, the search will return all items that are parts of other "
 "items."
+msgstr ""
+
+#: views/shared/common/item-relations-advanced-search.php:22
+msgid ""
+"Filter this search for items being \"Subject\" (or \"Object\", respectively) "
+"in relations that contain a certain text portion in their comments."
 msgstr ""
 
 msgid "Item Sort"
