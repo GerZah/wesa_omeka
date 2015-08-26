@@ -12,8 +12,8 @@ echo flash();
            <?php
            $dependeeName = $_POST['dependee'];
            $dependentName =$_POST['dependent'];
-           echo $this->formLabel('dependentName', $dependentName);
-           echo $this->formLabel('dependeeName', $dependeeName); ?>
+           echo $this->formLabel('dependentName', $_POST['dependent']);
+           echo $this->formLabel('dependeeName', $_POST['dependee']);?>
           </div>
           <div class="field">
             <?php echo $this->formLabel('term', __('Choose term')); ?>
@@ -28,7 +28,7 @@ echo flash();
             ORDER BY terms";
             $results = $db->fetchAll($select);
             foreach($results as $result) {
-             $terms = $result['terms'];
+             $terms= $result['terms'];
             }
             $term = explode("\n", $terms);
             echo $this->formSelect('term', null, array(), $term);

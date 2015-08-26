@@ -8,6 +8,11 @@ echo flash();
       <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
            <div class="field">
            <h2>You have successfully saved the dependency</h2>
+           <?php
+            echo $this->formLabel('dependee', $_POST['dependeeName']);
+            echo $this->formLabel('dependent', $_POST['dependentName']);
+            echo $this->formLabel('term', $_POST['term']);
+             ?>
          </div>
       </fieldset>
   </section>

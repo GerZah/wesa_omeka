@@ -8,9 +8,8 @@ echo flash();
       <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
          <h2>Step 2: Select dependee to add </h2>
          <div class="field">
-           <p>You have chosen the dependent:</p>
            <?php
-           echo $this->formText('dependent', $_POST['dependent']); ?>
+           echo $this->formHidden('dependent', $_POST['dependent']); ?>
            </div>
            <div class="field">
             <?php echo $this->formLabel('dependee', __('Choose an existing dependee')); ?>
@@ -41,6 +40,7 @@ echo flash();
           </div>
           </div>
         </fieldset>
+<section class="three columns omega">
     <div id="save" class="panel">
             <a href="<?php echo html_escape(url('conditional-elements/index/add')); ?>" class="add big green button"><?php echo __('Previous'); ?></a>
             <input type="submit" class="big green button" name="submit" value="<?php echo __('Next'); ?>">
