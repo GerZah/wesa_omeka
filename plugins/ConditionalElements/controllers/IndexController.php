@@ -14,8 +14,11 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
 {
       public function indexAction() {
           $this->_helper->db->setDefaultModelName('ConditionalElements');
-          $dependent_id = $this->_getParam('dependent_id');
-        }
+          $json=get_option('conditional_elements_dependencies');
+    			if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
+          }
+
+
 
         public function addAction()
         {
@@ -30,7 +33,6 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
             // $form = new Application_Form_Add();
             // $form->submit->setLabel('Add');
             // $this->view->form = $form;
-
             if ($this->getRequest()->isPost()) {
               // $formData = $this->getRequest()->getPost();
               // if ($form->isValid($formData)) {
@@ -40,7 +42,7 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
 
                       try{
                          $json=get_option('conditional_elements_dependencies');
-                         if (!$json) { $json="null"; }
+                         if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
                          $dependencies[] = json_decode($json,true);
                         // $dependent = _sanitizeTerms($_POST['dependentName']); Andere Finanziers
                         // $dependee = _sanitizeTerms($_POST['dependeeName']);   Handwerksbetrieb
@@ -75,7 +77,7 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
                $dependent_id = $this->_getParam('dependent_id');
                //$dependent_id = '59';
                $json=get_option('conditional_elements_dependencies');
-               if (!$json) { $json="null"; }
+               if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
                $json_obj = json_decode($json,true);
                foreach ($json_obj as $key => $value) {
                    if ($value[2] == $dependent_id) { //change ...index
@@ -96,38 +98,43 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
               $this->_helper->flashMessenger(__('There were errors deleting the dependencies. Please try again later.'), 'error');
               }
             }
-        protected function _redirectAfterDelete($record)
-              {
-                  $this->_helper->flashMessenger(__('The dependency is successfully deleted.'), 'success');
-              }
-      
-         /**
-         * Sanitize the terms for insertion into the database.
-         *
-         * @param string $terms
-         * @return string
-         */
-        private function _sanitizeTerms($terms)
-        {
-            $termsArr = explode("\n", $terms);
-            $termsArr = array_map('trim', $termsArr); // trim all values
-            $termsArr = array_filter($termsArr); // remove empty values
-            $termsArr = array_unique($termsArr); // remove duplicate values
-            $terms = implode("\n", $termsArr);
-            $terms = trim($terms);
-            return $terms;
-        }
 
-        /**
-         * Return the delete confirm message for deleting a record.
-         *
-         * @param Omeka_Record_AbstractRecord $record
-         * @return string
-         */
-        protected function _getDeleteConfirmMessage($record)
-        {
-            return 'Delete';
-        }
+
+              /**
+               * Check JSON array of existing dependencies for non-existent dependents / dependees and filter them
+               */
+              private function _removeOutdatedDependencies($json) {
+
+                $result = $json;
+                // echo "Pre JSON: $result<br>\n";
+
+                if ($json) {
+
+                  $existing_ids = array();
+                  $db = get_db();
+                  $select = "SELECT id FROM $db->Element";
+                  $ids = $db->fetchAll($select);
+                  foreach($ids as $id){ $existing_ids[$id["id"]] = true; }
+
+                  $arr = json_decode($result);
+                  // echo "<pre>==== Pre Array = ".count($arr).": "; print_r($arr); echo "</pre>\n";
+
+                  $newarr = array();
+
+                  foreach($arr as $dep) {
+                    if ( isset($existing_ids[$dep[0]]) and isset($existing_ids[$dep[2]]) ) {
+                      $newarr[] = $dep;
+                    }
+                  }
+                  // echo "<pre>==== Post Array = ".count($newarr).": "; print_r($newarr); echo "</pre>\n";
+
+                  $result=json_encode($newarr);
+                } # if ($json)
+
+                // echo "Post JSON: $result<br>\n"; die();
+                return $result;
+
+              }
 
 
 }
