@@ -40,13 +40,11 @@ echo flash();
             ?>
           </div>
           </div>
-  </fieldset>
+        </fieldset>
+    <div id="save" class="panel">
+            <a href="<?php echo html_escape(url('conditional-elements/index/add')); ?>" class="add big green button"><?php echo __('Previous'); ?></a>
+            <input type="submit" class="big green button" name="submit" value="<?php echo __('Next'); ?>">
+    </div>
   </section>
-  <section class="three columns omega">
-      <div id="save" class="panel">
-          <a href="<?php echo html_escape(url('conditional-elements/index/add')); ?>" class="add big green button"><?php echo __('Previous'); ?></a>
-          <input type="submit" class="big green button" name="submit" value="<?php echo __('Next'); ?>">
-      </div>
-      </section>
-      </form>
+</form>
 <?php echo foot(); ?>

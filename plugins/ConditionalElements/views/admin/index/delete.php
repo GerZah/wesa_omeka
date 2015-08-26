@@ -1,9 +1,20 @@
 <?php
-$class = get_class($record);
-$pageTitle = __('Delete %s', Inflector::titleize($class));
-echo head(array('title' => $pageTitle));
+$pageTitle = __('Delete dependency');
+echo head(array('title'=>$pageTitle));
+echo flash();
 ?>
-<div title="<?php echo $pageTitle; ?>">
-    <h2><?php echo __('Are you sure?'); ?></h2>
-</div>
+<form method="post" action="<?php echo url('conditional-elements/index'); ?>">
+  <section class="seven columns alpha">
+      <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
+           <div class="field">
+           <h2>You have successfully deleted the dependency</h2>
+         </div>
+      </fieldset>
+  </section>
+  <section class="three columns omega">
+      <div id="save" class="panel">
+        <input type="submit" class="big green button" name="submit" value="<?php echo __('Back'); ?>">
+      </div>
+      </section>
+</form>
 <?php echo foot(); ?>

@@ -19,6 +19,7 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
 
         public function addAction()
         {
+
         }
 
         public function dependeeAction()
@@ -26,7 +27,17 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
          }
          public function termAction()
           {
+            // $form = new Application_Form_Add();
+            // $form->submit->setLabel('Add');
+            // $this->view->form = $form;
+
             if ($this->getRequest()->isPost()) {
+              // $formData = $this->getRequest()->getPost();
+              // if ($form->isValid($formData)) {
+              //         //  $name = $form->getValue('dependentName');
+                      //  $email = $form->getValue('email');
+                      //  $phone = $form->getValue('phone');
+
                       try{
                          $json=get_option('conditional_elements_dependencies');
                          if (!$json) { $json="null"; }
@@ -34,14 +45,14 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
                         // $dependent = _sanitizeTerms($_POST['dependentName']); Andere Finanziers
                         // $dependee = _sanitizeTerms($_POST['dependeeName']);   Handwerksbetrieb
                         // $term = _sanitizeTerms($_POST['term']);               Bildhauer
-                        //
-
                         $custom = array('0'=>'111', '1' => 'Bildhauer', '2' => '143');
                         $dependencies[] = $custom;
                         $json= json_encode($dependencies);
-                      //  set_option('conditional_elements_dependencies', $json);
+                        set_option('conditional_elements_dependencies', $json);
                         var_dump($json);
                         $this->_helper->flashMessenger(__('The dependent "%s" was successfully added.',$custom[2]), 'success');
+                          $this->_helper->redirector('index');
+  //                      }
                         } catch (Omeka_Validate_Exception $e) {
                           $this->_helper->flashMessenger($e);
                       }
@@ -53,8 +64,12 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
           {
 
           }
+          public function confirmAction()
+          {
+
+          }
           public function deleteAction()
-        {
+          {
           if ($this->getRequest()->isPost()) {
              try{
                $dependent_id = $this->_getParam('dependent_id');
@@ -63,13 +78,14 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
                if (!$json) { $json="null"; }
                $json_obj = json_decode($json,true);
                foreach ($json_obj as $key => $value) {
-                   if (in_array($dependent_id, $value)) {
+                   if ($value[2] == $dependent_id) { //change ...index
                        unset($json_obj[$key]);
                    }
                }
                $json_obj = json_encode($json_obj);
                var_dump($json_obj);
-                //$this->_redirectAfterDelete($record);
+               set_option('conditional_elements_dependencies', $json_obj);
+                 //$this->_redirectAfterDelete($record);
 
                 $this->_helper->flashMessenger(__('The dependency is successfully deleted.'), 'success');
 
@@ -84,7 +100,7 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
               {
                   $this->_helper->flashMessenger(__('The dependency is successfully deleted.'), 'success');
               }
-
+      
          /**
          * Sanitize the terms for insertion into the database.
          *

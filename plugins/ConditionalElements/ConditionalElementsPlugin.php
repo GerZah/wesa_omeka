@@ -104,7 +104,7 @@ class ConditionalElementsPlugin extends Omeka_Plugin_AbstractPlugin {
 			$db = get_db();
 			$select = "SELECT id FROM $db->Element";
 			$ids = $db->fetchAll($select);
-			foreach($ids as $id) { $existing_ids[$id["id"]] = true; }
+			foreach($ids as $id){ $existing_ids[$id["id"]] = true; }
 
 			$arr = json_decode($result);
 			// echo "<pre>==== Pre Array = ".count($arr).": "; print_r($arr); echo "</pre>\n";

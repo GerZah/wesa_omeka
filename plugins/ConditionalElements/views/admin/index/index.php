@@ -38,7 +38,7 @@ foreach ($dependencies as $dep){
     $term = $dep[1];
     $dependent_id = $dep[2];
 
-		if ( (isset($data[$dependee_id])) and (isset($data[$dependent_id])) ) {
+		if ((isset($data[$dependee_id])) and (isset($data[$dependent_id])) ) {
 ?>
       <tr>
         <td><?php echo $data[$dependee_id]; ?>
@@ -47,12 +47,8 @@ foreach ($dependencies as $dep){
         <td><?php echo $data[$dependent_id]; ?>
         </td>
         <td>
-          <ul class="action-links group">
-          <li>
-                <a href="#" data-href="<?php echo $this->url('conditional-elements/index/delete', array('dependent_id'=>$dependent_id)); ?>" data-toggle="modal" data-target="#confirm-delete">Delete</a>
-          </li>
-          </ul>
-          </td>
+          <a class="confirm" href="<?php echo $this->url('conditional-elements/index/confirm', array('dependee_id' => $dependee_id, 'term' => $term, 'dependent_id' => $dependent_id)); ?>" ><?php echo __('Delete'); ?></a>
+        </td>
       </tr>
 <?php
 		}
@@ -79,6 +75,8 @@ foreach ($dependencies as $dep){
   function getCellValue(row, index){ return $(row).children('td').eq(index).html() }
   });
   </script>
+  <script src="/javascript/jquery-1.7.1.min.js"></script>
+  <script src="/javascript/configuration.js"></script>
     <div class="table-actions">
       <a href="<?php echo html_escape(url('conditional-elements/index/add')); ?>" class="add green button"><?php echo __('Add dependency'); ?></a>
   </div>
