@@ -3,16 +3,18 @@ $pageTitle = __('Add dependency');
 echo head(array('title'=>$pageTitle));
 echo flash();
 ?>
+<?php
+if(!isset($_SESSION))
+    {
+        session_start();
+    }
+$_SESSION['conditional_elements_term'] = $_POST['term'];
+?>
 <form method="post" action="<?php echo url('conditional-elements/index'); ?>">
   <section class="seven columns alpha">
       <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
            <div class="field">
            <h2>You have successfully saved the dependency</h2>
-           <?php
-            echo $this->formLabel('dependee', $_POST['dependeeName']);
-            echo $this->formLabel('dependent', $_POST['dependentName']);
-            echo $this->formLabel('term', $_POST['term']);
-             ?>
          </div>
       </fieldset>
   </section>

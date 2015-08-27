@@ -3,6 +3,13 @@ $pageTitle = __('Confirm delete');
 echo head(array('title'=>$pageTitle));
 echo flash();
 ?>
+<?php
+if(!isset($_SESSION))
+    {
+        session_start();
+    }
+$_SESSION['conditional_elements_delete_dependent'] = $_GET['dependent_id'];
+?>
 <form method="post" action="" >
         <div class="field">
           <?php
@@ -25,7 +32,7 @@ echo flash();
         echo $this->formLabel('dependeeName', $data[$dependee_id]);
         echo $this->formLabel('termName', $term);
         echo $this->formLabel('dependentName', $data[$result['id']]); ?>
-          <a href="<?php echo $this->url('conditional-elements/index/delete', array('dependent_id' => $dependent_id)); ?>" class="button remove flr mrr4">Yes</a>
+          <a href="<?php echo $this->url('conditional-elements/index/delete'); ?>" class="button remove flr mrr4">Yes</a>
           <a href="<?php echo html_escape(url('conditional-elements/index')); ?>" class="button buttonGreen cancel flr">No</a>
     </div>
   </form>

@@ -31,36 +31,34 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
   }
   public function saveAction()
   {
-    // $form = new Application_Form_Add();
-    // $form->submit->setLabel('Add');
-    // $this->view->form = $form;
     if ($this->getRequest()->isPost()) {
-      // $formData = $this->getRequest()->getPost();
-      // if ($form->isValid($formData)) {
-      //         //  $name = $form->getValue('dependentName');
-      //  $email = $form->getValue('email');
-      //  $phone = $form->getValue('phone');
+      if (isset($_SESSION)) {
+        try{
+          $json=get_option('conditional_elements_dependencies');
+          if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
+          $dependencies = json_decode($json,true);
+          $dependentName = $_SESSION['conditional_elements_dependent']; // Andere Finanziers 143
+          $dependeeName = $_SESSION['conditional_elements_dependee'];   //Handwerksbetrieb 111
+          $term = $_SESSION['conditional_elements_term'];               //Bildhauer
 
-      try{
-        $json=get_option('conditional_elements_dependencies');
-        if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
-        $dependencies[] = json_decode($json,true);
-        $dependent = $_POST['dependent']; // Andere Finanziers 143
-        $dependee = $_POST['dependee'];   //Handwerksbetrieb 111
-        $term = $_POST['term'];               //Bildhauer
+          $dependent = $this->_getDependent($dependentName);
+          $dependee = $this->_getDependee($dependeeName);
 
-        $custom = array('0'=>$dependent, '1' => $term , '2' => $dependee);
-      //  $dependencies[] = $custom;
-        $dependencies = array_merge($dependencies, $custom);
-        $json= json_encode($dependencies);
-        set_option('conditional_elements_dependencies', $json);
-        $this->_helper->flashMessenger(__('The dependent "%s" was successfully added.',$custom[2]), 'success');
-      //                      }
-      } catch (Omeka_Validate_Exception $e) {
-        $this->_helper->flashMessenger($e);
+          $custom = array('0'=>$dependent, '1' => $term , '2' => $dependee);
+          //$dependencies = $custom;
+          $dependencies = array_merge($dependencies, $custom);
+          $json= json_encode($dependencies);
+          //    set_option('conditional_elements_dependencies', $json);
+          var_dump($json);
+          $this->_helper->flashMessenger(__('The dependent "%s" was successfully added.',$dependentName), 'success');
+        }
+        catch (Omeka_Validate_Exception $e) {
+          $this->_helper->flashMessenger($e);
+      //  }
+        }
+      } else {
+        $this->_helper->flashMessenger(__('There were errors found in your form. Please edit and resubmit.'), 'error');
       }
-    } else {
-      $this->_helper->flashMessenger(__('There were errors found in your form. Please edit and resubmit.'), 'error');
     }
   }
   public function confirmAction()
@@ -70,7 +68,9 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
   public function deleteAction()
   {
     if ($this->getRequest()->isPost()) {
+      if (isset($_SESSION)) {
       try{
+        $dependent_id = $_SESSION['conditional_elements_delete_dependent'];
         $json=get_option('conditional_elements_dependencies');
         if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
         $json_obj[] = json_decode($json,true);
@@ -81,15 +81,17 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
         }
         $newarr = array();
         foreach($json_obj as $dep) {
-            $newarr[] = $dep;
-            }
+          $newarr[] = $dep;
+        }
         $json=json_encode($newarr);
-        set_option('conditional_elements_dependencies', $json);
+      //  set_option('conditional_elements_dependencies', $json);
+        var_dump($json);
         $this->_helper->flashMessenger(__('The dependent is successfully deleted.'), 'success');
 
       } catch (Omeka_Validate_Exception $e) {
         $this->_helper->flashMessenger($e);
       }
+    }
     } else {
       $this->_helper->flashMessenger(__('There were errors found in your form. Please edit and resubmit.'), 'error');
     }
@@ -131,6 +133,30 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
     return $result;
 
   }
+  protected function _getDependent($dependentName)
+  {
+    $db = get_db();
+    $select = "SELECT id FROM $db->Element WHERE name = '$dependentName'";
+    $results = $db->fetchAll($select);
+    $data = array();
+    foreach($results as $result) {
+     $data[$result['id']] = $result['id'];
+    }
 
+    return $data[$result['id']];
 
+  }
+  protected function _getDependee($dependeeName)
+  {
+    $db = get_db();
+    $select = "SELECT id FROM $db->Element WHERE name = '$dependeeName'";
+    $results = $db->fetchAll($select);
+    $data = array();
+    foreach($results as $result) {
+     $data[$result['id']] = $result['id'];
+    }
+
+    return $data[$result['id']];
+
+  }
 }

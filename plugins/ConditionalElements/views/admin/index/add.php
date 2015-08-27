@@ -3,6 +3,7 @@ $pageTitle = __('Add dependency');
 echo head(array('title'=>$pageTitle));
 echo flash();
 ?>
+
 <form method="post" action="<?php echo url('conditional-elements/index/dependee'); ?>">
     <section class="seven columns alpha">
       <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">

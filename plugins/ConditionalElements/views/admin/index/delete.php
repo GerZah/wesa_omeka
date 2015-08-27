@@ -7,8 +7,6 @@ echo flash();
   <section class="seven columns alpha">
       <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
            <div class="field">
-             <?php
-             echo $this->formLabel('id', $_POST['dependent_id']); ?>
            <h2>You have successfully deleted the dependency</h2>
          </div>
       </fieldset>
