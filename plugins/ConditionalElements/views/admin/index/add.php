@@ -37,6 +37,7 @@ echo flash();
           foreach($results as $result) {
             $dependent[$result['name']] = $result['name'];
           }
+          $dependent = array('' => __('Select Below')) + $dependent;
           echo $this->formSelect('dependent', null , array(), $dependent);
           ?>
         </div>

@@ -58,13 +58,13 @@ echo head(array('title' => $pageTitle,'bodyclass' => 'dependent')); ?>
       $dependencies ="null";
       ?>
       <tr>
-        <td><?php echo ""; ?>
+        <td><?php echo __("[n/a]"); ?>
         </td>
-        <td><?php echo ""; ?>
+        <td><?php echo __("[n/a]"); ?>
         </td>
-        <td><?php echo ""; ?>
+        <td><?php echo __("[n/a]"); ?>
         </td>
-        <td>
+        <td><?php echo __("[n/a]"); ?>
         </td>
       </tr>
   <?php  }; ?>
