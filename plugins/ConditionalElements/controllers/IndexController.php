@@ -67,7 +67,7 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
           $dependent = $this->_getDependent($dependentName);
           $dependee = $this->_getDependee($dependeeName);
 
-          $custom = array('0'=>$dependent, '1' => 'sample' , '2' => $dependee);
+          $custom = array('0'=>$dependent, '1' => $term , '2' => $dependee);
           array_push($dependencies,$custom);
           $json= json_encode($dependencies);
           set_option('conditional_elements_dependencies', $json);

@@ -40,7 +40,12 @@ $_SESSION['conditional_elements_dependee'] = $_POST['dependee'];
             $terms= $result['terms'];
           }
           $term = explode("\n", $terms);
-          echo $this->formSelect('term', null, array(), $term);
+          $fullterm = array();
+          foreach($term as $value)
+          {
+             $fullterm[$value] = $value;
+           }
+          echo $this->formSelect('term', null, array(), $fullterm);
           ?>
         </div>
       </div>
@@ -48,7 +53,6 @@ $_SESSION['conditional_elements_dependee'] = $_POST['dependee'];
   </section>
   <section class="three columns omega">
     <div id="save" class="panel">
-      <a href="<?php echo html_escape(url('conditional-elements/index/dependee')); ?>" class="add big green button"><?php echo __('Previous'); ?></a>
       <input type="submit" class="big green button" name="submit" value="<?php echo __('Save'); ?>">
     </div>
   </section>
