@@ -27,7 +27,7 @@ $_SESSION['conditional_elements_dependee'] = $_POST['dependee'];
         <?php echo $this->formLabel('term', __('Choose term')); ?>
         <div class="inputs six columns omega">
           <?php
-          $dependeeName = $_SESSION['dependee'];
+          $dependeeName = $_SESSION['conditional_elements_dependee'];
           $db = get_db();
           $select = "SELECT e.terms AS terms
           FROM  {$db->Element} es

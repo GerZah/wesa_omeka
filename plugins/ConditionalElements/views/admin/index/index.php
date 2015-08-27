@@ -18,41 +18,56 @@ echo head(array('title' => $pageTitle,'bodyclass' => 'dependent')); ?>
     $json=get_option('conditional_elements_dependencies');
     if (!$json) { $json="null"; }
     $dependencies = json_decode($json,true);
-    $ids = array();
-    foreach ($dependencies as $d){
-      $ids[]=$d[0];
-      $ids[]=$d[2];
-    }
-    $ids=array_unique($ids);
-    $ids_verb = implode(",",$ids);
-    $db = get_db();
-    $select = "SELECT id, name FROM $db->Element WHERE id in ($ids_verb)";
-    $results = $db->fetchAll($select);
-    $data = array();
-
-    foreach($results as $result) {
-      $data[$result['id']] = $result['name'];
-    }
-    foreach ($dependencies as $dep){
-      $dependee_id = $dep[0];
-      $term = $dep[1];
-      $dependent_id = $dep[2];
-
-      if ((isset($data[$dependee_id])) and (isset($data[$dependent_id])) ) {
-        ?>
-        <tr>
-          <td><?php echo $data[$dependee_id]; ?>
-          </td>
-          <td><?php echo $term; ?></td>
-          <td><?php echo $data[$dependent_id]; ?>
-          </td>
-          <td>
-            <a class="confirm" href="<?php echo $this->url('conditional-elements/index/confirm', array('dependee_id' => $dependee_id, 'term' => $term, 'dependent_id' => $dependent_id)); ?>" ><?php echo __('Delete'); ?></a>
-          </td>
-        </tr>
-        <?php
+    if ($dependencies) {
+      $ids = array();
+      foreach ($dependencies as $d){
+        $ids[]=$d[0];
+        $ids[]=$d[2];
       }
-    }; ?>
+      $ids=array_unique($ids);
+      $ids_verb = implode(",",$ids);
+      $db = get_db();
+      $select = "SELECT id, name FROM $db->Element WHERE id in ($ids_verb)";
+      $results = $db->fetchAll($select);
+      $data = array();
+      foreach($results as $result) {
+        $data[$result['id']] = $result['name'];
+      }
+      foreach ($dependencies as $dep){
+        $dependee_id = $dep[0];
+        $term = $dep[1];
+        $dependent_id = $dep[2];
+
+        if ((isset($data[$dependee_id])) and (isset($data[$dependent_id])) ) {
+          ?>
+          <tr>
+            <td><?php echo $data[$dependee_id]; ?>
+            </td>
+            <td><?php echo $term; ?></td>
+            <td><?php echo $data[$dependent_id]; ?>
+            </td>
+            <td>
+              <a class="confirm" href="<?php echo $this->url('conditional-elements/index/confirm', array('dependee_id' => $dependee_id, 'term' => $term, 'dependent_id' => $dependent_id)); ?>" ><?php echo __('Delete'); ?></a>
+            </td>
+          </tr>
+          <?php
+        }
+      }
+    }
+    else {
+      $dependencies ="null";
+      ?>
+      <tr>
+        <td><?php echo ""; ?>
+        </td>
+        <td><?php echo ""; ?>
+        </td>
+        <td><?php echo ""; ?>
+        </td>
+        <td>
+        </td>
+      </tr>
+  <?php  }; ?>
   </tbody>
 </table>
 <script>

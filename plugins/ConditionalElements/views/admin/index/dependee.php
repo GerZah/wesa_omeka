@@ -21,18 +21,28 @@ $_SESSION['conditional_elements_dependent'] = $_POST['dependent'];
           $json=get_option('conditional_elements_dependencies');
           if (!$json) { $json="null"; }
           $dependencies = json_decode($json,true);
+          $db = get_db();
+          if ($dependencies) {
           $ids = array();
           foreach ($dependencies as $d){
             $ids[]=$d[0];
           }
           $ids=array_unique($ids);
           $ids_verb = implode(",",$ids);
-          $db = get_db();
           $select = "SELECT es.name AS name, es.id AS id, e.element_id AS vocab_id
           FROM {$db->Element} es
           JOIN {$db->SimpleVocabTerm} e
           ON es.id = e.element_id
           WHERE es.id NOT in ($ids_verb) ORDER BY name";
+        }
+        else {
+          $dependencies ="null";
+          $ids_verb = '';
+          $select = "SELECT es.name AS name, es.id AS id, e.element_id AS vocab_id
+          FROM {$db->Element} es
+          JOIN {$db->SimpleVocabTerm} e
+          ON es.id = e.element_id ORDER BY name";
+        }
           $results = $db->fetchAll($select);
           $dependent = array();
           foreach($results as $result) {

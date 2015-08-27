@@ -35,6 +35,7 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
       $ids = $db->fetchAll($select);
       foreach($ids as $id){ $existing_ids[$id["id"]] = true; }
       $arr = json_decode($result);
+      if ($arr) {
       // echo "<pre>==== Pre Array = ".count($arr).": "; print_r($arr); echo "</pre>\n";
       $newarr = array();
       foreach($arr as $dep) {
@@ -44,7 +45,8 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
       }
       // echo "<pre>==== Post Array = ".count($newarr).": "; print_r($newarr); echo "</pre>\n";
       $result=json_encode($newarr);
-    } # if ($json)
+    }# if ($json)
+  }
     // echo "Post JSON: $result<br>\n"; die();
     return $result;
   }

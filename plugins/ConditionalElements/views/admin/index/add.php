@@ -17,14 +17,21 @@ echo flash();
           $json=get_option('conditional_elements_dependencies');
           if (!$json) { $json="null"; }
           $dependencies = json_decode($json,true);
+          $db = get_db();
+          if ($dependencies) {
           $ids = array();
           foreach ($dependencies as $d){
             $ids[]=$d[2];
           }
           $ids=array_unique($ids);
           $ids_verb = implode(",",$ids);
-          $db = get_db();
           $select = "SELECT id, name FROM $db->Element WHERE id NOT in ($ids_verb) ORDER BY name";
+        }
+        else {
+          $dependencies ="null";
+          $ids_verb = '';
+          $select = "SELECT id, name FROM $db->Element ORDER BY name";
+        }
           $results = $db->fetchAll($select);
           $dependent = array();
           foreach($results as $result) {
