@@ -32,8 +32,8 @@ $_SESSION['conditional_elements_delete_dependent'] = $_GET['dependent_id'];
         echo $this->formLabel('dependeeName', $data[$dependee_id]);
         echo $this->formLabel('termName', $term);
         echo $this->formLabel('dependentName', $data[$result['id']]); ?>
-          <a href="<?php echo $this->url('conditional-elements/index/delete'); ?>" class="button remove flr mrr4">Yes</a>
-          <a href="<?php echo html_escape(url('conditional-elements/index')); ?>" class="button buttonGreen cancel flr">No</a>
+        <a href="<?php echo html_escape(url('conditional-elements/index/delete')); ?>" class="button remove flr mrr4">Yes</a>
+        <a href="<?php echo html_escape(url('conditional-elements/index')); ?>" class="button buttonGreen cancel flr">No</a>
     </div>
   </form>
 <?php echo foot(); ?>
