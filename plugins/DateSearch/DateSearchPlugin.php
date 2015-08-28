@@ -60,7 +60,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * @param array $args
 	 */
 	public function hookAfterSaveItem($args) {
-			if (!$args['post']) {
+			if ( (!$args['post']) and (!$args['insert']) ) {
 					return;
 			}
 
