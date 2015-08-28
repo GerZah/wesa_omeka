@@ -22,6 +22,7 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
         'define_acl',
         'initialize',
         'after_save_item',
+        'after_delete_item',
         'admin_items_show',
         'admin_items_show_sidebar',
         'admin_items_search',
@@ -365,6 +366,25 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
                 }
             }
         }
+    }
+
+    /**
+     * Delete an item's relations after deleting that item.
+     *
+     * @param array $args
+     */
+    public function hookAfterDeleteItem($args)
+    {
+
+        $db = $this->_db;
+
+        $item_id = intval($args["record"]["id"]);
+
+        if ($item_id) {
+            $sql = "delete from `$db->ItemRelationsRelation` where subject_item_id=$item_id or object_item_id=$item_id";
+            $db->query($sql);
+        }
+
     }
 
     /**
