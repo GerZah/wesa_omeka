@@ -1,11 +1,11 @@
 <?php
 
 /**
-* TimeSearch plugin.
+* DateSearch plugin.
 *
-* @package Omeka\Plugins\TimeSearch
+* @package Omeka\Plugins\DateSearch
 */
-class TimeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
+class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 	/**
 	* @var array This plugin's hooks.
@@ -29,7 +29,7 @@ class TimeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		# Dates are always "YYYY-MM-DD", i.e. 10 characters long
 
 		$sql = "
-		CREATE TABLE IF NOT EXISTS `$db->TimeSearchDates` (
+		CREATE TABLE IF NOT EXISTS `$db->DateSearchDates` (
 				`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 				`item_id` int(10) unsigned NOT NULL REFERENCES `$db->Item`,
 				`fromdate` varchar(23) NOT NULL,
@@ -48,7 +48,7 @@ class TimeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		$db = $this->_db;
 
 		# Drop the table
-		$sql = "DROP TABLE IF EXISTS `$db->TimeSearchDates`";
+		$sql = "DROP TABLE IF EXISTS `$db->DateSearchDates`";
 		$db->query($sql);
 
 		$this->_uninstallOptions();
@@ -68,7 +68,7 @@ class TimeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			$item_id = intval($args["record"]["id"]);
 
 			if ($item_id) {
-				$sql = "delete from `$db->TimeSearchDates` where item_id=$item_id";
+				$sql = "delete from `$db->DateSearchDates` where item_id=$item_id";
 				$db->query($sql);
 
 				$text = $db->fetchOne("select text from `$db->SearchTexts` where record_type='Item' and record_id=$item_id");
@@ -86,7 +86,7 @@ class TimeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 						}
 						$values = implode(", ", $values);
 
-						$sql = "insert into `$db->TimeSearchDates` (item_id, fromdate, todate) values $values";
+						$sql = "insert into `$db->DateSearchDates` (item_id, fromdate, todate) values $values";
 						$db->query($sql);
 						# die($sql);
 
@@ -94,7 +94,7 @@ class TimeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 				}
 
-				# $sql = "insert into `$db->TimeSearchDates` (item_id, fromdate, todate) ".
+				# $sql = "insert into `$db->DateSearchDates` (item_id, fromdate, todate) ".
 				# 					"values ($item_id,'1546-01-01','1546-08-17'), ($item_id,'1546-12-01','1546-12-03')";
 				# $db->query($sql);
 				# die("<pre>$sql</pre>");
@@ -115,7 +115,7 @@ class TimeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			$item_id = intval($args["record"]["id"]);
 
 			if ($item_id) {
-				$sql = "delete from `$db->TimeSearchDates` where item_id=$item_id";
+				$sql = "delete from `$db->DateSearchDates` where item_id=$item_id";
 				$db->query($sql);
 			}
 
@@ -126,8 +126,8 @@ class TimeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * Display the time search form on the admin advanced search page
 	 */
 	public function hookAdminItemsSearch() {
-		echo common('time-search-advanced-search', array(
-			/*'formSelectProperties' => get_table_options('TimeSearchProperty')*/)
+		echo common('date-search-advanced-search', array(
+			/*'formSelectProperties' => get_table_options('DateSearchProperty')*/)
 		);
 	}
 
@@ -140,24 +140,24 @@ class TimeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		$select = $args['select'];
 		$params = $args['params'];
 
-		if (	(isset($params['time_search_term'])) and
-					($this->_checkDate($params['time_search_term'])) ) {
+		if (	(isset($params['date_search_term'])) and
+					($this->_checkDate($params['date_search_term'])) ) {
 
 			# $searchFromDate = "1546-08-17";
 			# $searchToDate = "1546-08-17";
 
-			$timespan = $this->_expandTimespan($params['time_search_term']);
+			$timespan = $this->_expandTimespan($params['date_search_term']);
 			$searchFromDate = $timespan[0];
 			$searchToDate = $timespan[1];
 
 			$db = $this->_db;
 			$select
 					->join(
-							array('time_search_dates' => $db->TimeSearchDates),
-							"time_search_dates.item_id = items.id",
+							array('date_search_dates' => $db->DateSearchDates),
+							"date_search_dates.item_id = items.id",
 							array()
 					)
-					->where("'$searchFromDate'<=time_search_dates.todate and '$searchToDate'>=time_search_dates.fromdate");
+					->where("'$searchFromDate'<=date_search_dates.todate and '$searchToDate'>=date_search_dates.fromdate");
 					# die("$searchFromDate / $searchToDate --- $select");
 
 		}
