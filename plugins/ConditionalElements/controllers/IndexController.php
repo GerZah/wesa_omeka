@@ -36,17 +36,17 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
       foreach($ids as $id){ $existing_ids[$id["id"]] = true; }
       $arr = json_decode($result);
       if ($arr) {
-      // echo "<pre>==== Pre Array = ".count($arr).": "; print_r($arr); echo "</pre>\n";
-      $newarr = array();
-      foreach($arr as $dep) {
-        if ( isset($existing_ids[$dep[0]]) and isset($existing_ids[$dep[2]]) ) {
-          $newarr[] = $dep;
+        // echo "<pre>==== Pre Array = ".count($arr).": "; print_r($arr); echo "</pre>\n";
+        $newarr = array();
+        foreach($arr as $dep) {
+          if ( isset($existing_ids[$dep[0]]) and isset($existing_ids[$dep[2]]) ) {
+            $newarr[] = $dep;
+          }
         }
-      }
-      // echo "<pre>==== Post Array = ".count($newarr).": "; print_r($newarr); echo "</pre>\n";
-      $result=json_encode($newarr);
-    }# if ($json)
-  }
+        // echo "<pre>==== Post Array = ".count($newarr).": "; print_r($newarr); echo "</pre>\n";
+        $result=json_encode($newarr);
+      }# if ($json)
+    }
     // echo "Post JSON: $result<br>\n"; die();
     return $result;
   }
