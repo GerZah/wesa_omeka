@@ -14,9 +14,20 @@ $_SESSION['conditional_elements_delete_dependent'] = $_GET['dependent_id'];
   <div class="field">
     <?php
     echo $this->formLabel('confirm', __('Are you sure you wish to delete this dependency?'));
-    $dependee_id = $_GET['dependee_id'];
-    $term = $_GET['term'];
+    $dependent_id = null;
+    $term = null;
     $dependent_id = $_GET['dependent_id'];
+
+    $json=get_option('conditional_elements_dependencies');
+    if (!$json) { $json="null"; }
+    $dependencies = json_decode($json,true);
+    foreach($dependencies as $dependency) {
+      if ($dependency[2] == $dependent_id) {
+				$dependee_id = $dependency[0];
+				$term = $dependency[1];
+			}
+    }
+
     $ids = array();
     $ids[0]=$dependee_id;
     $ids[1]=$dependent_id;

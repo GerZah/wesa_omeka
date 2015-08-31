@@ -47,7 +47,7 @@ echo head(array('title' => $pageTitle,'bodyclass' => 'dependent')); ?>
             <td><?php echo $data[$dependent_id]; ?>
             </td>
             <td>
-              <a class="confirm" href="<?php echo $this->url('conditional-elements/index/confirm', array('dependee_id' => $dependee_id, 'term' => $term, 'dependent_id' => $dependent_id)); ?>" ><?php echo __('Delete'); ?></a>
+              <a class="confirm" href="<?php echo $this->url('conditional-elements/index/confirm', array('dependent_id' => $dependent_id)); ?>" ><?php echo __('Delete'); ?></a>
             </td>
           </tr>
           <?php
