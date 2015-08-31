@@ -4,11 +4,8 @@ echo head(array('title'=>$pageTitle));
 echo flash();
 ?>
 <?php
-if(!isset($_SESSION))
-{
-  session_start();
-}
-$_SESSION['conditional_elements_dependent'] = $_POST['dependent'];
+if (!isset($_SESSION)) { session_start(); }
+if (isset($_POST['dependent'])) { $_SESSION['conditional_elements_dependent'] = $_POST['dependent']; }
 ?>
 <form method="post" action="<?php echo url('conditional-elements/index/term'); ?>">
   <section class="seven columns alpha">
@@ -22,8 +19,8 @@ $_SESSION['conditional_elements_dependent'] = $_POST['dependent'];
         <p><?php echo __("<em>Please note:</em> One dependee can affect multiple dependents, ".
                          "based on multiple values to choose from."); ?></p>
       </div>
-      <div class="field">
-        <div class="inputs six columns omega">
+			<table>
+				<tbody>
           <?php
           $json=get_option('conditional_elements_dependencies');
           if (!$json) { $json="null"; }
@@ -55,10 +52,13 @@ $_SESSION['conditional_elements_dependent'] = $_POST['dependent'];
           foreach($results as $result) {
             $dependee[$result['name']] = $result['name'];
           }
-          echo $this->formSelect('dependee', null , array(), $dependee);
+          echo "<tr><th>".__("Dependee").":</th>\n<td>\n";
+					echo $this->formSelect('dependee', null , array(), $dependee);
+					echo "</td></tr>\n";
           ?>
-        </div>
-      </div>
+					<tr><th><?php echo __("Dependent");?>:</th><td><?php echo $_POST['dependent']; ?></td></tr>
+				</tbody>
+			</table>
     </fieldset>
   </section>
   <section class="three columns omega">
