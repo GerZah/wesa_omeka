@@ -126,6 +126,7 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
         $json=get_option('conditional_elements_dependencies');
         if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
         $json_obj = json_decode($json,true);
+        /* * / # Githa's implementation with two array iterations
         // Deletion in JSON
         foreach ($json_obj as $key => $value) {
           if ($value[2] == $dependent_id) {
@@ -137,6 +138,16 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
         foreach($json_obj as $dep) {
           $newarr[] = $dep;
         }
+        /* */
+        /* */ # Gero's implementation with one array iteration
+        // Construct new array from all entries that don't match the requested delete id
+        $newarr = array();
+        foreach($json_obj as $value) {
+          if ($value[2] != $dependent_id) {
+            $newarr[] = $value;
+          }
+				}
+        /* */
         $json=json_encode($newarr);
         set_option('conditional_elements_dependencies', $json);
         $this->_helper->flashMessenger(__('The dependent is successfully deleted.',$dependent_id), 'success');
