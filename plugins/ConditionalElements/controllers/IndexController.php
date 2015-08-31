@@ -118,28 +118,23 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
   */
   public function deleteAction()
   {
-    if (isset($_SESSION)) {
-      try{
-        $dependent_id = $_SESSION['conditional_elements_delete_dependent'];
-        $json=get_option('conditional_elements_dependencies');
-        if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
-        $json_obj = json_decode($json,true);
-        // Construct new array from all entries that don't match the requested delete id
-        $newarr = array();
-        foreach($json_obj as $value) {
-          if ($value[2] != $dependent_id) {
-            $newarr[] = $value;
-          }
-				}
-        $json=json_encode($newarr);
-        set_option('conditional_elements_dependencies', $json);
-        $this->_helper->flashMessenger(__('The dependent is successfully deleted.',$dependent_id), 'success');
-      } catch (Omeka_Validate_Exception $e) {
-        $this->_helper->flashMessenger($e);
-      }
-    }
-    else {
-      $this->_helper->flashMessenger(__('There were errors found in your form. Please edit and resubmit.'), 'error');
+    try{
+      $dependent_id = $_GET['dependent_id'];
+      $json=get_option('conditional_elements_dependencies');
+      if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
+      $json_obj = json_decode($json,true);
+      // Construct new array from all entries that don't match the requested delete id
+      $newarr = array();
+      foreach($json_obj as $value) {
+        if ($value[2] != $dependent_id) {
+          $newarr[] = $value;
+        }
+			}
+      $json=json_encode($newarr);
+      set_option('conditional_elements_dependencies', $json);
+      $this->_helper->flashMessenger(__('The dependent is successfully deleted.',$dependent_id), 'success');
+    } catch (Omeka_Validate_Exception $e) {
+      $this->_helper->flashMessenger($e);
     }
   }
 

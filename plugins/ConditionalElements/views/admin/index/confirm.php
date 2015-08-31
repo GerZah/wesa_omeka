@@ -1,13 +1,10 @@
 <?php
-$pageTitle = __('Confirm Delete');
+$pageTitle = __('Delete Dependency');
 echo head(array('title'=>$pageTitle));
 echo flash();
 ?>
-<?php
-if (!isset($_SESSION)) { session_start(); }
-if (isset($_GET['dependent_id'])) { $_SESSION['conditional_elements_delete_dependent'] = $_GET['dependent_id']; }
-?>
-<form method="post" action="" >
+
+<form method="get" action="<?php echo url('conditional-elements/index/delete'); ?>">
   <div class="field">
     <?php
     if (isset($_GET['dependent_id'])) {
@@ -50,7 +47,11 @@ if (isset($_GET['dependent_id'])) { $_SESSION['conditional_elements_delete_depen
 				<tr><th><?php echo __("Dependent"); ?>:</th><td><?php echo $dependent; ?></td></tr>
 			</tbody>
 		</table>
-    <a href="<?php echo html_escape(url('conditional-elements/index/delete')); ?>" class="button remove flr mrr4"><?php echo __("Yes"); ?></a>
+    <a href="<?php
+               echo html_escape(url('conditional-elements/index/delete'));
+             ?>?dependent_id=<?php
+               echo $_GET['dependent_id'];
+             ?>" class="button remove flr mrr4"><?php echo __("Yes"); ?></a>
     <a href="<?php echo html_escape(url('conditional-elements/index')); ?>" class="button buttonGreen cancel flr"><?php echo __("No"); ?></a>
     <?php
 				}
