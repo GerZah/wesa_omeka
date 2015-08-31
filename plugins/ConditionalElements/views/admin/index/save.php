@@ -1,5 +1,5 @@
 <?php
-$pageTitle = __('Add dependency');
+$pageTitle = __('Add Dependency');
 echo head(array('title'=>$pageTitle));
 echo flash();
 ?>
@@ -8,7 +8,7 @@ echo flash();
   <section class="seven columns alpha">
     <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
       <div class="field">
-        <h2>You have successfully saved the dependency</h2>
+        <h2><?php echo __("You have successfully saved the dependency."); ?></h2>
       </div>
     </fieldset>
   </section>
