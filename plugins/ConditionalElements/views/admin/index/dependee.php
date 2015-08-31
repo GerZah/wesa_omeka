@@ -3,10 +3,7 @@ $pageTitle = __('Add Dependency');
 echo head(array('title'=>$pageTitle));
 echo flash();
 ?>
-<?php
-if (!isset($_SESSION)) { session_start(); }
-if (isset($_POST['dependent'])) { $_SESSION['conditional_elements_dependent'] = $_POST['dependent']; }
-?>
+
 <form method="post" action="<?php echo url('conditional-elements/index/term'); ?>">
   <section class="seven columns alpha">
     <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
@@ -68,5 +65,6 @@ if (isset($_POST['dependent'])) { $_SESSION['conditional_elements_dependent'] = 
       <input type="submit" class="big green button" name="submit" value="<?php echo __('Next'); ?>">
     </div>
   </section>
+	<input type="hidden" name="dependent" value="<?php echo $_POST['dependent']; ?>">
 </form>
 <?php echo foot(); ?>

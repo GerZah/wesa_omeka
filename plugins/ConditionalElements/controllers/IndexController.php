@@ -56,29 +56,26 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
   */
   public function saveAction()
   {
-    if ($this->getRequest()->isPost()) {
-      if (isset($_SESSION)) {
-        $_SESSION['conditional_elements_term'] = $_POST['term']; // moved here from save.php to get the term
-        try{
-          $json=get_option('conditional_elements_dependencies');
-          if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
-          $dependencies = json_decode($json,true);
-          $dependentName = $_SESSION['conditional_elements_dependent'];
-          $dependeeName = $_SESSION['conditional_elements_dependee'];
-          $term = $_SESSION['conditional_elements_term'];
-          // fetches the dependent_id and dependee_id so that we can save it in JSON.
-          $dependent = $this->_getDependent($dependentName);
-          $dependee = $this->_getDependee($dependeeName);
+    if ($this->getRequest()->isPost()) {       
+      try{
+        $json=get_option('conditional_elements_dependencies');
+        if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
+        $dependencies = json_decode($json,true);
+        $dependentName = $_POST['dependent'];
+        $dependeeName = $_POST['dependee'];
+        $term = $_POST['term'];
+        // fetches the dependent_id and dependee_id so that we can save it in JSON.
+        $dependent = $this->_getDependent($dependentName);
+        $dependee = $this->_getDependee($dependeeName);
 
-          $custom = array('0' => $dependee, '1' => $term , '2' => $dependent);
-          $dependencies[]=$custom;
-          $json= json_encode($dependencies);
-          set_option('conditional_elements_dependencies', $json);
-          $this->_helper->flashMessenger(__('The dependent "%s" was successfully added.',$dependentName), 'success');
-        }
-        catch (Omeka_Validate_Exception $e) {
-          $this->_helper->flashMessenger($e);
-        }
+        $custom = array('0' => $dependee, '1' => $term , '2' => $dependent);
+        $dependencies[]=$custom;
+        $json= json_encode($dependencies);
+        set_option('conditional_elements_dependencies', $json);
+        $this->_helper->flashMessenger(__('The dependent "%s" was successfully added.',$dependentName), 'success');
+      }
+      catch (Omeka_Validate_Exception $e) {
+        $this->_helper->flashMessenger($e);
       }
     } else {
       $this->_helper->flashMessenger(__('There were errors found in your form. Please edit and resubmit.'), 'error');
@@ -127,20 +124,6 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
         $json=get_option('conditional_elements_dependencies');
         if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
         $json_obj = json_decode($json,true);
-        /* * / # Githa's implementation with two array iterations
-        // Deletion in JSON
-        foreach ($json_obj as $key => $value) {
-          if ($value[2] == $dependent_id) {
-            unset($json_obj[$key]);
-          }
-        }
-        // Encode into a new array in order to avoid JSON indexing incompatiblity issue.
-        $newarr = array();
-        foreach($json_obj as $dep) {
-          $newarr[] = $dep;
-        }
-        /* */
-        /* */ # Gero's implementation with one array iteration
         // Construct new array from all entries that don't match the requested delete id
         $newarr = array();
         foreach($json_obj as $value) {
@@ -148,7 +131,6 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
             $newarr[] = $value;
           }
 				}
-        /* */
         $json=json_encode($newarr);
         set_option('conditional_elements_dependencies', $json);
         $this->_helper->flashMessenger(__('The dependent is successfully deleted.',$dependent_id), 'success');

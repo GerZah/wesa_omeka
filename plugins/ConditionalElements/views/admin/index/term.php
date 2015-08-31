@@ -3,10 +3,7 @@ $pageTitle = __('Add Dependency');
 echo head(array('title'=>$pageTitle));
 echo flash();
 ?>
-<?php
-if (!isset($_SESSION)) { session_start(); }
-if (isset($_POST['dependee'])) { $_SESSION['conditional_elements_dependee'] = $_POST['dependee']; }
-?>
+
 <form method="post" action="<?php echo url('conditional-elements/index/save'); ?>">
   <section class="seven columns alpha">
     <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
@@ -17,11 +14,11 @@ if (isset($_POST['dependee'])) { $_SESSION['conditional_elements_dependee'] = $_
       </div>
 			<table>
 				<tbody>
-					<tr><th><?php echo __("Dependee"); ?>:</th><td><?php echo $_SESSION['conditional_elements_dependee']; ?></td></tr>
+					<tr><th><?php echo __("Dependee"); ?>:</th><td><?php echo $_POST['dependee']; ?></td></tr>
 					<tr><th><?php echo __("Term"); ?>:</th>
 					<td>
           <?php
-          $dependeeName = $_SESSION['conditional_elements_dependee'];
+          $dependeeName = $_POST['dependee'];
           $db = get_db();
           $select = "SELECT e.terms AS terms
           FROM  {$db->Element} es
@@ -43,7 +40,7 @@ if (isset($_POST['dependee'])) { $_SESSION['conditional_elements_dependee'] = $_
           echo $this->formSelect('term', null, array(), $fullterm);
           ?>
 					</td></tr>
-					<tr><th><?php echo __("Dependent"); ?>:</th><td><?php echo $_SESSION['conditional_elements_dependent']; ?></td></tr>
+					<tr><th><?php echo __("Dependent"); ?>:</th><td><?php echo $_POST['dependent']; ?></td></tr>
 				</tbody>
 			</table>
     </fieldset>
@@ -53,5 +50,7 @@ if (isset($_POST['dependee'])) { $_SESSION['conditional_elements_dependee'] = $_
       <input type="submit" class="big green button" name="submit" value="<?php echo __('Save'); ?>">
     </div>
   </section>
+	<input type="hidden" name="dependee" value="<?php echo $_POST['dependee']; ?>">
+	<input type="hidden" name="dependent" value="<?php echo $_POST['dependent']; ?>">
 </form>
 <?php echo foot(); ?>
