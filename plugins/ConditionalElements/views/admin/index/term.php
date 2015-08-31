@@ -1,31 +1,25 @@
 <?php
-$pageTitle = __('Add dependency');
+$pageTitle = __('Add Dependency');
 echo head(array('title'=>$pageTitle));
 echo flash();
 ?>
 <?php
-if(!isset($_SESSION))
-{
-  session_start();
-}
-$_SESSION['conditional_elements_dependee'] = $_POST['dependee'];
+if (!isset($_SESSION)) { session_start(); }
+if (isset($_POST['dependee'])) { $_SESSION['conditional_elements_dependee'] = $_POST['dependee']; }
 ?>
 <form method="post" action="<?php echo url('conditional-elements/index/save'); ?>">
   <section class="seven columns alpha">
     <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
-      <h2>Step 3: Select term </h2>
+      <h2>Step 3: Select Dependee Value to Affect Dependent</h2>
       <div class="field">
-        <p>You have chosen the dependent:</p>
-        <?php
-        echo $_SESSION['conditional_elements_dependent'];?>
-        <p>You have chosen the dependee:</p>
-        <?php
-        echo $_SESSION['conditional_elements_dependee'];
-        ?>
+        <p><?php echo __("Choose one of the dependee element's possible values. If this value is selected, ".
+                         "the dependent element will become visible; otherwise, it will be hidden."); ?></p>
       </div>
-      <div class="field">
-        <?php echo $this->formLabel('term', __('Choose term')); ?>
-        <div class="inputs six columns omega">
+			<table>
+				<tbody>
+					<tr><th><?php echo __("Dependee"); ?>:</th><td><?php echo $_SESSION['conditional_elements_dependee']; ?></td></tr>
+					<tr><th><?php echo __("Term"); ?>:</th>
+					<td>
           <?php
           $dependeeName = $_SESSION['conditional_elements_dependee'];
           $db = get_db();
@@ -47,8 +41,10 @@ $_SESSION['conditional_elements_dependee'] = $_POST['dependee'];
            }
           echo $this->formSelect('term', null, array(), $fullterm);
           ?>
-        </div>
-      </div>
+					</td></tr>
+					<tr><th><?php echo __("Dependent"); ?>:</th><td><?php echo $_SESSION['conditional_elements_dependent']; ?></td></tr>
+				</tbody>
+			</table>
     </fieldset>
   </section>
   <section class="three columns omega">
