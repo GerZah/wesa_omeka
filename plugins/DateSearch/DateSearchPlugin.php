@@ -101,7 +101,21 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 			$text = $db->fetchOne("select text from `$db->SearchTexts` where record_type='Item' and record_id=$item_id");
 
-			if ($text) {
+			if ($text !== false) {
+
+				# Check if we could add relation comments in case Item Relations is installed and has been patched
+				# to feature relation comments.
+				$withRelComments=false;
+				$sql = "show columns from `$db->ItemRelationsRelations` where field='relation_comment'";
+				try { $withRelComments = ($db->fetchOne($sql) !== false); }
+				catch (Exception $e) { $withRelComments=false; }
+
+				if ($withRelComments) {
+					$sql = "select relation_comment from `$db->ItemRelationsRelations` where subject_item_id=$item_id";
+					$comments = $db->fetchAll($sql);
+					foreach($comments as $comment) { $text .= " ".$comment["relation_comment"]; }
+				}
+
 				$cookedDates = $this->_processDateText($text);
 				# echo "<pre>"; print_r($cookedDates); die("</pre>");
 
@@ -167,6 +181,9 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 	# ------------------------------------------------------------------------------------------------------
 
+	/**
+	 * Cross swap  in case the first element is "bigger" (i.e. sorts behind) the second
+	 */
 	private function _swapIfNecessary(&$x,&$y) {
 		# as in http://stackoverflow.com/a/26549027
 		if ($x > $y) {
@@ -178,6 +195,9 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 	# ------------------------------------------------------------------------------------------------------
 
+	/**
+	 * Main regex processing to extract dates and timespans, to be able to expand them later
+	 */
 	private function _processDateText($text) {
 		$regEx = $this->_constructRegEx();
 		$dateTimespan = $regEx["dateTimespan"];
@@ -254,12 +274,12 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 */
 	private function _expandTimespan($timespan) {
 		$result = $timespan;
-	
+
 		if (!is_array($result)) { $result = array($result, $result); }
-	
+
 		$result[0] = $this->_updateDate($result[0], -1); # -1 == left edge, xxxx-01-01
 		$result[1] = $this->_updateDate($result[1], +1); # +1 == right edge, xxxx-12-31
-		
+
 		return $result;
 	}
 
@@ -282,19 +302,19 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		$year = $regEx["year"];
 		$month =$regEx["month"];
 		$day = $regEx["day"];
-	
+
 		$yearOnly = "^$year$";
 		$yearMonth = "^$year-$month$";
 		$yearMonthDay = "^$year-$month-$day$";
-	
+
 		if ( preg_match( "($yearOnly)", $result ) ) { $result = $result."-".( $edge<0 ? "1" : "12" ); }
 		if ( preg_match( "($yearMonth)", $result ) ) { $result = $result."-".( $edge<0 ? "1" : "31" ); }
-	
+
 		if ( preg_match( "($yearMonthDay)", $result ) ) {
 			$oneDigit = "\b(\d)\b";
 			$result = preg_replace("($oneDigit)", '0${0}', $result);
 		}
-	
+
 		return $result;
 	}
 
