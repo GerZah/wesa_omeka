@@ -13,8 +13,10 @@ echo flash();
                           "visible or hidden based on the selection for some other element."); ?></p>
         <p><?php echo __("<em>Please note:</em> One element can be dependent only from one other element."); ?></p>
       </div>
-      <div class="field">
-        <div class="inputs six columns omega">
+			<table>
+				<tbody>
+				<tr><th><?php echo __("Dependent"); ?>:</th>
+				<td>
           <?php
           $json=get_option('conditional_elements_dependencies');
           if (!$json) { $json="null"; }
@@ -42,8 +44,9 @@ echo flash();
           $dependent = array('' => __('Select Below')) + $dependent;
           echo $this->formSelect('dependent', null , array(), $dependent);
           ?>
-        </div>
-      </div>
+				</td></tr>
+				</tbody>
+			</table>
     </fieldset>
   </section>
   <section class="three columns omega">
