@@ -58,6 +58,7 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
   {
     if ($this->getRequest()->isPost()) {
       if (isset($_SESSION)) {
+        $_SESSION['conditional_elements_term'] = $_POST['term']; // moved here from save.php to get the term
         try{
           $json=get_option('conditional_elements_dependencies');
           if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
@@ -69,8 +70,8 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
           $dependent = $this->_getDependent($dependentName);
           $dependee = $this->_getDependee($dependeeName);
 
-          $custom = array('0'=>$dependent, '1' => $term , '2' => $dependee);
-          array_push($dependencies,$custom);
+          $custom = array('0' => $dependee, '1' => $term , '2' => $dependent);
+          $dependencies[]=$custom;
           $json= json_encode($dependencies);
           set_option('conditional_elements_dependencies', $json);
           $this->_helper->flashMessenger(__('The dependent "%s" was successfully added.',$dependentName), 'success');
