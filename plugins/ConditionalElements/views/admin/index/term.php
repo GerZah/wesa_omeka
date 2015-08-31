@@ -39,6 +39,7 @@ if (isset($_POST['dependee'])) { $_SESSION['conditional_elements_dependee'] = $_
           {
              $fullterm[$value] = $value;
            }
+          $fullterm = array('' => __('Select Below')) + $fullterm;
           echo $this->formSelect('term', null, array(), $fullterm);
           ?>
 					</td></tr>

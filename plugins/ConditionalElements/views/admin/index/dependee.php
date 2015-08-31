@@ -53,6 +53,7 @@ if (isset($_POST['dependent'])) { $_SESSION['conditional_elements_dependent'] = 
             $dependee[$result['name']] = $result['name'];
           }
           echo "<tr><th>".__("Dependee").":</th>\n<td>\n";
+          $dependee = array('' => __('Select Below')) + $dependee;
 					echo $this->formSelect('dependee', null , array(), $dependee);
 					echo "</td></tr>\n";
           ?>
