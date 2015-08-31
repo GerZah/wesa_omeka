@@ -64,41 +64,8 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 					return;
 			}
 
-			$db = $this->_db;
 			$item_id = intval($args["record"]["id"]);
-
-			if ($item_id) {
-				$sql = "delete from `$db->DateSearchDates` where item_id=$item_id";
-				$db->query($sql);
-
-				$text = $db->fetchOne("select text from `$db->SearchTexts` where record_type='Item' and record_id=$item_id");
-
-				if ($text) {
-					$cookedDates = $this->_processDateText($text);
-					# echo "<pre>"; print_r($cookedDates); die("</pre>");
-
-					if ($cookedDates) {
-
-						$values = array();
-						foreach($cookedDates as $cookedDate) {
-							$this->_swapIfNecessary($cookedDate[0], $cookedDate[1]);
-							$values[]='('.$item_id.',"'.$cookedDate[0].'","'.$cookedDate[1].'")';
-						}
-						$values = implode(", ", $values);
-
-						$sql = "insert into `$db->DateSearchDates` (item_id, fromdate, todate) values $values";
-						$db->query($sql);
-						# die($sql);
-
-					}
-
-				}
-
-				# $sql = "insert into `$db->DateSearchDates` (item_id, fromdate, todate) ".
-				# 					"values ($item_id,'1546-01-01','1546-08-17'), ($item_id,'1546-12-01','1546-12-03')";
-				# $db->query($sql);
-				# die("<pre>$sql</pre>");
-			}
+			if ($item_id) { $this->preProcessItem($item_id); }
 
 			# die("After Save Item");
 
@@ -121,6 +88,40 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 			# echo "<pre>After Delete Item - ID: $item_id\nSQL: $sql\n"; print_r($args); die("</pre>");
 	} # hookAfterDeleteItem()
+
+	/**
+	 * Pre-process one item's textual data and store timespans in DateSearchDates table
+	 */
+	private function preProcessItem($item_id) {
+		$db = $this->_db;
+
+		if ($item_id) {
+			$sql = "delete from `$db->DateSearchDates` where item_id=$item_id";
+			$db->query($sql);
+
+			$text = $db->fetchOne("select text from `$db->SearchTexts` where record_type='Item' and record_id=$item_id");
+
+			if ($text) {
+				$cookedDates = $this->_processDateText($text);
+				# echo "<pre>"; print_r($cookedDates); die("</pre>");
+
+				if ($cookedDates) {
+
+					$values = array();
+					foreach($cookedDates as $cookedDate) {
+						$this->_swapIfNecessary($cookedDate[0], $cookedDate[1]);
+						$values[]='('.$item_id.',"'.$cookedDate[0].'","'.$cookedDate[1].'")';
+					}
+					$values = implode(", ", $values);
+
+					$sql = "insert into `$db->DateSearchDates` (item_id, fromdate, todate) values $values";
+					$db->query($sql);
+					# die($sql);
+
+				} # if ($cookedDates)
+			} # if ($text)
+		} # if ($item_id)
+	} #  preProcessItem()
 
 	/**
 	 * Display the time search form on the admin advanced search page
