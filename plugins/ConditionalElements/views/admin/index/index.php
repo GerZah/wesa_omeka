@@ -1,14 +1,14 @@
 <?php
-$pageTitle = __('Browse Dependents');
+$pageTitle = __('Browse Conditional Elements');
 echo head(array('title' => $pageTitle,'bodyclass' => 'dependent')); ?>
 <div class="table-actions">
-  <a href="<?php echo html_escape(url('conditional-elements/index/add')); ?>" class="add green button"><?php echo __('Add dependency'); ?></a>
+  <a href="<?php echo html_escape(url('conditional-elements/index/add')); ?>" class="add green button"><?php echo __('Add Dependency'); ?></a>
 </div>
 <table>
   <thead>
     <tr>
       <th><?php echo __('Dependee'); ?></th>
-      <th><?php echo __('Terms'); ?></th>
+      <th><?php echo __('Term'); ?></th>
       <th><?php echo __('Dependent'); ?></th>
       <th><?php echo __('Actions'); ?></th>
     </tr>
@@ -58,14 +58,10 @@ echo head(array('title' => $pageTitle,'bodyclass' => 'dependent')); ?>
       $dependencies ="null";
       ?>
       <tr>
-        <td><?php echo __("[n/a]"); ?>
-        </td>
-        <td><?php echo __("[n/a]"); ?>
-        </td>
-        <td><?php echo __("[n/a]"); ?>
-        </td>
-        <td><?php echo __("[n/a]"); ?>
-        </td>
+        <td><?php echo __("[n/a]"); ?></td>
+        <td><?php echo __("[n/a]"); ?></td>
+        <td><?php echo __("[n/a]"); ?></td>
+        <td><?php echo __("[n/a]"); ?></td>
       </tr>
   <?php  }; ?>
   </tbody>
@@ -93,6 +89,6 @@ jQuery(document).ready(function()
 <script src="/javascript/jquery-1.7.1.min.js"></script>
 <script src="/javascript/configuration.js"></script>
 <div class="table-actions">
-  <a href="<?php echo html_escape(url('conditional-elements/index/add')); ?>" class="add green button"><?php echo __('Add dependency'); ?></a>
+  <a href="<?php echo html_escape(url('conditional-elements/index/add')); ?>" class="add green button"><?php echo __('Add Dependency'); ?></a>
 </div>
 <?php echo foot(); ?>
