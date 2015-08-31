@@ -1,5 +1,5 @@
 <?php
-$pageTitle = __('Add dependency');
+$pageTitle = __('Add Dependency');
 echo head(array('title'=>$pageTitle));
 echo flash();
 ?>
@@ -13,9 +13,16 @@ $_SESSION['conditional_elements_dependent'] = $_POST['dependent'];
 <form method="post" action="<?php echo url('conditional-elements/index/term'); ?>">
   <section class="seven columns alpha">
     <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
-      <h2>Step 2: Select dependee to add </h2>
+      <h2>Step 2: Select Dependee for Dependency</h2>
       <div class="field">
-        <?php echo $this->formLabel('dependee', __('Choose an existing dependee')); ?>
+        <p><?php echo __("Choose a dependee element from the list below that will, based on the selection, ".
+                         "will affect the dependent element to become visible or hidden."); ?></p>
+        <p><?php echo __("<em>Please note:</em> You will need to supply a list of possible selections ".
+                         "via \"Simple Vocabulary\" to an element to become a possible dependee."); ?></p>
+        <p><?php echo __("<em>Please note:</em> One dependee can affect multiple dependents, ".
+                         "based on multiple values to choose from."); ?></p>
+      </div>
+      <div class="field">
         <div class="inputs six columns omega">
           <?php
           $json=get_option('conditional_elements_dependencies');
