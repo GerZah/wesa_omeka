@@ -1,5 +1,5 @@
 <?php
-$pageTitle = __('Add dependency');
+$pageTitle = __('Add Dependency');
 echo head(array('title'=>$pageTitle));
 echo flash();
 ?>
@@ -7,9 +7,11 @@ echo flash();
 <form method="post" action="<?php echo url('conditional-elements/index/dependee'); ?>">
   <section class="seven columns alpha">
     <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
-      <h2>Step 1: Select dependent to add </h2>
+      <h2><?php echo __("Step 1: Select Dependent for Dependency"); ?></h2>
       <div class="field">
-        <p>Choose dependents from the existing list:</p>
+        <p><?php echo __("Choose a dependent element from the list below that should become ".
+                          "visible or hidden based on the selection for some other element."); ?></p>
+        <p><?php echo __("<em>Please note:</em> One element can be dependent only from one other element."); ?></p>
       </div>
       <div class="field">
         <div class="inputs six columns omega">
