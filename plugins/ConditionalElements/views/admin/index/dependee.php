@@ -12,12 +12,11 @@ echo flash();
       $dependent_id = intval($_POST['dependent']);
       $db = get_db();
       $select = "SELECT name FROM $db->Element WHERE id = '$dependent_id'";
-      $results = $db->fetchAll($select);
+      $dependentNames = $db->fetchAll($select);
       $data = array();
-      foreach($results as $result) {
-        $data[$result['name']] = $result['name'];
+      foreach($dependentNames as $dependentName) {
+        $data[$dependentName['name']] = $dependentName['name'];
       }
-      echo $data[$result['name']];
       ?>
       <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
         <h2>Step 2: Select Dependee for Dependency</h2>
@@ -68,7 +67,7 @@ echo flash();
             echo $this->formSelect('dependee', $dependee_id , array(), $dependee);
             echo "</td></tr>\n";
             ?>
-            <tr><th><?php echo __("Dependent");?>:</th><td><?php echo $dependent_id ?></td></tr>
+            <tr><th><?php echo __("Dependent");?>:</th><td><?php echo $data[$dependentName['name']]; ?></td></tr>
           </tbody>
         </table>
       </fieldset>

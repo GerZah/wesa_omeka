@@ -7,19 +7,24 @@ echo flash();
   <section class="seven columns alpha">
     <?php
     # check option, 0, name
-    if($_POST['dependee'] != 0 )
+    if($_POST['dependee'] != 0 and $_POST['dependent'] != 0 )
     {
       $dependee_id = '';
+      $dependent_id = '';
       $dependee_id = intval($_POST['dependee']);
-
+      $dependent_id = intval($_POST['dependent']);
       $db = get_db();
-      $select = "SELECT name FROM $db->Element WHERE id = '$dependee_id'";
-      $results = $db->fetchAll($select);
+      $selectDependent = "SELECT name FROM $db->Element WHERE id = '$dependent_id'";
+      $selectDependee = "SELECT name FROM $db->Element WHERE id = '$dependee_id'";
+      $dependentNames = $db->fetchAll($selectDependent);
+      $dependeeNames = $db->fetchAll($selectDependee);
       $data = array();
-      foreach($results as $result) {
-        $data[$result['name']] = $result['name'];
+      foreach($dependentNames as $dependentName) {
+        $data[$dependentName['name']] = $dependentName['name'];
       }
-      echo $data[$result['name']];
+      foreach($dependeeNames as $dependeeName) {
+        $data[$dependeeName['name']] = $dependeeName['name'];
+      }
       ?>
     <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
       <h2>Step 3: Select Dependee Value to Affect Dependent</h2>
@@ -29,7 +34,7 @@ echo flash();
       </div>
 			<table>
 				<tbody>
-					<tr><th><?php echo __("Dependee"); ?>:</th><td><?php echo $_POST['dependee']; ?></td></tr>
+					<tr><th><?php echo __("Dependee"); ?>:</th><td><?php echo $data[$dependeeName['name']]; ?></td></tr>
 					<tr><th><?php echo __("Term"); ?>:</th>
 					<td>
           <?php
@@ -54,7 +59,7 @@ echo flash();
           echo $this->formSelect('term', null, array(), $fullterm);
           ?>
 					</td></tr>
-					<tr><th><?php echo __("Dependent"); ?>:</th><td><?php echo $_POST['dependent']; ?></td></tr>
+					<tr><th><?php echo __("Dependent"); ?>:</th><td><?php echo $data[$dependentName['name']]; ?></td></tr>
 				</tbody>
 			</table>
     </fieldset>
