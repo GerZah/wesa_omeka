@@ -56,60 +56,31 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
   */
   public function saveAction()
   {
-    if ($this->getRequest()->isPost()) {       
+    if ($this->getRequest()->isPost()) {
       try{
         $json=get_option('conditional_elements_dependencies');
         if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
         $dependencies = json_decode($json,true);
-        $dependentName = $_POST['dependent'];
-        $dependeeName = $_POST['dependee'];
+        $dependent = $_POST['dependent'];
+        $dependee = $_POST['dependee'];
         $term = $_POST['term'];
-        // fetches the dependent_id and dependee_id so that we can save it in JSON.
-        $dependent = $this->_getDependent($dependentName);
-        $dependee = $this->_getDependee($dependeeName);
 
         $custom = array('0' => $dependee, '1' => $term , '2' => $dependent);
         $dependencies[]=$custom;
         $json= json_encode($dependencies);
         set_option('conditional_elements_dependencies', $json);
-        $this->_helper->flashMessenger(__('The dependent "%s" was successfully added.',$dependentName), 'success');
-      }
+      	if ( ($dependent) and ($dependee) and ($term) )
+        {
+        $this->_helper->flashMessenger(__('The dependent is successfully added.'), 'success');
+        }
+        else {
+        $this->_helper->flashMessenger(__('There were errors in creating the dependency.'), 'error');
+        }
+        }
       catch (Omeka_Validate_Exception $e) {
         $this->_helper->flashMessenger($e);
       }
-    } else {
-      $this->_helper->flashMessenger(__('There were errors found in your form. Please edit and resubmit.'), 'error');
     }
-  }
-
-  /**
-  * Returns dependent_id based on dependentName
-  */
-  protected function _getDependent($dependentName)
-  {
-    $db = get_db();
-    $select = "SELECT id FROM $db->Element WHERE name = '$dependentName'";
-    $results = $db->fetchAll($select);
-    $data = array();
-    foreach($results as $result) {
-      $data[$result['id']] = $result['id'];
-    }
-    return $data[$result['id']];
-  }
-
-  /**
-  * Returns dependee_id based on dependeeName
-  */
-  protected function _getDependee($dependeeName)
-  {
-    $db = get_db();
-    $select = "SELECT id FROM $db->Element WHERE name = '$dependeeName'";
-    $results = $db->fetchAll($select);
-    $data = array();
-    foreach($results as $result) {
-      $data[$result['id']] = $result['id'];
-    }
-    return $data[$result['id']];
   }
 
   /**
@@ -132,7 +103,13 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
 			}
       $json=json_encode($newarr);
       set_option('conditional_elements_dependencies', $json);
-      $this->_helper->flashMessenger(__('The dependent is successfully deleted.',$dependent_id), 'success');
+      if ($dependent_id)
+      {
+      $this->_helper->flashMessenger(__('The dependent is successfully deleted.'), 'success');
+      }
+      else {
+      $this->_helper->flashMessenger(__('There were errors in deleting the dependency.'), 'error');
+      }
     } catch (Omeka_Validate_Exception $e) {
       $this->_helper->flashMessenger($e);
     }

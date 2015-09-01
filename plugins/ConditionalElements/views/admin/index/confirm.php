@@ -11,7 +11,7 @@ echo flash();
       $dependent_id = intval($_GET['dependent_id']);
       $dependee_id = null;
       $term = null;
-  
+
       $json=get_option('conditional_elements_dependencies');
       if (!$json) { $json="null"; }
       $dependencies = json_decode($json,true);
@@ -23,7 +23,7 @@ echo flash();
 	        }
 	      }
 			}
-  
+
 			if ( ($dependent_id) and ($term) and ($dependee_id) ) {
 	      $db = get_db();
 	      $select = "SELECT id, name FROM $db->Element WHERE id in ($dependent_id, $dependee_id)";

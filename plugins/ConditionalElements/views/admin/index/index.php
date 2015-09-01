@@ -37,7 +37,6 @@ echo head(array('title' => $pageTitle,'bodyclass' => 'dependent')); ?>
         $dependee_id = $dep[0];
         $term = $dep[1];
         $dependent_id = $dep[2];
-
         if ((isset($data[$dependee_id])) and (isset($data[$dependent_id])) ) {
           ?>
           <tr>

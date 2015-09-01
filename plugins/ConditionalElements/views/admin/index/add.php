@@ -3,7 +3,6 @@ $pageTitle = __('Add Dependency');
 echo head(array('title'=>$pageTitle));
 echo flash();
 ?>
-
 <form method="post" action="<?php echo url('conditional-elements/index/dependee'); ?>">
   <section class="seven columns alpha">
     <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
@@ -39,10 +38,12 @@ echo flash();
           $results = $db->fetchAll($select);
           $dependent = array();
           foreach($results as $result) {
-            $dependent[$result['name']] = $result['name'];
+            $dependent[$result['id']] = $result['name'];
+
           }
-          $dependent = array('' => __('Select Below')) + $dependent;
-          echo $this->formSelect('dependent', null , array(), $dependent);
+          $dependent = array(0 => __('Select Below')) + $dependent;
+          $dependent_id = $dependent[$result['id']];
+          echo $this->formSelect('dependent', $dependent_id , array(), $dependent);
           ?>
 				</td></tr>
 				</tbody>
