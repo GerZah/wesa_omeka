@@ -19,6 +19,8 @@ echo flash();
     </fieldset>
   </section>
   <section class="three columns omega">
-      <a href="<?php echo $this->url('conditional-elements/index'); ?>" ><?php echo __('Back'); ?></a>
+    <div id="save" class="panel">
+     <a href="<?php echo html_escape(url('conditional-elements/index')); ?>" class="add big green button"><?php echo __('Back'); ?></a>
+   </div>
   </section>
 <?php echo foot(); ?>
