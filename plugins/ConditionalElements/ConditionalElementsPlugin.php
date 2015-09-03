@@ -10,6 +10,7 @@ class ConditionalElementsPlugin extends Omeka_Plugin_AbstractPlugin {
 	* @var array This plugin's hooks.
 	*/
 	protected $_hooks = array(
+		'initialize',
 		'admin_head', // embed our jQuery code when adding / editing objects
 		'define_acl',
 	);
@@ -19,6 +20,20 @@ class ConditionalElementsPlugin extends Omeka_Plugin_AbstractPlugin {
 	*/
 	protected $_filters = array('admin_navigation_main');
 
+   /**
+     * Add the translations.
+     */
+  public function hookInitialize()
+  {
+    add_translation_source(dirname(__FILE__) . '/languages');
+  }
+
+
+  /**
+   * Define the ACL.
+   *
+   * @param array $args
+   */
 	function hookDefineAcl($args)
 	{
 		// Restrict access to super and admin users.
@@ -32,6 +47,7 @@ class ConditionalElementsPlugin extends Omeka_Plugin_AbstractPlugin {
 		}
 		return $nav;
 	}
+
 	public function hookAdminHead($args) {
 		// Core hookAdminHead taken from ElementTypes plugin
 
