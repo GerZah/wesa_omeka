@@ -7,7 +7,7 @@ echo flash();
 <form method="post" action="<?php echo url('conditional-elements/index/save'); ?>">
   <section class="seven columns alpha">
     <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
-      <h2>Step 3: Select Dependee Value to Affect Dependent</h2>
+      <h2><?php echo __("Step 3: Select Dependee Value to Affect Dependent"); ?></h2>
       <div class="field">
         <p><?php echo __("Choose one of the dependee element's possible values. If this value is selected, ".
                          "the dependent element will become visible; otherwise, it will be hidden."); ?></p>

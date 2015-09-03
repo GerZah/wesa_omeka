@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-ConditionalElements/"
 "issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2015-09-03 17:37+0200\n"
+"PO-Revision-Date: 2015-09-03 17:53+0200\n"
 "Last-Translator: Gero Zahn <gero.zahn@upb.de>\n"
 "Language-Team: en_US <LL@li.org>\n"
 "Language: de_DE\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: ConditionalElementsPlugin.php:31
 msgid "Conditional Elements"
-msgstr "Bedingte Elemente"
+msgstr "Abhängige Elemente"
 
 #: controllers/IndexController.php:75
 #, php-format
@@ -150,7 +150,7 @@ msgstr "Speichern"
 
 #: views/admin/index/index.php:2
 msgid "Browse Conditional Elements"
-msgstr "Bedingte Elemente anzeigen"
+msgstr "Abhängige Elemente anzeigen"
 
 #: views/admin/index/index.php:13
 msgid "Actions"
@@ -164,6 +164,10 @@ msgstr "[n.v.]"
 #: views/admin/index/save.php:11
 msgid "You have successfully saved the dependency."
 msgstr "Die Abhängigkeit wurde erfolgreich gespeichert."
+
+#: views/admin/index/term.php:10
+msgid "Step 3: Select Dependee Value to Affect Dependent"
+msgstr "Schritt 3: Auswahl für verantwortliches Element wählen"
 
 #: views/admin/index/term.php:12
 msgid ""

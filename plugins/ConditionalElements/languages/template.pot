@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ConditionalElementsPlugin.php:31
+#: ConditionalElementsPlugin.php:46
 msgid "Conditional Elements"
 msgstr ""
 
@@ -149,6 +149,10 @@ msgstr ""
 
 #: views/admin/index/save.php:11
 msgid "You have successfully saved the dependency."
+msgstr ""
+
+#: views/admin/index/term.php:10
+msgid "Step 3: Select Dependee Value to Affect Dependent"
 msgstr ""
 
 #: views/admin/index/term.php:12
