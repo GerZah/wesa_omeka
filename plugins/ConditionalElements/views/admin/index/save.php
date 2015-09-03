@@ -7,11 +7,10 @@ echo flash();
     <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
       <div class="field">
         <?php
-        # check option, 0, name
         if($_POST['term'] == '' )
         { ?>
           <h2><?php echo __("No term is selected. Please try creating the dependency again."); ?></h2>
-          <a href="<?php echo $this->url('conditional-elements/index'); ?>" ><?php echo __('Back'); ?></a>
+          <a href="<?php echo $this->url('conditional-elements/index/term', array('dependent_id' => $_POST['dependent'], 'dependee_id' => $_POST['dependee'] )); ?>" ><?php echo __('Back'); ?></a>
         <?php }
         else { ?>
         <h2><?php echo __("You have successfully saved the dependency."); ?></h2>

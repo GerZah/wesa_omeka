@@ -61,10 +61,21 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
         $json=get_option('conditional_elements_dependencies');
         if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
         $dependencies = json_decode($json,true);
+        //check if json is There
+        if ($dependencies) {
+        //check for integer values
+        $dependent = '';
+        $dependee  = '';
+        $term_id = '';
         $dependent = intval($_POST['dependent']);
         $dependee = intval($_POST['dependee']);
         $term_id = intval($_POST['term']);
-
+        //check if values are There
+        if(($dependent) and ($dependee) and ($term_id))
+        {
+        // check if 'please select'
+        if(($dependent != 0) and ($dependee != 0) and ($term_id != -1))
+        {
         $db = get_db();
         $select = "SELECT e.terms AS term
         FROM  {$db->Element} es
@@ -82,12 +93,22 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
         $dependencies[]=$custom;
         $json= json_encode($dependencies);
         set_option('conditional_elements_dependencies', $json);
-      	if ( ($dependent) and ($dependee) and ($term) )
-        {
         $this->_helper->flashMessenger(__('The dependent is successfully added.'), 'success');
         }
         else {
-        $this->_helper->flashMessenger(__('There were errors in creating the dependency.'), 'error');
+          $this->_helper->flashMessenger(__('One of the dependencies is not selected.'), 'error');
+        }
+      }
+        else{
+          $dependent = '';
+          $dependee  = '';
+          $term_id = '';
+          $this->_helper->flashMessenger(__('One of the dependencies is missing.'), 'error');
+        }
+    }
+        else {
+        $dependencies ="null";
+        $this->_helper->flashMessenger(__('There were errors in creating the dependency. No JSON is available.'), 'error');
         }
         }
       catch (Omeka_Validate_Exception $e) {
@@ -103,10 +124,16 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
   public function deleteAction()
   {
     try{
-      $dependent_id = $_GET['dependent_id'];
       $json=get_option('conditional_elements_dependencies');
       if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
       $json_obj = json_decode($json,true);
+      //check if json is There
+      if ($json_obj) {
+      // check for integer values
+      $dependent_id = intval($_GET['dependent_id']);
+      // check if id is there
+      if($dependent_id)
+      {
       // Construct new array from all entries that don't match the requested delete id
       $newarr = array();
       foreach($json_obj as $value) {
@@ -116,10 +143,12 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
 			}
       $json=json_encode($newarr);
       set_option('conditional_elements_dependencies', $json);
-      if ($dependent_id)
-      {
       $this->_helper->flashMessenger(__('The dependent is successfully deleted.'), 'success');
-      }
+    }
+    else{
+      $this->_helper->flashMessenger(__('No dependent is available to delete'), 'error');
+    }
+  }
       else {
       $this->_helper->flashMessenger(__('There were errors in deleting the dependency.'), 'error');
       }

@@ -81,7 +81,7 @@ echo flash();
   }
   else {
     echo "<h3>".__('Please choose a dependent to proceed.')."</h3>\n"; ?>
-    <a href="<?php echo $this->url('conditional-elements/index'); ?>" ><?php echo __('Back'); ?></a>
+    <a href="<?php echo $this->url('conditional-elements/index/add'); ?>" ><?php echo __('Back'); ?></a>
     <?  }  ?>
     <input type="hidden" name="dependent" value="<?php echo $_POST['dependent']; ?>">
   </form>
