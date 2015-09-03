@@ -16,16 +16,9 @@ echo flash();
       $db = get_db();
       $selectDependent = "SELECT name FROM $db->Element WHERE id = '$dependent_id'";
       $selectDependee = "SELECT name FROM $db->Element WHERE id = '$dependee_id'";
-      $dependentNames = $db->fetchAll($selectDependent);
-      $dependeeNames = $db->fetchAll($selectDependee);
-      $data = array();
-      foreach($dependentNames as $dependentName) {
-        $data[$dependentName['name']] = $dependentName['name'];
-      }
-      foreach($dependeeNames as $dependeeName) {
-        $data[$dependeeName['name']] = $dependeeName['name'];
-      }
-      ?>
+      $dependentName = $db->fetchOne($selectDependent);
+      $dependeeName = $db->fetchOne($selectDependee);
+        ?>
     <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
       <h2>Step 3: Select Dependee Value to Affect Dependent</h2>
       <div class="field">
@@ -34,7 +27,7 @@ echo flash();
       </div>
 			<table>
 				<tbody>
-					<tr><th><?php echo __("Dependee"); ?>:</th><td><?php echo $data[$dependeeName['name']]; ?></td></tr>
+					<tr><th><?php echo __("Dependee"); ?>:</th><td><?php echo $dependentName; ?></td></tr>
 					<tr><th><?php echo __("Term"); ?>:</th>
 					<td>
           <?php
@@ -47,19 +40,20 @@ echo flash();
           ORDER BY terms";
           $results = $db->fetchAll($select);
           foreach($results as $result) {
-            $terms= $result['terms'];
+            $terms[$result['terms']] = $result['terms'];
           }
-          $term = explode("\n", $terms);
-          $fullterm = array();
-          foreach($term as $value)
-          {
-             $fullterm[$value] = $value;
-           }
-          $fullterm = array('' => __('Select Below')) + $fullterm;
-          echo $this->formSelect('term', null, array(), $fullterm);
+           $term = explode("\n", $terms[$result['terms']]);
+
+           $fullterm = array();
+           foreach($term as $value)
+           {
+              $fullterm[] = $value;
+          }
+          $fullterm = array(-1 => __('Select Below')) + $fullterm;
+          echo $this->formSelect('term', $fullterm , array(), $fullterm);
           ?>
 					</td></tr>
-					<tr><th><?php echo __("Dependent"); ?>:</th><td><?php echo $data[$dependentName['name']]; ?></td></tr>
+					<tr><th><?php echo __("Dependent"); ?>:</th><td><?php echo $dependeeName; ?></td></tr>
 				</tbody>
 			</table>
     </fieldset>

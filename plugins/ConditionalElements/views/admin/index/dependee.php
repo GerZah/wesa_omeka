@@ -57,7 +57,6 @@ echo flash();
               ON es.id = e.element_id ORDER BY name";
             }
             $results = $db->fetchAll($select);
-            $dependent = array();
             foreach($results as $result) {
               $dependee[$result['id']] = $result['name'];
             }

@@ -33,17 +33,21 @@ echo head(array('title' => $pageTitle,'bodyclass' => 'dependent')); ?>
       foreach($results as $result) {
         $data[$result['id']] = $result['name'];
       }
+      $json_array = array();
       foreach ($dependencies as $dep){
         $dependee_id = $dep[0];
         $term = $dep[1];
         $dependent_id = $dep[2];
-        if ((isset($data[$dependee_id])) and (isset($data[$dependent_id])) ) {
+        $json_array[0] = $data[$dependee_id];
+        $json_array[1] = $term;
+        $json_array[2] = $data[$dependent_id];
+      if ((isset($data[$dependee_id])) and (isset($data[$dependent_id])) ) {
           ?>
           <tr>
-            <td><?php echo $data[$dependee_id]; ?>
+            <td><?php echo $json_array[0]; ?>
             </td>
-            <td><?php echo $term; ?></td>
-            <td><?php echo $data[$dependent_id]; ?>
+            <td><?php echo $json_array[1]; ?></td>
+            <td><?php echo $json_array[2]; ?>
             </td>
             <td>
               <a class="confirm" href="<?php echo $this->url('conditional-elements/index/confirm', array('dependent_id' => $dependent_id)); ?>" ><?php echo __('Delete'); ?></a>

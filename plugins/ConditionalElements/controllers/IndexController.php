@@ -61,11 +61,24 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
         $json=get_option('conditional_elements_dependencies');
         if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
         $dependencies = json_decode($json,true);
-        $dependent = $_POST['dependent'];
-        $dependee = $_POST['dependee'];
-        $term = $_POST['term'];
+        $dependent = intval($_POST['dependent']);
+        $dependee = intval($_POST['dependee']);
+        $term_id = intval($_POST['term']);
 
-        $custom = array('0' => $dependee, '1' => $term , '2' => $dependent);
+        $db = get_db();
+        $select = "SELECT e.terms AS term
+        FROM  {$db->Element} es
+        JOIN {$db->SimpleVocabTerm} e
+        ON es.id = e.element_id
+        WHERE es.id = '$dependee'
+        ORDER BY terms";
+        $results = $db->fetchAll($select);
+        foreach($results as $result) {
+          $terms[$result['term']] = $result['term'];
+        }
+        $term = explode("\n", $terms[$result['term']]);
+        $result = isset($term[$term_id]) ? $term[$term_id] : null;
+        $custom = array('0' => $dependee, '1' => $result , '2' => $dependent);
         $dependencies[]=$custom;
         $json= json_encode($dependencies);
         set_option('conditional_elements_dependencies', $json);
