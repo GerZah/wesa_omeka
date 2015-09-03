@@ -11,6 +11,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	* @var array This plugin's hooks.
 	*/
 	protected $_hooks = array(
+		'initialize', # tap into i18n
 		'install', # create additional table and batch-preprocess existing items for dates / timespans
 		'uninstall', # delete table
 		'after_save_item', # preprocess saved item for dates / timespans
@@ -18,6 +19,13 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		'admin_items_search', # add a time search field to the advanced search panel in admin
 		'items_browse_sql', # filter for a date after search page submission.
 	);
+
+	/**
+	 * Add the translations.
+	 */
+	public function hookInitialize() {
+	add_translation_source(dirname(__FILE__) . '/languages');
+	}
 
 	/**
 	 * Install the plugin.
