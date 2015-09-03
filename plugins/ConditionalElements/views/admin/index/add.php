@@ -39,7 +39,6 @@ echo flash();
           $dependent = array();
           foreach($results as $result) {
             $dependent[$result['id']] = $result['name'];
-
           }
           $dependent = array(0 => __('Select Below')) + $dependent;
           $dependent_id = $dependent[$result['id']];
