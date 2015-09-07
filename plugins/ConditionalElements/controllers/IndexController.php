@@ -62,60 +62,52 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
         if (!$json) { $json="null"; } else { $json = $this->_removeOutdatedDependencies($json); }
         $dependencies = json_decode($json,true);
         //check if json is There
-        if ($dependencies) {
-        //check for integer values
-        $dependent = '';
-        $dependee  = '';
-        $term_id = '';
-        $dependent = intval($_POST['dependent']);
-        $dependee = intval($_POST['dependee']);
-        $term_id = intval($_POST['term']);
-        //check if values are There
-        if(($dependent) and ($dependee) and ($term_id))
+        if ($dependencies)
         {
-        // check if 'please select'
-        if(($dependent != 0) and ($dependee != 0) and ($term_id != -1))
-        {
-        $db = get_db();
-        $select = "SELECT e.terms AS term
-        FROM  {$db->Element} es
-        JOIN {$db->SimpleVocabTerm} e
-        ON es.id = e.element_id
-        WHERE es.id = '$dependee'
-        ORDER BY terms";
-        $results = $db->fetchAll($select);
-        foreach($results as $result) {
-          $terms[$result['term']] = $result['term'];
-        }
-        $term = explode("\n", $terms[$result['term']]);
-        $result = isset($term[$term_id]) ? $term[$term_id] : null;
-        $custom = array('0' => $dependee, '1' => $result , '2' => $dependent);
-        $dependencies[]=$custom;
-        $json= json_encode($dependencies);
-        set_option('conditional_elements_dependencies', $json);
-        $this->_helper->flashMessenger(__('The dependent is successfully added.'), 'success');
+          //check for integer values
+          $dependent = intval($_POST['dependent']);
+          $dependee = intval($_POST['dependee']);
+          $term_id = intval($_POST['term']);
+          //check if values are There
+          if(($dependent) and ($dependee) and ($term_id>=0))
+          {
+            $db = get_db();
+            $selectTerms = "SELECT terms from `$db->SimpleVocabTerm` where element_id = $dependee";
+            $terms = $db->fetchOne($selectTerms);
+
+            $term = array();
+            if ($terms) { $term = explode("\n", $terms); }
+
+            $result = null;
+            if ( ($term) and isset($term[$term_id]) ) { $result = $term[$term_id]; }
+
+            if ($result)
+            {
+              $custom = array('0' => $dependee, '1' => $result , '2' => $dependent);
+              $dependencies[]=$custom;
+              $json= json_encode($dependencies);
+              set_option('conditional_elements_dependencies', $json);
+              $this->_helper->flashMessenger(__('The dependent is successfully added.'), 'success');
+            } // if ($result)
+            else
+            {
+              $this->_helper->flashMessenger(__('Term is missing.'), 'error');
+            }
+          } // if(($dependent) and ($dependee) and ($term_id>=0))
+          else
+          {
+            $this->_helper->flashMessenger(__('One of the dependencies is missing.'), 'error');
+          }
         }
         else {
-          $this->_helper->flashMessenger(__('One of the dependencies is not selected.'), 'error');
+          $this->_helper->flashMessenger(__('There were errors in creating the dependency. No JSON is available.'), 'error');
         }
-      }
-        else{
-          $dependent = '';
-          $dependee  = '';
-          $term_id = '';
-          $this->_helper->flashMessenger(__('One of the dependencies is missing.'), 'error');
-        }
-    }
-        else {
-        $dependencies ="null";
-        $this->_helper->flashMessenger(__('There were errors in creating the dependency. No JSON is available.'), 'error');
-        }
-        }
+      } // try
       catch (Omeka_Validate_Exception $e) {
         $this->_helper->flashMessenger($e);
       }
-    }
-  }
+    } // if ($this->getRequest()->isPost())
+  } // public function saveAction()
 
   /**
   * Deletes the dependency based on dependent_id.
@@ -140,7 +132,7 @@ class ConditionalElements_IndexController extends Omeka_Controller_AbstractActio
         if ($value[2] != $dependent_id) {
           $newarr[] = $value;
         }
-			}
+      }
       $json=json_encode($newarr);
       set_option('conditional_elements_dependencies', $json);
       $this->_helper->flashMessenger(__('The dependent is successfully deleted.'), 'success');

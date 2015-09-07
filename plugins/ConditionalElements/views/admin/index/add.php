@@ -2,6 +2,9 @@
 $pageTitle = __('Add Dependency');
 echo head(array('title'=>$pageTitle));
 echo flash();
+
+$def_dependent_id = null;
+if (isset($_GET['dependent'])) { $def_dependent_id = intval($_GET['dependent']); }
 ?>
 <form method="post" action="<?php echo url('conditional-elements/index/dependee'); ?>">
   <section class="seven columns alpha">
@@ -12,41 +15,35 @@ echo flash();
                           "visible or hidden based on the selection for some other element."); ?></p>
         <p><?php echo __("<em>Please note:</em> One element can be dependent only from one other element."); ?></p>
       </div>
-			<table>
-				<tbody>
-				<tr><th><?php echo __("Dependent"); ?>:</th>
-				<td>
+      <table>
+        <tbody>
+        <tr><th><?php echo __("Dependent"); ?>:</th>
+        <td>
           <?php
           $json=get_option('conditional_elements_dependencies');
           if (!$json) { $json="null"; }
           $dependencies = json_decode($json,true);
-          $db = get_db();
+
+          $whereClause = "";
           if ($dependencies) {
-          $ids = array();
-          foreach ($dependencies as $d){
-            $ids[]=$d[2];
+            $ids = array();
+            foreach ($dependencies as $d) { $ids[]=$d[2]; }
+            $ids = array_unique($ids);
+            $ids_verb = implode(",", $ids);
+            $whereClause = "WHERE id NOT in ($ids_verb)";
           }
-          $ids=array_unique($ids);
-          $ids_verb = implode(",",$ids);
-          $select = "SELECT id, name FROM $db->Element WHERE id NOT in ($ids_verb) ORDER BY name";
-        }
-        else {
-          $dependencies ="null";
-          $ids_verb = '';
-          $select = "SELECT id, name FROM $db->Element ORDER BY name";
-        }
+
+          $db = get_db();
+          $select = "SELECT id, name FROM `$db->Element` $whereClause ORDER BY name";
           $results = $db->fetchAll($select);
-          $dependent = array();
-          foreach($results as $result) {
-            $dependent[$result['id']] = $result['name'];
-          }
-          $dependent = array(0 => __('Select Below')) + $dependent;
-          $dependent_id = $dependent[$result['id']];
-          echo $this->formSelect('dependent', $dependent_id , array(), $dependent);
+
+          $dependent = array(0 => __('Select Below'));
+          foreach($results as $result) { $dependent[$result['id']] = $result['name']; }
+          echo $this->formSelect('dependent', $def_dependent_id, array(), $dependent);
           ?>
-				</td></tr>
-				</tbody>
-			</table>
+        </td></tr>
+        </tbody>
+      </table>
     </fieldset>
   </section>
   <section class="three columns omega">

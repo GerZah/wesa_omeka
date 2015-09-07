@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-ConditionalElements/"
 "issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2015-09-03 17:53+0200\n"
+"PO-Revision-Date: 2015-09-07 14:22+0200\n"
 "Last-Translator: Gero Zahn <gero.zahn@upb.de>\n"
 "Language-Team: en_US <LL@li.org>\n"
 "Language: de_DE\n"
@@ -18,30 +18,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.4\n"
 
-#: ConditionalElementsPlugin.php:31
+#: ConditionalElementsPlugin.php:46
 msgid "Conditional Elements"
 msgstr "Abhängige Elemente"
 
-#: controllers/IndexController.php:75
-#, php-format
-msgid "The dependent \"%s\" was successfully added."
-msgstr "Die Abhängigkeit „%s“ wurde erfolgreich angelegt."
+#: controllers/IndexController.php:90
+msgid "The dependent is successfully added."
+msgstr "Das abhängige Element wurde erfolgreich hinzugefügt."
 
-#: controllers/IndexController.php:135
+#: controllers/IndexController.php:94
+msgid "Term is missing."
+msgstr "Der Begriff fehlt."
+
+#: controllers/IndexController.php:99
+msgid "One of the dependencies is missing."
+msgstr "Es fehlt eine Abhängigkeit."
+
+#: controllers/IndexController.php:103
+msgid "There were errors in creating the dependency. No JSON is available."
+msgstr "Fehler beim Anlegen der Abhängigkeit. Kein JSON verfügbar."
+
+#: controllers/IndexController.php:138
 msgid "The dependent is successfully deleted."
 msgstr "Die Abhängigkeit wurde erfolgreich gelöscht."
 
+#: controllers/IndexController.php:141
+msgid "No dependent is available to delete"
+msgstr "Kein abhängiges Element zum Löschen vorhanden."
+
+#: controllers/IndexController.php:145
+msgid "There were errors in deleting the dependency."
+msgstr "Fehler beim Löschen der Abhängigkeit."
+
 #: views/admin/index/add.php:2 views/admin/index/dependee.php:2
-#: views/admin/index/index.php:5 views/admin/index/index.php:92
+#: views/admin/index/index.php:5 views/admin/index/index.php:95
 #: views/admin/index/save.php:2 views/admin/index/term.php:2
 msgid "Add Dependency"
 msgstr "Abhängigkeit hinzufügen"
 
-#: views/admin/index/add.php:10
+#: views/admin/index/add.php:12
 msgid "Step 1: Select Dependent for Dependency"
 msgstr "Schritt 1: Abhängiges Element aussuchen"
 
-#: views/admin/index/add.php:12
+#: views/admin/index/add.php:14
 msgid ""
 "Choose a dependent element from the list below that should become visible or "
 "hidden based on the selection for some other element."
@@ -50,7 +69,7 @@ msgstr ""
 "basierend auf der Selektion eines anderen Elementes sichtbar oder unsichtbar "
 "werden soll."
 
-#: views/admin/index/add.php:14
+#: views/admin/index/add.php:16
 msgid ""
 "<em>Please note:</em> One element can be dependent only from one other "
 "element."
@@ -58,13 +77,13 @@ msgstr ""
 "<em>Bitte beachten:</em> Ein Element kann nur abhängig von genau einem "
 "anderen Element sein."
 
-#: views/admin/index/add.php:18 views/admin/index/confirm.php:47
-#: views/admin/index/dependee.php:57 views/admin/index/index.php:12
-#: views/admin/index/term.php:43
+#: views/admin/index/add.php:20 views/admin/index/confirm.php:47
+#: views/admin/index/dependee.php:74 views/admin/index/index.php:12
+#: views/admin/index/term.php:56
 msgid "Dependent"
 msgstr "Abhängiges Element"
 
-#: views/admin/index/add.php:54 views/admin/index/dependee.php:65
+#: views/admin/index/add.php:51 views/admin/index/dependee.php:82
 msgid "Next"
 msgstr "Weiter"
 
@@ -76,14 +95,13 @@ msgstr "Abhängigkeit löschen"
 msgid "Are you sure you wish to delete this dependency?"
 msgstr "Sind Sie sicher, dass Sie diese Abhängigkeit löschen wollen?"
 
-#: views/admin/index/confirm.php:45 views/admin/index/dependee.php:52
-#: views/admin/index/edit.php:18 views/admin/index/index.php:10
-#: views/admin/index/term.php:17
+#: views/admin/index/confirm.php:45 views/admin/index/dependee.php:70
+#: views/admin/index/index.php:10 views/admin/index/term.php:47
 msgid "Dependee"
 msgstr "Verantwortliches Element"
 
-#: views/admin/index/confirm.php:46 views/admin/index/edit.php:27
-#: views/admin/index/index.php:11 views/admin/index/term.php:18
+#: views/admin/index/confirm.php:46 views/admin/index/index.php:11
+#: views/admin/index/term.php:48
 msgid "Term"
 msgstr "Begriff"
 
@@ -102,15 +120,22 @@ msgstr "Zu löschende Abhängigkeit nicht gefunden."
 msgid "No dependency given that could be deleted."
 msgstr "Keine zu löschende Abhängigkeit angegeben."
 
-#: views/admin/index/delete.php:11
+#: views/admin/index/delete.php:9
 msgid "You have successfully deleted the dependency."
 msgstr "Die Abhängigkeit wurde erfolgreich gelöscht."
 
-#: views/admin/index/delete.php:17 views/admin/index/save.php:17
+#: views/admin/index/delete.php:15 views/admin/index/dependee.php:83
+#: views/admin/index/dependee.php:91 views/admin/index/save.php:22
+#: views/admin/index/save.php:32 views/admin/index/term.php:64
+#: views/admin/index/term.php:73
 msgid "Back"
 msgstr "Zurück"
 
-#: views/admin/index/dependee.php:12
+#: views/admin/index/dependee.php:30
+msgid "Step 2: Select Dependee for Dependency"
+msgstr "Schritt 2: Verantwortliches Element aussuchen"
+
+#: views/admin/index/dependee.php:32
 msgid ""
 "Choose a dependee element from the list below that will, based on the "
 "selection, will affect the dependent element to become visible or hidden."
@@ -118,7 +143,7 @@ msgstr ""
 "Bitte wählen Sie ein verantwortliches Element, das basierend auf dessen "
 "Auswahl die Sichtbarkeit des abhängigen Elementes beeinflusst."
 
-#: views/admin/index/dependee.php:14
+#: views/admin/index/dependee.php:34
 msgid ""
 "<em>Please note:</em> You will need to supply a list of possible selections "
 "via \"Simple Vocabulary\" to an element to become a possible dependee."
@@ -127,7 +152,7 @@ msgstr ""
 "auswählen zu können, müssen Sie dafür mit Hilfe von \"Simple Vocabulary\" "
 "entsprechende Auswahlmöglichkeiten eingeben."
 
-#: views/admin/index/dependee.php:16
+#: views/admin/index/dependee.php:36
 msgid ""
 "<em>Please note:</em> One dependee can affect multiple dependents, based on "
 "multiple values to choose from."
@@ -135,18 +160,13 @@ msgstr ""
 "<em>Bitte beachten:</em> Ein verantwortliches Element kann mit verschiedenen "
 "Auswahlen mehrere abhängige Elemente beeinflussen."
 
-#: views/admin/index/dependee.php:64
+#: views/admin/index/dependee.php:81
 msgid "Previous"
 msgstr "Vorheriges"
 
-#: views/admin/index/edit.php:8
-#, php-format
-msgid "Edit dependent #%s"
-msgstr "Die Abhängigkeit „%s“ wurde erfolgreich angelegt."
-
-#: views/admin/index/edit.php:38 views/admin/index/term.php:50
-msgid "Save"
-msgstr "Speichern"
+#: views/admin/index/dependee.php:90
+msgid "Please choose a dependent to proceed."
+msgstr "Bitte wählen Sie zum Fortfahren ein abhängiges Element."
 
 #: views/admin/index/index.php:2
 msgid "Browse Conditional Elements"
@@ -156,20 +176,26 @@ msgstr "Abhängige Elemente anzeigen"
 msgid "Actions"
 msgstr "Aktionen"
 
-#: views/admin/index/index.php:61 views/admin/index/index.php:62
-#: views/admin/index/index.php:63 views/admin/index/index.php:64
+#: views/admin/index/index.php:64 views/admin/index/index.php:65
+#: views/admin/index/index.php:66 views/admin/index/index.php:67
 msgid "[n/a]"
 msgstr "[n.v.]"
 
-#: views/admin/index/save.php:11
+#: views/admin/index/save.php:21
+msgid "No term is selected. Please try creating the dependency again."
+msgstr ""
+"Kein Begriff ausgewählt. Bitte versuchen Sie erneut, die Abhängigkeit "
+"anzulegen."
+
+#: views/admin/index/save.php:25
 msgid "You have successfully saved the dependency."
 msgstr "Die Abhängigkeit wurde erfolgreich gespeichert."
 
-#: views/admin/index/term.php:10
+#: views/admin/index/term.php:40
 msgid "Step 3: Select Dependee Value to Affect Dependent"
 msgstr "Schritt 3: Auswahl für verantwortliches Element wählen"
 
-#: views/admin/index/term.php:12
+#: views/admin/index/term.php:42
 msgid ""
 "Choose one of the dependee element's possible values. If this value is "
 "selected, the dependent element will become visible; otherwise, it will be "
@@ -178,3 +204,11 @@ msgstr ""
 "Bitte wählen Sie aus den möglichen Werten des verantwortlichen Elements "
 "eines aus. Wird dieser Wert ausgewählt, wird das abhängige Element sichtbar, "
 "sondern bleibt es unsichtbar."
+
+#: views/admin/index/term.php:63
+msgid "Save"
+msgstr "Speichern"
+
+#: views/admin/index/term.php:72
+msgid "Please choose a dependee to proceed."
+msgstr "Bitte wählen Sie ein verantwortliches Element, um fortzufahren."
