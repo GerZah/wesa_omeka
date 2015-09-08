@@ -61,11 +61,10 @@ if (isset($_GET['dependee'])) { $def_dependee_id = intval($_GET['dependee']); }
             $db = get_db();
             $results = $db->fetchAll($select);
 
+            $dependee = array(0 => __('Select Below'));
             foreach($results as $result) {
               $dependee[$result['id']] = $result['name'];
             }
-
-            $dependee = array(0 => __('Select Below')) + $dependee;
 
             echo "<tr><th>".__("Dependee").":</th>\n<td>\n".
                  $this->formSelect('dependee', $def_dependee_id , array(), $dependee).
