@@ -14,17 +14,23 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		'initialize', # tap into i18n
 		'install', # create additional table and batch-preprocess existing items for dates / timespans
 		'uninstall', # delete table
+		'config_form', # display choice whether or not to use [G] / [J] prefixes
+		'config', # store config settings in the database
 		'after_save_item', # preprocess saved item for dates / timespans
 		'after_delete_item', # delete deleted item's preprocessed dates / timespans
 		'admin_items_search', # add a time search field to the advanced search panel in admin
 		'items_browse_sql', # filter for a date after search page submission.
 	);
 
+	protected $_options = array(
+		'date_search_use_gregjul_prefixes' => 0,
+	);
+
 	/**
 	 * Add the translations.
 	 */
 	public function hookInitialize() {
-	add_translation_source(dirname(__FILE__) . '/languages');
+		add_translation_source(dirname(__FILE__) . '/languages');
 	}
 
 	/**
@@ -32,7 +38,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 */
 	public function hookInstall() {
 		# Create table
-		$db = $this->_db;
+		$db = get_db();
 
 		# Dates are always "YYYY-MM-DD", i.e. 10 characters long
 
@@ -46,20 +52,50 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 		$db->query($sql);
 
-		$this->_installOptions();
+		SELF::_installOptions();
+
+		SELF::_batchProcessExistingItems();
 	}
 
 	/**
 	 * Uninstall the plugin.
 	 */
 	public function hookUninstall() {
-		$db = $this->_db;
+		$db = get_db();
 
 		# Drop the table
 		$sql = "DROP TABLE IF EXISTS `$db->DateSearchDates`";
 		$db->query($sql);
 
-		$this->_uninstallOptions();
+		SELF::_uninstallOptions();
+	}
+
+	/**
+	 * Display the plugin configuration form.
+	 */
+	public static function hookConfigForm() {
+		$useGregJulPrexifes = get_option('date_search_use_gregjul_prefixes');
+		require dirname(__FILE__) . '/config_form.php';
+	}
+
+	/**
+	 * Handle the plugin configuration form.
+	 */
+	public static function hookConfig() {
+		$prevUseGregJulPrexifes = (int)(boolean) get_option('date_search_use_gregjul_prefixes');
+		$newUseGregJulPrexifes = (int)(boolean) $_POST['date_search_use_gregjul_prefixes'];
+		set_option('date_search_use_gregjul_prefixes', $newUseGregJulPrexifes);
+		if ($prevUseGregJulPrexifes != $newUseGregJulPrexifes) { SELF::_batchProcessExistingItems(); }
+	}
+
+	/**
+	 * Preprocess ALL existing items  which could be rather EVIL in huge installations
+	 */
+	private function _batchProcessExistingItems() {
+		$db = get_db();
+		$sql= "select id from `$db->Items`";
+		$items = $db->fetchAll($sql);
+		foreach($items as $item) { SELF::preProcessItem($item["id"]); }
 	}
 
 	/**
@@ -73,7 +109,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			}
 
 			$item_id = intval($args["record"]["id"]);
-			if ($item_id) { $this->preProcessItem($item_id); }
+			if ($item_id) { SELF::preProcessItem($item_id); }
 
 			# die("After Save Item");
 
@@ -85,7 +121,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * @param array $args
 	 */
 	public function hookAfterDeleteItem($args) {
-			$db = $this->_db;
+			$db = get_db();
 
 			$item_id = intval($args["record"]["id"]);
 
@@ -101,7 +137,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * Pre-process one item's textual data and store timespans in DateSearchDates table
 	 */
 	private function preProcessItem($item_id) {
-		$db = $this->_db;
+		$db = get_db();
 
 		if ($item_id) {
 			$sql = "delete from `$db->DateSearchDates` where item_id=$item_id";
@@ -124,14 +160,14 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 					foreach($comments as $comment) { $text .= " ".$comment["relation_comment"]; }
 				}
 
-				$cookedDates = $this->_processDateText($text);
+				$cookedDates = SELF::_processDateText($text);
 				# echo "<pre>"; print_r($cookedDates); die("</pre>");
 
 				if ($cookedDates) {
 
 					$values = array();
 					foreach($cookedDates as $cookedDate) {
-						$this->_swapIfNecessary($cookedDate[0], $cookedDate[1]);
+						SELF::_swapIfNecessary($cookedDate[0], $cookedDate[1]);
 						$values[]='('.$item_id.',"'.$cookedDate[0].'","'.$cookedDate[1].'")';
 					}
 					$values = implode(", ", $values);
@@ -164,16 +200,16 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		$params = $args['params'];
 
 		if (	(isset($params['date_search_term'])) and
-					($this->_checkDate($params['date_search_term'])) ) {
+					(SELF::_checkDate($params['date_search_term'])) ) {
 
 			# $searchFromDate = "1546-08-17";
 			# $searchToDate = "1546-08-17";
 
-			$timespan = $this->_expandTimespan($params['date_search_term']);
+			$timespan = SELF::_expandTimespan($params['date_search_term']);
 			$searchFromDate = $timespan[0];
 			$searchToDate = $timespan[1];
 
-			$db = $this->_db;
+			$db = get_db();
 			$select
 					->join(
 							array('date_search_dates' => $db->DateSearchDates),
@@ -207,11 +243,14 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * Main regex processing to extract dates and timespans, to be able to expand them later
 	 */
 	private function _processDateText($text) {
-		$regEx = $this->_constructRegEx();
-		$dateTimespan = $regEx["dateTimespan"];
+		$regEx = SELF::_constructRegEx();
+		$julGregPrefix = $regEx["julGregPrefix"];
 		$date = $regEx["date"];
 
-		$allCount = preg_match_all( "($dateTimespan)", $text, $allMatches);
+		$useGregJulPrexifes = intval(get_option('date_search_use_gregjul_prefixes'));
+		$mainRegEx = ( $useGregJulPrexifes ? $regEx["julGregDateTimeSpan"] : $regEx["dateTimespan"] );
+
+		$allCount = preg_match_all( "($mainRegEx)i", $text, $allMatches);
 		# echo "<pre>Count: $allCount\n"; print_r($allMatches); die("</pre>");
 
 		$cookedDates = array();
@@ -220,8 +259,23 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			$timespan = array();
 			$timespan[] = $singleSplit[0][0];
 			$timespan[] = $singleSplit[0][ ($singleCount==2 ? 1 : 0 ) ];
-			$timespan = $this->_expandTimespan($timespan);
-			$cookedDates[] = $timespan;
+			$timespan = SELF::_expandTimespan($timespan);
+
+			$storeDate = true;
+
+			if ($useGregJulPrexifes) { // Gregorian / Julian date prefixes
+				$julGreg = preg_match( "($julGregPrefix)i", $singleMatch, $julGregMatch );
+				$julGregJG = ($julGreg == 1 ? strtoupper($julGregMatch[1]) : null ); // "G" or "J" or null
+				# echo "<pre>$julGreg / $julGregJG: "; print_r($julGregMatch); die("</pre>");
+
+				switch ($julGregJG) {
+					case "J" : $storeDate = ($timespan[0] <= "1582-10-04"); break;
+					case "G" : $storeDate = ($timespan[1] >= "1582-10-15"); break;
+				}
+				# echo "<pre>StoreDate: $storeDate\n"; print_r($timespan); die("</pre>");
+			}
+
+			if ($storeDate) { $cookedDates[] = $timespan; }
 		}
 		#echo "<pre>"; print_r($cookedDates); die("</pre>");
 
@@ -243,6 +297,9 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		$separator = "\s*-\s*";
 		$dateTimespan = "$date(?:$separator$date)?";
 
+		$julGregPrefix = "\[([J,G])\] ";
+		$julGregDateTimeSpan = $julGregPrefix.$dateTimespan;
+
 		$result=array(
 								"year" => $year,
 								"month" => $month,
@@ -251,6 +308,8 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 								"date" => $date,
 								"separator" => $separator,
 								"dateTimespan" => $dateTimespan,
+								"julGregPrefix" => $julGregPrefix,
+								"julGregDateTimeSpan" => $julGregDateTimeSpan,
 							);
 
 		return $result;
@@ -267,7 +326,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * @return int from preg_match 1 / 0 / false
 	 */
 	private function _checkDate($chkDate, $timespan=false) {
-		$regEx = $this -> _constructRegEx();
+		$regEx = SELF::_constructRegEx();
 		$chkTerm = $regEx[($timespan ? "dateTimespan" : "date")];
 		return preg_match( "($chkTerm)", $chkDate);
 	}
@@ -285,8 +344,8 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 		if (!is_array($result)) { $result = array($result, $result); }
 
-		$result[0] = $this->_updateDate($result[0], -1); # -1 == left edge, xxxx-01-01
-		$result[1] = $this->_updateDate($result[1], +1); # +1 == right edge, xxxx-12-31
+		$result[0] = SELF::_updateDate($result[0], -1); # -1 == left edge, xxxx-01-01
+		$result[1] = SELF::_updateDate($result[1], +1); # +1 == right edge, xxxx-12-31
 
 		return $result;
 	}
@@ -305,7 +364,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	protected function _updateDate($date, $edge) {
 		$result=$date;
 
-		$regEx = $this -> _constructRegEx();
+		$regEx = SELF::_constructRegEx();
 
 		$year = $regEx["year"];
 		$month =$regEx["month"];
