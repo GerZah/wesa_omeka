@@ -23,7 +23,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	);
 
 	protected $_options = array(
-		'date_search_use_gregjul_prefixes' => 1,
+		'date_search_use_gregjul_prefixes' => 0,
 	);
 
 	/**

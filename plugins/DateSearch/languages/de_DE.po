@@ -1,0 +1,46 @@
+# Translation for the Date Search plugin for Omeka.
+# Copyright (C) 2011 Roy Rosenzweig Center for History and New Media
+# This file is distributed under the same license as the Omeka package.
+# Gero Zahn <gero.zahn@upb.de>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DateSearch\n"
+"Report-Msgid-Bugs-To: http://github.com/omeka/plugin-DateSearch/issues\n"
+"POT-Creation-Date: 2012-01-09 21:49-0500\n"
+"PO-Revision-Date: 2015-09-08 14:25+0200\n"
+"Last-Translator: Gero Zahn <gero.zahn@upb.de>\n"
+"Language-Team: de_DE <LL@li.org>\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.4\n"
+
+#: config_form.php:3
+msgid "Use Gregorian / Julian Prefixes"
+msgstr "Gregorianische / Julianische Präfixe verwenden"
+
+#: config_form.php:8
+msgid ""
+"Check this if you want to use [G] / [J] prefixes to indicate that a date is "
+"meant to be specifying a Gregorian or a Julian date or timespan."
+msgstr ""
+"Wählen Sie dies aus, wenn Sie [G] / [J] Präfixe verwenden wollen, um "
+"darzustellen, dass es sich bei einem Datum um ein Gregorianisches oder ein "
+"Julianisches Datum bzw. eine Zeitspanne handelt."
+
+#: views/shared/common/date-search-advanced-search.php:3
+msgid "Date Search"
+msgstr "Datums-Suche"
+
+#: views/shared/common/date-search-advanced-search.php:8
+msgid ""
+"You may enter a date in the forms YYYY, YYYY-MM, or YYYY-MM-DD. Date Search "
+"will find items that contain dates and timespans matching your search. For "
+"example: \"1970\" will find a item mentioning the timespan \"1960-1980\"."
+msgstr ""
+"Sie können ein Datum in der Form YYYY, YYYY-MM oder YYYY-MM-DD eingeben. "
+"Die Datums-Suche findet Objekte, die Daten oder Zeitspannen enthalten, die "
+"zur Suche passen. Beispielsweise wird die Suche nach \"1970\" ein Objekt "
+"finden, das die Zeitspanne \"1960-1980\" erwähnt."
