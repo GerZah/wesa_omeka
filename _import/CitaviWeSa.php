@@ -7,6 +7,10 @@
 
 	// -----------------------------------------------
 
+	ini_set('include_path', '.' . DIRECTORY_SEPARATOR . '..');
+
+	// -----------------------------------------------
+
 	// Bootstrap the Omeka application.
 	require_once 'bootstrap.php';
 
