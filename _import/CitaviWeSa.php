@@ -19,20 +19,9 @@
 	$application->initialize();
 
 	$db = get_db(); // Database connection
-
-	// Get Items Types
-	$sql = "SELECT id, name from {$db->Item_Types} ORDER BY id";
-	$itemTypes = $db->fetchAll($sql);
-	# print_r($itemTypes);
-
-	$importItemTypeID = null;
-	foreach($itemTypes as $itemType) {
-		if ($itemType["name"] == importItemType) {
-			$importItemTypeID = $itemType["id"];
-			break;
-		}
-	}
-
+	$importItemTypeID = false; // Sanity
+	$sql = "SELECT id from {$db->Item_Types} where name='" . importItemType . "'";
+	$importItemTypeID = $db->fetchOne($sql);
 	if (!$importItemTypeID) { die("Item type '".importItemType."' not found."); }
 
 	// -----------------------------------------------
