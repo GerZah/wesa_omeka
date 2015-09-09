@@ -199,13 +199,19 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		$select = $args['select'];
 		$params = $args['params'];
 
+		$regEx = SELF::_constructRegEx();
+		$date = $regEx["date"];
+		$dateTimespan = $regEx["dateTimespan"];
+
 		if (	(isset($params['date_search_term'])) and
-					(SELF::_checkDate($params['date_search_term'])) ) {
+					(preg_match( "($dateTimespan)", $params['date_search_term'])) ) {
 
-			# $searchFromDate = "1546-08-17";
-			# $searchToDate = "1546-08-17";
+			$singleCount = preg_match_all ( "($date)", $params['date_search_term'], $singleSplit );
+			$timespan = array();
+			$timespan[] = $singleSplit[0][0];
+			$timespan[] = $singleSplit[0][ ($singleCount==2 ? 1 : 0 ) ];
+			$timespan = SELF::_expandTimespan($timespan);
 
-			$timespan = SELF::_expandTimespan($params['date_search_term']);
 			$searchFromDate = $timespan[0];
 			$searchToDate = $timespan[1];
 
@@ -217,7 +223,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 							array()
 					)
 					->where("'$searchFromDate'<=date_search_dates.todate and '$searchToDate'>=date_search_dates.fromdate");
-					# die("$searchFromDate / $searchToDate --- $select");
+					# die("<pre>$searchFromDate / $searchToDate --- $select</pre>");
 
 		}
 
@@ -314,21 +320,6 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 		return $result;
 
-	}
-
-	# ------------------------------------------------------------------------------------------------------
-
-	/**
-	 * Check whether a string is either yyyy, yyyy-mm, or yyyy-mm-dd -- or yyyy-mm-dd - yyyy-mm-dd
-	 *
-	 * @param string $chkDate - string to be checked
-	 * @param boolean $timespan=false - check for date only or a full timespan
-	 * @return int from preg_match 1 / 0 / false
-	 */
-	private function _checkDate($chkDate, $timespan=false) {
-		$regEx = SELF::_constructRegEx();
-		$chkTerm = $regEx[($timespan ? "dateTimespan" : "date")];
-		return preg_match( "($chkTerm)", $chkDate);
 	}
 
 	# ------------------------------------------------------------------------------------------------------

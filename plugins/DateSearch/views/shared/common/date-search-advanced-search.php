@@ -5,9 +5,9 @@
     <div class="inputs five columns omega">
         <p class="explanation">
         <?php
-        echo __('You may enter a date in the forms YYYY, YYYY-MM, or YYYY-MM-DD. Date Search will '.
-								'find items that contain dates and timespans matching your search. '.
-								'For example: "1970" will find a item mentioning the timespan "1960-1980".');
+        echo __('You may enter a date in the forms YYYY, YYYY-MM, or YYYY-MM-DD, or a timespan consisting of '.
+								'to dates, separated by a hypen ("-"). Date Search will find items that contain dates and timespans '.
+								'matching your search. For example: "1970" will find an item mentioning the timespan "1960-1980".');
         ?>
         </p>
         <p>
