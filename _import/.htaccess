@@ -1,1 +1,1 @@
-RewriteRule ^(_import/.*)$ $1 [L]
+# RewriteRule ^(_import/.*)$ $1 [L]
