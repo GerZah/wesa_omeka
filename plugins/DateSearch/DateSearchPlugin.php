@@ -46,8 +46,8 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		CREATE TABLE IF NOT EXISTS `$db->DateSearchDates` (
 				`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 				`item_id` int(10) unsigned NOT NULL REFERENCES `$db->Item`,
-				`fromdate` varchar(23) NOT NULL,
-				`todate` varchar(23) NOT NULL,
+				`fromdate` varchar(10) NOT NULL,
+				`todate` varchar(10) NOT NULL,
 				PRIMARY KEY (`id`)
 		) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 		$db->query($sql);
