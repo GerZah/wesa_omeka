@@ -185,9 +185,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * Display the time search form on the admin advanced search page
 	 */
 	public function hookAdminItemsSearch() {
-		echo common('date-search-advanced-search', array(
-			/*'formSelectProperties' => get_table_options('DateSearchProperty')*/)
-		);
+		echo common('date-search-advanced-search', null);
 	}
 
 	/**
