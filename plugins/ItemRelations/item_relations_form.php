@@ -26,7 +26,7 @@ $provideRelationComments = get_option('item_relations_provide_relation_comments'
         <td><?php echo __('This Item'); ?></td>
         <td><?php echo $subjectRelation['relation_text']; ?></td>
         <td><a href="<?php echo url('items/show/' . $subjectRelation['object_item_id']); ?>" target="_blank"><?php echo $subjectRelation['object_item_title']; ?></a></td>
-        <?php if ($provideRelationComments): ?><td><?php echo $subjectRelation['relation_comment']; ?></td><?php endif; ?>
+        <?php if ($provideRelationComments): ?><td><input type="text" name="item_relations_subject_comment" id="item_relations_subject_comment_<?php echo $subjectRelation['item_relation_id']; ?>" value="<?php echo $subjectRelation['relation_comment']; ?>" /></td><?php endif; ?>
         <td><input type="checkbox" name="item_relations_item_relation_delete[]" value="<?php echo $subjectRelation['item_relation_id']; ?>" /></td>
     </tr>
     <?php endforeach; ?>

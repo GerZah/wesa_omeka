@@ -353,8 +353,20 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
                 );
             }
         }
-
-        // Delete item relations.
+        // update the comment when the comment is edited in subject
+  //      if (isset($post['item_relations_subject_comment'])) {
+  //          $itemRelation = intval($post['item_relations_subject_comment']);
+            $itemRelation = 26;
+            if ($itemRelation) {
+              $comment = $post['item_relations_subject_comment'];
+              if ($comment) {
+                $subjectCommentdb = $this->_db;
+                $sql = "update `$subjectCommentdb->ItemRelationsRelation` set relation_comment='$comment' where id = $itemRelation ";
+                $subjectCommentdb->query($sql);
+              }
+            }
+      //  }
+      // Delete item relations.
         if (isset($post['item_relations_item_relation_delete'])) {
             foreach ($post['item_relations_item_relation_delete'] as $itemRelationId) {
                 $itemRelation = $db->getTable('ItemRelationsRelation')->find($itemRelationId);
