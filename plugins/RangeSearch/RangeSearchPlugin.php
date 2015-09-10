@@ -30,7 +30,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * Add the translations.
 	 */
 	public function hookInitialize() {
-		# add_translation_source(dirname(__FILE__) . '/languages');
+		add_translation_source(dirname(__FILE__) . '/languages');
 	}
 
 	/**
@@ -79,7 +79,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	public static function hookConfigForm() {
 		$rangeSearchUnits = implode("\n", SELF::_decodeUnitsFromOption(get_option('range_search_units')) );
 		require dirname(__FILE__) . '/config_form.php';
-		echo "<section class='seven columns alpha'><pre>"; print_r(SELF::_constructRegEx()); echo "</pre></section>";
+		# echo "<section class='seven columns alpha'><pre>"; print_r(SELF::_constructRegEx()); echo "</pre></section>";
 	}
 
 	/**
@@ -224,38 +224,49 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * @param array $args
 	 */
 	public function hookItemsBrowseSql($args) {
-		/*
 		$select = $args['select'];
 		$params = $args['params'];
 
 		$regEx = SELF::_constructRegEx();
-		$date = $regEx["date"];
-		$dateTimespan = $regEx["dateTimespan"];
+		foreach($regEx as $key => $val) { $$key = $val; }
+		if (	(isset($params['range_search_term'])) and
+					(preg_match( "($numberNumberRange)", $params['range_search_term'])) ) {
 
-		if (	(isset($params['date_search_term'])) and
-					(preg_match( "($dateTimespan)", $params['date_search_term'])) ) {
+			$singleCount = preg_match_all ( "($number)", $params['range_search_term'], $singleSplit );
+			# echo "<pre>singleCount: "; print_r($singleSplit); echo "</pre>";
+			$numberRange = array();
+			$numberRange[] = $singleSplit[0][0];
+			$numberRange[] = $singleSplit[0][ ($singleCount==2 ? 1 : 0 ) ];
+			$numberRange = SELF::_expandNumberRange($numberRange);
 
-			$singleCount = preg_match_all ( "($date)", $params['date_search_term'], $singleSplit );
-			$timespan = array();
-			$timespan[] = $singleSplit[0][0];
-			$timespan[] = $singleSplit[0][ ($singleCount==2 ? 1 : 0 ) ];
-			$timespan = SELF::_expandTimespan($timespan);
-
-			$searchFromDate = $timespan[0];
-			$searchToDate = $timespan[1];
+			$searchFromNum = $numberRange[0];
+			$searchToNum = $numberRange[1];
 
 			$db = get_db();
 			$select
 					->join(
-							array('date_search_dates' => $db->DateSearchDates),
-							"date_search_dates.item_id = items.id",
+							array('range_search_values' => $db->RangeSearchValues),
+							"range_search_values.item_id = items.id",
 							array()
 					)
-					->where("'$searchFromDate'<=date_search_dates.todate and '$searchToDate'>=date_search_dates.fromdate");
-					# die("<pre>$searchFromDate / $searchToDate --- $select</pre>");
+					->where("'$searchFromNum'<=range_search_values.tonum and '$searchToNum'>=range_search_values.fromnum");
+
+			if (isset($params['range_search_unit'])) {
+				$rangeSearchUnit = intval($params['range_search_unit']);
+
+				$RangeSearchUnits = get_option('range_search_units');
+				if ($RangeSearchUnits) {
+					$RangeSearchUnits=json_decode($RangeSearchUnits);
+					if (isset($RangeSearchUnits[$rangeSearchUnit])) {
+						$filterUnit = $RangeSearchUnits[$rangeSearchUnit];
+						$select->where("range_search_values.unit='$filterUnit'");
+					}
+				}
+			}
+
+#			die("<pre>$searchFromNum / $searchToNum --- $select</pre>");
 
 		}
-		*/
 	}
 
 	# ------------------------------------------------------------------------------------------------------
