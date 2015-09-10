@@ -40,14 +40,15 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		# Create table
 		$db = get_db();
 
-		# Let's assume that a "numval" = number value is at the most "12345678-1234-1234" == 18 chars long
+		# Let's assume that a "numval" = number value is at the most "1234567890-12-12" == 16 chars long
 		# And let's assume that any unit name is at the most 20 chars long ("Reichsmark" would be 10)
 
 		$sql = "
 		CREATE TABLE IF NOT EXISTS `$db->RangeSearchValues` (
 				`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 				`item_id` int(10) unsigned NOT NULL REFERENCES `$db->Item`,
-				`numval` varchar(18) NOT NULL,
+				`fromnum` varchar(16) NOT NULL,
+				`tonum` varchar(16) NOT NULL,
 				`unit` varchar(20) NOT NULL,
 				PRIMARY KEY (`id`),
 				INDEX (unit)
@@ -76,8 +77,9 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * Display the plugin configuration form.
 	 */
 	public static function hookConfigForm() {
-		$rangeSearchUnits = SELF::_decodeUnitsFromOption(get_option('range_search_units'));
+		$rangeSearchUnits = implode("\n", SELF::_decodeUnitsFromOption(get_option('range_search_units')) );
 		require dirname(__FILE__) . '/config_form.php';
+		echo "<section class='seven columns alpha'><pre>"; print_r(SELF::_constructRegEx()); echo "</pre></section>";
 	}
 
 	/**
@@ -91,11 +93,11 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	}
 
 	/**
-	 * Decode JSON array from DB option to be displayable in textarea on config page
+	 * Decode JSON array from DB option -- imploded with "\n" it will be displayable in textarea on config page
 	 */
 	private function _decodeUnitsFromOption($option) {
 		$lines = ($option ? json_decode($option) : array() );
-		return implode("\n", $lines);
+		return $lines;
 	}
 
 	/**
@@ -188,25 +190,23 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 					foreach($comments as $comment) { $text .= " ".$comment["relation_comment"]; }
 				}
 
-				/*
-				$cookedDates = SELF::_processDateText($text);
-				# echo "<pre>"; print_r($cookedDates); die("</pre>");
+				$cookedRanges = SELF::_processRangeText($text);
+				# echo "<pre>"; print_r($cookedRanges); die("</pre>");
 
-				if ($cookedDates) {
+				if ($cookedRanges) {
 
 					$values = array();
-					foreach($cookedDates as $cookedDate) {
-						SELF::_swapIfNecessary($cookedDate[0], $cookedDate[1]);
-						$values[]='('.$item_id.',"'.$cookedDate[0].'","'.$cookedDate[1].'")';
+					foreach($cookedRanges as $cookedRange) {
+						SELF::_swapIfNecessary($cookedRange[0], $cookedRange[1]);
+						$values[]='('.$item_id.',"'.$cookedRange[0].'","'.$cookedRange[1].'","'.$cookedRange[2].'")';
 					}
 					$values = implode(", ", $values);
 
-					$sql = "insert into `$db->DateSearchDates` (item_id, fromdate, todate) values $values";
+					$sql = "insert into `$db->RangeSearchValues` (item_id, fromnum, tonum, unit) values $values";
 					$db->query($sql);
 					# die($sql);
 
 				} # if ($cookedDates)
-				*/
 			} # if ($text)
 		} # if ($item_id)
 	} #  preProcessItem()
@@ -261,39 +261,133 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	# ------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Create the necessary regEx expressions to deal with yyyy / yyyy-mm / yyyy-mm-dd / yyyy-mm-dd - yyyy-mm-dd
+	 * Cross swap  in case the first element is "bigger" (i.e. sorts behind) the second
+	 */
+	private function _swapIfNecessary(&$x,&$y) {
+		# as in http://stackoverflow.com/a/26549027
+		if ($x > $y) {
+			$tmp=$x;
+			$x=$y;
+			$y=$tmp;
+		}
+	}
+
+	# ------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Main regex processing to extract dates and timespans, to be able to expand them later
+	 */
+	private function _processRangeText($text) {
+		$regEx = SELF::_constructRegEx();
+		foreach($regEx as $key => $val) { $$key = $val; }
+
+		$allCount = preg_match_all( "($numberRangeUnits)i", $text, $allMatches);
+		# echo "<pre>Count: $allCount\n"; print_r($allMatches); die("</pre>");
+
+		$cookedRanges = array();
+		foreach($allMatches[0] as $singleMatch) {
+			$singleCount = preg_match_all ( "($number)", $singleMatch, $singleSplit );
+			$numberRange = array();
+			$numberRange[] = $singleSplit[0][0];
+			$numberRange[] = $singleSplit[0][ ($singleCount==2 ? 1 : 0 ) ];
+			$numberRange = SELF::_expandNumberRange($numberRange);
+			$unit = preg_match( "($units)i", $singleMatch, $unitMatch );
+			# echo "<pre>"; print_r($unitMatch); echo "</pre>"; die();
+			$numberRange[] = $unitMatch[0];
+			$cookedRanges[] = $numberRange;
+		}
+		# echo "<pre>"; print_r($cookedRanges); die("</pre>");
+
+		return $cookedRanges;
+	}
+
+	# ------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Create the necessary regEx expressions to deal with xxxx / xxxx-yy / xxxx-yy-zz numbers
 	 */
 	private function _constructRegEx() {
 
-		$result = array();
-
-		/*
 		# Construct RegEx
-		$year = "\d{4}";
-		$month = $day = "\d{1,2}";
-		$monthDay = "$month(?:-$day)?";
-		$date = "$year(?:-$monthDay)?\b";
-		$separator = "\s*-\s*";
-		$dateTimespan = "$date(?:$separator$date)?";
+		$mainNumber = "\d{1,10}"; # 1 to 10 digits for main number
+		$middleNumber = $lastNumber = "\d{1,2}"; # 1 or two digits for middle and last number
+		$middleLastNumber = "$middleNumber(?:-$lastNumber)?"; # middle number - possibly with last number
+		$number = "$mainNumber(?:-$middleLastNumber)?\b"; # main number - possible with middle and possible with last number
+		$separator = "\s*-\s*"; # separator hypen, with or without blanks
+		$numberNumberRange = "$number(?:$separator$number)?"; # one number or two numbers with separator in-between
 
-		$julGregPrefix = "\[([J,G])\] ";
-		$julGregDateTimeSpan = $julGregPrefix.$dateTimespan;
+		$unitsArray = SELF::_decodeUnitsFromOption(get_option('range_search_units'));
+		$units = "\b(?:" . implode("|", $unitsArray) . ")\b";
+		$numberRangeUnits = "$numberNumberRange\s$units";
 
-		$result=array(
-								"year" => $year,
-								"month" => $month,
-								"day" => $day,
-								"monthDay" => $monthDay,
-								"date" => $date,
+		$result = array(
+								"mainNumber" => $mainNumber,
+								"middleNumber" => $middleNumber,
+								"lastNumber" => $lastNumber,
+								"middleLastNumber" => $middleLastNumber,
+								"number" => $number,
 								"separator" => $separator,
-								"dateTimespan" => $dateTimespan,
-								"julGregPrefix" => $julGregPrefix,
-								"julGregDateTimeSpan" => $julGregDateTimeSpan,
+								"numberNumberRange" => $numberNumberRange,
+								"units" => $units,
+								"numberRangeUnits" => $numberRangeUnits,
 							);
-		*/
 
 		return $result;
 
+	}
+
+	# ------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Transform a (valid) number xxxx-pp-qq into a numer ranger-- down to xxxx-00-00 to yyyy-99-99
+	 *
+	 * @param string $timespan as in single date or timespan
+	 * @result array [0] => left edge, [1] => right edge
+	 */
+	private function _expandNumberRange($range) {
+		$result = $range;
+	
+		if (!is_array($result)) { $result = array($result, $result); }
+	
+		$result[0] = SELF::_updateRange($result[0], -1); # -1 == left edge, xxxxxxxxxx-00-00
+		$result[1] = SELF::_updateRange($result[1], +1); # +1 == right edge, xxxxxxxxxx-99-99
+		
+		return $result;
+	}
+	
+	# ------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Take a valid xxxx / xxxx-y / xxxx-yy / xxxx-y-z / xxxx-yy-z / xxxx-yy-zz
+	 * and transform it towards a left edge of possibly xxxx-00-00 or xxxx-99-99
+	 * or at least add leading zeros, as in 000000xxxx-0y-0z
+	 *
+	 * @param string $range to be updated
+	 * @param int edge -- -1 -> left edge (-00-00) / +1 -> right edge (-99-99)
+	 * @result string $range -- transformed towards edge and with leading zeros
+	 */
+
+	private function _updateRange($range, $edge) {
+		$result=$range;
+	
+		$regEx = SELF::_constructRegEx();
+		foreach($regEx as $key => $val) { $$key = $val; }
+	
+		$mainNumberOnly = "^$mainNumber$";
+		$mainMiddleNumber = "^$mainNumber-$middleNumber$";
+		$mainMiddleLastNumber = "^$mainNumber-$middleNumber-$lastNumber$";
+	
+		if ( preg_match( "($mainNumberOnly)", $result ) ) { $result = $result."-".( $edge<0 ? "0" : "99" ); }
+		if ( preg_match( "($mainMiddleNumber)", $result ) ) { $result = $result."-".( $edge<0 ? "0" : "99" ); }
+	
+		if ( preg_match( "($mainMiddleLastNumber)", $result ) ) {
+			$oneDigit = "\b(\d)\b";
+			$result = preg_replace("($oneDigit)", '0${0}', $result);
+		}
+	
+		while (strlen($result)<16) { $result="0$result"; }
+	
+		return $result;
 	}
 
 	# ------------------------------------------------------------------------------------------------------
