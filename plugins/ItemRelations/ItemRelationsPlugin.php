@@ -339,7 +339,7 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
 
         $record = $args['record'];
         $post = $args['post'];
-
+        #echo "<pre>"; print_r($_POST); die("</pre>");
         $db = $this->_db;
 
         // Save item relations.
@@ -354,18 +354,28 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
             }
         }
         // update the comment when the comment is edited in subject
-  //      if (isset($post['item_relations_subject_comment'])) {
-  //          $itemRelation = intval($post['item_relations_subject_comment']);
-            $itemRelation = 26;
-            if ($itemRelation) {
-              $comment = $post['item_relations_subject_comment'];
-              if ($comment) {
-                $subjectCommentdb = $this->_db;
-                $sql = "update `$subjectCommentdb->ItemRelationsRelation` set relation_comment='$comment' where id = $itemRelation ";
-                $subjectCommentdb->query($sql);
-              }
+        if (isset($post['item_relations_subject_comment'])) {
+          if (isset($post['item_relations_item_relation_subject_comment'])) {
+            $ids[] = implode(',', $post['item_relations_subject_comment']);
+            $comments[] = implode(',', $post['item_relations_item_relation_subject_comment']);
+              foreach ($comments as $key => $value) {
+              $subjectCommentdb = $this->_db;
+              $sql = "update `$subjectCommentdb->ItemRelationsRelation` set relation_comment='$ids[$key]' where id in ($comments[$key])";
+              $subjectCommentdb->query($sql);
             }
-      //  }
+            }
+              }
+            // if ($itemRelation) {
+            //   $comment = $post['item_relations_subject_comment'];
+            //   if ($comment) {
+            //     $subjectCommentdb = $this->_db;
+            //     $sql = "update `$subjectCommentdb->ItemRelationsRelation` set relation_comment='$comment' where id = $itemRelation";
+            //     $subjectCommentdb->query($sql);
+            //   }
+            // }
+        //  }
+
+
       // Delete item relations.
         if (isset($post['item_relations_item_relation_delete'])) {
             foreach ($post['item_relations_item_relation_delete'] as $itemRelationId) {

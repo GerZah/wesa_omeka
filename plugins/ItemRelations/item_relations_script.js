@@ -133,4 +133,18 @@ jQuery(document).ready(function () {
     $('#partial_object_title').on('input', function () {
         updateChoices();
     });
+
+    $("input[id^='item_relations_subject_comment_']").change(function(e) {
+      e.preventDefault();
+      var provideSubjectComments = ($("input[id^='item_relations_subject_comment_']").length > 0);
+      var id = $(this).attr('id');
+      var suffix = this.id.match(/\d+/);
+      if (provideSubjectComments) {
+      // $("#item_relations_subject_comment_"+suffix).parent().append('<input type="hidden" name="item_relations_item_relation_subject_comment['+suffix+']" value="'+suffix+'" />');
+      $("#item_relations_subject_comment_"+suffix).siblings('span').remove();
+      $("#item_relations_subject_comment_"+suffix).parent().append('<span>'+
+        '<input type="hidden" name="item_relations_item_relation_subject_comment[]" value="'+suffix+'" />'
+        +'</span>');
+      }
+    });
 } );
