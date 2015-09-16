@@ -235,7 +235,6 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 			$searchAllFields = (int)(boolean) get_option('date_search_search_all_fields');
 
-
 			if ($searchAllFields) {
 				$text = $db->fetchOne("select text from `$db->SearchTexts` where record_type='Item' and record_id=$item_id");
 				$text = ( $text ? $text : "" );
