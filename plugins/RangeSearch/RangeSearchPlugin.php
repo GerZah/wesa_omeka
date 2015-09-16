@@ -1,9 +1,9 @@
 <?php
 
 /**
-* DateSearch plugin.
+* RangeSearch plugin.
 *
-* @package Omeka\Plugins\DateSearch
+* @package Omeka\Plugins\RangeSearch
 */
 class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
@@ -19,11 +19,14 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		'after_save_item', # preprocess saved item for ranges
 		'after_delete_item', # delete deleted item's preprocessed ranges
 		'admin_items_search', # add a time search field to the advanced search panel in admin
-		'items_browse_sql', # filter for a date after search page submission.
+		'items_browse_sql', # filter for a range after search page submission.
 	);
 
 	protected $_options = array(
 		'range_search_units' => '',
+		'range_search_search_all_fields' => 1,
+		'range_search_limit_fields' => "[]",
+		'range_search_search_rel_comments' => 1,
 	);
 
 	/**
@@ -78,18 +81,66 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 */
 	public static function hookConfigForm() {
 		$rangeSearchUnits = implode("\n", SELF::_decodeUnitsFromOption(get_option('range_search_units')) );
+		$searchAllFields = (int)(boolean) get_option('range_search_search_all_fields');
+
+		$db = get_db();
+		$sql = "select id, name from `$db->Elements` order by name asc";
+		$elements = $db->fetchAll($sql);
+
+		$searchElements = array();
+		foreach($elements as $element) { $searchElements[$element["id"]] = $element["name"]; }
+
+		$LimitFields = get_option('range_search_limit_fields');
+		$LimitFields = ( $LimitFields ? json_decode($LimitFields) : array() );
+
+		$withRelComments=SELF::_withRelComments();
+		$searchRelComments = (int)(boolean) get_option('range_search_search_rel_comments');
+
 		require dirname(__FILE__) . '/config_form.php';
-		# echo "<section class='seven columns alpha'><pre>"; print_r(SELF::_constructRegEx()); echo "</pre></section>";
 	}
 
 	/**
 	 * Handle the plugin configuration form.
 	 */
 	public static function hookConfig() {
+		// Unit configuration
 		$oldRangeSearchUnits = get_option('range_search_units');
 		$newRangeSearchUnits = SELF::_encodeUnitsFromTextArea($_POST['range_search_units']);
 		set_option('range_search_units', $newRangeSearchUnits );
-		if ($oldRangeSearchUnits != $newRangeSearchUnits) { SELF::_batchProcessExistingItems(); }
+
+		// Search All Fields switch
+		$prevSearchAllFields = (int)(boolean) get_option('range_search_search_all_fields');
+		$newSearchAllFields = (int)(boolean) $_POST['range_search_search_all_fields'];
+		set_option('range_search_search_all_fields', $newSearchAllFields);
+
+		// Limit Fields list (in case "Search All Fields" is false
+		$oldLimitFields = get_option('range_search_limit_fields');
+		$newLimitFields = array();
+		$postIds=false;
+		if (isset($_POST["range_search_limit_fields"])) { $postIds = $_POST["range_search_limit_fields"]; }
+		if (is_array($postIds)) {
+			foreach($postIds as $postId) {
+				$postId = intval($postId);
+				if ($postId) { $newLimitFields[] = $postId; }
+			}
+		}
+		sort($newLimitFields);
+		$newLimitFields = json_encode($newLimitFields);
+		set_option('range_search_limit_fields', $newLimitFields);
+
+		// Search Relationship Comments switch
+		$prevSearchRelComments = (int)(boolean) get_option('range_search_search_rel_comments');
+		$newSearchRelComments = (int)(boolean) $_POST['range_search_search_rel_comments'];
+		set_option('range_search_search_rel_comments', $newSearchRelComments);
+
+		$reprocess = false;
+		$reprocess = ( ($reprocess) or ($oldRangeSearchUnits != $newRangeSearchUnits) ); 
+		$reprocess = ( ($reprocess) or ($prevSearchAllFields != $newSearchAllFields) ); 
+		$reprocess = ( ($reprocess) or ( (!$newSearchAllFields) && ($oldLimitFields != $newLimitFields) ) ); 
+		$reprocess = ( ($reprocess) or ( (!$newSearchAllFields) && ($prevSearchRelComments != $newSearchRelComments) ) ); 
+
+		if ($reprocess) { SELF::_batchProcessExistingItems(); }
+		# echo "<pre>"; print_r($_POST); echo "</pre>"; die();
 	}
 
 	/**
@@ -125,11 +176,11 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		$db = get_db();
 		$sql= "select id from `$db->Items`";
 		$items = $db->fetchAll($sql);
-		foreach($items as $item) { SELF::preProcessItem($item["id"]); }
+		foreach($items as $item) { SELF::_preProcessItem($item["id"]); }
 	}
 
 	/**
-	 * Preprocess yyyy / yyyy-mm / yyyy-mm-dd dates after saving an item add/edit form.
+	 * Preprocess numbers after saving an item add/edit form.
 	 *
 	 * @param array $args
 	 */
@@ -139,14 +190,14 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			}
 
 			$item_id = intval($args["record"]["id"]);
-			if ($item_id) { SELF::preProcessItem($item_id); }
+			if ($item_id) { SELF::_preProcessItem($item_id); }
 
 			# die("After Save Item");
 
 	} # hookAfterSaveItem()
 
 	/**
-	 * Delete pre-processed dates after an item has been deleted
+	 * Delete pre-processed numbers after an item has been deleted
 	 *
 	 * @param array $args
 	 */
@@ -164,29 +215,98 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	} # hookAfterDeleteItem()
 
 	/**
-	 * Pre-process one item's textual data and store timespans in DateSearchDates table
+	 * Determine if Item Relations is installed, and if it's patched to feature relationship comments
 	 */
-	private function preProcessItem($item_id) {
+	private function _withRelComments() {
+		$db = get_db();
+
+		$withRelComments=false;
+		$sql = "show columns from `$db->ItemRelationsRelations` where field='relation_comment'";
+		try { $withRelComments = ($db->fetchOne($sql) !== false); }
+		catch (Exception $e) { $withRelComments=false; }
+
+		return $withRelComments;
+	}
+
+	/**
+	 * Get an item's relationship comment text
+	 */
+	private function _relationshipCommentText($item_id) {
+		$db = get_db();
+		$text = "";
+
+		# Check if we could add relation comments in case Item Relations is installed and has been patched
+		# to feature relation comments.
+		$withRelComments=SELF::_withRelComments();
+
+		if ($withRelComments) {
+			$sql = "select relation_comment from `$db->ItemRelationsRelations` where subject_item_id=$item_id";
+			$comments = $db->fetchAll($sql);
+			if ($comments) {
+				foreach($comments as $comment) { $text .= " ".$comment["relation_comment"]; }
+			}
+		}
+
+		return $text;
+	}
+
+	/**
+	 * Pre-process one item's textual data and store timespans in RangeSearchValues table
+	 */
+	private function _preProcessItem($item_id) {
 		$db = get_db();
 
 		if ($item_id) {
 			$sql = "delete from `$db->RangeSearchValues` where item_id=$item_id";
 			$db->query($sql);
 
-			$text = $db->fetchOne("select text from `$db->SearchTexts` where record_type='Item' and record_id=$item_id");
+			$text = false;
 
-			# Check if we could add relation comments in case Item Relations is installed and has been patched
-			# to feature relation comments.
-			$withRelComments=false;
-			$sql = "show columns from `$db->ItemRelationsRelations` where field='relation_comment'";
-			try { $withRelComments = ($db->fetchOne($sql) !== false); }
-			catch (Exception $e) { $withRelComments=false; }
+			$searchAllFields = (int)(boolean) get_option('range_search_search_all_fields');
 
-			if ($withRelComments) {
-				$sql = "select relation_comment from `$db->ItemRelationsRelations` where subject_item_id=$item_id";
-				$comments = $db->fetchAll($sql);
-				foreach($comments as $comment) { $text .= " ".$comment["relation_comment"]; }
-			}
+			if ($searchAllFields) {
+				$text = $db->fetchOne("select text from `$db->SearchTexts` where record_type='Item' and record_id=$item_id");
+				$text = ( $text ? $text : "" );
+
+				$text .= SELF::_relationshipCommentText($item_id);
+				$text = ( $text ? $text : false );
+			} # if ($searchAllFields)
+
+			else { # !$searchAllFields
+
+				$limitFields = get_option('range_search_limit_fields');
+				$limitFields = ( $limitFields ? json_decode($limitFields) : array() );
+
+				$elementIds=array();
+				if (is_array($limitFields)) {
+					foreach($limitFields as $limitField) {
+						$limitField = intval($limitField);
+						if ($limitField) { $elementIds[] = $limitField; }
+					}
+					sort($elementIds);
+				}
+
+				if ($elementIds) {
+					$elementIds = "(" . implode(",", $elementIds) . ")";
+
+					$elementTexts = $db -> fetchAll("select text from `$db->ElementTexts`".
+																					" where record_id=$item_id".
+																					" and element_id in ($elementIds)");
+					if ($elementTexts) {
+						$text = "";
+						foreach($elementTexts as $elementText) { $text .= " " . $elementText["text"]; }
+					} # if ($elementTexts)
+				} # if ($elementIds)
+
+				$searchRelComments = (int)(boolean) get_option('range_search_search_rel_comments');
+
+				if ($searchRelComments) {
+					$text = ( $text ? $text : "" );
+					$text .= SELF::_relationshipCommentText($item_id);
+					$text = ( $text ? $text : false );
+				}
+
+			}  # !$searchAllFields
 
 			if ($text !== false) {
 
@@ -209,7 +329,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 				} # if ($cookedDates)
 			} # if ($text)
 		} # if ($item_id)
-	} #  preProcessItem()
+	} #  _preProcessItem()
 
 	/**
 	 * Display the time search form on the admin advanced search page
@@ -219,7 +339,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	}
 
 	/**
-	 * Filter for an date after search page submission.
+	 * Filter for a number after search page submission.
 	 *
 	 * @param array $args
 	 */
@@ -286,7 +406,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	# ------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Main regex processing to extract dates and timespans, to be able to expand them later
+	 * Main regex processing to extract numbers and ranges, to be able to expand them later
 	 */
 	private function _processRangeText($text) {
 		$regEx = SELF::_constructRegEx();
@@ -352,7 +472,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	/**
 	 * Transform a (valid) number xxxx-pp-qq into a numer ranger-- down to xxxx-00-00 to yyyy-99-99
 	 *
-	 * @param string $timespan as in single date or timespan
+	 * @param string $range as in single number or range
 	 * @result array [0] => left edge, [1] => right edge
 	 */
 	private function _expandNumberRange($range) {

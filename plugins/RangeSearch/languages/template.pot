@@ -27,6 +27,38 @@ msgid ""
 "<br><em>Please note:</em> Units name may not be longer than 20 characters."
 msgstr ""
 
+#: config_form.php:19
+msgid "Scan All Text Fields"
+msgstr ""
+
+#: config_form.php:24
+msgid ""
+"Check this if you want numbers / ranges processing to be carried out within "
+"all of an item's text fields."
+msgstr ""
+
+#: config_form.php:31
+msgid "Limit Scan to Fields"
+msgstr ""
+
+#: config_form.php:36
+msgid ""
+"Please select the elements i.e. fields that the scan for names / ranges "
+"should be limited to.<br><em>Please note:</em> To select multiple entries, "
+"try holding the Ctrl key (Windows) or the Cmd key (Mac) while clicking."
+msgstr ""
+
+#: config_form.php:45
+msgid "Scan Inside Relationship Comments"
+msgstr ""
+
+#: config_form.php:50
+msgid ""
+"The Item Relationships add-on is installed, and it has been patched to "
+"feature relationship comments. Check this if you want Range Search to scan "
+"inside relationship comments."
+msgstr ""
+
 #: views/shared/common/range-search-advanced-search.php:3
 msgid "Range Search"
 msgstr ""
