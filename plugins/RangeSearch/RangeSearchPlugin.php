@@ -175,20 +175,20 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 			$text = $db->fetchOne("select text from `$db->SearchTexts` where record_type='Item' and record_id=$item_id");
 
+			# Check if we could add relation comments in case Item Relations is installed and has been patched
+			# to feature relation comments.
+			$withRelComments=false;
+			$sql = "show columns from `$db->ItemRelationsRelations` where field='relation_comment'";
+			try { $withRelComments = ($db->fetchOne($sql) !== false); }
+			catch (Exception $e) { $withRelComments=false; }
+
+			if ($withRelComments) {
+				$sql = "select relation_comment from `$db->ItemRelationsRelations` where subject_item_id=$item_id";
+				$comments = $db->fetchAll($sql);
+				foreach($comments as $comment) { $text .= " ".$comment["relation_comment"]; }
+			}
+
 			if ($text !== false) {
-
-				# Check if we could add relation comments in case Item Relations is installed and has been patched
-				# to feature relation comments.
-				$withRelComments=false;
-				$sql = "show columns from `$db->ItemRelationsRelations` where field='relation_comment'";
-				try { $withRelComments = ($db->fetchOne($sql) !== false); }
-				catch (Exception $e) { $withRelComments=false; }
-
-				if ($withRelComments) {
-					$sql = "select relation_comment from `$db->ItemRelationsRelations` where subject_item_id=$item_id";
-					$comments = $db->fetchAll($sql);
-					foreach($comments as $comment) { $text .= " ".$comment["relation_comment"]; }
-				}
 
 				$cookedRanges = SELF::_processRangeText($text);
 				# echo "<pre>"; print_r($cookedRanges); die("</pre>");
