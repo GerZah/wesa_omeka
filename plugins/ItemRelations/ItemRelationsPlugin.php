@@ -359,12 +359,15 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
       $combine = array();
       $combine = array_combine($post['item_relations_item_relation_subject_comment'], $post['item_relations_subject_comment']);
       $subjectCommentdb = $this->_db;
-      foreach ($combine as $id => $comment) {
-        $sql = "update `$subjectCommentdb->ItemRelationsRelation` set relation_comment='$comment' where id = $id";
+        $ids = implode(',', array_keys($combine));
+        //Optimized the update query to avoid multiple execution
+        $sql = "UPDATE `$subjectCommentdb->ItemRelationsRelation` set relation_comment = case id ";
+        foreach ($combine as $id => $comment) {
+            $sql .= sprintf(" when %d then '%s' ", $id, $comment);
+        }
+        $sql .= "end where id in ($ids)";
         $subjectCommentdb->query($sql);
-      }
-      #echo "<pre>"; print_r($sql); die("</pre>");
-    }
+  }
   }
 
   // Delete item relations.
