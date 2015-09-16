@@ -24,6 +24,9 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 	protected $_options = array(
 		'date_search_use_gregjul_prefixes' => 0,
+		'date_search_search_all_fields' => 1,
+		'date_search_limit_fields' => "[]",
+		'date_search_search_rel_comments' => 1,
 	);
 
 	/**
@@ -74,7 +77,22 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * Display the plugin configuration form.
 	 */
 	public static function hookConfigForm() {
-		$useGregJulPrexifes = get_option('date_search_use_gregjul_prefixes');
+		$useGregJulPrexifes = (int)(boolean) get_option('date_search_use_gregjul_prefixes');
+		$searchAllFields = (int)(boolean) get_option('date_search_search_all_fields');
+
+		$db = get_db();
+		$sql = "select id, name from `$db->Elements` order by name asc";
+		$elements = $db->fetchAll($sql);
+
+		$searchElements = array();
+		foreach($elements as $element) { $searchElements[$element["id"]] = $element["name"]; }
+
+		$LimitFields = get_option('date_search_limit_fields');
+		$LimitFields = ( $LimitFields ? json_decode($LimitFields) : array() );
+
+		$withRelComments=SELF::_withRelComments();
+		$searchRelComments = (int)(boolean) get_option('date_search_search_rel_comments');
+
 		require dirname(__FILE__) . '/config_form.php';
 	}
 
@@ -82,10 +100,44 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * Handle the plugin configuration form.
 	 */
 	public static function hookConfig() {
+		// Gregorian / Julian Prefix switch
 		$prevUseGregJulPrexifes = (int)(boolean) get_option('date_search_use_gregjul_prefixes');
 		$newUseGregJulPrexifes = (int)(boolean) $_POST['date_search_use_gregjul_prefixes'];
 		set_option('date_search_use_gregjul_prefixes', $newUseGregJulPrexifes);
-		if ($prevUseGregJulPrexifes != $newUseGregJulPrexifes) { SELF::_batchProcessExistingItems(); }
+
+		// Search All Fields switch
+		$prevSearchAllFields = (int)(boolean) get_option('date_search_search_all_fields');
+		$newSearchAllFields = (int)(boolean) $_POST['date_search_search_all_fields'];
+		set_option('date_search_search_all_fields', $newSearchAllFields);
+
+		// Limit Fields list (in case "Search All Fields" is false
+		$oldLimitFields = get_option('date_search_limit_fields');
+		$newLimitFields = array();
+		$postIds=false;
+		if (isset($_POST["date_search_limit_fields"])) { $postIds = $_POST["date_search_limit_fields"]; }
+		if (is_array($postIds)) {
+			foreach($postIds as $postId) {
+				$postId = intval($postId);
+				if ($postId) { $newLimitFields[] = $postId; }
+			}
+		}
+		sort($newLimitFields);
+		$newLimitFields = json_encode($newLimitFields);
+		set_option('date_search_limit_fields', $newLimitFields);
+
+		// Search Relationship Comments switch
+		$prevSearchRelComments = (int)(boolean) get_option('date_search_search_rel_comments');
+		$newSearchRelComments = (int)(boolean) $_POST['date_search_search_rel_comments'];
+		set_option('date_search_search_rel_comments', $newSearchRelComments);
+
+		$reprocess = false;
+		$reprocess = ( ($reprocess) or ($prevUseGregJulPrexifes != $newUseGregJulPrexifes) ); 
+		$reprocess = ( ($reprocess) or ($prevSearchAllFields != $newSearchAllFields) ); 
+		$reprocess = ( ($reprocess) or ( (!$newSearchAllFields) && ($oldLimitFields != $newLimitFields) ) ); 
+		$reprocess = ( ($reprocess) or ( (!$newSearchAllFields) && ($prevSearchRelComments != $newSearchRelComments) ) ); 
+
+		if ($reprocess) { SELF::_batchProcessExistingItems(); }
+		# echo "<pre>"; print_r($_POST); echo "</pre>"; die();
 	}
 
 	/**
@@ -95,7 +147,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		$db = get_db();
 		$sql= "select id from `$db->Items`";
 		$items = $db->fetchAll($sql);
-		foreach($items as $item) { SELF::preProcessItem($item["id"]); }
+		foreach($items as $item) { SELF::_preProcessItem($item["id"]); }
 	}
 
 	/**
@@ -109,7 +161,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			}
 
 			$item_id = intval($args["record"]["id"]);
-			if ($item_id) { SELF::preProcessItem($item_id); }
+			if ($item_id) { SELF::_preProcessItem($item_id); }
 
 			# die("After Save Item");
 
@@ -134,31 +186,101 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	} # hookAfterDeleteItem()
 
 	/**
+	 * Determine if Item Relations is installed, and if it's patched to feature relationship comments
+	 */
+	private function _withRelComments() {
+		$db = get_db();
+
+		$withRelComments=false;
+		$sql = "show columns from `$db->ItemRelationsRelations` where field='relation_comment'";
+		try { $withRelComments = ($db->fetchOne($sql) !== false); }
+		catch (Exception $e) { $withRelComments=false; }
+
+		return $withRelComments;
+	}
+
+	/**
+	 * Get an item's relationship comment text
+	 */
+	private function _relationshipCommentText($item_id) {
+		$db = get_db();
+		$text = "";
+
+		# Check if we could add relation comments in case Item Relations is installed and has been patched
+		# to feature relation comments.
+		$withRelComments=SELF::_withRelComments();
+
+		if ($withRelComments) {
+			$sql = "select relation_comment from `$db->ItemRelationsRelations` where subject_item_id=$item_id";
+			$comments = $db->fetchAll($sql);
+			if ($comments) {
+				foreach($comments as $comment) { $text .= " ".$comment["relation_comment"]; }
+			}
+		}
+
+		return $text;
+	}
+
+	/**
 	 * Pre-process one item's textual data and store timespans in DateSearchDates table
 	 */
-	private function preProcessItem($item_id) {
+	private function _preProcessItem($item_id) {
 		$db = get_db();
 
 		if ($item_id) {
 			$sql = "delete from `$db->DateSearchDates` where item_id=$item_id";
 			$db->query($sql);
 
-			$text = $db->fetchOne("select text from `$db->SearchTexts` where record_type='Item' and record_id=$item_id");
+			$text = false;
+
+			$searchAllFields = (int)(boolean) get_option('date_search_search_all_fields');
+
+
+			if ($searchAllFields) {
+				$text = $db->fetchOne("select text from `$db->SearchTexts` where record_type='Item' and record_id=$item_id");
+				$text = ( $text ? $text : "" );
+
+				$text .= SELF::_relationshipCommentText($item_id);
+				$text = ( $text ? $text : false );
+			} # if ($searchAllFields)
+
+			else { # !$searchAllFields
+
+				$limitFields = get_option('date_search_limit_fields');
+				$limitFields = ( $limitFields ? json_decode($limitFields) : array() );
+
+				$elementIds=array();
+				if (is_array($limitFields)) {
+					foreach($limitFields as $limitField) {
+						$limitField = intval($limitField);
+						if ($limitField) { $elementIds[] = $limitField; }
+					}
+					sort($elementIds);
+				}
+
+				if ($elementIds) {
+					$elementIds = "(" . implode(",", $elementIds) . ")";
+
+					$elementTexts = $db -> fetchAll("select text from `$db->ElementTexts`".
+																					" where record_id=$item_id".
+																					" and element_id in ($elementIds)");
+					if ($elementTexts) {
+						$text = "";
+						foreach($elementTexts as $elementText) { $text .= " " . $elementText["text"]; }
+					} # if ($elementTexts)
+				} # if ($elementIds)
+
+				$searchRelComments = (int)(boolean) get_option('date_search_search_rel_comments');
+
+				if ($searchRelComments) {
+					$text = ( $text ? $text : "" );
+					$text .= SELF::_relationshipCommentText($item_id);
+					$text = ( $text ? $text : false );
+				}
+
+			}  # !$searchAllFields
 
 			if ($text !== false) {
-
-				# Check if we could add relation comments in case Item Relations is installed and has been patched
-				# to feature relation comments.
-				$withRelComments=false;
-				$sql = "show columns from `$db->ItemRelationsRelations` where field='relation_comment'";
-				try { $withRelComments = ($db->fetchOne($sql) !== false); }
-				catch (Exception $e) { $withRelComments=false; }
-
-				if ($withRelComments) {
-					$sql = "select relation_comment from `$db->ItemRelationsRelations` where subject_item_id=$item_id";
-					$comments = $db->fetchAll($sql);
-					foreach($comments as $comment) { $text .= " ".$comment["relation_comment"]; }
-				}
 
 				$cookedDates = SELF::_processDateText($text);
 				# echo "<pre>"; print_r($cookedDates); die("</pre>");
@@ -179,7 +301,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 				} # if ($cookedDates)
 			} # if ($text)
 		} # if ($item_id)
-	} #  preProcessItem()
+	} #  function _preProcessItem()
 
 	/**
 	 * Display the time search form on the admin advanced search page
