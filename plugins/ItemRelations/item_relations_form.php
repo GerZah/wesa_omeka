@@ -24,7 +24,13 @@ $provideRelationComments = get_option('item_relations_provide_relation_comments'
     <?php foreach ($subjectRelations as $subjectRelation): ?>
     <tr class="item-relations-entry">
         <td><?php echo __('This Item'); ?></td>
-        <td><?php echo $subjectRelation['relation_text']; ?></td>
+        <td><?php #echo $subjectRelation['relation_text'];
+        $subject = $subjectRelation['relation_text'];
+        $db = get_db();
+        $sql = "SELECT id from {$db->ItemRelationsProperty} where label = '$subject'";
+        $subject_id = $db->fetchOne($sql);
+        echo get_view()->formSelect('new_relation_subject_property_id', $subject_id , array( 'multiple' => false, 'style' => 'width: 150px;'), array_slice($formSelectProperties,1));
+        ?></td>
         <td><a href="<?php echo url('items/show/' . $subjectRelation['object_item_id']); ?>" target="_blank"><?php echo $subjectRelation['object_item_title']; ?></a></td>
         <?php if ($provideRelationComments): ?><td><input name="item_relations_subject_comment[]" id="item_relations_subject_comment_<?php echo $subjectRelation['item_relation_id']; ?>" value="<?php echo $subjectRelation['relation_comment']; ?>" /></td><?php endif; ?>
         <td><input type="checkbox" name="item_relations_item_relation_delete[]" value="<?php echo $subjectRelation['item_relation_id']; ?>" /></td>
