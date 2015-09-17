@@ -356,17 +356,35 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
   // update the comment when the comment is edited in subject
   if (isset($post['item_relations_subject_comment'])) {
     if (isset($post['item_relations_item_relation_subject_comment'])) {
-      $combine = array();
-      $combine = array_combine($post['item_relations_item_relation_subject_comment'], $post['item_relations_subject_comment']);
-      $subjectCommentdb = $this->_db;
-        $ids = implode(',', array_keys($combine));
+      $comments = array();
+      $comments = array_combine($post['item_relations_item_relation_subject_comment'], $post['item_relations_subject_comment']);
+      $subjectCommentDb = $this->_db;
+        $commentIds = implode(',', array_keys($comments));
         //Optimized the update query to avoid multiple execution
-        $sql = "UPDATE `$subjectCommentdb->ItemRelationsRelation` set relation_comment = case id ";
-        foreach ($combine as $id => $comment) {
-            $sql .= sprintf(" when %d then '%s' ", $id, $comment);
+        $sql = "UPDATE `$subjectCommentDb->ItemRelationsRelation` set relation_comment = case id ";
+        foreach ($comments as $commentId => $comment) {
+            $sql .= sprintf(" when %d then '%s' ", $commentId, $comment);
         }
-        $sql .= "end where id in ($ids)";
-        $subjectCommentdb->query($sql);
+        $sql .= "end where id in ($commentIds)";
+        $subjectCommentDb->query($sql);
+  }
+  }
+
+  // update the relation when the relation is edited in subject
+  if (isset($post['item_relations_subject_property'])) {
+    if (isset($post['item_relations_item_relation_subject_property'])) {
+      $properties = array();
+      $properties = array_combine($post['item_relations_item_relation_subject_property'], $post['item_relations_subject_property']);
+      $subjectPropertyDb = $this->_db;
+      $propertyIds = implode(',', array_keys($properties));
+
+        //Optimized the update query to avoid multiple execution
+        $sql = "UPDATE `$subjectPropertyDb->ItemRelationsRelation` set property_id = case id ";
+        foreach ($properties as $propertyId => $property) {
+            $sql .= sprintf(" when %d then '%d' ", $propertyId, $property);
+        }
+        $sql .= "end where id in ($propertyIds)";
+        $subjectPropertyDb->query($sql);
   }
   }
 
