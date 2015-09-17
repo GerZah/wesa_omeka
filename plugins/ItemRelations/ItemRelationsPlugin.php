@@ -354,8 +354,8 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
     }
   }
   // update the comment when the comment is edited in subject
-  if (isset($post['item_relations_subject_comment'])) {
-    if (isset($post['item_relations_item_relation_subject_comment'])) {
+  if (isset($post['item_relations_item_relation_subject_comment'])) {
+    if (isset($post['item_relations_subject_comment'])) {
       $comments = array();
       $comments = array_combine($post['item_relations_item_relation_subject_comment'], $post['item_relations_subject_comment']);
       $subjectCommentDb = $this->_db;
@@ -368,11 +368,14 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
         $sql .= "end where id in ($commentIds)";
         $subjectCommentDb->query($sql);
   }
+  else {
+    $this->_helper->flashMessenger(__('There was an error in the item relation comments.'), 'error');
+  }
   }
 
   // update the relation when the relation is edited in subject
-  if (isset($post['item_relations_subject_property'])) {
-    if (isset($post['item_relations_item_relation_subject_property'])) {
+  if (isset($post['item_relations_item_relation_subject_property'])) {
+    if (isset($post['item_relations_subject_property'])) {
       $properties = array();
       $properties = array_combine($post['item_relations_item_relation_subject_property'], $post['item_relations_subject_property']);
       $subjectPropertyDb = $this->_db;
@@ -385,6 +388,9 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
         }
         $sql .= "end where id in ($propertyIds)";
         $subjectPropertyDb->query($sql);
+  }
+  else {
+    $this->_helper->flashMessenger(__('There was an error in listing the item relation.'), 'error');
   }
   }
 
