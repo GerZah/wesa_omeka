@@ -85,5 +85,3 @@
                     </tbody>
                 </table>
         <a class="add green button"><?php echo __('Assign'); ?></a> </div>
-    <?php endif; ?>
-<?php endif ?>

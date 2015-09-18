@@ -50,7 +50,7 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookAdminItemsFormFiles()
     {
         echo '<h3>' . __('Add Existing Files') . '</h3>';
-        reassignfiles_list();
+        echo common('reassignfileslist', array(), 'index');
     }
 
     public function hookAfterSaveItem($args)
