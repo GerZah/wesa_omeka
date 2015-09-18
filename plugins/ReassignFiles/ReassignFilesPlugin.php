@@ -1,18 +1,11 @@
 <?php
 
-/**
- * @version $Id$
- * @license http://www.gnu.org/licenses/gpl-3.0.txt
- * @copyright Center for History and New Media, 2010
- * @package Reassign Files
- */
 
 /**
- * Reassign Files plugin class
- *
- * @copyright Center for History and New Media, 2010
- * @package Reassign Files
- */
+* ConditionalElements plugin.
+*
+* @package Omeka\Plugins\ReassignFiles
+*/
 class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 {
     // Define Hooks
@@ -24,9 +17,8 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
     );
 
     //Define Filters
-    protected $_filters = array(
-        'admin_navigation_main',
-    );
+    protected $_filters = array('admin_navigation_main');
+
     public function hookInitialize()
     {
 
@@ -37,19 +29,10 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
     public function filterAdminNavigationMain($nav)
     {
 
-        $nav[] = array(
-            'label'   => __('Reassign Files'),
-            'uri'     => url(
-                    array(
-                        'module'=>'reassignfiles',
-                        'controller'=>'index',
-                        'action'=>'index',
-                        ), 'default'
-                    ),
-            'resource' => 'ReassignFiles_Index'
-        );
-
-        return $nav;
+      if(is_allowed('ReassignFiles_Index', 'index')) {
+  			$nav[] = array('label' => __('Reassign Files'), 'uri' => url('reassign-files'));
+  		}
+  		return $nav;
     }
 
     /*
@@ -57,12 +40,11 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookDefineAcl($args)
     {
-        $acl = $args['acl'];
-        $acl->addResource('ReassignFiles_Index');
+        	$args['acl']->addResource('ReassignFiles_Index');
     }
 
     /**
-     * Display the reassignfiles files list on the  itemf form.
+     * Display the reassignfiles list on the  item form.
      * This simply adds a heading to the output
      */
     public function hookAdminItemsFormFiles()
@@ -73,44 +55,6 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function hookAfterSaveItem($args)
     {
-        $item = $args['record'];
         $post = $args['post'];
-
-        if (!($post && isset($post['reassignfiles-files']))) {
-            return;
-        }
-
-        $fileNames = $post['reassignfiles-files'];
-        if ($fileNames) {
-            if (!reassignfiles_can_access_files_dir()) {
-                throw new reassignfiles_Exception(__('The reassignfiles files directory must be both readable and writable.'));
-            }
-            $filePaths = array();
-            foreach($fileNames as $fileName) {
-                $filePaths[] = reassignfiles_validate_file($fileName);
-            }
-
-            $files = array();
-            try {
-                $files = insert_files_for_item($item, 'Filesystem', $filePaths, array('file_ingest_options'=> array('ignore_invalid_files'=>false)));
-            } catch (Omeka_File_Ingest_InvalidException $e) {
-                release_object($files);
-                $item->addError('reassignfiles', $e->getMessage());
-                return;
-            } catch (Exception $e) {
-                release_object($files);
-                throw $e;
-            }
-            release_object($files);
-
-            // delete the files
-            foreach($filePaths as $filePath) {
-                try {
-                    unlink($filePath);
-                } catch (Exception $e) {
-                    throw $e;
-                }
-            }
-        }
     }
 }
