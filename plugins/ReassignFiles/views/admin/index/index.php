@@ -12,7 +12,16 @@ echo head(array('title' => __('Reassign Files to items'), 'bodyclass' => 'reassi
       <p>Edit items from the following collection:</p>
     </div>
     <div class="inputs three columns omega">
-      <?php echo $this->formSelect('reassignFiles-item',null,array('multiple' => false), null); ?>
+      <?php
+      $itemNames = array();
+      $sqlDb = get_db();
+      $query = "SELECT record_id, text from {$sqlDb->ElementText} order by text";
+      $itemNames = $sqlDb->fetchAll($query);
+      $item = array();
+      foreach ($itemNames as $itemName) {
+          $item[$itemName['record_id']] = $itemName['text'];
+      }
+      echo $this->formSelect('reassignFiles-item', $item, array('multiple' => false), $item); ?>
     </div>
   </fieldset>
   <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-fields-set' style="border: 1px solid black; padding:15px; margin:10px;">
@@ -21,12 +30,20 @@ echo head(array('title' => __('Reassign Files to items'), 'bodyclass' => 'reassi
       <?php
       $fileNames = array();
       $db = get_db();
-      $select = "SELECT original_filename from $db->File order by original_filename";
+      $select = "SELECT et.text AS itemName, et.record_id AS record_id, f.original_filename AS original_filename, f.item_id AS item_id
+                 FROM {$db->File} f
+                 JOIN {$db->ElementText} et
+                 ON f.item_id = et.record_id
+                 ORDER BY original_filename";
       $files = $db->fetchAll($select);
       foreach ($files as $file) {
-        $fileNames[$file['original_filename']] = $file['original_filename'];
+          $fileNames[$file['original_filename']] = $file['itemName'];
       }
-      echo $this->formSelect('reassignFiles-files[]', null, array('multiple' => true, 'size' => 10, 'style' => 'width: 300px;'), $fileNames);
+      $existing = array();
+      foreach ($fileNames as $key => $value) {
+        $existing[] = $key.'['.$value.']';
+      }
+      echo $this->formSelect('reassignFiles-files[]', null, array('multiple' => true, 'size' => 10, 'style' => 'width: 600px;'), $existing);
       ?>
     </div>
   </fieldset>
