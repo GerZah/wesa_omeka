@@ -6,6 +6,7 @@ echo head(array('title' => __('Reassign Files to items'), 'bodyclass' => 'reassi
 ?>
 <?php echo flash(); ?>
 <div class="drawer-contents">
+  <form method="post" action="<?php echo url('reassign-files/index/save'); ?>">
   <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
     <h2>Step 1: Select Items to Edit </h2>
     <div class="field">
@@ -17,11 +18,11 @@ echo head(array('title' => __('Reassign Files to items'), 'bodyclass' => 'reassi
       $sqlDb = get_db();
       $query = "SELECT record_id, text from {$sqlDb->ElementText} order by text";
       $itemNames = $sqlDb->fetchAll($query);
-      $item = array();
+      $item = array(-1 => __('Select Below'));
       foreach ($itemNames as $itemName) {
           $item[$itemName['record_id']] = $itemName['text'];
       }
-      echo $this->formSelect('reassignFiles-item', $item, array('multiple' => false), $item); ?>
+      echo $this->formSelect('reassignFilesItem', $item, array('multiple' => false), $item); ?>
     </div>
   </fieldset>
   <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-fields-set' style="border: 1px solid black; padding:15px; margin:10px;">
@@ -41,9 +42,9 @@ echo head(array('title' => __('Reassign Files to items'), 'bodyclass' => 'reassi
       }
       $existing = array();
       foreach ($fileNames as $key => $value) {
-        $existing[] = $key.'['.$value.']';
+        $existing[$key] = $key.'['.$value.']';
       }
-      echo $this->formSelect('reassignFiles-files[]', null, array('multiple' => true, 'size' => 10, 'style' => 'width: 600px;'), $existing);
+      echo $this->formSelect('reassignFilesFiles[]', null, array('multiple' => true, 'size' => 10, 'style' => 'width: 600px;'), $existing);
       ?>
     </div>
   </fieldset>
@@ -51,4 +52,5 @@ echo head(array('title' => __('Reassign Files to items'), 'bodyclass' => 'reassi
     <button type="submit" name="reassign-button">Reassign Files</button>
   </div>
 </div>
+</form>
 <?php echo foot();
