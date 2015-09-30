@@ -191,7 +191,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	}
 
 	/**
-	 * Preprocess ALL existing items  which could be rather EVIL in huge installations
+	 * Preprocess ALL existing items which could be rather EVIL in huge installations
 	 */
 	private function _batchProcessExistingItems() {
 		$db = get_db();
