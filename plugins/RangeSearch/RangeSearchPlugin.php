@@ -43,15 +43,15 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		# Create table
 		$db = get_db();
 
-		# Let's assume that a "numval" = number value is at the most "1234567890-12-12" == 16 chars long
+		# Let's assume that a "numval" = number value is at the most "1234567890-1234-1234" == 20 chars long
 		# And let's assume that any unit name is at the most 20 chars long ("Reichsmark" would be 10)
 
 		$sql = "
 		CREATE TABLE IF NOT EXISTS `$db->RangeSearchValues` (
 				`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 				`item_id` int(10) unsigned NOT NULL REFERENCES `$db->Item`,
-				`fromnum` varchar(16) NOT NULL,
-				`tonum` varchar(16) NOT NULL,
+				`fromnum` varchar(20) NOT NULL,
+				`tonum` varchar(20) NOT NULL,
 				`unit` varchar(20) NOT NULL,
 				PRIMARY KEY (`id`),
 				INDEX (unit)
@@ -80,7 +80,9 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * Display the plugin configuration form.
 	 */
 	public static function hookConfigForm() {
-		$rangeSearchUnits = implode("\n", SELF::_decodeUnitsFromOption(get_option('range_search_units')) );
+		$rangeSearchUnits = implode("\n", SELF::_decodeUnitsFromOption(get_option('range_search_units'), false) );
+		# echo "<pre>$rangeSearchUnits</pre>"; die();
+
 		$searchAllFields = (int)(boolean) get_option('range_search_search_all_fields');
 
 		$db = get_db();
@@ -146,8 +148,11 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	/**
 	 * Decode JSON array from DB option -- imploded with "\n" it will be displayable in textarea on config page
 	 */
-	private function _decodeUnitsFromOption($option) {
+	private function _decodeUnitsFromOption($option, $pregQuote = false) {
 		$lines = ($option ? json_decode($option) : array() );
+		if ($pregQuote) {
+			foreach(array_keys($lines) as $idx) { $lines[$idx] = preg_quote($lines[$idx]); }
+		}
 		return $lines;
 	}
 
@@ -157,6 +162,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	private function _encodeUnitsFromTextArea($textArea) {
 		$textArea = str_replace(chr(10), chr(13), $textArea);
 		$textArea = str_replace(chr(13).chr(13), chr(13), $textArea);
+		$textArea = stripslashes($textArea);
 
 		$lines = explode(chr(13), $textArea);
 		$nonEmptyLines = array();
@@ -384,7 +390,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 				}
 			}
 
-#			die("<pre>$searchFromNum / $searchToNum --- $select</pre>");
+			# die("<pre>$searchFromNum / $searchToNum --- $select</pre>");
 
 		}
 	}
@@ -441,13 +447,13 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 		# Construct RegEx
 		$mainNumber = "\d{1,10}"; # 1 to 10 digits for main number
-		$middleNumber = $lastNumber = "\d{1,2}"; # 1 or two digits for middle and last number
+		$middleNumber = $lastNumber = "\d{1,4}"; # 1 or four digits for middle and last number
 		$middleLastNumber = "$middleNumber(?:-$lastNumber)?"; # middle number - possibly with last number
 		$number = "$mainNumber(?:-$middleLastNumber)?\b"; # main number - possible with middle and possible with last number
 		$separator = "\s*-\s*"; # separator hypen, with or without blanks
 		$numberNumberRange = "$number(?:$separator$number)?"; # one number or two numbers with separator in-between
 
-		$unitsArray = SELF::_decodeUnitsFromOption(get_option('range_search_units'));
+		$unitsArray = SELF::_decodeUnitsFromOption(get_option('range_search_units'), true);
 		$units = "\b(?:" . implode("|", $unitsArray) . ")\b";
 		$numberRangeUnits = "$numberNumberRange\s$units";
 
@@ -462,6 +468,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 								"units" => $units,
 								"numberRangeUnits" => $numberRangeUnits,
 							);
+		# echo "<pre>"; print_r($result); echo "</pre>\n"; die();
 
 		return $result;
 
@@ -508,15 +515,19 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		$mainMiddleNumber = "^$mainNumber-$middleNumber$";
 		$mainMiddleLastNumber = "^$mainNumber-$middleNumber-$lastNumber$";
 	
-		if ( preg_match( "($mainNumberOnly)", $result ) ) { $result = $result."-".( $edge<0 ? "0" : "99" ); }
-		if ( preg_match( "($mainMiddleNumber)", $result ) ) { $result = $result."-".( $edge<0 ? "0" : "99" ); }
+		if ( preg_match( "($mainNumberOnly)", $result ) ) { $result = $result."-".( $edge<0 ? "0" : "9999" ); }
+		if ( preg_match( "($mainMiddleNumber)", $result ) ) { $result = $result."-".( $edge<0 ? "0" : "9999" ); }
 	
 		if ( preg_match( "($mainMiddleLastNumber)", $result ) ) {
-			$oneDigit = "\b(\d)\b";
-			$result = preg_replace("($oneDigit)", '0${0}', $result);
+			$OneDigit = "\b(\d)\b";
+			$TwoDigit = "\b(\d\d)\b";
+			$ThreeDigit = "\b(\d\d\d)\b";
+			$result = preg_replace("($OneDigit)", '000${0}', $result);
+			$result = preg_replace("($TwoDigit)", '00${0}', $result);
+			$result = preg_replace("($ThreeDigit)", '0${0}', $result);
 		}
 	
-		while (strlen($result)<16) { $result="0$result"; }
+		while (strlen($result)<20) { $result="0$result"; }
 	
 		return $result;
 	}
