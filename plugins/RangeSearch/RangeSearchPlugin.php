@@ -14,7 +14,8 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		'initialize', # tap into i18n
 		'install', # create additional table and batch-preprocess existing items for ranges
 		'uninstall', # delete table
-		'config_form', # 
+		'upgrade', # upgrades from revision to revision
+		'config_form', # prepare and display configuration form
 		'config', # store config settings in the database
 		'after_save_item', # preprocess saved item for ranges
 		'after_delete_item', # delete deleted item's preprocessed ranges
@@ -74,6 +75,20 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		$db->query($sql);
 
 		SELF::_uninstallOptions();
+	}
+
+	public function hookUpgrade($args) {
+		$oldVersion = $args['old_version'];
+		$db = $this->_db;
+		if ($oldVersion <= '0.2') {
+			$sql="
+						ALTER TABLE `$db->RangeSearchValues`
+							MODIFY fromnum varchar(20),
+							MODIFY tonum varchar(20)
+						";
+      $db->query($sql);
+			SELF::_batchProcessExistingItems();
+		}
 	}
 
 	/**
