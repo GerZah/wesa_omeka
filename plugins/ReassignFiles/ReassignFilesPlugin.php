@@ -83,12 +83,16 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 
     $record = $args['record'];
     $post = $args['post'];
+    #echo "<pre>"; print_r($_POST); die("</pre>");
+
     $db = $this->_db;
     // reassign the selected files from other items to the current item
     if (isset($post['reassignFilesFiles'])) {
-      $itemId= intval($post['reassignFilesFiles']);
+      $itemId = 10; // for testing
+      $files = $_POST['reassignFilesFiles'];
+      $fileNames = implode(',', $files);
       $db = $this->_db;
-      $sql = "UPDATE `$db->File`set item_id = $itemId";
+      $sql = "UPDATE `$db->File`set item_id = $itemId where item_id IN ($fileNames)";
       $db->query($sql);
     }
   }

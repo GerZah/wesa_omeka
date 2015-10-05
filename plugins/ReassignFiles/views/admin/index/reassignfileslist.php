@@ -9,19 +9,18 @@
     JOIN {$db->ElementText} et
     ON f.item_id = et.record_id
     WHERE f.item_id != $itemId
+    AND et.element_id = 50
     ORDER BY original_filename";
     $files = $db->fetchAll($select);
   foreach ($files as $file) {
-    $Id = $file['itemId'];
-    $fileNames[$file['original_filename']] = $file['itemName'];
+    $fileNames[$file['itemId']] = $file['original_filename'];
   }
   ?>
   <?php
   $existingFiles = array();
   foreach ($fileNames as $key => $value) {
-    #echo "<pre>"; print_r($Id); die("</pre>");
-      $existingFiles[$key] = $key.' [#Id: '.$Id.' - Title: '.$value.']';
+    $existingFiles[$key] = $value.' [#'.$key.' - '.' ]';
   }
-  echo get_view()->formSelect('reassignFiles-files[]', null , array('multiple' => true, 'size' => 10, 'style' => 'width: 500px;'), $existingFiles);
+  echo get_view()->formSelect('reassignFilesFiles[]', null , array('multiple' => true, 'size' => 10, 'style' => 'width: 500px;'), $existingFiles);
   ?>
 </div>
