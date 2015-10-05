@@ -27,7 +27,7 @@ class ReassignFiles_IndexController extends Omeka_Controller_AbstractActionContr
           else{
             $db = get_db();
             $fileNames = implode(',', $files);
-            $sql = "UPDATE `$db->File`set item_id = $itemId where item_id IN ($fileNames)";
+            $sql = "UPDATE `$db->File`set item_id = $itemId where id IN ($fileNames)";
             $db->query($sql);
             $this->_helper->flashMessenger(__('The changes are successfully saved.'), 'success');
         }

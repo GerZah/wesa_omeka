@@ -31,15 +31,16 @@ echo head(array('title' => __('Reassign Files to items'), 'bodyclass' => 'reassi
       <?php
       $fileNames = array();
       $db = get_db();
-      $select = "SELECT et.text AS itemName, f.original_filename AS original_filename, f.item_id AS itemId
+      $select = "SELECT et.text AS itemName, f.original_filename AS original_filename, f.item_id AS itemId, f.id AS fileId
                  FROM {$db->File} f
                  JOIN {$db->ElementText} et
                  ON f.item_id = et.record_id
                  WHERE et.element_id = 50
-                 GROUP BY et.record_id";
+                 GROUP BY original_filename";
       $files = $db->fetchAll($select);
+      #echo "<pre>"; print_r($files); die("</pre>");
       foreach ($files as $file) {
-          $fileNames[$file['itemId']] = $file['original_filename'].' [#'.$file['itemId'].' - '.$file['itemName'].' ]';
+          $fileNames[$file['fileId']] = $file['original_filename'].' [#'.$file['itemId'].' - '.$file['itemName'].' ]';
       }
       echo $this->formSelect('reassignFilesFiles[]', null, array('multiple' => true, 'size' => 10, 'style' => 'width: 600px;'), $fileNames);
       ?>
