@@ -10,7 +10,7 @@
     ON f.item_id = et.record_id
     WHERE f.item_id != $itemId
     AND et.element_id = 50
-    ORDER BY original_filename";
+    GROUP BY et.record_id";
     $files = $db->fetchAll($select);
   foreach ($files as $file) {
     $fileNames[$file['fileId']] = $file['original_filename'].' [#'.$file['itemId'].' - '.$file['itemName'].' ]';
