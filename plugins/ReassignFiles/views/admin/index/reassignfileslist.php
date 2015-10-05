@@ -13,15 +13,11 @@
     ORDER BY original_filename";
     $files = $db->fetchAll($select);
   foreach ($files as $file) {
-    $fileNames[$file['itemId']] = $file['original_filename'];
+    $fileNames[$file['itemId']] = $file['original_filename'].' [#'.$file['itemId'].' - '.$file['itemName'].' ]';
   }
   ?>
   <?php
-  $existingFiles = array();
-  foreach ($fileNames as $key => $value) {
-    $existingFiles[$key] = $value.' [#'.$key.' - '.' ]';
-  }
-  echo get_view()->formSelect('reassignFilesFiles[]', null , array('multiple' => true, 'size' => 10, 'style' => 'width: 500px;'), $existingFiles);
+  echo get_view()->formSelect('reassignFilesFiles[]', null , array('multiple' => true, 'size' => 10, 'style' => 'width: 500px;'), $fileNames);
   ?>
 <input type="hidden" name="itemId" value="<?php echo $itemId; ?>">
 </div>

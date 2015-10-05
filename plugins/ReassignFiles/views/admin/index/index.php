@@ -16,7 +16,7 @@ echo head(array('title' => __('Reassign Files to items'), 'bodyclass' => 'reassi
       <?php
       $itemNames = array();
       $sqlDb = get_db();
-      $query = "SELECT record_id, text from {$sqlDb->ElementText} WHERE element_id = 50 GROUP by text";
+      $query = "SELECT record_id, text from {$sqlDb->ElementText} WHERE element_id = 50 GROUP by record_id";
       $itemNames = $sqlDb->fetchAll($query);
       $item = array(-1 => __('Select Below'));
       foreach ($itemNames as $itemName) {
@@ -35,16 +35,13 @@ echo head(array('title' => __('Reassign Files to items'), 'bodyclass' => 'reassi
                  FROM {$db->File} f
                  JOIN {$db->ElementText} et
                  ON f.item_id = et.record_id
-                 WHERE et.element_id = 50";
+                 WHERE et.element_id = 50
+                 GROUP BY et.record_id";
       $files = $db->fetchAll($select);
       foreach ($files as $file) {
-          $fileNames[$file['itemId']] = $file['original_filename'];
+          $fileNames[$file['itemId']] = $file['original_filename'].' [#'.$file['itemId'].' - '.$file['itemName'].' ]';
       }
-      $existing = array();
-      foreach ($fileNames as $key => $value) {
-          $existing[$key] = $value.' [#'.$key.' - '.' ]';
-      }
-      echo $this->formSelect('reassignFilesFiles[]', null, array('multiple' => true, 'size' => 10, 'style' => 'width: 600px;'), $existing);
+      echo $this->formSelect('reassignFilesFiles[]', null, array('multiple' => true, 'size' => 10, 'style' => 'width: 600px;'), $fileNames);
       ?>
     </div>
   </fieldset>
