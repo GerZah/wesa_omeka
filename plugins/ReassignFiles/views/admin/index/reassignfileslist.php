@@ -23,4 +23,5 @@
   }
   echo get_view()->formSelect('reassignFilesFiles[]', null , array('multiple' => true, 'size' => 10, 'style' => 'width: 500px;'), $existingFiles);
   ?>
+<input type="hidden" name="itemId" value="<?php echo $itemId; ?>">
 </div>
