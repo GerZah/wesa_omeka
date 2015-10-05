@@ -366,9 +366,9 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
       //Optimized the update query to avoid multiple execution
       $sql = "UPDATE `$db->ItemRelationsRelation` set relation_comment = case id ";
       foreach ($comments as $commentId => $comment) {
-        $sql .= sprintf(" when %d then '%s' ", $commentId, addslashes($comment) );
+        $sql .= sprintf(" when %d then '%s'", $commentId, addslashes($comment) );
       }
-      $sql .= "end where id in ($commentIds)";
+      $sql .= " end where id in ($commentIds)";
       $db->query($sql);
     }
     else {
@@ -382,15 +382,18 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
       foreach($post['item_relations_item_relation_subject_property'] as $key => $val) {
 				$post['item_relations_item_relation_subject_property'][$key] = intval($val);
 			}
+      foreach($post['item_relations_subject_property'] as $key => $val) {
+				$post['item_relations_subject_property'][$key] = intval($val);
+			}
       $properties = array_combine($post['item_relations_item_relation_subject_property'], $post['item_relations_subject_property']);
       $propertyIds = implode(',', array_keys($properties));
 
       //Optimized the update query to avoid multiple execution
       $sql = "UPDATE `$db->ItemRelationsRelation` set property_id = case id ";
       foreach ($properties as $propertyId => $property) {
-        $sql .= sprintf(" when %d then '%d' ", $propertyId, $property);
+        $sql .= sprintf(" when %d then %d", $propertyId, $property);
       }
-      $sql .= "end where id in ($propertyIds)";
+      $sql .= " end where id in ($propertyIds)";
       $db->query($sql);
     }
     else {
