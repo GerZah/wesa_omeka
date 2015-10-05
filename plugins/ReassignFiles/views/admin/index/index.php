@@ -29,19 +29,23 @@ echo head(array('title' => __('Reassign Files to items'), 'bodyclass' => 'reassi
     <h2>Step 2: Select Files to Assign </h2>
     <div class="inputs four columns omega">
       <?php
+			// ---vvv--- Would love to encapsulate this block in a method in ReassignFilesPlugin.php
       $fileNames = array();
       $db = get_db();
       $select = "SELECT et.text AS itemName, f.original_filename AS original_filename, f.item_id AS itemId, f.id AS fileId
                  FROM {$db->File} f
                  JOIN {$db->ElementText} et
                  ON f.item_id = et.record_id
-                 WHERE et.element_id = 50
-                 GROUP BY original_filename";
+                 WHERE et.element_id = 50"; # GROUP BY original_filename # no grouping by filename (which might be identical)
       $files = $db->fetchAll($select);
       #echo "<pre>"; print_r($files); die("</pre>");
       foreach ($files as $file) {
-          $fileNames[$file['fileId']] = $file['original_filename'].' [#'.$file['itemId'].' - '.$file['itemName'].' ]';
+        $fileNames[$file['fileId']] = $file['original_filename'].
+                                        ' [#'.$file['itemId'].
+                                        ' ('.$file['fileId'].') - '.
+                                        $file['itemName'].']';
       }
+			// ---^^^--- But could not figure out how to call object methods from within the admin page view
       echo $this->formSelect('reassignFilesFiles[]', null, array('multiple' => true, 'size' => 10, 'style' => 'width: 600px;'), $fileNames);
       ?>
     </div>
