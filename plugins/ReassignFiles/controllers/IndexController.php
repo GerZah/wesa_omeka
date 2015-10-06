@@ -21,6 +21,7 @@ class ReassignFiles_IndexController extends Omeka_Controller_AbstractActionContr
         try{
           $itemId = intval($_POST['reassignFilesItem']);
           $files = $_POST['reassignFilesFiles'];
+          foreach($files as $key => $val) { $files[$key] = intval($files[$key]); }
           if(($itemId<0) or (is_null($files))){
             $this->_helper->flashMessenger(__('Please choose an item/file to reassign.'), 'error');
           }
