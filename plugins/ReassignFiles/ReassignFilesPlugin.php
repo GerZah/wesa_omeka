@@ -1,5 +1,8 @@
 <?php
 
+// Include global helper functions to be accessible from within all objects
+define('REASSIGNFILES_DIR',dirname(__FILE__));
+require_once REASSIGNFILES_DIR.'/helpers/ReassignFilesFunctions.php';
 
 /**
 * ConditionalElements plugin.
@@ -72,7 +75,9 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
   public function hookAdminItemsFormFiles()
   {
     echo '<h3>' . __('Add Existing Files') . '</h3>';
-    echo common('reassignfileslist', array(), 'index');
+    $itemId = metadata('item', 'id');
+    $fileNames = reassignFiles_getFileNames($itemId); // from helpers/ReassignFilesFunctions.php
+    echo common('reassignfileslist', array( "fileNames" => $fileNames ), 'index');
   }
 
   public function hookAfterSaveItem($args)
@@ -89,11 +94,16 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
     // reassign the selected files from other items to the current item
     if (isset($post['reassignFilesFiles']) and (isset($post['itemId']))) {
       $itemId = intval($_POST['itemId']);
-      $files = $_POST['reassignFilesFiles'];
-      $fileNames = implode(',', $files);
-      $db = $this->_db;
-      $sql = "UPDATE `$db->File`set item_id = $itemId where id IN ($fileNames)";
-      $db->query($sql);
+      if ($itemId) {
+        $files = $_POST['reassignFilesFiles'];
+        if (is_array($files)) {
+          foreach($files as $key => $val) { $files[$key] = intval($val); }
+          $fileNames = implode(',', $files);
+          $db = $this->_db;
+          $sql = "UPDATE `$db->File`set item_id = $itemId where id IN ($fileNames)";
+          $db->query($sql);
+        } else { $this->_helper->flashMessenger(__('Please choose an item/file to reassign.'), 'error'); }
+      } else { $this->_helper->flashMessenger(__('Please choose an item/file to reassign.'), 'error'); }
     }
   }
 
