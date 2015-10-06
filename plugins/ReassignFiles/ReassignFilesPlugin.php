@@ -101,7 +101,7 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
   * Display the plugin configuration form.
   */
   public static function hookConfigForm() {
-    $useReassignFilesPrexifes = (int)(boolean) get_option('reassign_files_orphaned_items_prefixes');
+    $useReassignFilesPrefixes = (int)(boolean) get_option('reassign_files_orphaned_items_prefixes');
 
     require dirname(__FILE__) . '/config_form.php';
   }
@@ -111,9 +111,19 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
   */
   public static function hookConfig() {
 
-    $prevUseReassignFilesPrexifes = (int)(boolean) get_option('reassign_files_orphaned_items_prefixes');
-    $newUseReassignFilesPrexifes = (int)(boolean) $_POST['reassign_files_orphaned_items_prefixes'];
-    set_option('reassign_files_orphaned_items_prefixes', $newUseReassignFilesPrexifes);
+    $prevUseReassignFilesPrefixes = (int)(boolean) get_option('reassign_files_orphaned_items_prefixes');
+    $newUseReassignFilesPrefixes = (int)(boolean) $_POST['reassign_files_orphaned_items_prefixes'];
+    set_option('reassign_files_orphaned_items_prefixes', $newUseReassignFilesPrefixes);
+
+    SELF::_batchDeleteOrphanedItems();
   }
+
+  private function _batchDeleteOrphanedItems() {
+		$db = get_db();
+    #check file? itemrelation installed? title? description?
+		$sql= "select id from `$db->Items` ";
+		$items = $db->fetchAll($sql);
+	  #echo "<pre>"; print_r($items); die("</pre>");
+	}
 
 }

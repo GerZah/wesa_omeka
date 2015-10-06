@@ -8,6 +8,6 @@
       echo __('Check this if you want to delete orphaned items.');
       ?>
     </p>
-    <?php echo get_view()->formCheckbox('reassign_files_orphaned_items_prefixes', null, array('checked' => $useReassignFilesPrexifes)); ?>
+    <?php echo get_view()->formCheckbox('reassign_files_orphaned_items_prefixes', null, array('checked' => $useReassignFilesPrefixes)); ?>
   </div>
 </div>
