@@ -98,8 +98,8 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
   }
 
   /**
-   * Display the plugin configuration form.
-   */
+  * Display the plugin configuration form.
+  */
   public static function hookConfigForm() {
     $useReassignFilesPrexifes = (int)(boolean) get_option('reassign_files_orphaned_items_prefixes');
 
@@ -107,8 +107,8 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
   }
 
   /**
-   * Handle the plugin configuration form.
-   */
+  * Handle the plugin configuration form.
+  */
   public static function hookConfig() {
 
     $prevUseReassignFilesPrexifes = (int)(boolean) get_option('reassign_files_orphaned_items_prefixes');
