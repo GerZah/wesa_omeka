@@ -90,20 +90,11 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
     $post = $args['post'];
     #echo "<pre>"; print_r($_POST); die("</pre>");
 
-    $db = $this->_db;
     // reassign the selected files from other items to the current item
     if (isset($post['reassignFilesFiles']) and (isset($post['itemId']))) {
-      $itemId = intval($_POST['itemId']);
-      if ($itemId) {
-        $files = $_POST['reassignFilesFiles'];
-        if (is_array($files)) {
-          foreach($files as $key => $val) { $files[$key] = intval($val); }
-          $fileNames = implode(',', $files);
-          $db = $this->_db;
-          $sql = "UPDATE `$db->File`set item_id = $itemId where id IN ($fileNames)";
-          $db->query($sql);
-        } else { $this->_helper->flashMessenger(__('Please choose an item/file to reassign.'), 'error'); }
-      } else { $this->_helper->flashMessenger(__('Please choose an item/file to reassign.'), 'error'); }
+      $errMsg = reassignFiles_reassignFiles($post['itemId'], $post['reassignFilesFiles']);
+      # if ($errMsg) { $this->_helper->flashMessenger( $errMsg, 'error' ); }
+      // ... turns out, we don't actually have a $this->_helper object here :-(
     }
   }
 
@@ -125,15 +116,15 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
     $newUseReassignFilesPrefixes = (int)(boolean) $_POST['reassign_files_orphaned_items_prefixes'];
     set_option('reassign_files_orphaned_items_prefixes', $newUseReassignFilesPrefixes);
 
-    SELF::_batchDeleteOrphanedItems();
+    # SELF::_batchDeleteOrphanedItems(); # +#+#+# we'll deal with that later, probably in helper module
   }
 
   private function _batchDeleteOrphanedItems() {
-		$db = get_db();
+    $db = get_db();
     #check file? itemrelation installed? title? description?
-		$sql= "select id from `$db->Items` ";
-		$items = $db->fetchAll($sql);
-	  #echo "<pre>"; print_r($items); die("</pre>");
-	}
+    $sql= "select id from `$db->Items` ";
+    $items = $db->fetchAll($sql);
+    #echo "<pre>"; print_r($items); die("</pre>");
+  }
 
 }

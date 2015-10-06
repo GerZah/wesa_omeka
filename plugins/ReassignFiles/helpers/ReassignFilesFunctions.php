@@ -28,3 +28,38 @@ function reassignFiles_getFileNames($filterItemID = 0)
   }
   return $fileNames;
 }
+
+/**
+* Do the actual work: Reassign the $files (specified by their file IDs towards one target item ID
+*/
+function reassignFiles_reassignFiles($itemID, $files) {
+  $errMsg = false;
+  $itemID = intval($itemID); // typecast / filter item ID for strange characters
+
+  if ($itemID) {
+    $db = get_db();
+    // make sure that the target item actually exists in the database
+    $targetExists = $db->fetchOne("SELECT count(*) FROM `$db->Items` where id=$itemID");
+
+    if ($targetExists) {
+      $fileIDs = array();
+      foreach($files as $file) {
+        $fileID = intval($file); // typecast / filter file IDs for strange characters
+        if ($fileID) { $fileIDs[] = $fileID; }
+      }
+
+      if ($fileIDs) { // at least one?
+        $fileIDs = implode(",", $fileIDs);
+        $sql = "UPDATE `$db->File` set item_id = $itemID where id IN ($fileIDs)";
+        $db->query($sql); // let's do this
+
+        # $errMsg = $sql;
+      }
+      else { $errMsg = __('Please choose files to reassign.'); }
+    }
+    else { $errMsg = __('Please choose an existing item to reassign.'); }
+  }
+  else { $errMsg = __('Please choose an item to reassign.'); }
+
+  return $errMsg;
+}
