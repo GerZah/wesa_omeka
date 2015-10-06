@@ -36,9 +36,10 @@ echo head(array('title' => __('Reassign Files to items'), 'bodyclass' => 'reassi
                  FROM {$db->File} f
                  JOIN {$db->ElementText} et
                  ON f.item_id = et.record_id
-                 WHERE et.element_id = 50"; # GROUP BY original_filename # no grouping by filename (which might be identical)
+                 WHERE et.element_id = 50
+                 GROUP BY f.id"; # GROUP BY original_filename # no grouping by filename (which might be identical)
       $files = $db->fetchAll($select);
-      #echo "<pre>"; print_r($files); die("</pre>");
+      #echo "<pre>$select\n\n"; print_r($files); die("</pre>");
       foreach ($files as $file) {
         $fileNames[$file['fileId']] = $file['original_filename'].
                                         ' [#'.$file['itemId'].
