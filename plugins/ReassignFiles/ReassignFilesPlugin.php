@@ -27,7 +27,7 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
   protected $_filters = array('admin_navigation_main');
 
   protected $_options = array(
-    'reassign_files_orphaned_items_prefixes' => 0,
+    'reassign_files_delete_orphaned_items' => 1,
   );
   public function hookInitialize()
   {
@@ -102,8 +102,7 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
   * Display the plugin configuration form.
   */
   public static function hookConfigForm() {
-    $useReassignFilesPrefixes = (int)(boolean) get_option('reassign_files_orphaned_items_prefixes');
-
+    $deleteOrphanedItems = (int)(boolean) get_option('reassign_files_delete_orphaned_items');
     require dirname(__FILE__) . '/config_form.php';
   }
 
@@ -111,12 +110,8 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
   * Handle the plugin configuration form.
   */
   public static function hookConfig() {
-
-    $prevUseReassignFilesPrefixes = (int)(boolean) get_option('reassign_files_orphaned_items_prefixes');
-    $newUseReassignFilesPrefixes = (int)(boolean) $_POST['reassign_files_orphaned_items_prefixes'];
-    set_option('reassign_files_orphaned_items_prefixes', $newUseReassignFilesPrefixes);
-
-    # SELF::_batchDeleteOrphanedItems(); # +#+#+# we'll deal with that later, probably in helper module
+    $deleteOrphanedItems = (int)(boolean) $_POST['reassign_files_delete_orphaned_items'];
+    set_option('reassign_files_delete_orphaned_items', $deleteOrphanedItems);
   }
 
   private function _batchDeleteOrphanedItems() {
