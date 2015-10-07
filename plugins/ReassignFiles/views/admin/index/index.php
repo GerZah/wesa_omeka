@@ -17,10 +17,17 @@ echo head(array('title' => __('Reassign Files to items'), 'bodyclass' => 'reassi
         $itemNames = array();
         $sqlDb = get_db();
         $query = "SELECT record_id, text from {$sqlDb->ElementText} WHERE element_id = 50 GROUP by record_id";
+        $query = "SELECT id as record_id,
+                    ( SELECT text from {$sqlDb->ElementText} et
+                      WHERE element_id = 50
+                      AND et.record_id = it.id
+                      GROUP by et.record_id
+                    ) as text
+                  FROM {$sqlDb->Items} it";
         $itemNames = $sqlDb->fetchAll($query);
         $item = array(-1 => __('Select Below'));
         foreach ($itemNames as $itemName) {
-          $item[$itemName['record_id']] = $itemName['text'];
+          $item[$itemName['record_id']] = ( $itemName['text'] ? $itemName['text'] : "[".__("Untitled Item")."]" );
         }
         echo $this->formSelect('reassignFilesItem', $item, array('multiple' => false), $item); ?>
       </div>

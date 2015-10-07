@@ -12,9 +12,9 @@ function reassignFiles_getFileNames($filterItemID = 0)
   $db = get_db();
   $select = "SELECT et.text AS itemName, f.original_filename AS original_filename, f.item_id AS itemId, f.id AS fileId
   FROM {$db->File} f
-  JOIN {$db->ElementText} et
+  LEFT JOIN {$db->ElementText} et
   ON f.item_id = et.record_id
-  WHERE et.element_id = 50
+  WHERE et.element_id = 50 or et.element_id is null
   $filterItemInfix
   GROUP BY f.id";
   # die("<pre>$select</pre>");
@@ -22,7 +22,7 @@ function reassignFiles_getFileNames($filterItemID = 0)
   $files = $db->fetchAll($select);
   foreach ($files as $file) {
     $fileNames[$file['fileId']] = $file['original_filename'].
-    ' - '.$file['itemName'].
+    ' - '.( $file['itemName'] ? $file['itemName'] : "[".__("Untitled Item")."]" ).
     ' [#'.$file['itemId'].
     '/'.$file['fileId'].']';
   }
