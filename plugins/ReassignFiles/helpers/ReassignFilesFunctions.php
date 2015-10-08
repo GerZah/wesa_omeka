@@ -17,7 +17,6 @@ function reassignFiles_getFileNames($filterItemID = 0)
   WHERE et.element_id = 50 or et.element_id IS NULL
   $filterItemInfix
   GROUP BY f.id";
-  # die("<pre>$select</pre>");
 
   $files = $db->fetchAll($select);
   foreach ($files as $file) {
@@ -78,21 +77,21 @@ function reassignFiles_reassignFiles($itemID, $files) {
 }
 
 /**
-* If applicable, check if items who just had files assigned to them are now "empty" and, if so, delete them
+* If applicable, check if items who just had files assigned to other items are now "empty" and, if so, delete them
 */
 function reassignFiles_deleteOrphans($potentialOrphans = false) {
- 	$db = get_db();
+  $db = get_db();
 
-	$idInfix="WHERE true";
+  $idInfix="WHERE true"; // Sanity: Check _all_ items
 
-	if ( is_array($potentialOrphans) ) {
+  if ( is_array($potentialOrphans) ) { // Received an array of item IDs?
     $justIds = array();
     foreach($potentialOrphans as $potentialOrphan) { $justIds[] = $potentialOrphan["item_id"]; }
     if ($justIds) {
-    	$justIdString = implode(",", $justIds);
-    	$idInfix = "WHERE it.id in ($justIdString)";
+      $justIdString = implode(",", $justIds);
+      $idInfix = "WHERE it.id in ($justIdString)"; // limiting the items to be searched
     }
-    else { $idInfix="WHERE false"; }
+    else { $idInfix="WHERE false"; } // No IDs? Then don't search at all
   }
 
   // Huge left join query:
@@ -101,12 +100,13 @@ function reassignFiles_deleteOrphans($potentialOrphans = false) {
   // - without any other files assigned to them
   // - (if applicable) without item relations participation
 
+  // Is ItemRelations installed? In that case: Create infixes to check items' relations as well
   $irJoin = $irWhere = "";
   if (reassignFiles_withItemRelations()) {
-  	$irJoin = "LEFT JOIN `$db->ItemRelationsRelations` ir
-  	           ON it.id = ir.subject_item_id OR it.id = ir.object_item_id";
-  	$irWhere = "AND ir.subject_item_id IS NULL
-  	            AND ir.object_item_id IS NULL";
+    $irJoin = "LEFT JOIN `$db->ItemRelationsRelations` ir
+               ON it.id = ir.subject_item_id OR it.id = ir.object_item_id";
+    $irWhere = "AND ir.subject_item_id IS NULL
+                AND ir.object_item_id IS NULL";
   }
 
   $sql = "SELECT it.id
@@ -120,9 +120,14 @@ function reassignFiles_deleteOrphans($potentialOrphans = false) {
           AND et.record_id IS NULL
           AND f.item_id IS NULL
           $irWhere";
-  $items = $db->fetchAll($sql);
-  #die("<pre>$sql".print_r($items, true)."</pre>");
+  $orphans = $db->fetchAll($sql);
 
+  if ($orphans) {
+    foreach($orphans as $orphan) {
+      $orphanObject = $db->getTable('Item')->find($orphan["id"]);
+      $orphanObject->delete();
+    }
+  }
 }
 
 /**
