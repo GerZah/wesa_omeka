@@ -67,11 +67,11 @@ function reassignFiles_reassignFiles($itemID, $files) {
 
         # $errMsg = $sql;
       }
-      else { $errMsg = __('Please choose files to reassign.'); }
+      else { $errMsg = __('Please select one or more files to reassign to the selected item.'); }
     }
-    else { $errMsg = __('Please choose an existing item to reassign.'); }
+    else { $errMsg = __('Please select an existing item to reassign files to.'); }
   }
-  else { $errMsg = __('Please choose an item to reassign.'); }
+  else { $errMsg = __('Please select an item to reassign files to.'); }
 
   return $errMsg;
 }

@@ -31,8 +31,9 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
   );
   public function hookInitialize()
   {
-
+    add_translation_source(dirname(__FILE__) . '/languages');
   }
+
   /**
   * Install the plugin.
   */
@@ -74,7 +75,7 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
   */
   public function hookAdminItemsFormFiles()
   {
-    echo '<h3>' . __('Add Existing Files') . '</h3>';
+    echo '<h3>' . __('Add Files from Other Items') . '</h3>';
     $itemId = metadata('item', 'id');
     $fileNames = reassignFiles_getFileNames($itemId); // from helpers/ReassignFilesFunctions.php
     echo common('reassignfileslist', array( "fileNames" => $fileNames ), 'index');

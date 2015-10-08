@@ -1,4 +1,4 @@
-<div><?php echo __('Select the files to reassign to the item:'); ?></div>
+<p><?php echo __('Select one or more files to be reassigned to this item.'); ?></p>
 <div class="drawer-contents">
   <?php
   $itemId = metadata('item', 'id');
