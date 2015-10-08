@@ -92,7 +92,8 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
 
     // reassign the selected files from other items to the current item
     if (isset($post['reassignFilesFiles']) and (isset($post['itemId']))) {
-      $errMsg = reassignFiles_reassignFiles($post['itemId'], $post['reassignFilesFiles']);
+      $itemID = ( $post['itemId'] ? $post['itemId'] : $args["record"]["id"] );
+      $errMsg = reassignFiles_reassignFiles($itemID, $post['reassignFilesFiles']);
       # if ($errMsg) { $this->_helper->flashMessenger( $errMsg, 'error' ); }
       // ... turns out, we don't actually have a $this->_helper object here :-(
     }
