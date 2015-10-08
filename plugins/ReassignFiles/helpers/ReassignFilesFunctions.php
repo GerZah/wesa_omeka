@@ -14,7 +14,7 @@ function reassignFiles_getFileNames($filterItemID = 0)
   FROM {$db->File} f
   LEFT JOIN {$db->ElementText} et
   ON f.item_id = et.record_id
-  WHERE et.element_id = 50 or et.element_id is null
+  WHERE et.element_id = 50 or et.element_id IS NULL
   $filterItemInfix
   GROUP BY f.id";
   # die("<pre>$select</pre>");
@@ -80,23 +80,61 @@ function reassignFiles_reassignFiles($itemID, $files) {
 /**
 * If applicable, check if items who just had files assigned to them are now "empty" and, if so, delete them
 */
-function reassignFiles_deleteOrphans($potentialOrphans, $reprocess = false) {
+function reassignFiles_deleteOrphans($potentialOrphans = false) {
  	$db = get_db();
 
-  // DEBUG: if $reprocess == true, suspect all (!) items to be potential orphans
-  if ($reprocess) { $potentialOrphans = $db->fetchAll("SELECT id FROM `$db->Items` WHERE true"); }
+	$idInfix="WHERE true";
 
-  $justIds = array();
-  foreach($potentialOrphans as $potentialOrphan) { $justIds[] = $potentialOrphan["id"]; }
-  
-  if ($justIds) {
-    $justIdString = implode(",", $justIds);
-    
-    // +#+#+# Check which items are actually there in omeka_items
-    // +#+#+# Check which of those do not have elements AT ALL in omeka_eleemnt_texts
-    // +#+#+# Check which of those do not have files left in omeka_files
-    // +#+#+# If applicable: Check which of those do not take place in relations in omeka_item_relations_relations
+	if ( is_array($potentialOrphans) ) {
+    $justIds = array();
+    foreach($potentialOrphans as $potentialOrphan) { $justIds[] = $potentialOrphan["item_id"]; }
+    if ($justIds) {
+    	$justIdString = implode(",", $justIds);
+    	$idInfix = "WHERE it.id in ($justIdString)";
+    }
+    else { $idInfix="WHERE false"; }
   }
 
-  #die("<pre>$justIdString\n".print_r($justIds, true)."</pre>");
+  // Huge left join query:
+  // - Find those items (in case they are still existent)
+  // - without any element texts
+  // - without any other files assigned to them
+  // - (if applicable) without item relations participation
+
+  $irJoin = $irWhere = "";
+  if (reassignFiles_withItemRelations()) {
+  	$irJoin = "LEFT JOIN `$db->ItemRelationsRelations` ir
+  	           ON it.id = ir.subject_item_id OR it.id = ir.object_item_id";
+  	$irWhere = "AND ir.subject_item_id IS NULL
+  	            AND ir.object_item_id IS NULL";
+  }
+
+  $sql = "SELECT it.id
+          FROM `$db->Items` it
+          LEFT JOIN {$db->ElementText} et
+          ON it.id = et.record_id
+          LEFT JOIN `$db->File` f
+          ON it.id = f.item_id
+          $irJoin
+          $idInfix
+          AND et.record_id IS NULL
+          AND f.item_id IS NULL
+          $irWhere";
+  $items = $db->fetchAll($sql);
+  #die("<pre>$sql".print_r($items, true)."</pre>");
+
+}
+
+/**
+* Checks if ItemRelations is installed, so it could be taken into account during orphaned items search
+*/
+function reassignFiles_withItemRelations() {
+  $db = get_db();
+  $sql = "select 1 from `$db->ItemRelationsRelations` limit 1";
+
+  $withItemRelations = false;
+  try { $withItemRelations = ($db->fetchOne($sql) === 1); }
+  catch (Exception $e) { $withItemRelations=false; }
+
+  return $withItemRelations;
 }

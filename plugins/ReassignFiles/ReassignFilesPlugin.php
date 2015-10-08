@@ -112,7 +112,8 @@ class ReassignFilesPlugin extends Omeka_Plugin_AbstractPlugin
   public static function hookConfig() {
     $deleteOrphanedItems = (int)(boolean) $_POST['reassign_files_delete_orphaned_items'];
     set_option('reassign_files_delete_orphaned_items', $deleteOrphanedItems);
-    if ($deleteOrphanedItems) { reassignFiles_deleteOrphans(array(), true); } // +#+#+# DEBUG: re-process all items
+    $deleteOrphanedItemsNow = (int)(boolean) $_POST['reassign_files_delete_orphaned_items_now'];
+    if ($deleteOrphanedItemsNow) { reassignFiles_deleteOrphans(); }
   }
 
   private function _batchDeleteOrphanedItems() {

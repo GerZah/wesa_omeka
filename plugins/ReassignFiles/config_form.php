@@ -15,5 +15,12 @@
       ?>
     </p>
     <?php echo get_view()->formCheckbox('reassign_files_delete_orphaned_items', null, array('checked' => $deleteOrphanedItems)); ?>
+    <hr>
+    <p class="explanation">
+      <?php
+      echo __('Check this to enforce checking for and deletion of orphaned items <em>once now</em>.');
+      ?>
+    </p>
+    <?php echo get_view()->formCheckbox('reassign_files_delete_orphaned_items_now', null, array('checked' => false)); ?>
   </div>
 </div>
