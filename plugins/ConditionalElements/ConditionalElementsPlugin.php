@@ -11,9 +11,31 @@ class ConditionalElementsPlugin extends Omeka_Plugin_AbstractPlugin {
 	*/
 	protected $_hooks = array(
 		'initialize',
+		'install',
+		'uninstall',
 		'admin_head', // embed our jQuery code when adding / editing objects
 		'define_acl',
 	);
+
+  protected $_options = array(
+    'conditional_elements_dependencies' => "[]",
+  );
+
+  /**
+  * Install the plugin.
+  */
+  public function hookInstall() {
+
+    SELF::_installOptions();
+  }
+
+  /**
+  * Uninstall the plugin.
+  */
+  public function hookUninstall() {
+
+    SELF::_uninstallOptions();
+  }
 
 	/**
 	* @var array This plugin's filters.
