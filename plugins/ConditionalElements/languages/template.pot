@@ -1,5 +1,5 @@
 # Translation for the Conditional Elements plugin for Omeka.
-# Copyright (C) 2011 Roy Rosenzweig Center for History and New Media
+# Copyright (C) 2015 Gero Zahn
 # This file is distributed under the same license as the Omeka package.
 # Gero Zahn <gero.zahn@upb.de>, 2015.
 # 
