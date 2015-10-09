@@ -71,7 +71,7 @@ class ConditionalElementsPlugin extends Omeka_Plugin_AbstractPlugin {
 			// Retrieve dependencies from Database
 			/* */
 			$json=get_option('conditional_elements_dependencies');
-			if (!$json) { $json="null"; } # else { $json = $this->_removeOutdatedDependencies($json); }
+			if (!$json) { $json="[]"; } # else { $json = $this->_removeOutdatedDependencies($json); }
 			/* */
 
 			echo "<script>var conditionalElementsDep=$json;</script>";
