@@ -8,9 +8,10 @@
       echo __('Check this if you want to automatically delete items that become "orphaned" after reassigning their files to other items.<br>'.
               'This will affect only those items that afterwards<br>'.
               '<ul>'.
+              '<li>do not have an item type assigned,</li>'.
               '<li>do not have any associated files left,</li>'.
               '<li>are neither subject nor object in a relationship (in case the "Item Relations" plugin is installed),</li>'.
-              '<li>and contain no metadata whatsoever (i.e. entered text, not even a title).</li>'.
+              '<li>and contain at the most a title, but no other metadata whatsoever (i.e. entered text).</li>'.
               '</ul>'.
               '<em>Please note:</em> This is often the case for files that were bulk-added through the "Dropbox" plugin.');
       ?>
