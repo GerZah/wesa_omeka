@@ -62,6 +62,7 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
         set_option('geolocation_add_map_to_contribution_form', '0');
         set_option('geolocation_default_radius', 10);
         set_option('geolocation_use_metric_distances', '0');
+        set_option('geolocation_map_overlays', '');
     }
 
     public function hookUninstall()
@@ -73,6 +74,7 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
         delete_option('geolocation_per_page');
         delete_option('geolocation_add_map_to_contribution_form');
         delete_option('geolocation_use_metric_distances');
+        delete_option('geolocation_map_overlays');
 
         // This is for older versions of Geolocation, which used to store a Google Map API key.
         delete_option('geolocation_gmaps_key');
@@ -126,6 +128,27 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
         set_option('geolocation_use_metric_distances', $_POST['geolocation_use_metric_distances']);
         set_option('geolocation_map_type', $_POST['map_type']);
         set_option('geolocation_auto_fit_browse', $_POST['auto_fit_browse']);
+
+				$jsonMapOverlays = "[]";
+
+				if ( (isset($_POST['geolocation_map_overlays'])) and ($_POST['geolocation_map_overlays']) ) {
+
+					$geolocationMapOverlays = $_POST['geolocation_map_overlays'];
+					$txtOverlays= explode("\n", $geolocationMapOverlays);
+
+					$mapOverlays = array();
+					foreach($txtOverlays as $txtOverlay) {
+						$cookedTxtOverlay = trim($txtOverlay);
+						if ($cookedTxtOverlay) { $mapOverlays[] = explode(";", $cookedTxtOverlay); }
+					}
+					
+					$jsonMapOverlays = json_encode($mapOverlays);
+					
+				}
+
+				set_option('geolocation_map_overlays', $jsonMapOverlays);
+
+				
     }
 
     public function hookDefineAcl($args)

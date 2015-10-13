@@ -153,3 +153,61 @@
     </div>
 </div>
 </fieldset>
+
+<fieldset>
+<legend><?php echo __('Map Overlays'); ?></legend>
+<div class="field">
+    <div class="two columns alpha">
+        <label for="geolocation_map_overlays"><?php echo __('Define Map Overlays'); ?></label>
+    </div>
+    <div class="inputs five columns omega">
+        <p class="explanation">
+        	<?php echo __('You may define one or more image overlays that can be superimposed on top of the Google Maps map. '.
+        	              'By this you can use e.g. a historical map for geolocation. The used map will be stored and will '.
+        	              'also be superimposed later during map presentation.<br>'.
+        	              '<strong>Please note:</strong> Please use the following form, one per line:<br>'.
+        	              '<em>identifier;imgURL;LATnorth;LATsouth;LNGwest;LNGeast</em>  e.g.<br>'.
+        	              '<input style="width:100%;" readonly disabled id="geolocation_example"'.
+        	              'value="Talkeetna;https://developers.google.com/maps/documentation/javascript/examples/full/images/talkeetna.png;'.
+        	              '62.400471;62.281819;-150.005608;-150.287132">'); ?>
+        </p>
+
+        <?php
+        	$jsonMapOverlays = get_option("geolocation_map_overlays");
+       	
+        	if (!$jsonMapOverlays) { $jsonMapOverlays = "[]"; }
+					$mapOverlays = json_decode($jsonMapOverlays);
+
+					$txtOverlays = array();
+					foreach($mapOverlays as $mapOverlay) {
+						$txtOverlays[] = implode(";", $mapOverlay);
+					}
+
+	        $geolocationMapOverlays = implode("\n", $txtOverlays);
+
+					# ./application/libraries/Zend/View/Helper/FormTextarea.php
+					# public function formTextarea($name, $value = null, $attribs = null)
+					echo get_view()->formTextarea('geolocation_map_overlays', $geolocationMapOverlays, array( "rows" => 8 ) );
+				?>
+
+    </div>
+</div>
+</fieldset>
+
+<script type="text/javascript">
+// <!--
+	jQuery(document).ready(function() {
+	
+		var $ = jQuery; // use noConflict version of jQuery as the short $ within this block
+	
+		$("#geolocation_example")
+			.attr('readonly', 'readonly')
+			.submit(function(event) {
+					console.log("foo");
+					event.stopPropagation();
+					return false;
+				} );
+	
+	} );
+// -->
+</script>
