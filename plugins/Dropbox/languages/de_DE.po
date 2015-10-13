@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Dropbox\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Dropbox/issues\n"
 "POT-Creation-Date: 2013-01-23 21:49-0500\n"
-"PO-Revision-Date: 2015-10-13 11:24+0200\n"
+"PO-Revision-Date: 2015-10-13 11:36+0200\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Language-Team: \n"
 "X-Generator: Poedit 1.8.5\n"
 
-#: DropboxPlugin.php:46
+#: DropboxPlugin.php:46 views/admin/index/index.php:5
 msgid "Dropbox"
 msgstr "Dropbox"
 
@@ -25,13 +25,29 @@ msgstr "Dropbox"
 msgid "Add Dropbox Files"
 msgstr "Dropbox-Dateien hinzufügen"
 
-#: DropboxPlugin.php:91 views/admin/index/dropboxlist.php:2
+#: DropboxPlugin.php:91 controllers/IndexController.php:69
+#: views/admin/index/dropboxlist.php:2
 msgid "The Dropbox files directory must be both readable and writable."
 msgstr "Das Dropbox-Verzeichnis muss sowohl lesbar als auch schreibbar sein."
 
+#: controllers/IndexController.php:34
+msgid ""
+"Some files were not uploaded. Specific errors for each file follow below:"
+msgstr ""
+"Manche Dateien wurden nicht hochgeladen. Spezifische Fehler für jede "
+"einzelne Datei siehe unten:"
+
+#: controllers/IndexController.php:46
+msgid "You must select a file to upload."
+msgstr "Sie müssen eine Datei zum Hochladen auswählen."
+
+#: controllers/IndexController.php:50
+msgid "The following files were uploaded:"
+msgstr "Die folgenden Dateien wurden hochgeladen:"
+
 #: helpers/DropboxFunctions.php:73
 msgid "The given path is invalid."
-msgstr "Der bezeichnete Pfad ist ungültig."
+msgstr "Der angegebene Pfad ist ungültig."
 
 #: helpers/DropboxFunctions.php:76
 #, php-format
@@ -68,9 +84,8 @@ msgid ""
 msgstr ""
 "Um eine Datei in der Dropbox verfügbar zu machen, laden Sie sie in das "
 "files/-Verzeichnis des Dropbox-Plugins auf den Server hoch. Entweder können "
-"Sie mehrere Dropbox-Dateien auf einmal zu Ihre Site hinzugefügt werden, "
-"oder individuell zu Objekten über das Objekt-Admin-Interface hinzugefügt "
-"werden."
+"Sie mehrere Dropbox-Dateien auf einmal zu Ihrer Site hinzufügen, oder diese "
+"über das Objekt-Admin-Interface individuell zu Objekten hinzufügen."
 
 #: views/admin/index/index.php:27
 msgid "Batch Add Items"
@@ -81,8 +96,8 @@ msgid ""
 "For each file selected, a new item will be created. The properties set to "
 "the right will be applied to each new item."
 msgstr ""
-"Für jede gewählte Datei wird ein neues Objekt angelegt. Die Eigenschaften "
-"auf der rechten Seite werden für jedes neue Objekt angewandt."
+"Für jede gewählte Datei wird ein neues Objekt angelegt. Der Eigenschaften-"
+"Satz auf der rechten Seite werden für jedes neue Objekt angewandt."
 
 #: views/admin/index/index.php:38
 msgid "Upload Files as Items"

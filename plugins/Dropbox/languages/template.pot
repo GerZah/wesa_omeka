@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: DropboxPlugin.php:46
+#: DropboxPlugin.php:46 views/admin/index/index.php:5
 msgid "Dropbox"
 msgstr ""
 
@@ -25,8 +25,22 @@ msgstr ""
 msgid "Add Dropbox Files"
 msgstr ""
 
-#: DropboxPlugin.php:91 views/admin/index/dropboxlist.php:2
+#: DropboxPlugin.php:91 controllers/IndexController.php:69
+#: views/admin/index/dropboxlist.php:2
 msgid "The Dropbox files directory must be both readable and writable."
+msgstr ""
+
+#: controllers/IndexController.php:34
+msgid ""
+"Some files were not uploaded. Specific errors for each file follow below:"
+msgstr ""
+
+#: controllers/IndexController.php:46
+msgid "You must select a file to upload."
+msgstr ""
+
+#: controllers/IndexController.php:50
+msgid "The following files were uploaded:"
 msgstr ""
 
 #: helpers/DropboxFunctions.php:73
