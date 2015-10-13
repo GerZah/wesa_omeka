@@ -540,10 +540,10 @@ SQL
      * @param int $height
      * @return string
      **/
-    protected function _mapForm($item, $label = 'Find a Location by Address:', $confirmLocationChange = true,  $post = null)
+    protected function _mapForm($item, $label = false, $confirmLocationChange = true,  $post = null)
     {
         $html = '';
-        $label = __('Find a Location by Address:');
+        if (!$label) { $label = substr(__('Find a Location by Address:'),0,-1); }
         $center = $this->_getCenter();
         $center['show'] = false;
 
@@ -573,22 +573,42 @@ SQL
             }
         }
 
-        $html .= '<div class="field">';
-        $html .=     '<div id="location_form" class="two columns alpha">';
-        $html .=         '<input type="hidden" name="geolocation[latitude]" value="' . $lat . '" />';
-        $html .=         '<input type="hidden" name="geolocation[longitude]" value="' . $lng . '" />';
-        $html .=         '<input type="hidden" name="geolocation[zoom_level]" value="' . $zoom . '" />';
-        $html .=         '<input type="hidden" name="geolocation[map_type]" value="Google Maps v' . self::GOOGLE_MAPS_API_VERSION . '" />';
-        $html .=         '<label>' . html_escape($label) . '</label>';
-        $html .=     '</div>';
-        $html .=     '<div class="inputs five columns omega">';
-        $html .=          '<div class="input-block">';
-        $html .=            '<input type="text" name="geolocation[address]" id="geolocation_address" value="' . $addr . '" class="textinput"/>';
-        $html .=            '<button type="button" style="float:none;" name="geolocation_find_location_by_address" id="geolocation_find_location_by_address">'.__('Find').'</button>';
-        $html .=          '</div>';
-        $html .=     '</div>';
-        $html .= '</div>';
-        $html .= '<div  id="omeka-map-form" style="width: 100%; height: 300px"></div>';
+        $html .= '<div id="omeka-map-form" style="width: 100%; height: 300px"></div>';
+        
+        $html .= '<div class="field">'.
+                   '<table><tbody>'.
+                    '<tr>'.
+                      '<td>'.
+                        '<input type="text" name="geolocation[address]" id="geolocation_address" value="' . $addr . '" class="textinput" size="40" maxlength="160" />'.
+                      '</td>'.
+                      '<td style="width:35%;">'.
+                        '<button type="button" style="float:none;" name="geolocation_find_location_by_address" id="geolocation_find_location_by_address">'.
+                          html_escape($label).
+                        '</button>'.
+                      '</td>'.
+                    '</tr>'.
+                   '</tbody></table>'.
+                 '</div>';
+                 
+        $html .= '<div class="field">'.
+                   '<table><tbody>'.
+                     '<tr>'.
+                       '<th>'. __("Latitude:")  .'</th>'.
+                       '<td><input type="text" class="textinput" name="geolocation[latitude]" value="' . $lat . '" size="25" /></td>'.
+                       '<td rowspan="2" style="width:35%;">'.
+                         '<button type="button" style="float:none;" name="geolocation_update_map_from_coords" id="geolocation_update_map_from_coords">'.
+                           __("Find a Location by Coordinates").
+                         '</button>'.
+                       '</td>'.
+                     '</tr>'.
+                     '<tr>'.
+                       '<th>'. __("Longitude:")  .'</th>'.
+                       '<td><input type="text" class="textinput" name="geolocation[longitude]" value="' . $lng . '" size="25" /></td>'.
+                     '</tr>'.
+                   '</tbody></table>'.
+                   '<input type="hidden" name="geolocation[zoom_level]" value="' . $zoom . '" />'.
+                   '<input type="hidden" name="geolocation[map_type]" value="Google Maps v' . self::GOOGLE_MAPS_API_VERSION . '" />'.
+                 '</div>';
 
 
         $options = array();
@@ -606,6 +626,10 @@ SQL
         $options = js_escape($options);
 
         $js = "var anOmekaMapForm = new OmekaMapForm(" . js_escape('omeka-map-form') . ", $center, $options);";
+        $js .= "var mapClickConfirm = '". __('Are you sure you want to change the location of the item?') ."';";
+        $js .= "var errNoCenterMap = '". __('Error: The center of the map has not been set!') ."';";
+        $js .= "var errMapDiv = '". __('Error: You have no map links div!') ."';";
+        $js .= "var errAddrNotFound = '". __('Error: "%s" was not found!') ."';";
         $js .= "
             jQuery(document).bind('omeka:tabselected', function () {
                 anOmekaMapForm.resize();

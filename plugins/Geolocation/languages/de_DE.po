@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: SimplePages\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Geolocation/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2015-10-12 14:04+0200\n"
+"PO-Revision-Date: 2015-10-13 17:04+0200\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,9 +58,34 @@ msgstr "Angefügte Elemente auf einer Karte anzeigen"
 msgid "Find a Location by Address:"
 msgstr "Finden Sie einen Ort anhand der Adresse:"
 
-#: GeolocationPlugin.php:587
-msgid "Find"
-msgstr "Finden"
+#: GeolocationPlugin.php:596
+msgid "Latitude:"
+msgstr "Breitengrad:"
+
+#: GeolocationPlugin.php:600
+msgid "Find a Location by Coordinates"
+msgstr "Finden Sie einen Ort anhand der Koordinaten"
+
+#: GeolocationPlugin.php:605
+msgid "Longitude:"
+msgstr "Längengrad:"
+
+#: GeolocationPlugin.php:629
+msgid "Are you sure you want to change the location of the item?"
+msgstr "Sind Sie sicher, dass Sie den Ort des Objektes ändern wollen?"
+
+#: GeolocationPlugin.php:630
+msgid "Error: The center of the map has not been set!"
+msgstr "Fehler: Das Zentrum der Karte wurde nicht definiert!"
+
+#: GeolocationPlugin.php:631
+msgid "Error: You have no map links div!"
+msgstr "Fehler: Sie haben keinen Karten-Link div!"
+
+#: GeolocationPlugin.php:632
+#, php-format
+msgid "Error: \"%s\" was not found!"
+msgstr "Fehler „%s“ wurde nicht gefunden!"
 
 #: config_form.php:3
 msgid "General Settings"

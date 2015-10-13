@@ -58,8 +58,33 @@ msgstr ""
 msgid "Find a Location by Address:"
 msgstr ""
 
-#: GeolocationPlugin.php:587
-msgid "Find"
+#: GeolocationPlugin.php:596
+msgid "Latitude:"
+msgstr ""
+
+#: GeolocationPlugin.php:600
+msgid "Find a Location by Coordinates"
+msgstr ""
+
+#: GeolocationPlugin.php:605
+msgid "Longitude:"
+msgstr ""
+
+#: GeolocationPlugin.php:629
+msgid "Are you sure you want to change the location of the item?"
+msgstr ""
+
+#: GeolocationPlugin.php:630
+msgid "Error: The center of the map has not been set!"
+msgstr ""
+
+#: GeolocationPlugin.php:631
+msgid "Error: You have no map links div!"
+msgstr ""
+
+#: GeolocationPlugin.php:632
+#, php-format
+msgid "Error: \"%s\" was not found!"
 msgstr ""
 
 #: config_form.php:3

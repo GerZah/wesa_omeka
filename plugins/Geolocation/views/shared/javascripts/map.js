@@ -54,7 +54,7 @@ OmekaMap.prototype = {
     
     initMap: function () {
         if (!this.center) {
-            alert('Error: The center of the map has not been set!');
+            alert(errNoCenterMap);
             return;
         }
 
@@ -116,7 +116,7 @@ OmekaMapBrowse.prototype = {
         var listDiv = jQuery('#' + this.options.list);
 
         if (!listDiv.size()) {
-            alert('Error: You have no map links div!');
+            alert(errMapDiv);
         } else {
             //Create HTML links for each of the markers
             this.buildListLinks(listDiv);
@@ -247,7 +247,7 @@ function OmekaMapForm(mapDivId, center, options) {
     // Make the map clickable to add a location point.
     google.maps.event.addListener(this.map, 'click', function (event) {
         // If we are clicking a new spot on the map
-        if (!that.options.confirmLocationChange || that.markers.length === 0 || confirm('Are you sure you want to change the location of the item?')) {
+        if (!that.options.confirmLocationChange || that.markers.length === 0 || confirm(mapClickConfirm)) {
             var point = event.latLng;
             var marker = that.setMarker(point);
             jQuery('#geolocation_address').val('');
@@ -278,6 +278,18 @@ function OmekaMapForm(mapDivId, center, options) {
         }
     });
 
+    // Make the Update Map Pointer button transfer the lat/lng data to the map and add a marker
+    jQuery('#geolocation_update_map_from_coords').bind('click', function (event) {
+        var latElement = document.getElementsByName('geolocation[latitude]')[0];
+        var lngElement = document.getElementsByName('geolocation[longitude]')[0];
+        var address = latElement.value + "," + lngElement.value;
+        that.findAddress(address);
+
+        //Don't submit the form
+        event.stopPropagation();
+        return false;
+    });
+
     // Add the existing map point.
     if (this.options.point) {
         this.map.setZoom(this.options.point.zoomLevel);
@@ -302,7 +314,7 @@ OmekaMapForm.prototype = {
 
                 // If required, ask the user if they want to add a marker to the geolocation point of the address.
                 // If so, add the marker, otherwise clear the address.
-                if (!that.options.confirmLocationChange || that.markers.length === 0 || confirm('Are you sure you want to change the location of the item?')) {
+                if (!that.options.confirmLocationChange || that.markers.length === 0 || confirm(mapClickConfirm)) {
                     var marker = that.setMarker(point);
                 } else {
                     jQuery('#geolocation_address').val('');
@@ -310,7 +322,7 @@ OmekaMapForm.prototype = {
                 }
             } else {
                 // If no point was found, give us an alert
-                alert('Error: "' + address + '" was not found!');
+                alert(errAddrNotFound.replace("%s", address));
                 return null;
             }
         });
@@ -332,7 +344,7 @@ OmekaMapForm.prototype = {
         
         //  Make the marker clear the form if clicked.
         google.maps.event.addListener(marker, 'click', function (event) {
-            if (!that.options.confirmLocationChange || confirm('Are you sure you want to remove the location of the item?')) {
+            if (!that.options.confirmLocationChange || confirm(mapClickConfirm)) {
                 that.clearForm();
             }
         });
