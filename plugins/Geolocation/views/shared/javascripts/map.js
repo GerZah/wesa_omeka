@@ -290,6 +290,11 @@ function OmekaMapForm(mapDivId, center, options) {
         return false;
     });
 
+    jQuery('#geolocation_set_overlay').change( function() {
+      var overlayIdx= this.value;
+      that.selOverlay(overlayIdx);
+    });
+
     // Add the existing map point.
     if (this.options.point) {
         this.map.setZoom(this.options.point.zoomLevel);
@@ -301,6 +306,8 @@ function OmekaMapForm(mapDivId, center, options) {
 }
 
 OmekaMapForm.prototype = {
+    mapOverlay: null,
+
     /* Get the geolocation of the address and add marker. */
     findAddress: function (address) {
         var that = this;
@@ -402,5 +409,21 @@ OmekaMapForm.prototype = {
             point = new google.maps.LatLng(this.center.latitude, this.center.longitude);
         }
         this.map.setCenter(point);
-    }
+    },
+
+    selOverlay: function(overlayIdx) {
+      if (typeof mapOverlay != 'undefined') { mapOverlay.setMap(null); }
+      if ( (overlayIdx>=0) && (typeof mapOverlays[overlayIdx] != 'undefined') ) {
+        var overlayData = mapOverlays[overlayIdx];
+        var imageBounds = {
+          north: parseFloat(overlayData["latNorth"]),
+          south: parseFloat(overlayData["latSouth"]),
+          west:  parseFloat(overlayData["lngWest"]),
+          east:  parseFloat(overlayData["lngEast"])
+        };
+        mapOverlay = new google.maps.GroundOverlay( overlayData["imgUrl"], imageBounds);
+	    	mapOverlay.setMap(this.map);
+      }
+    },
+
 };

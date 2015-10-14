@@ -166,29 +166,13 @@
         	              'By this you can use e.g. a historical map for geolocation. The used map will be stored and will '.
         	              'also be superimposed later during map presentation.<br>'.
         	              '<strong>Please note:</strong> Please use the following form, one per line:<br>'.
-        	              '<em>identifier;imgURL;LATnorth;LATsouth;LNGwest;LNGeast</em>  e.g.<br>'.
+        	              '<em>idx#;identifier;imgURL;LATnorth;LATsouth;LNGwest;LNGeast</em><br>For example:<br>'.
         	              '<input style="width:100%;" readonly disabled id="geolocation_example"'.
-        	              'value="Talkeetna;https://developers.google.com/maps/documentation/javascript/examples/full/images/talkeetna.png;'.
-        	              '62.400471;62.281819;-150.005608;-150.287132">'); ?>
+        	              'value="1;Talkeetna;https://developers.google.com/maps/documentation/javascript/examples/full/images/talkeetna.png;'.
+        	              '62.400471;62.281819;-150.287132;-150.005608">'); ?>
         </p>
 
-        <?php
-        	$jsonMapOverlays = get_option("geolocation_map_overlays");
-       	
-        	if (!$jsonMapOverlays) { $jsonMapOverlays = "[]"; }
-					$mapOverlays = json_decode($jsonMapOverlays);
-
-					$txtOverlays = array();
-					foreach($mapOverlays as $mapOverlay) {
-						$txtOverlays[] = implode(";", $mapOverlay);
-					}
-
-	        $geolocationMapOverlays = implode("\n", $txtOverlays);
-
-					# ./application/libraries/Zend/View/Helper/FormTextarea.php
-					# public function formTextarea($name, $value = null, $attribs = null)
-					echo get_view()->formTextarea('geolocation_map_overlays', $geolocationMapOverlays, array( "rows" => 8 ) );
-				?>
+        <?php echo get_view()->formTextarea('geolocation_map_overlays', $geolocationMapOverlays, array( "rows" => 8 ) ); ?>
 
     </div>
 </div>

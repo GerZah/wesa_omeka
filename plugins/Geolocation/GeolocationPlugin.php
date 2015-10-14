@@ -104,9 +104,115 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
         }
     }
 
+    protected function _convertOverlayJsonToForm($jsonMapOverlays = false) {
+    	if (!$jsonMapOverlays) { $jsonMapOverlays = get_option("geolocation_map_overlays"); }
+
+      if (!$jsonMapOverlays) { $jsonMapOverlays = "[]"; }
+			$mapOverlays = json_decode($jsonMapOverlays);
+
+			$txtOverlays = array();
+			foreach($mapOverlays as $mapOverlay) {
+				$txtOverlays[] = implode(";", $mapOverlay);
+			}
+
+      $geolocationMapOverlays = implode("\n", $txtOverlays);
+
+			return $geolocationMapOverlays;
+    }
+
+		protected function _convertOverlayJsonForUse($jsonMapOverlays = false) {
+    	if (!$jsonMapOverlays) { $jsonMapOverlays = get_option("geolocation_map_overlays"); }
+ 
+      if (!$jsonMapOverlays) { $jsonMapOverlays = "[]"; }
+			$mapOverlays = json_decode($jsonMapOverlays);
+
+			$result = array();
+
+			$regExIdx = "^\d+$"; // decimal number of at least one digit
+			$regExLatLng = "^(?:\+|-)?\d+(?:.\d+)?$"; // (+|-)1234(.1234) as latitude or longitude coordinate
+
+			foreach($mapOverlays as $mapOverlay) {
+
+				$idx = $identifier = $imgUrl = $latNorth = $latSouth= $lngWest = $lngEast = false;
+
+				foreach( array_keys($mapOverlay) as $key ) { $mapOverlay[$key] = trim( $mapOverlay[$key] ); }
+
+				if ( (isset($mapOverlay[0])) and ( preg_match( "($regExIdx)", $mapOverlay[0] ) ) ) { // 1st: numerical index
+					$idx = intval($mapOverlay[0]);
+				} else { break; }
+				if ( (isset($mapOverlay[1])) and ($mapOverlay[1]) ) { $identifier = $mapOverlay[1]; } else { break; } // 2nd element: identifier string
+				if ( (isset($mapOverlay[2])) and ($mapOverlay[2]) ) { $imgUrl = $mapOverlay[2]; } else { break; } // 3rd element: image URL string
+				if ( ( isset($mapOverlay[3]) ) and ( preg_match( "($regExLatLng)", trim($mapOverlay[3]) ) ) ) { // 4th element: northern latitude
+					$latNorth = trim($mapOverlay[3]);
+				} else { break; }
+				if ( ( isset($mapOverlay[4]) ) and ( preg_match( "($regExLatLng)", trim($mapOverlay[4]) ) ) ) { // 5th element: southern latitude
+					$latSouth = trim($mapOverlay[4]);
+				} else { break; }
+				if ( ( isset($mapOverlay[5]) ) and ( preg_match( "($regExLatLng)", trim($mapOverlay[5]) ) ) ) { // 6th element: western longitude
+					$lngWest = trim($mapOverlay[5]);
+				} else { break; }
+				if ( ( isset($mapOverlay[6]) ) and ( preg_match( "($regExLatLng)", trim($mapOverlay[6]) ) ) ) { // 7th element: eastern longitude
+					$lngEast = trim($mapOverlay[6]);
+				} else { break; }
+
+				if ( (floatval($latNorth) <= floatval($latSouth)) or (floatval($lngWest) >= floatval($lngEast)) ) { break; }
+
+				$result[$idx] = array( "identifier" => $identifier,
+																"imgUrl" => $imgUrl,
+																"latNorth" => $latNorth,
+																"latSouth" => $latSouth,
+																"lngWest" => $lngWest,
+																"lngEast" => $lngEast,
+															);
+
+			}
+
+			if ($result) {
+
+				$result = array( "fulldata" => $result, "jsSelect" => array( -1 => __("Select Below") ), "jsData" => json_encode($result) );
+
+				foreach($result["fulldata"] as $idx => $overlay) {
+					$result["jsSelect"][$idx] = $overlay["identifier"];
+				}
+				
+			}
+
+			# echo("<pre>" . print_r($result,true) . "</pre>");
+
+			return $result;
+    }
+
+		protected function _convertOverlayFormToJson($geolocationMapOverlays = false) {
+			$jsonMapOverlays = "[]";
+
+			if (!$geolocationMapOverlays) {
+				if ( (isset($_POST['geolocation_map_overlays'])) and ($_POST['geolocation_map_overlays']) ) {
+					$geolocationMapOverlays = $_POST['geolocation_map_overlays'];
+				}
+			}
+
+			if ($geolocationMapOverlays) {
+
+				$geolocationMapOverlays = $_POST['geolocation_map_overlays'];
+				$txtOverlays= explode("\n", $geolocationMapOverlays);
+
+				$mapOverlays = array();
+				foreach($txtOverlays as $txtOverlay) {
+					$cookedTxtOverlay = trim($txtOverlay);
+					if ($cookedTxtOverlay) { $mapOverlays[] = explode(";", $cookedTxtOverlay); }
+				}
+				
+				$jsonMapOverlays = json_encode($mapOverlays);
+			}
+
+			return $jsonMapOverlays;
+		}
+
     public function hookConfigForm()
     {
+        $geolocationMapOverlays = SELF::_convertOverlayJsonToForm();
         include 'config_form.php';
+        # SELF::_convertOverlayJsonForUse(); # +#+#+# DEBUG
     }
 
     public function hookConfig($args)
@@ -129,26 +235,8 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
         set_option('geolocation_map_type', $_POST['map_type']);
         set_option('geolocation_auto_fit_browse', $_POST['auto_fit_browse']);
 
-				$jsonMapOverlays = "[]";
-
-				if ( (isset($_POST['geolocation_map_overlays'])) and ($_POST['geolocation_map_overlays']) ) {
-
-					$geolocationMapOverlays = $_POST['geolocation_map_overlays'];
-					$txtOverlays= explode("\n", $geolocationMapOverlays);
-
-					$mapOverlays = array();
-					foreach($txtOverlays as $txtOverlay) {
-						$cookedTxtOverlay = trim($txtOverlay);
-						if ($cookedTxtOverlay) { $mapOverlays[] = explode(";", $cookedTxtOverlay); }
-					}
-					
-					$jsonMapOverlays = json_encode($mapOverlays);
-					
-				}
-
+				$jsonMapOverlays = SELF::_convertOverlayFormToJson();
 				set_option('geolocation_map_overlays', $jsonMapOverlays);
-
-				
     }
 
     public function hookDefineAcl($args)
@@ -596,6 +684,8 @@ SQL
             }
         }
 
+				$overlays = SELF::_convertOverlayJsonForUse();
+
         $html .= '<div id="omeka-map-form" style="width: 100%; height: 300px"></div>';
         
         $html .= '<div class="field">'.
@@ -612,10 +702,21 @@ SQL
                     '</tr>'.
                    '</tbody></table>'.
                  '</div>';
-                 
+
         $html .= '<div class="field">'.
-                   '<table><tbody>'.
-                     '<tr>'.
+                   '<table><tbody>';
+
+
+				if ($overlays) {
+					$html .= '<tr>'.
+                     '<th>' . __("Select Map Overlay:") . '</th>'.
+                     '<td colspan="2">'.
+                       get_view()->formSelect('geolocation_set_overlay', -1, null, $overlays["jsSelect"] ).
+                     '</td>'.
+                   '</tr>';
+				}
+
+        $html .=     '<tr>'.
                        '<th>'. __("Latitude:")  .'</th>'.
                        '<td><input type="text" class="textinput" name="geolocation[latitude]" value="' . $lat . '" size="25" /></td>'.
                        '<td rowspan="2" style="width:35%;">'.
@@ -653,6 +754,11 @@ SQL
         $js .= "var errNoCenterMap = '". __('Error: The center of the map has not been set!') ."';";
         $js .= "var errMapDiv = '". __('Error: You have no map links div!') ."';";
         $js .= "var errAddrNotFound = '". __('Error: "%s" was not found!') ."';";
+
+				if ($overlays) {
+					$js .= "var mapOverlays = ".$overlays["jsData"];
+				}
+
         $js .= "
             jQuery(document).bind('omeka:tabselected', function () {
                 anOmekaMapForm.resize();
