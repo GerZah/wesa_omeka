@@ -52,6 +52,7 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
         `zoom_level` INT NOT NULL ,
         `map_type` VARCHAR( 255 ) NOT NULL ,
         `address` TEXT NOT NULL ,
+        `overlay` SMALLINT NOT NULL DEFAULT '-1' ,
         INDEX (`item_id`)) ENGINE = InnoDB";
         $db->query($sql);
 
@@ -102,6 +103,11 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
         if (version_compare($args['old_version'], '2.2.3', '<')) {
             set_option('geolocation_default_radius', 10);
         }
+        if (version_compare($args['old_version'], '2.2.3.1', '<')) {
+          $db = get_db();
+          $db->query("ALTER TABLE `$db->Location` ADD `overlay` SMALLINT NOT NULL DEFAULT '-1' AFTER `address`;");
+        }
+
     }
 
     protected function _convertOverlayJsonToForm($jsonMapOverlays = false) {
@@ -305,6 +311,7 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
                 $location->item_id = $item->id;
             }
             $location->setPostData($geolocationPost);
+            # echo "<pre>". print_r($location,true) ."</pre>"; die();
             $location->save();
         } else {
             // If the form is empty, then we want to delete whatever location is
@@ -711,7 +718,7 @@ SQL
 					$html .= '<tr>'.
                      '<th>' . __("Select Map Overlay:") . '</th>'.
                      '<td colspan="2">'.
-                       get_view()->formSelect('geolocation_set_overlay', -1, null, $overlays["jsSelect"] ).
+                       get_view()->formSelect('geolocation[overlay]', -1, null, $overlays["jsSelect"] ).
                      '</td>'.
                    '</tr>';
 				}

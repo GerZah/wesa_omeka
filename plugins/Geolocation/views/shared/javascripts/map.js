@@ -290,7 +290,7 @@ function OmekaMapForm(mapDivId, center, options) {
         return false;
     });
 
-    jQuery('#geolocation_set_overlay').change( function() {
+    jQuery('#geolocation-overlay').change( function() {
       var overlayIdx= this.value;
       that.selOverlay(overlayIdx);
     });
