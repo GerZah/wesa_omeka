@@ -422,7 +422,17 @@ OmekaMapForm.prototype = {
           east:  parseFloat(overlayData["lngEast"])
         };
         mapOverlay = new google.maps.GroundOverlay( overlayData["imgUrl"], imageBounds);
-	    	mapOverlay.setMap(this.map);
+        mapOverlay.setMap(this.map);
+
+        var that = this;
+        google.maps.event.addListener(mapOverlay, 'click', function (event) {
+          if (!that.options.confirmLocationChange || that.markers.length === 0 || confirm(mapClickConfirm)) {
+              var point = event.latLng;
+              var marker = that.setMarker(point);
+              jQuery('#geolocation_address').val('');
+          }
+        } );
+
       }
     },
 
