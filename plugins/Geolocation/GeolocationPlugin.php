@@ -680,14 +680,17 @@ SQL
             $lat = (double) $post['geolocation']['latitude'];
             $zoom = (int) $post['geolocation']['zoom_level'];
             $addr = html_escape($post['geolocation']['address']);
+            $overlay = (int) $post['geolocation']['overlay'];
         } else {
             if ($location) {
                 $lng  = (double) $location['longitude'];
                 $lat  = (double) $location['latitude'];
                 $zoom = (int) $location['zoom_level'];
                 $addr = html_escape($location['address']);
+                $overlay = (int) $location['overlay'];
             } else {
                 $lng = $lat = $zoom = $addr = '';
+                $overlay = -1;
             }
         }
 
@@ -718,7 +721,7 @@ SQL
 					$html .= '<tr>'.
                      '<th>' . __("Select Map Overlay:") . '</th>'.
                      '<td colspan="2">'.
-                       get_view()->formSelect('geolocation[overlay]', -1, null, $overlays["jsSelect"] ).
+                       get_view()->formSelect('geolocation[overlay]', $overlay, null, $overlays["jsSelect"] ).
                      '</td>'.
                    '</tr>';
 				}
@@ -769,6 +772,7 @@ SQL
         $js .= "
             jQuery(document).bind('omeka:tabselected', function () {
                 anOmekaMapForm.resize();
+                anOmekaMapForm.selOverlay(".$overlay.");
             });
         ";
 
