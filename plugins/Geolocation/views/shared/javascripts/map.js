@@ -84,6 +84,19 @@ OmekaMap.prototype = {
         this.map = new google.maps.Map(document.getElementById(this.mapDivId), mapOptions);
         this.markerBounds = new google.maps.LatLngBounds();
 
+        var overlayIdx = this.options["overlay"];
+        if ( (overlayIdx>=0) && (typeof mapOverlays[overlayIdx] != 'undefined') ) {
+          var overlayData = mapOverlays[overlayIdx];
+          var imageBounds = {
+            north: parseFloat(overlayData["latNorth"]),
+            south: parseFloat(overlayData["latSouth"]),
+            west:  parseFloat(overlayData["lngWest"]),
+            east:  parseFloat(overlayData["lngEast"])
+          };
+          mapOverlay = new google.maps.GroundOverlay( overlayData["imgUrl"], imageBounds);
+          mapOverlay.setMap(this.map);
+        }
+
         // Show the center marker if we have that enabled.
         if (this.center.show) {
             this.addMarker(this.center.latitude, 
