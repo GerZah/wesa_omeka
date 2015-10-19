@@ -101,41 +101,32 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 */
 	public static function hookConfig() {
 		// Gregorian / Julian Prefix switch
-		$prevUseGregJulPrefixes = (int)(boolean) get_option('date_search_use_gregjul_prefixes');
-		$newUseGregJulPrefixes = (int)(boolean) $_POST['date_search_use_gregjul_prefixes'];
-		set_option('date_search_use_gregjul_prefixes', $newUseGregJulPrefixes);
+		$useGregJulPrefixes = (int)(boolean) $_POST['date_search_use_gregjul_prefixes'];
+		set_option('date_search_use_gregjul_prefixes', $useGregJulPrefixes);
 
 		// Search All Fields switch
-		$prevSearchAllFields = (int)(boolean) get_option('date_search_search_all_fields');
-		$newSearchAllFields = (int)(boolean) $_POST['date_search_search_all_fields'];
-		set_option('date_search_search_all_fields', $newSearchAllFields);
+		$searchAllFields = (int)(boolean) $_POST['date_search_search_all_fields'];
+		set_option('date_search_search_all_fields', $searchAllFields);
 
 		// Limit Fields list (in case "Search All Fields" is false
-		$oldLimitFields = get_option('date_search_limit_fields');
-		$newLimitFields = array();
+		$limitFields = array();
 		$postIds=false;
 		if (isset($_POST["date_search_limit_fields"])) { $postIds = $_POST["date_search_limit_fields"]; }
 		if (is_array($postIds)) {
 			foreach($postIds as $postId) {
 				$postId = intval($postId);
-				if ($postId) { $newLimitFields[] = $postId; }
+				if ($postId) { $limitFields[] = $postId; }
 			}
 		}
-		sort($newLimitFields);
-		$newLimitFields = json_encode($newLimitFields);
-		set_option('date_search_limit_fields', $newLimitFields);
+		sort($limitFields);
+		$limitFields = json_encode($limitFields);
+		set_option('date_search_limit_fields', $limitFields);
 
 		// Search Relationship Comments switch
-		$prevSearchRelComments = (int)(boolean) get_option('date_search_search_rel_comments');
-		$newSearchRelComments = (int)(boolean) $_POST['date_search_search_rel_comments'];
-		set_option('date_search_search_rel_comments', $newSearchRelComments);
+		$searchRelComments = (int)(boolean) $_POST['date_search_search_rel_comments'];
+		set_option('date_search_search_rel_comments', $searchRelComments);
 
-		$reprocess = false;
-		$reprocess = ( ($reprocess) or ($prevUseGregJulPrefixes != $newUseGregJulPrefixes) ); 
-		$reprocess = ( ($reprocess) or ($prevSearchAllFields != $newSearchAllFields) ); 
-		$reprocess = ( ($reprocess) or ( (!$newSearchAllFields) && ($oldLimitFields != $newLimitFields) ) ); 
-		$reprocess = ( ($reprocess) or ( (!$newSearchAllFields) && ($prevSearchRelComments != $newSearchRelComments) ) ); 
-
+		$reprocess = (int)(boolean) $_POST['date_search_trigger_reindex'];
 		if ($reprocess) { SELF::_batchProcessExistingItems(); }
 		# echo "<pre>"; print_r($_POST); echo "</pre>"; die();
 	}
