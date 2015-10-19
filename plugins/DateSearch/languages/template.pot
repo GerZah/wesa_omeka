@@ -59,6 +59,25 @@ msgid ""
 "inside relationship comments."
 msgstr ""
 
+#: config_form.php:87
+msgid "Trigger Re-indexing of Existing Content"
+msgstr ""
+
+#: config_form.php:92
+msgid ""
+"<strong>Please note:</strong> Checking this box will re-generate the index "
+"<em>now</em> and exactly <em>once</em>. This action will be carried out as "
+"soon as you click on \"Save Changes\"."
+msgstr ""
+
+#: config_form.php:99
+msgid ""
+"<em>Explanation:</em> Date Search relies on a search index that is being "
+"created during content maintenance in the background. However, existing "
+"content will not be re-indexed automatically. So if you have existing "
+"content or modify your settings, you should re-generate the search index."
+msgstr ""
+
 #: views/shared/common/date-search-advanced-search.php:3
 msgid "Date Search"
 msgstr ""

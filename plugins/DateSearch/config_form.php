@@ -64,6 +64,7 @@
 	
 		$("#date_search_use_gregjul_prefixes").change( function() { activateReindexCheckbox(); } );
 		$("#date_search_search_all_fields").change( function() { showHideShownHiddenSearchAll(); activateReindexCheckbox(); } );
+		$("#date_search_limit_fields").change( function() { activateReindexCheckbox(); } );
 		$("#date_search_search_rel_comments").change( function() { activateReindexCheckbox(); } );
 
 		function showHideShownHiddenSearchAll() {
@@ -72,9 +73,7 @@
 			if (searchAllPreset) { $("#shownHiddenSeachAll").slideUp(); } else { $("#shownHiddenSeachAll").slideDown(); }
 		}
 
-		function activateReindexCheckbox() {
-			$("#date_search_trigger_reindex").prop('checked', true);
-		}
+		function activateReindexCheckbox() { $("#date_search_trigger_reindex").prop('checked', true); }
 	
 	} );
 // -->

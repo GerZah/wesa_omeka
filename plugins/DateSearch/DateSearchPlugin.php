@@ -253,7 +253,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 					$elementTexts = $db -> fetchAll("select text from `$db->ElementTexts`".
 																					" where record_id=$item_id".
-																					" and element_id in ($elementIds)");
+																					" and element_id in $elementIds");
 					if ($elementTexts) {
 						$text = "";
 						foreach($elementTexts as $elementText) { $text .= " " . $elementText["text"]; }
