@@ -77,7 +77,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * Display the plugin configuration form.
 	 */
 	public static function hookConfigForm() {
-		$useGregJulPrexifes = (int)(boolean) get_option('date_search_use_gregjul_prefixes');
+		$useGregJulPrefixes = (int)(boolean) get_option('date_search_use_gregjul_prefixes');
 		$searchAllFields = (int)(boolean) get_option('date_search_search_all_fields');
 
 		$db = get_db();
@@ -101,9 +101,9 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 */
 	public static function hookConfig() {
 		// Gregorian / Julian Prefix switch
-		$prevUseGregJulPrexifes = (int)(boolean) get_option('date_search_use_gregjul_prefixes');
-		$newUseGregJulPrexifes = (int)(boolean) $_POST['date_search_use_gregjul_prefixes'];
-		set_option('date_search_use_gregjul_prefixes', $newUseGregJulPrexifes);
+		$prevUseGregJulPrefixes = (int)(boolean) get_option('date_search_use_gregjul_prefixes');
+		$newUseGregJulPrefixes = (int)(boolean) $_POST['date_search_use_gregjul_prefixes'];
+		set_option('date_search_use_gregjul_prefixes', $newUseGregJulPrefixes);
 
 		// Search All Fields switch
 		$prevSearchAllFields = (int)(boolean) get_option('date_search_search_all_fields');
@@ -131,7 +131,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		set_option('date_search_search_rel_comments', $newSearchRelComments);
 
 		$reprocess = false;
-		$reprocess = ( ($reprocess) or ($prevUseGregJulPrexifes != $newUseGregJulPrexifes) ); 
+		$reprocess = ( ($reprocess) or ($prevUseGregJulPrefixes != $newUseGregJulPrefixes) ); 
 		$reprocess = ( ($reprocess) or ($prevSearchAllFields != $newSearchAllFields) ); 
 		$reprocess = ( ($reprocess) or ( (!$newSearchAllFields) && ($oldLimitFields != $newLimitFields) ) ); 
 		$reprocess = ( ($reprocess) or ( (!$newSearchAllFields) && ($prevSearchRelComments != $newSearchRelComments) ) ); 
@@ -372,8 +372,8 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		$julGregPrefix = $regEx["julGregPrefix"];
 		$date = $regEx["date"];
 
-		$useGregJulPrexifes = intval(get_option('date_search_use_gregjul_prefixes'));
-		$mainRegEx = ( $useGregJulPrexifes ? $regEx["julGregDateTimeSpan"] : $regEx["dateTimespan"] );
+		$useGregJulPrefixes = intval(get_option('date_search_use_gregjul_prefixes'));
+		$mainRegEx = ( $useGregJulPrefixes ? $regEx["julGregDateTimeSpan"] : $regEx["dateTimespan"] );
 
 		$allCount = preg_match_all( "($mainRegEx)i", $text, $allMatches);
 		# echo "<pre>Count: $allCount\n"; print_r($allMatches); die("</pre>");
@@ -388,7 +388,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 			$storeDate = true;
 
-			if ($useGregJulPrexifes) { // Gregorian / Julian date prefixes
+			if ($useGregJulPrefixes) { // Gregorian / Julian date prefixes
 				$julGreg = preg_match( "($julGregPrefix)i", $singleMatch, $julGregMatch );
 				$julGregJG = ($julGreg == 1 ? strtoupper($julGregMatch[1]) : null ); // "G" or "J" or null
 				# echo "<pre>$julGreg / $julGregJG: "; print_r($julGregMatch); die("</pre>");

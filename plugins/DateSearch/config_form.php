@@ -9,7 +9,7 @@
 										.'is meant to be specifying a Gregorian or a Julian date or timespan.');
             ?>
         </p>
-        <?php echo get_view()->formCheckbox('date_search_use_gregjul_prefixes', null, array('checked' => $useGregJulPrexifes)); ?>
+        <?php echo get_view()->formCheckbox('date_search_use_gregjul_prefixes', null, array('checked' => $useGregJulPrefixes)); ?>
     </div>
     <div class="two columns alpha">
         <?php echo get_view()->formLabel('date_search_search_all_fields', __('Scan All Text Fields')); ?>
