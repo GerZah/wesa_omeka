@@ -121,41 +121,32 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 */
 	public static function hookConfig() {
 		// Unit configuration
-		$oldRangeSearchUnits = get_option('range_search_units');
-		$newRangeSearchUnits = SELF::_encodeUnitsFromTextArea($_POST['range_search_units']);
-		set_option('range_search_units', $newRangeSearchUnits );
+		$rangeSearchUnits = SELF::_encodeUnitsFromTextArea($_POST['range_search_units']);
+		set_option('range_search_units', $rangeSearchUnits );
 
 		// Search All Fields switch
-		$prevSearchAllFields = (int)(boolean) get_option('range_search_search_all_fields');
-		$newSearchAllFields = (int)(boolean) $_POST['range_search_search_all_fields'];
-		set_option('range_search_search_all_fields', $newSearchAllFields);
+		$searchAllFields = (int)(boolean) $_POST['range_search_search_all_fields'];
+		set_option('range_search_search_all_fields', $searchAllFields);
 
 		// Limit Fields list (in case "Search All Fields" is false
-		$oldLimitFields = get_option('range_search_limit_fields');
-		$newLimitFields = array();
+		$limitFields = array();
 		$postIds=false;
 		if (isset($_POST["range_search_limit_fields"])) { $postIds = $_POST["range_search_limit_fields"]; }
 		if (is_array($postIds)) {
 			foreach($postIds as $postId) {
 				$postId = intval($postId);
-				if ($postId) { $newLimitFields[] = $postId; }
+				if ($postId) { $limitFields[] = $postId; }
 			}
 		}
-		sort($newLimitFields);
-		$newLimitFields = json_encode($newLimitFields);
-		set_option('range_search_limit_fields', $newLimitFields);
+		sort($limitFields);
+		$limitFields = json_encode($limitFields);
+		set_option('range_search_limit_fields', $limitFields);
 
 		// Search Relationship Comments switch
-		$prevSearchRelComments = (int)(boolean) get_option('range_search_search_rel_comments');
-		$newSearchRelComments = (int)(boolean) $_POST['range_search_search_rel_comments'];
-		set_option('range_search_search_rel_comments', $newSearchRelComments);
+		$searchRelComments = (int)(boolean) $_POST['range_search_search_rel_comments'];
+		set_option('range_search_search_rel_comments', $searchRelComments);
 
-		$reprocess = false;
-		$reprocess = ( ($reprocess) or ($oldRangeSearchUnits != $newRangeSearchUnits) ); 
-		$reprocess = ( ($reprocess) or ($prevSearchAllFields != $newSearchAllFields) ); 
-		$reprocess = ( ($reprocess) or ( (!$newSearchAllFields) && ($oldLimitFields != $newLimitFields) ) ); 
-		$reprocess = ( ($reprocess) or ( (!$newSearchAllFields) && ($prevSearchRelComments != $newSearchRelComments) ) ); 
-
+		$reprocess = (int)(boolean) $_POST['range_search_trigger_reindex'];
 		if ($reprocess) { SELF::_batchProcessExistingItems(); }
 		# echo "<pre>"; print_r($_POST); echo "</pre>"; die();
 	}
@@ -312,7 +303,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 					$elementTexts = $db -> fetchAll("select text from `$db->ElementTexts`".
 																					" where record_id=$item_id".
-																					" and element_id in ($elementIds)");
+																					" and element_id in $elementIds");
 					if ($elementTexts) {
 						$text = "";
 						foreach($elementTexts as $elementText) { $text .= " " . $elementText["text"]; }
