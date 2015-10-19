@@ -22,14 +22,17 @@ class Geolocation_View_Helper_ItemGoogleMap extends Zend_View_Helper_Abstract
                                       . '<div class="geolocation_balloon_thumbnail">' . $thumbnailLink . '</div>'
                                       . '<p class="geolocation_balloon_description">' . $description . '</p></div>';
             }
+            $overlays = GeolocationConvertOverlayJsonForUse();
             $options = array();
             $options['mapType'] = get_option('geolocation_map_type');
+            if ($overlays) { $options['overlay'] = $location->overlay; }
             $center = js_escape($center);
             $options = js_escape($options);
             $style = "width: $width; height: $height";
             $html = '<div id="' . $divId . '" class="map geolocation-map" style="' . $style . '"></div>';
             
             $js = "var " . Inflector::variablize($divId) . ";";
+            if ($overlays) { $js .= "var mapOverlays = ".$overlays["jsData"].";"; }
             $js .= "OmekaMapSingle = new OmekaMapSingle(" . js_escape($divId) . ", $center, $options); ";
             $html .= "<script type='text/javascript'>$js</script>";
         } else {

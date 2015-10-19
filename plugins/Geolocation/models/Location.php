@@ -12,6 +12,7 @@ class Location extends Omeka_Record_AbstractRecord implements Zend_Acl_Resource_
     public $zoom_level;
     public $map_type;
     public $address;
+    public $overlay;
     
     /**
      * Validate this location before saving.
@@ -38,6 +39,9 @@ class Location extends Omeka_Record_AbstractRecord implements Zend_Acl_Resource_
         }
         if (empty($this->zoom_level)) {
             $this->addError('zoom_level', __('Location requires a zoom level.'));
+        }
+        if (empty($this->overlay)) {
+            $this->addError('overlay', __('Location requires a (possibly empty) overlay.'));
         }
     }
     

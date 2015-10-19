@@ -27,6 +27,7 @@ class Api_Location extends Omeka_Record_Api_AbstractRecordAdapter
             'zoom_level' => $record->zoom_level, 
             'map_type' => $record->map_type, 
             'address' => $record->address, 
+            'overlay' => $record->overlay, 
             'item' => array(
                 'id' => $record->item_id, 
                 'url' => $this->getResourceUrl("/items/{$record->item_id}"), 
@@ -66,6 +67,11 @@ class Api_Location extends Omeka_Record_Api_AbstractRecordAdapter
         } else {
             $record->address = '';
         }
+        if (isset($data->overlay)) {
+            $record->overlay = $data->overlay;
+        } else {
+            $record->overlay = -1;
+        }
     }
     
     /**
@@ -94,6 +100,11 @@ class Api_Location extends Omeka_Record_Api_AbstractRecordAdapter
             $record->address = $data->address;
         } else {
             $record->address = '';
+        }
+        if (isset($data->overlay)) {
+            $record->overlay = $data->overlay;
+        } else {
+            $record->overlay = -1;
         }
     }
 }
