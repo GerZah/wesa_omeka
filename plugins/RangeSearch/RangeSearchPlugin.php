@@ -95,7 +95,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * Display the plugin configuration form.
 	 */
 	public static function hookConfigForm() {
-		$rangeSearchUnits = implode("\n", SELF::_decodeUnitsFromOption(get_option('range_search_units'), false) );
+		$rangeSearchUnits = SELF::_prepareUnitsFromJsonForEdit();
 		# echo "<pre>$rangeSearchUnits</pre>"; die();
 
 		$searchAllFields = (int)(boolean) get_option('range_search_search_all_fields');
@@ -114,6 +114,8 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		$searchRelComments = (int)(boolean) get_option('range_search_search_rel_comments');
 
 		require dirname(__FILE__) . '/config_form.php';
+
+		SELF::_constructRegEx(); // +#+#+# DEBUG
 	}
 
 	/**
@@ -152,14 +154,54 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	}
 
 	/**
+	 * Fetch JSON array from DB option and prepare it to be edited in textarea on config page
+	 */
+	private function _prepareUnitsFromJsonForEdit() {
+		$json = get_option('range_search_units');
+		$json = ( $json ? $json : "[]" );
+
+		$arr = json_decode($json);
+		$result = ( $arr ? implode("\n", $arr) : "" );
+
+		return $result;
+	}
+
+	/**
 	 * Decode JSON array from DB option -- imploded with "\n" it will be displayable in textarea on config page
 	 */
+	/*
 	private function _decodeUnitsFromOption($option, $pregQuote = false) {
 		$lines = ($option ? json_decode($option) : array() );
 		if ($pregQuote) {
 			foreach(array_keys($lines) as $idx) { $lines[$idx] = preg_quote($lines[$idx]); }
 		}
 		return $lines;
+	}
+	*/
+
+	/**
+	 * Fetch JSON array from DB option and transform plausible entries for use in RegEx
+	 */
+	private function _decodeUnitsForRegEx() {
+		$result = array();
+
+		$json = get_option('range_search_units');
+		$json = ( $json ? $json : "[]" );
+		$arr = json_decode($json);
+
+		if ($arr) {
+			foreach($arr as $unit) {
+				if ( substr_count($unit, "-") == 2 ) { // e.h. "RT-Gr-d"
+					$units = explode("-", $unit);
+					foreach(array_keys($units) as $idx) { $units[$idx] = preg_quote(trim($units[$idx])); }
+					if ( $units[0] && $units[1] && $units[2] ) {
+						$result[$unit] = $units;
+					}
+				}
+			}
+		}
+
+		return $result;
 	}
 
 	/**
@@ -347,7 +389,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * Display the time search form on the admin advanced search page
 	 */
 	public function hookAdminItemsSearch() {
-		echo common('range-search-advanced-search', null);
+		# echo common('range-search-advanced-search', null);
 	}
 
 	/**
@@ -356,6 +398,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * @param array $args
 	 */
 	public function hookItemsBrowseSql($args) {
+/*
 		$select = $args['select'];
 		$params = $args['params'];
 
@@ -399,6 +442,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			# die("<pre>$searchFromNum / $searchToNum --- $select</pre>");
 
 		}
+*/
 	}
 
 	# ------------------------------------------------------------------------------------------------------
@@ -421,6 +465,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * Main regex processing to extract numbers and ranges, to be able to expand them later
 	 */
 	private function _processRangeText($text) {
+		/*
 		$regEx = SELF::_constructRegEx();
 		foreach($regEx as $key => $val) { $$key = $val; }
 
@@ -442,6 +487,8 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		# echo "<pre>"; print_r($cookedRanges); die("</pre>");
 
 		return $cookedRanges;
+		*/
+		return array();
 	}
 
 	# ------------------------------------------------------------------------------------------------------
@@ -450,8 +497,41 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * Create the necessary regEx expressions to deal with xxxx / xxxx-yy / xxxx-yy-zz numbers
 	 */
 	private function _constructRegEx() {
-
 		# Construct RegEx
+		$units = SELF::_decodeUnitsForRegEx();
+
+		if ($units) {
+
+			$number = "\d+";
+
+			$unitsRegEx = array();
+
+			$separator = "\s*-\s*"; # separator hypen, with or without blanks
+
+			foreach($units as $unit) {
+				$partUnitRegEx = array();
+				foreach($unit as $partUnit) {
+					$partUnitRegEx[] = $number."\s*".$partUnit; # arbitrary number of decimals plus optional whitespace plus part unit name
+				}
+
+				$firstNumber = $partUnitRegEx[0];
+				$secondNumber = $partUnitRegEx[1];
+				$thirdNumber = $partUnitRegEx[2];
+				$optionalThirdNumber = "(?:$separator$thirdNumber)?";
+				$optionalSecondNumber = "(?:$separator$secondNumber$optionalThirdNumber)?";
+				$thisUnitRegEx = "$firstNumber$optionalSecondNumber";
+
+				$unitsRegEx[] = $thisUnitRegEx;
+			}
+
+			$allUnitsRegEx = "(?:" . implode("|", $unitsRegEx) . ")";
+
+			echo "<pre>". print_r($unitsRegEx,true) ."</pre>\n";
+			echo "<pre>$allUnitsRegEx</pre>\n";
+
+		}
+
+		/*
 		$mainNumber = "\d{1,10}"; # 1 to 10 digits for main number
 		$middleNumber = $lastNumber = "\d{1,4}"; # 1 or four digits for middle and last number
 		$middleLastNumber = "$middleNumber(?:-$lastNumber)?"; # middle number - possibly with last number
@@ -477,7 +557,8 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		# echo "<pre>"; print_r($result); echo "</pre>\n"; die();
 
 		return $result;
-
+		*/
+		return array();
 	}
 
 	# ------------------------------------------------------------------------------------------------------
@@ -513,7 +594,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 	private function _updateRange($range, $edge) {
 		$result=$range;
-	
+		/*
 		$regEx = SELF::_constructRegEx();
 		foreach($regEx as $key => $val) { $$key = $val; }
 	
@@ -534,7 +615,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		}
 	
 		while (strlen($result)<20) { $result="0$result"; }
-	
+		*/
 		return $result;
 	}
 
