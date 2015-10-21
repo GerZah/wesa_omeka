@@ -53,7 +53,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 				`item_id` int(10) unsigned NOT NULL REFERENCES `$db->Item`,
 				`fromnum` varchar(20) NOT NULL,
 				`tonum` varchar(20) NOT NULL,
-				`unit` varchar(20) NOT NULL,
+				`unit` varchar(200) NOT NULL,
 				PRIMARY KEY (`id`),
 				INDEX (unit)
 		) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
@@ -84,7 +84,15 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			$sql="
 						ALTER TABLE `$db->RangeSearchValues`
 							MODIFY fromnum varchar(20),
-							MODIFY tonum varchar(20)
+							MODIFY unit varchar(20)
+						";
+      $db->query($sql);
+			SELF::_batchProcessExistingItems();
+		}
+		if ($oldVersion <= '0.3') {
+			$sql="
+						ALTER TABLE `$db->RangeSearchValues`
+							MODIFY unit varchar(200)
 						";
       $db->query($sql);
 			SELF::_batchProcessExistingItems();
@@ -115,7 +123,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 		require dirname(__FILE__) . '/config_form.php';
 
-		SELF::_constructRegEx(); // +#+#+# DEBUG
+		# SELF::_constructRegEx(); // +#+#+# DEBUG
 	}
 
 	/**
@@ -165,19 +173,6 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 		return $result;
 	}
-
-	/**
-	 * Decode JSON array from DB option -- imploded with "\n" it will be displayable in textarea on config page
-	 */
-	/*
-	private function _decodeUnitsFromOption($option, $pregQuote = false) {
-		$lines = ($option ? json_decode($option) : array() );
-		if ($pregQuote) {
-			foreach(array_keys($lines) as $idx) { $lines[$idx] = preg_quote($lines[$idx]); }
-		}
-		return $lines;
-	}
-	*/
 
 	/**
 	 * Fetch JSON array from DB option and transform plausible entries for use in RegEx
@@ -465,15 +460,16 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * Main regex processing to extract numbers and ranges, to be able to expand them later
 	 */
 	private function _processRangeText($text) {
-		/*
 		$regEx = SELF::_constructRegEx();
+		# echo "<pre>$text\n" . print_r($regEx,true) . "</pre>";
 		foreach($regEx as $key => $val) { $$key = $val; }
 
-		$allCount = preg_match_all( "($numberRangeUnits)i", $text, $allMatches);
-		# echo "<pre>Count: $allCount\n"; print_r($allMatches); die("</pre>");
+		$allCount = preg_match_all( "($allUnitsRanges)i", $text, $allMatches);
+		# echo "<pre>Count: $allCount\n" . print_r($allMatches,true) . "</pre>"; die();
 
 		$cookedRanges = array();
 		foreach($allMatches[0] as $singleMatch) {
+		/*
 			$singleCount = preg_match_all ( "($number)", $singleMatch, $singleSplit );
 			$numberRange = array();
 			$numberRange[] = $singleSplit[0][0];
@@ -483,12 +479,11 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			# echo "<pre>"; print_r($unitMatch); echo "</pre>"; die();
 			$numberRange[] = $unitMatch[0];
 			$cookedRanges[] = $numberRange;
+		*/
 		}
-		# echo "<pre>"; print_r($cookedRanges); die("</pre>");
+		#echo "<pre>" . print_r($cookedRanges,true) . "</pre>"; die();
 
 		return $cookedRanges;
-		*/
-		return array();
 	}
 
 	# ------------------------------------------------------------------------------------------------------
@@ -498,67 +493,61 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 */
 	private function _constructRegEx() {
 		# Construct RegEx
-		$units = SELF::_decodeUnitsForRegEx();
+		$DBunits = SELF::_decodeUnitsForRegEx();
 
-		if ($units) {
-
-			$number = "\d+";
-
-			$unitsRegEx = array();
-
-			$separator = "\s*-\s*"; # separator hypen, with or without blanks
-
-			foreach($units as $unit) {
-				$partUnitRegEx = array();
-				foreach($unit as $partUnit) {
-					$partUnitRegEx[] = $number."\s*".$partUnit; # arbitrary number of decimals plus optional whitespace plus part unit name
-				}
-
-				$firstNumber = $partUnitRegEx[0];
-				$secondNumber = $partUnitRegEx[1];
-				$thirdNumber = $partUnitRegEx[2];
-				$optionalThirdNumber = "(?:$separator$thirdNumber)?";
-				$optionalSecondNumber = "(?:$separator$secondNumber$optionalThirdNumber)?";
-				$thisUnitRegEx = "$firstNumber$optionalSecondNumber";
-
-				$unitsRegEx[] = $thisUnitRegEx;
-			}
-
-			$allUnitsRegEx = "(?:" . implode("|", $unitsRegEx) . ")";
-
-			echo "<pre>". print_r($unitsRegEx,true) ."</pre>\n";
-			echo "<pre>$allUnitsRegEx</pre>\n";
-
-		}
-
-		/*
+		$separator = "\s*-\s*"; # separator hypen, with or without blanks
 		$mainNumber = "\d{1,10}"; # 1 to 10 digits for main number
 		$middleNumber = $lastNumber = "\d{1,4}"; # 1 or four digits for middle and last number
-		$middleLastNumber = "$middleNumber(?:-$lastNumber)?"; # middle number - possibly with last number
-		$number = "$mainNumber(?:-$middleLastNumber)?\b"; # main number - possible with middle and possible with last number
-		$separator = "\s*-\s*"; # separator hypen, with or without blanks
+		$middleLastNumber = "$middleNumber(?:$separator$lastNumber)?"; # middle number - possibly with last number
+		$number = "$mainNumber(?:$separator$middleLastNumber)?\b"; # main number - possible with middle and possible with last number
 		$numberNumberRange = "$number(?:$separator$number)?"; # one number or two numbers with separator in-between
 
-		$unitsArray = SELF::_decodeUnitsFromOption(get_option('range_search_units'), true);
-		$units = "\b(?:" . implode("|", $unitsArray) . ")\b";
-		$numberRangeUnits = "$numberNumberRange\s$units";
+		$units = array();
+		$unitsRange = array();
+		$allUnitsRanges = false;
+
+		if ($DBunits) {
+			foreach($DBunits as $unit) {
+				$unitId = implode("-", $unit);
+
+				$mainUnit = $mainNumber."\s*".$unit[0];
+				$middleUnit = $middleNumber."\s*".$unit[1];
+				$lastUnit = $lastNumber."\s*".$unit[2];
+				/* * /
+				$optionalLastUnit = "(?:$separator$lastUnit)?";
+				$optionalMiddleUnit = "(?:$separator$middleUnit$optionalLastUnit)?";
+				$thisUnit = "$mainUnit$optionalMiddleUnit";
+				/* */
+				/* */
+				$mainUnitMiddleUnit = "$mainUnit$separator$middleUnit";
+				$mainUnitMiddleUnitLastUnit = "$mainUnitMiddleUnit$separator$lastUnit";
+				$thisUnit = "(?:$mainUnitMiddleUnitLastUnit|$mainUnitMiddleUnit|$mainUnit)";
+				/* */
+				$thisUnitsRange = "$thisUnit(?:$separator$thisUnit)?";
+
+				$units[$unitId] = $thisUnit;
+				$unitsRange[$unitId] = $thisUnitsRange;
+			}
+
+			$allUnitsRanges = "(?:" . implode("|", $unitsRange) . ")";
+			# echo "<pre>". print_r($units,true) ."</pre>\n";
+			# echo "<pre>$allUnitsRanges</pre>\n";
+		}
 
 		$result = array(
+								"separator" => $separator,
 								"mainNumber" => $mainNumber,
 								"middleNumber" => $middleNumber,
 								"lastNumber" => $lastNumber,
 								"middleLastNumber" => $middleLastNumber,
 								"number" => $number,
-								"separator" => $separator,
-								"numberNumberRange" => $numberNumberRange,
 								"units" => $units,
-								"numberRangeUnits" => $numberRangeUnits,
+								"unitsRange" => $unitsRange,
+								"allUnitsRanges" => $allUnitsRanges,
 							);
-		# echo "<pre>"; print_r($result); echo "</pre>\n"; die();
+		# echo "<pre>" .  print_r($result,true). "</pre>";
 
 		return $result;
-		*/
-		return array();
 	}
 
 	# ------------------------------------------------------------------------------------------------------
