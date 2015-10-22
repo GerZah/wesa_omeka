@@ -384,7 +384,12 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * Display the time search form on the admin advanced search page
 	 */
 	public function hookAdminItemsSearch() {
-		# echo common('range-search-advanced-search', null);
+		$validUnits = SELF::_decodeUnitsForRegEx();
+		if ($validUnits) {
+			$selectUnits = array(-1 => "-- ".__("All")." --" ) + array_keys($validUnits);
+			# echo "<pre>" . print_r(array_keys($selectUnits),true) . "</pre>";
+			echo common('range-search-advanced-search', array("selectUnits" => $selectUnits ));
+		}
 	}
 
 	/**
@@ -393,17 +398,16 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * @param array $args
 	 */
 	public function hookItemsBrowseSql($args) {
-/*
 		$select = $args['select'];
 		$params = $args['params'];
 
 		$regEx = SELF::_constructRegEx();
 		foreach($regEx as $key => $val) { $$key = $val; }
 		if (	(isset($params['range_search_term'])) and
-					(preg_match( "($numberNumberRange)", $params['range_search_term'])) ) {
+					(preg_match( "($unitlessNumberNumberRange)", $params['range_search_term'])) ) {
 
-			$singleCount = preg_match_all ( "($number)", $params['range_search_term'], $singleSplit );
-			# echo "<pre>singleCount: "; print_r($singleSplit); echo "</pre>";
+			$singleCount = preg_match_all ( "($unitlessNumber)", $params['range_search_term'], $singleSplit );
+			# echo "<pre>singleCount: " . print_r($singleSplit,true) . "</pre>"; die();
 			$numberRange = array();
 			$numberRange[] = $singleSplit[0][0];
 			$numberRange[] = $singleSplit[0][ ($singleCount==2 ? 1 : 0 ) ];
@@ -424,9 +428,9 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			if (isset($params['range_search_unit'])) {
 				$rangeSearchUnit = intval($params['range_search_unit']);
 
-				$RangeSearchUnits = get_option('range_search_units');
-				if ($RangeSearchUnits) {
-					$RangeSearchUnits=json_decode($RangeSearchUnits);
+				$validUnits = SELF::_decodeUnitsForRegEx();
+				if ($validUnits) {
+					$RangeSearchUnits = array_keys($validUnits);
 					if (isset($RangeSearchUnits[$rangeSearchUnit])) {
 						$filterUnit = $RangeSearchUnits[$rangeSearchUnit];
 						$select->where("range_search_values.unit='$filterUnit'");
@@ -437,7 +441,6 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			# die("<pre>$searchFromNum / $searchToNum --- $select</pre>");
 
 		}
-*/
 	}
 
 	# ------------------------------------------------------------------------------------------------------

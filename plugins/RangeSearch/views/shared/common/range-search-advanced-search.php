@@ -13,16 +13,6 @@
 				</p>
 				<p>
 				<?php
-					$selectUnits = array(-1 => "-- ".__("All")." --" );
-
-					$RangeSearchUnits = get_option('range_search_units');
-					if ($RangeSearchUnits) {
-						$RangeSearchUnits=json_decode($RangeSearchUnits);
-						if ($RangeSearchUnits) {
-							foreach($RangeSearchUnits as $key => $val) { $selectUnits[$key] = $val; }
-						}
-					}
-
 					echo $this->formSelect('range_search_unit', @$_GET['range_search_unit'], null, $selectUnits);
 				?>
 				</p>
