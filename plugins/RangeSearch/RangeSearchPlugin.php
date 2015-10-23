@@ -386,7 +386,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	public function hookAdminItemsSearch() {
 		$validUnits = SELF::_decodeUnitsForRegEx();
 		if ($validUnits) {
-			$selectUnits = array(-1 => "-- ".__("All")." --" ) + array_keys($validUnits);
+			$selectUnits = /* array(-1 => "-- ".__("All")." --" ) + */ array_keys($validUnits);
 			# echo "<pre>" . print_r(array_keys($selectUnits),true) . "</pre>";
 			echo common('range-search-advanced-search', array("selectUnits" => $selectUnits ));
 		}
@@ -425,15 +425,21 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 					)
 					->where("'$searchFromNum'<=range_search_values.tonum and '$searchToNum'>=range_search_values.fromnum");
 
-			if (isset($params['range_search_unit'])) {
-				$rangeSearchUnit = intval($params['range_search_unit']);
-
-				$validUnits = SELF::_decodeUnitsForRegEx();
-				if ($validUnits) {
-					$RangeSearchUnits = array_keys($validUnits);
-					if (isset($RangeSearchUnits[$rangeSearchUnit])) {
-						$filterUnit = $RangeSearchUnits[$rangeSearchUnit];
-						$select->where("range_search_values.unit='$filterUnit'");
+			if ( (isset($params['range_search_unit'])) and (is_array($params['range_search_unit'])) ) {
+				$rangeSearchFormUnits = array();
+				foreach($params['range_search_unit'] as $unit) { $rangeSearchFormUnits[] = intval($unit); }
+				if ($rangeSearchFormUnits) {
+					$validUnits = SELF::_decodeUnitsForRegEx();
+					if ($validUnits) {
+						$RangeSearchUnits = array_keys($validUnits);
+						$dbUnits = array();
+						foreach($rangeSearchFormUnits as $unit) {
+							if (isset($RangeSearchUnits[$unit])) { $dbUnits[] = addslashes($RangeSearchUnits[$unit]); }
+						}
+						if ($dbUnits) {
+							$dbUnits = "'" . implode("','", $dbUnits) . "'";
+							$select->where("range_search_values.unit in ($dbUnits)");
+						}
 					}
 				}
 			}

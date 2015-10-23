@@ -13,7 +13,7 @@
 				</p>
 				<p>
 				<?php
-					echo $this->formSelect('range_search_unit', @$_GET['range_search_unit'], null, $selectUnits);
+					echo $this->formSelect('range_search_unit', @$_GET['range_search_unit'], array('multiple' => true, 'size' => 4), $selectUnits);
 				?>
 				</p>
 				<p>
