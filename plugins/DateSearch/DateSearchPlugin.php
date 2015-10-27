@@ -19,6 +19,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		'after_save_item', # preprocess saved item for dates / timespans
 		'after_delete_item', # delete deleted item's preprocessed dates / timespans
 		'admin_items_search', # add a time search field to the advanced search panel in admin
+		'admin_items_show_sidebar', # Debug output of stored dates/timespans in item's sidebar (if activated)
 		'items_browse_sql', # filter for a date after search page submission.
 	);
 
@@ -27,6 +28,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		'date_search_search_all_fields' => 1,
 		'date_search_limit_fields' => "[]",
 		'date_search_search_rel_comments' => 1,
+		'date_search_debug_output' => 0,
 	);
 
 	/**
@@ -93,6 +95,8 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		$withRelComments=SELF::_withRelComments();
 		$searchRelComments = (int)(boolean) get_option('date_search_search_rel_comments');
 
+		$debugOutput = (int)(boolean) get_option('date_search_debug_output'); # comment line to remove debug output panel
+
 		require dirname(__FILE__) . '/config_form.php';
 	}
 
@@ -126,13 +130,20 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		$searchRelComments = (int)(boolean) $_POST['date_search_search_rel_comments'];
 		set_option('date_search_search_rel_comments', $searchRelComments);
 
+		// Debug Output switch -- if present
+		$debugOutput = 0; // Sanity
+		if (isset($_POST['date_search_debug_output'])) {
+			$debugOutput = (int)(boolean) $_POST['date_search_debug_output'];
+		}
+		set_option('date_search_debug_output', $debugOutput);
+
 		$reprocess = (int)(boolean) $_POST['date_search_trigger_reindex'];
 		if ($reprocess) { SELF::_batchProcessExistingItems(); }
 		# echo "<pre>"; print_r($_POST); echo "</pre>"; die();
 	}
 
 	/**
-	 * Preprocess ALL existing items �which could be rather EVIL in huge installations
+	 * Preprocess ALL existing items which could be rather EVIL in huge installations
 	 */
 	private function _batchProcessExistingItems() {
 		$db = get_db();
@@ -298,6 +309,34 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 */
 	public function hookAdminItemsSearch() {
 		echo common('date-search-advanced-search', null);
+	}
+
+  /**
+  * Debug output of stored dates/timespans in item's sidebar (if activated)
+  *
+  * @param Item $item
+  */
+  public function hookAdminItemsShowSidebar($args) {
+		$debugOutput = (int)(boolean) get_option('date_search_debug_output');
+		if ($debugOutput) {
+			$itemID = $args['item']['id'];
+			if ($itemID) {
+				echo "<div class='panel'><h4>".__("Date Search Debug Output")."</h4>\n";
+				$db = get_db();
+				$sql = "select * from `$db->DateSearchDates` where item_id=$itemID";
+				$timespans = $db->fetchAll($sql);
+				if ($timespans) {
+					echo "<ul>\n";
+					foreach($timespans as $timespan) {
+						$fromDate = $timespan["fromdate"];
+						$toDate = $timespan["todate"];
+						echo "<li>". $fromDate . " … ". $toDate . "</li>\n";
+					}
+					echo "</ul>\n";
+				}
+				echo "</div>\n";
+			}
+		}
 	}
 
 	/**
