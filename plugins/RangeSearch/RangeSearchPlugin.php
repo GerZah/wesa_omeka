@@ -481,7 +481,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 			$usedRegExId = false;
 			foreach($singleRegEx as $id => $testString) {
-				$count = preg_match("($testString)", $singleMatch);
+				$count = preg_match("($testString)i", $singleMatch);
 				if ($count) { $usedRegExId = $id; break; }
 			}
 
@@ -490,7 +490,8 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 				$number = $unitRegEx[$usedUnit];
 				#echo "<pre>'$singleMatch' = $usedRegExId / $usedUnit ($number)</pre>";
 
-				$singleCount = preg_match_all ( "($number)", $singleMatch, $singleSplit );
+				$singleCount = preg_match_all ( "($number)i", $singleMatch, $singleSplit );
+				# echo "<pre>singleCount: $singleCount\n" . print_r($singleSplit,true) . "</pre>";
 				$numberRange = array();
 				$numberRange[] = $singleSplit[0][0];
 				$numberRange[] = $singleSplit[0][ ($singleCount==2 ? 1 : 0 ) ];
@@ -515,13 +516,14 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		# Construct RegEx
 		$DBunits = SELF::_decodeUnitsForRegEx();
 
-		$separator = "\s*-\s*"; # separator hypen, with or without blanks
 		$blank = "\s*"; # just whitespace
+		$justSeparator = "-"; # just hyphen
+		$separator = $blank.$justSeparator.$blank; # separator hypen, with or without blanks
 		$mainNumber = "\d{1,10}"; # 1 to 10 digits for main number
 		$middleNumber = $lastNumber = "\d{1,4}"; # 1 or four digits for middle and last number
-		$middleLastNumber = "$middleNumber(?:$separator$lastNumber)?"; # middle number - possibly with last number
-		$unitlessNumber = "$mainNumber(?:$separator$middleLastNumber)?\b"; # main number - possible with middle and possible with last number
-		$unitlessNumberNumberRange = "$unitlessNumber(?:$separator$unitlessNumber)?"; # one number or two numbers with separator in-between
+		$middleLastNumber = "$middleNumber(?:$justSeparator$lastNumber)?"; # middle number - possibly with last number
+		$unitlessNumber = "$mainNumber(?:$justSeparator$middleLastNumber)?\b"; # main number - possible with middle and possible with last number
+		$unitlessNumberNumberRange = "$unitlessNumber(?:$justSeparator$unitlessNumber)?"; # one number or two numbers with separator in-between
 
 		$singleRegEx = array();
 		$combinedRegEx = false;
@@ -535,17 +537,17 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			foreach($DBunits as $unit) {
 				$unitId = implode("-", $unit);
 
-				$mainUnit = "$mainNumber$blank".$unit[0];
-				$middleUnit = "$middleNumber$blank".$unit[1];
-				$lastUnit = "$lastNumber$blank".$unit[2];
+				$mainUnit = "$mainNumber".$unit[0];
+				$middleUnit = "$middleNumber".$unit[1];
+				$lastUnit = "$lastNumber".$unit[2];
 
-				$optionalLastUnit = "(?:$separator$lastUnit)?";
-				$optionalMiddleUnit = "(?:$separator$middleUnit$optionalLastUnit)?";
+				$optionalLastUnit = "(?:$justSeparator$lastUnit)?";
+				$optionalMiddleUnit = "(?:$justSeparator$middleUnit$optionalLastUnit)?";
 				$unitRegEx[$unitId] = "$mainUnit$optionalMiddleUnit";
 
 				$short = "$mainUnit";
-				$shortMiddle = "$short$separator$middleUnit";
-				$shortMiddleLong = "$shortMiddle$separator$lastUnit";
+				$shortMiddle = "$short$justSeparator$middleUnit";
+				$shortMiddleLong = "$shortMiddle$justSeparator$lastUnit";
 
 				$thisLongMiddleShort = array( $shortMiddleLong, $shortMiddle, $short);
 
@@ -576,6 +578,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		#echo "<pre>combinedRegEx\n$combinedRegEx</pre>";
 
 		$result = array(
+								"justSeparator" => $justSeparator,
 								"separator" => $separator,
 								"blank" => $blank,
 								"mainNumber" => $mainNumber,
