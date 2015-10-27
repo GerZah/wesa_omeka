@@ -18,6 +18,7 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
         'define_acl',
         'define_routes',
         'after_save_item',
+        'after_delete_item',
         'admin_items_show_sidebar',
         'public_items_show',
         'admin_items_search',
@@ -220,6 +221,18 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
                 $location->delete();
             }
         }
+    }
+
+    public function hookAfterDeleteItem($args)
+    {
+			$db = get_db();
+
+			$item_id = intval($args["record"]["id"]);
+
+			if ($item_id) {
+				$sql = "delete from `$db->Locations` where item_id=$item_id";
+				$db->query($sql);
+			}
     }
 
     public function hookAdminItemsShowSidebar($args)
