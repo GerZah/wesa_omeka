@@ -103,4 +103,13 @@
         </p>
     </div>
 
+  <?php if (isset($debugOutput)) { ?>
+    <div class="two columns alpha">
+        <?php echo get_view()->formLabel('range_search_debug_output', __('Debug Output')); ?>
+    </div>
+    <div class="inputs five columns omega">
+        <?php echo get_view()->formCheckbox('range_search_debug_output', null, array('checked' => $debugOutput)); ?>
+    </div>
+  <?php } ?>
+
 </div>

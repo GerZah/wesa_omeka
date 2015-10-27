@@ -20,6 +20,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		'after_save_item', # preprocess saved item for ranges
 		'after_delete_item', # delete deleted item's preprocessed ranges
 		'admin_items_search', # add a time search field to the advanced search panel in admin
+		'admin_items_show_sidebar', # Debug output of stored numbers/ranges in item's sidebar (if activated)
 		'items_browse_sql', # filter for a range after search page submission.
 	);
 
@@ -28,6 +29,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		'range_search_search_all_fields' => 1,
 		'range_search_limit_fields' => "[]",
 		'range_search_search_rel_comments' => 1,
+		'range_search_debug_output' => 0,
 	);
 
 	/**
@@ -121,6 +123,8 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		$withRelComments=SELF::_withRelComments();
 		$searchRelComments = (int)(boolean) get_option('range_search_search_rel_comments');
 
+		$debugOutput = (int)(boolean) get_option('range_search_debug_output'); # comment line to remove debug output panel
+
 		require dirname(__FILE__) . '/config_form.php';
 
 		# SELF::_constructRegEx(); // +#+#+# DEBUG
@@ -155,6 +159,13 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		// Search Relationship Comments switch
 		$searchRelComments = (int)(boolean) $_POST['range_search_search_rel_comments'];
 		set_option('range_search_search_rel_comments', $searchRelComments);
+
+		// Debug Output switch -- if present
+		$debugOutput = 0; // Sanity
+		if (isset($_POST['range_search_debug_output'])) {
+			$debugOutput = (int)(boolean) $_POST['range_search_debug_output'];
+		}
+		set_option('range_search_debug_output', $debugOutput);
 
 		$reprocess = (int)(boolean) $_POST['range_search_trigger_reindex'];
 		if ($reprocess) { SELF::_batchProcessExistingItems(); }
@@ -389,6 +400,38 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			$selectUnits = /* array(-1 => "-- ".__("All")." --" ) + */ array_keys($validUnits);
 			# echo "<pre>" . print_r(array_keys($selectUnits),true) . "</pre>";
 			echo common('range-search-advanced-search', array("selectUnits" => $selectUnits ));
+		}
+	}
+
+  /**
+  * Debug output of stored numbers/ranges in item's sidebar (if activated)
+  *
+  * @param Item $item
+  */
+  public function hookAdminItemsShowSidebar($args) {
+		$debugOutput = (int)(boolean) get_option('range_search_debug_output');
+		if ($debugOutput) {
+			$itemID = $args['item']['id'];
+			if ($itemID) {
+				echo "<div class='panel'><h4>".__("Range Search Debug Output")."</h4>\n";
+				$db = get_db();
+				$sql = "select * from `$db->RangeSearchValues` where item_id=$itemID";
+				$ranges = $db->fetchAll($sql);
+				if ($ranges) {
+					echo "<ul>\n";
+					foreach($ranges as $range) {
+						$rangeUnit = $range["unit"];
+						preg_match_all('!\d+!', $range["fromnum"], $numFrom);
+						preg_match_all('!\d+!', $range["tonum"], $numTo);
+						echo "<li>". intval($numFrom[0][0])."-".intval($numFrom[0][1])."-".intval($numFrom[0][2]).
+									" … ". intval($numTo[0][0])."-".intval($numTo[0][1])."-".intval($numTo[0][2]).
+									" " . $rangeUnit.
+									"</li>\n";
+					}
+					echo "</ul>\n";
+				}
+				echo "</div>\n";
+			}
 		}
 	}
 
