@@ -79,7 +79,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 * Display the plugin configuration form.
 	 */
 	public static function hookConfigForm() {
-		$useGregJulPrefixes = (int)(boolean) get_option('date_search_use_gregjul_prefixes');
+		$useGregJulPrefixes = intval(get_option('date_search_use_gregjul_prefixes'));
 		$searchAllFields = (int)(boolean) get_option('date_search_search_all_fields');
 
 		$db = get_db();
@@ -105,7 +105,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 */
 	public static function hookConfig() {
 		// Gregorian / Julian Prefix switch
-		$useGregJulPrefixes = (int)(boolean) $_POST['date_search_use_gregjul_prefixes'];
+		$useGregJulPrefixes = intval($_POST['date_search_use_gregjul_prefixes']);
 		set_option('date_search_use_gregjul_prefixes', $useGregJulPrefixes);
 
 		// Search All Fields switch
@@ -403,10 +403,16 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		$date = $regEx["date"];
 
 		$useGregJulPrefixes = intval(get_option('date_search_use_gregjul_prefixes'));
-		$mainRegEx = ( $useGregJulPrefixes ? $regEx["julGregDateTimeSpan"] : $regEx["dateTimespan"] );
+
+		$mainRegEx = $regEx["dateTimespan"]; // Default: Ignore prefixes
+		switch ($useGregJulPrefixes) {
+			case 1 : $mainRegEx = $regEx["julGregDateTimeSpan"]; break; // 1 == old "true": Require [J]/[G]
+			// 2 == optional prefix: honor if present, but also parse dates without prefix
+			case 2 : $mainRegEx = $regEx["optionalJulGregTimeSpan"]; break;
+		}
 
 		$allCount = preg_match_all( "($mainRegEx)i", $text, $allMatches);
-		# echo "<pre>Count: $allCount\n"; print_r($allMatches); die("</pre>");
+		# echo "<pre>Count: $allCount\n" . print_r($allMatches,true) . "</pre>";
 
 		$cookedDates = array();
 		foreach($allMatches[0] as $singleMatch) {
@@ -418,21 +424,22 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 			$storeDate = true;
 
-			if ($useGregJulPrefixes) { // Gregorian / Julian date prefixes
+			if ($useGregJulPrefixes>0) { // Gregorian / Julian date prefixes
 				$julGreg = preg_match( "($julGregPrefix)i", $singleMatch, $julGregMatch );
 				$julGregJG = ($julGreg == 1 ? strtoupper($julGregMatch[1]) : null ); // "G" or "J" or null
-				# echo "<pre>$julGreg / $julGregJG: "; print_r($julGregMatch); die("</pre>");
+				# echo "<pre>$julGreg / $julGregJG: " .  print_r($julGregMatch,true) . "</pre>";
 
 				switch ($julGregJG) {
 					case "J" : $storeDate = ($timespan[0] <= "1582-10-04"); break;
 					case "G" : $storeDate = ($timespan[1] >= "1582-10-15"); break;
 				}
-				# echo "<pre>StoreDate: $storeDate\n"; print_r($timespan); die("</pre>");
+				# echo "<pre>StoreDate: $storeDate\n" . print_r($timespan,true) . "</pre>";
 			}
 
 			if ($storeDate) { $cookedDates[] = $timespan; }
 		}
-		#echo "<pre>"; print_r($cookedDates); die("</pre>");
+		# echo "<pre>" . print_r($cookedDates,true) . "</pre>";
+		# die();
 
 		return $cookedDates;
 	}
@@ -454,6 +461,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 		$julGregPrefix = "\[([J,G])\] ";
 		$julGregDateTimeSpan = $julGregPrefix.$dateTimespan;
+		$optionalJulGregTimeSpan = "(?:$julGregDateTimeSpan|$dateTimespan)";
 
 		$result=array(
 								"year" => $year,
@@ -465,6 +473,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 								"dateTimespan" => $dateTimespan,
 								"julGregPrefix" => $julGregPrefix,
 								"julGregDateTimeSpan" => $julGregDateTimeSpan,
+								"optionalJulGregTimeSpan" => $optionalJulGregTimeSpan,
 							);
 
 		return $result;

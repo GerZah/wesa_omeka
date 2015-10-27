@@ -9,7 +9,7 @@
 										.'is meant to be specifying a Gregorian or a Julian date or timespan.');
             ?>
         </p>
-        <?php echo get_view()->formCheckbox('date_search_use_gregjul_prefixes', null, array('checked' => $useGregJulPrefixes)); ?>
+        <?php echo get_view()->formRadio('date_search_use_gregjul_prefixes', $useGregJulPrefixes, array(), array(0 => __("no"), 1 => __("yes") ,2 => __("optional")) ); ?>
     </div>
     <div class="two columns alpha">
         <?php echo get_view()->formLabel('date_search_search_all_fields', __('Scan All Text Fields')); ?>
@@ -62,7 +62,7 @@
 	
 		showHideShownHiddenSearchAll();
 	
-		$("#date_search_use_gregjul_prefixes").change( function() { activateReindexCheckbox(); } );
+		$("input[name=date_search_use_gregjul_prefixes]:radio").change(function () { activateReindexCheckbox(); } );
 		$("#date_search_search_all_fields").change( function() { showHideShownHiddenSearchAll(); activateReindexCheckbox(); } );
 		$("#date_search_limit_fields").change( function() { activateReindexCheckbox(); } );
 		$("#date_search_search_rel_comments").change( function() { activateReindexCheckbox(); } );

@@ -31,6 +31,18 @@ msgid ""
 "meant to be specifying a Gregorian or a Julian date or timespan."
 msgstr ""
 
+#: config_form.php:12
+msgid "no"
+msgstr ""
+
+#: config_form.php:12
+msgid "yes"
+msgstr ""
+
+#: config_form.php:12
+msgid "optional"
+msgstr ""
+
 #: config_form.php:15
 msgid "Scan All Text Fields"
 msgstr ""

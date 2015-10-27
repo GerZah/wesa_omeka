@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: DateSearch\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-DateSearch/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2015-10-27 15:59+0100\n"
+"PO-Revision-Date: 2015-10-27 18:40+0100\n"
 "Last-Translator: Gero Zahn <gero.zahn@upb.de>\n"
 "Language-Team: de_DE <LL@li.org>\n"
 "Language: de_DE\n"
@@ -32,6 +32,18 @@ msgstr ""
 "Wählen Sie dies aus, wenn Sie [G] / [J] Präfixe verwenden wollen, um "
 "darzustellen, dass es sich bei einem Datum um ein Gregorianisches oder ein "
 "Julianisches Datum bzw. eine Zeitspanne handelt."
+
+#: config_form.php:12
+msgid "no"
+msgstr "nein"
+
+#: config_form.php:12
+msgid "yes"
+msgstr "ja"
+
+#: config_form.php:12
+msgid "optional"
+msgstr "optional"
 
 #: config_form.php:15
 msgid "Scan All Text Fields"
