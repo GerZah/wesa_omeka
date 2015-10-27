@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: RangeSearch\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-RangeSearch/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2015-10-19 17:04+0200\n"
+"PO-Revision-Date: 2015-10-27 15:50+0100\n"
 "Last-Translator: Gero Zahn <gero.zahn@upb.de>\n"
 "Language-Team: de_DE <LL@li.org>\n"
 "Language: de_DE\n"
@@ -16,6 +16,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.5\n"
+
+#: RangeSearchPlugin.php:416
+msgid "Range Search Debug Output"
+msgstr "Bereichs-Suche Debug-Ausgabe"
 
 #: config_form.php:3
 msgid "Units"
@@ -98,6 +102,10 @@ msgstr ""
 "also über bestehende Inhalte verfügt, oder wenn Sie Ihre Einstellungen "
 "ändern, sollten Sie den Suchindex neu generieren."
 
+#: config_form.php:108
+msgid "Debug Output"
+msgstr "Debug-Ausgabe"
+
 #: views/shared/common/range-search-advanced-search.php:3
 msgid "Range Search"
 msgstr "Bereichs-Suche"
@@ -118,7 +126,3 @@ msgstr ""
 "Objekte, die Zahlen oder Zahlenbereiche enthalten, die zur Suche passen. "
 "Beispielweise wird die Suche nach \"500\" ein Objekt finden, das den "
 "Zahlenbereich \"450-550\" enthält."
-
-#: views/shared/common/range-search-advanced-search.php:16
-msgid "All"
-msgstr "Alle"

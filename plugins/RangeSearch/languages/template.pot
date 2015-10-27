@@ -17,6 +17,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: RangeSearchPlugin.php:416
+msgid "Range Search Debug Output"
+msgstr ""
+
 #: config_form.php:3
 msgid "Units"
 msgstr ""
@@ -78,6 +82,10 @@ msgid ""
 "content or modify your settings, you should re-generate the search index."
 msgstr ""
 
+#: config_form.php:108
+msgid "Debug Output"
+msgstr ""
+
 #: views/shared/common/range-search-advanced-search.php:3
 msgid "Range Search"
 msgstr ""
@@ -90,8 +98,4 @@ msgid ""
 "Range Search will find items that contain numbers and number ranges matching "
 "your search. For example: \"500\" will find an item mentioning the number "
 "range \"450-550\"."
-msgstr ""
-
-#: views/shared/common/range-search-advanced-search.php:16
-msgid "All"
 msgstr ""
