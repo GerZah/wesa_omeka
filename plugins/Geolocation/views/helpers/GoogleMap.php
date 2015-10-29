@@ -58,6 +58,12 @@ class Geolocation_View_Helper_GoogleMap extends Zend_View_Helper_Abstract
         */
 
         $js = "var $varDivId" . "OmekaMapBrowse = new OmekaMapBrowse(" . js_escape($divId) .", $center, $options); ";
+        /*
+        if ($overlays) {
+            $js .= "var mapOverlays = ".$overlays["jsData"];
+        }
+        */
+
         $html .= "<script type='text/javascript'>$js</script>";
         return $html;
     }

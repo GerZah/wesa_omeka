@@ -112,6 +112,12 @@ function OmekaMapBrowse(mapDivId, center, options) {
     jQuery.extend(true, this, omekaMap);
     this.initMap();
 
+    jQuery('#geolocation-overlay').change( function() {
+        var overlayIdx= this.value;
+        //that.selOverlay(overlayIdx);
+        console.log("geolocation-overlay: " + overlayIdx);
+    });
+
     //XML loads asynchronously, so need to call for further config only after it has executed
     this.loadKmlIntoMap(this.options.uri, this.options.params);
 }
