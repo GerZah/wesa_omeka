@@ -17,19 +17,33 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ReassignFilesPlugin.php:59 views/admin/index/index.php:46
+#: ReassignFilesPlugin.php:60 views/admin/index/index.php:46
 msgid "Reassign Files"
 msgstr ""
 
-#: ReassignFilesPlugin.php:78
+#: ReassignFilesPlugin.php:81
 msgid "Add Files from Other Items"
 msgstr ""
 
 #: config_form.php:3
-msgid "Auto-Delete Orphaned Items"
+msgid "Enable Reassign in Item Editor"
 msgstr ""
 
 #: config_form.php:8
+msgid ""
+"Check this if you want to have a reassign functionality on the \"Files\" tab "
+"inside the admin item editor. If you frequently move files from one item to "
+"another, this could be helpful. However, if reassigning files is a rather "
+"uncommon procedure, especially in huge Omeka databases, it is advisable to "
+"keep this setting turned off and conduct it through the global reassign screen "
+"located in the left menu bar."
+msgstr ""
+
+#: config_form.php:17
+msgid "Auto-Delete Orphaned Items"
+msgstr ""
+
+#: config_form.php:22
 msgid ""
 "Check this if you want to automatically delete items that become \"orphaned"
 "\" after reassigning their files to other items.<br>This will affect only "
@@ -41,11 +55,11 @@ msgid ""
 "the case for files that were bulk-added through the \"Dropbox\" plugin."
 msgstr ""
 
-#: config_form.php:22
+#: config_form.php:36
 msgid "One-Time Orphaned Items Check"
 msgstr ""
 
-#: config_form.php:27
+#: config_form.php:41
 msgid ""
 "Check this to initiate the search for orphaned items and their deletion "
 "<em>now</em> and exactly <em>once</em>.<br>This will be carried out as soon "

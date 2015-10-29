@@ -1,5 +1,19 @@
 <div class="field">
   <div class="two columns alpha">
+    <?php echo get_view()->formLabel('reassign_files_local_reassign', __('Enable Reassign in Item Editor')); ?>
+  </div>
+  <div class="inputs five columns omega">
+    <p class="explanation">
+      <?php
+      echo __('Check this if you want to have a reassign functionality on the "Files" tab inside the admin item editor. '.
+							'If you frequently move files from one item to another, this could be helpful. However, if reassigning files '.
+							'is a rather uncommon procedure, especially in huge Omeka databases, it is advisable to keep this '.
+							'setting turned off and conduct it through the global reassign screen located in the left menu bar.');
+      ?>
+    </p>
+    <?php echo get_view()->formCheckbox('reassign_files_local_reassign', null, array('checked' => $localReassign)); ?>
+  </div>
+  <div class="two columns alpha">
     <?php echo get_view()->formLabel('reassign_files_delete_orphaned_items', __('Auto-Delete Orphaned Items')); ?>
   </div>
   <div class="inputs five columns omega">
