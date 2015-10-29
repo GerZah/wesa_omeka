@@ -19,6 +19,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		'after_save_item', # preprocess saved item for dates / timespans
 		'after_delete_item', # delete deleted item's preprocessed dates / timespans
 		'admin_items_search', # add a time search field to the advanced search panel in admin
+		'public_items_search', # add a time search field to the advanced search panel in public
 		'admin_items_show_sidebar', # Debug output of stored dates/timespans in item's sidebar (if activated)
 		'items_browse_sql', # filter for a date after search page submission.
 	);
@@ -307,9 +308,19 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	/**
 	 * Display the time search form on the admin advanced search page
 	 */
-	public function hookAdminItemsSearch() {
+	protected function _ItemsSearch() {
 		echo common('date-search-advanced-search', null);
 	}
+
+	/**
+	 * Display the time search form on the admin advanced search page in admin
+	 */
+	public function hookAdminItemsSearch() { SELF::_itemsSearch(); }
+
+	/**
+	 * Display the time search form on the admin advanced search page in public
+	 */
+	public function hookPublicItemsSearch() { SELF::_itemsSearch(); }
 
   /**
   * Debug output of stored dates/timespans in item's sidebar (if activated)
