@@ -20,6 +20,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		'after_save_item', # preprocess saved item for ranges
 		'after_delete_item', # delete deleted item's preprocessed ranges
 		'admin_items_search', # add a time search field to the advanced search panel in admin
+		'public_items_search', # add a time search field to the advanced search panel in public
 		'admin_items_show_sidebar', # Debug output of stored numbers/ranges in item's sidebar (if activated)
 		'items_browse_sql', # filter for a range after search page submission.
 	);
@@ -394,7 +395,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	/**
 	 * Display the time search form on the admin advanced search page
 	 */
-	public function hookAdminItemsSearch() {
+	protected function _itemsSearch() {
 		$validUnits = SELF::_decodeUnitsForRegEx();
 		if ($validUnits) {
 			$selectUnits = /* array(-1 => "-- ".__("All")." --" ) + */ array_keys($validUnits);
@@ -402,6 +403,16 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			echo common('range-search-advanced-search', array("selectUnits" => $selectUnits ));
 		}
 	}
+
+	/**
+	 * Display the time search form on the admin advanced search page in admin
+	 */
+	public function hookAdminItemsSearch() { SELF::_itemsSearch();  }
+
+	/**
+	 * Display the time search form on the admin advanced search page in admin
+	 */
+	public function hookPublicItemsSearch() { SELF::_itemsSearch();  }
 
   /**
   * Debug output of stored numbers/ranges in item's sidebar (if activated)
