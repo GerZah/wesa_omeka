@@ -14,13 +14,14 @@ OmekaMap.prototype = {
     markerBounds: null,
     mapOverlay: null,
 
-    addMarker: function (lat, lng, options, bindHtml)
+    addMarker: function (lat, lng, options, bindHtml, overlay)
     {
         if (!options) {
             options = {};
         }
         options.position = new google.maps.LatLng(lat, lng);
         options.map = this.map;
+        options.overlay = overlay;
 
         var marker = new google.maps.Marker(options);
 
@@ -37,6 +38,7 @@ OmekaMap.prototype = {
                 }
                 that.lastWindow = infoWindow;
                 infoWindow.open(this.map, marker);
+                jQuery("#geolocation-overlay").val(overlay).change();
             });
         }
 
@@ -194,12 +196,15 @@ OmekaMapBrowse.prototype = {
         var longitude = coordinates[0];
         var latitude = coordinates[1];
 
+        // Extract overlay - to be able to select overlay upon clicking placemark
+        var overlay = placeMark.find('overlay').text();
+
         // Use the KML formatting (do some string sub magic)
         var balloon = this.browseBalloon;
         balloon = balloon.replace('$[namewithlink]', titleWithLink).replace('$[description]', body).replace('$[Snippet]', snippet);
 
         // Build a marker, add HTML for it
-        this.addMarker(latitude, longitude, {title: title}, balloon);
+        this.addMarker(latitude, longitude, {title: title}, balloon, overlay);
     },
 
     // Calculate the zoom level given the 'range' value
