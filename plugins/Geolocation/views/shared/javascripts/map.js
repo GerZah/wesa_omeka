@@ -101,18 +101,14 @@ function OmekaMapBrowse(mapDivId, center, options) {
     var omekaMap = new OmekaMap(mapDivId, center, options);
     jQuery.extend(true, this, omekaMap);
     this.initMap();
-    console.log(this.map);
-
-    jQuery('#geolocation-overlay').change( function() {
-      console.log("geolocation-overlay");
-      mapSelOverlay(this.value, omekaMap.map);
-    });
 
     //XML loads asynchronously, so need to call for further config only after it has executed
     this.loadKmlIntoMap(this.options.uri, this.options.params);
 }
 
 OmekaMapBrowse.prototype = {
+
+    mapOverlay: null,
 
     afterLoadItems: function () {
         if (this.options.fitMarkers) {
@@ -130,6 +126,12 @@ OmekaMapBrowse.prototype = {
             //Create HTML links for each of the markers
             this.buildListLinks(listDiv);
         }
+
+        var that = this;
+        jQuery('#geolocation-overlay').change( function() {
+          mapSelOverlay(this.value, that.map);
+        });
+
     },
 
     /* Need to parse KML manually b/c Google Maps API cannot access the KML
@@ -436,7 +438,6 @@ OmekaMapForm.prototype = {
 };
 
 function mapSelOverlay(overlayIdx, map) {
-  console.log(overlayIdx);
   var done = false;
 
   if (typeof mapOverlay != 'undefined') { mapOverlay.setMap(null); }
