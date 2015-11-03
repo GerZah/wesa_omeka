@@ -19,6 +19,18 @@ echo pagination_links();
 <div id="geolocation-browse">
     <?php echo $this->googleMap('map_browse', array('list' => 'map-links', 'params' => $params)); ?>
     <div id="map-links"><h2><?php echo __('Find An Item on the Map'); ?></h2></div>
+    <?php
+      $overlays = GeolocationConvertOverlayJsonForUse();
+      if ($overlays) {
+          $overlay = -1;
+          echo '<div>'.
+                   '<span style="display:inline-block;"><h3>' . __("Select Map Overlay:") . ' </h3></span> '.
+                   '<span style="display:inline-block;"><form>'.
+                       get_view()->formSelect('geolocation[overlay]', $overlay, null, $overlays["jsSelect"] ).
+                   '</form></span>'.
+               '</div>';
+      }
+    ?>
 </div>
 
 <?php echo foot(); ?>

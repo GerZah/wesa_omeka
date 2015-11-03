@@ -44,17 +44,7 @@ class Geolocation_View_Helper_GoogleMap extends Zend_View_Helper_Abstract
         ));
 
         $html = '<div ' . tag_attributes($divAttrs) . '></div>';
-
         $overlays = GeolocationConvertOverlayJsonForUse();
-        if ($overlays) {
-            $overlay = -1;
-            $html .= '<div>'.'<h3>' . __("Select Map Overlay:") . ' </h3>'.
-                         '<form>'.
-                             get_view()->formSelect('geolocation[overlay]', $overlay, null, $overlays["jsSelect"] ).
-                         '</form>'.
-                     '</div><hr>';
-        }
-
         $js = "var $varDivId" . "OmekaMapBrowse = new OmekaMapBrowse(" . js_escape($divId) .", $center, $options); ";
         if ($overlays) { $js .= "var mapOverlays = ".$overlays["jsData"]; }
 
