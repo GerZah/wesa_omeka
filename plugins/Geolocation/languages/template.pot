@@ -17,72 +17,77 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: GeolocationPlugin.php:216
+#: GeolocationPlugin.php:247
 msgid "Geolocation"
 msgstr ""
 
-#: GeolocationPlugin.php:333
+#: GeolocationPlugin.php:364
 msgid "kilometers"
 msgstr ""
 
-#: GeolocationPlugin.php:335
+#: GeolocationPlugin.php:366
 msgid "miles"
 msgstr ""
 
-#: GeolocationPlugin.php:337
+#: GeolocationPlugin.php:368
 #, php-format
 msgid "within %1$s %2$s of \"%3$s\""
 msgstr ""
 
-#: GeolocationPlugin.php:357 GeolocationPlugin.php:363
+#: GeolocationPlugin.php:388 GeolocationPlugin.php:394
 msgid "Map"
 msgstr ""
 
-#: GeolocationPlugin.php:396
+#: GeolocationPlugin.php:427
 msgid "Browse Map"
 msgstr ""
 
-#: GeolocationPlugin.php:445
+#: GeolocationPlugin.php:476
 msgid "Find A Geographic Location For The "
 msgstr ""
 
-#: GeolocationPlugin.php:457
+#: GeolocationPlugin.php:488
 msgid "Geolocation Map"
 msgstr ""
 
-#: GeolocationPlugin.php:458
+#: GeolocationPlugin.php:489
 msgid "Show attached items on a map"
 msgstr ""
 
-#: GeolocationPlugin.php:546
+#: GeolocationPlugin.php:577
 msgid "Find a Location by Address:"
 msgstr ""
 
-#: GeolocationPlugin.php:596
+#: GeolocationPlugin.php:635 views/admin/map/browse.php:19
+#: views/public/map/browse.php:27
+msgid "Select Map Overlay:"
+msgstr ""
+
+#: GeolocationPlugin.php:643
 msgid "Latitude:"
 msgstr ""
 
-#: GeolocationPlugin.php:600
+#: GeolocationPlugin.php:647
 msgid "Find a Location by Coordinates"
 msgstr ""
 
-#: GeolocationPlugin.php:605
+#: GeolocationPlugin.php:652
 msgid "Longitude:"
 msgstr ""
 
-#: GeolocationPlugin.php:629
+#: GeolocationPlugin.php:676
 msgid "Are you sure you want to change the location of the item?"
 msgstr ""
 
-#: GeolocationPlugin.php:630
+#: GeolocationPlugin.php:677
 msgid "Error: The center of the map has not been set!"
 msgstr ""
 
-#: GeolocationPlugin.php:631
+#: GeolocationPlugin.php:678
 msgid "Error: You have no map links div!"
 msgstr ""
 
-#: GeolocationPlugin.php:632
+#: GeolocationPlugin.php:679
 #, php-format
 msgid "Error: \"%s\" was not found!"
 msgstr ""
@@ -233,28 +238,53 @@ msgid ""
 "a contributed item."
 msgstr ""
 
-#: models/Location.php:22
+#: config_form.php:158
+msgid "Map Overlays"
+msgstr ""
+
+#: config_form.php:161
+msgid "Define Map Overlays"
+msgstr ""
+
+#: config_form.php:165
+msgid ""
+"You may define one or more image overlays that can be superimposed on top of "
+"the Google Maps map. By this you can use e.g. a historical map for "
+"geolocation. The used map will be stored and will also be superimposed later "
+"during map presentation.<br><strong>Please note:</strong> Please use the "
+"following form, one per line:<br><em>idx#;identifier;imgURL;LATnorth;"
+"LATsouth;LNGwest;LNGeast</em><br>For example:<br><input style=\"width:100%;"
+"\" readonly disabled id=\"geolocation_example\"value=\"1;Talkeetna;https://"
+"developers.google.com/maps/documentation/javascript/examples/full/images/"
+"talkeetna.png;62.400471;62.281819;-150.287132;-150.005608\">"
+msgstr ""
+
+#: models/Location.php:23
 msgid "Location requires an item ID."
 msgstr ""
 
-#: models/Location.php:26
+#: models/Location.php:27
 msgid "Location requires a valid item ID."
 msgstr ""
 
-#: models/Location.php:31
+#: models/Location.php:32
 msgid "A location already exists for the provided item."
 msgstr ""
 
-#: models/Location.php:34
+#: models/Location.php:35
 msgid "Location requires a latitude."
 msgstr ""
 
-#: models/Location.php:37
+#: models/Location.php:38
 msgid "Location requires a longitude."
 msgstr ""
 
-#: models/Location.php:40
+#: models/Location.php:41
 msgid "Location requires a zoom level."
+msgstr ""
+
+#: models/Location.php:44
+msgid "Location requires a (possibly empty) overlay."
 msgstr ""
 
 #: views/admin/map/browse.php:4 views/public/map/browse.php:4
@@ -269,7 +299,7 @@ msgstr ""
 msgid "Find An Item on the Map"
 msgstr ""
 
-#: views/helpers/ItemGoogleMap.php:36
+#: views/helpers/ItemGoogleMap.php:39
 msgid "This item has no location info associated with it."
 msgstr ""
 

@@ -38,6 +38,7 @@
             <?php if ($location['address']): ?>
             <address><![CDATA[<?php echo $location['address']; ?>]]></address>
             <?php endif; ?>
+            <overlay><![CDATA[<?php echo $location['overlay']; ?>]]></overlay>
         </Placemark>
         <?php endforeach; ?>
     </Document>
