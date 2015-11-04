@@ -22,6 +22,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		'public_items_search', # add a time search field to the advanced search panel in public
 		'admin_items_show_sidebar', # Debug output of stored dates/timespans in item's sidebar (if activated)
 		'items_browse_sql', # filter for a date after search page submission.
+		'admin_head', # add calendar sheet / date picker / Greg/Jul conversion functionality
 	);
 
 	protected $_options = array(
@@ -387,6 +388,27 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 		}
 
+	}
+
+	# ------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Sdd calendar sheet / date picker / Greg/Jul conversion functionality
+	 */
+	public function hookAdminHead() {
+		$request = Zend_Controller_Front::getInstance()->getRequest();
+
+		$module = $request->getModuleName();
+		if (is_null($module)) { $module = 'default'; }
+		$controller = $request->getControllerName();
+		$action = $request->getActionName();
+
+		if ($module === 'default'
+				&& $controller === 'items'
+				&& in_array($action, array('add', 'edit'))) {
+					queue_js_file('datesearch');
+					queue_css_file('datesearch');
+		}
 	}
 
 	# ------------------------------------------------------------------------------------------------------
