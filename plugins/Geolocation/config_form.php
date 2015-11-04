@@ -166,10 +166,10 @@
         	              'By this you can use e.g. a historical map for geolocation. The used map will be stored and will '.
         	              'also be superimposed later during map presentation.<br>'.
         	              '<strong>Please note:</strong> Please use the following form, one per line:<br>'.
-        	              '<em>idx#;identifier;imgURL;LATnorth;LATsouth;LNGwest;LNGeast</em><br>For example:<br>'.
+        	              '<em>idx#;identifier;imgURL;LATnorth;LATsouth;LNGeast;LNGwest</em><br>For example:<br>'.
         	              '<input style="width:100%;" readonly disabled id="geolocation_example"'.
         	              'value="1;Talkeetna;https://developers.google.com/maps/documentation/javascript/examples/full/images/talkeetna.png;'.
-        	              '62.400471;62.281819;-150.287132;-150.005608">'); ?>
+        	              '62.400471;62.281819;-150.005608;-150.287132">'); ?>
         </p>
 
         <?php echo get_view()->formTextarea('geolocation_map_overlays', $geolocationMapOverlays, array( "rows" => 8 ) ); ?>
@@ -181,9 +181,9 @@
 <script type="text/javascript">
 // <!--
 	jQuery(document).ready(function() {
-	
+
 		var $ = jQuery; // use noConflict version of jQuery as the short $ within this block
-	
+
 		$("#geolocation_example")
 			.attr('readonly', 'readonly')
 			.submit(function(event) {
@@ -191,7 +191,7 @@
 					event.stopPropagation();
 					return false;
 				} );
-	
+
 	} );
 // -->
 </script>

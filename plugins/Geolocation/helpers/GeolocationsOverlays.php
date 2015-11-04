@@ -29,7 +29,7 @@
 
 		foreach($mapOverlays as $mapOverlay) {
 
-			$idx = $identifier = $imgUrl = $latNorth = $latSouth= $lngWest = $lngEast = false;
+			$idx = $identifier = $imgUrl = $latNorth = $latSouth = $lngEast = $lngWest = false;
 
 			foreach( array_keys($mapOverlay) as $key ) { $mapOverlay[$key] = trim( $mapOverlay[$key] ); }
 
@@ -44,11 +44,11 @@
 			if ( ( isset($mapOverlay[4]) ) and ( preg_match( "($regExLatLng)", trim($mapOverlay[4]) ) ) ) { // 5th element: southern latitude
 				$latSouth = trim($mapOverlay[4]);
 			} else { break; }
-			if ( ( isset($mapOverlay[5]) ) and ( preg_match( "($regExLatLng)", trim($mapOverlay[5]) ) ) ) { // 6th element: western longitude
-				$lngWest = trim($mapOverlay[5]);
+			if ( ( isset($mapOverlay[5]) ) and ( preg_match( "($regExLatLng)", trim($mapOverlay[5]) ) ) ) { // 5th element: eastern longitude
+				$lngEast = trim($mapOverlay[5]);
 			} else { break; }
-			if ( ( isset($mapOverlay[6]) ) and ( preg_match( "($regExLatLng)", trim($mapOverlay[6]) ) ) ) { // 7th element: eastern longitude
-				$lngEast = trim($mapOverlay[6]);
+			if ( ( isset($mapOverlay[6]) ) and ( preg_match( "($regExLatLng)", trim($mapOverlay[6]) ) ) ) { // 7th element: western longitude
+				$lngWest = trim($mapOverlay[6]);
 			} else { break; }
 
 			if ( (floatval($latNorth) <= floatval($latSouth)) or (floatval($lngWest) >= floatval($lngEast)) ) { break; }
@@ -57,8 +57,8 @@
 															"imgUrl" => $imgUrl,
 															"latNorth" => $latNorth,
 															"latSouth" => $latSouth,
-															"lngWest" => $lngWest,
 															"lngEast" => $lngEast,
+															"lngWest" => $lngWest,
 														);
 
 		}
