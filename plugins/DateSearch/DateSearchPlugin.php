@@ -429,6 +429,12 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 			queue_css_file('jquery.calendars.picker');
 
+			echo <<<EOT
+<script type='text/javascript'>
+	var elTypesLocale="$locale";
+</script>
+
+EOT;
 
 		}
 	}
