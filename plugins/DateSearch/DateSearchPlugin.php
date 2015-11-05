@@ -406,8 +406,30 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		if ($module === 'default'
 				&& $controller === 'items'
 				&& in_array($action, array('add', 'edit'))) {
-					queue_js_file('datesearch');
-					queue_css_file('datesearch');
+
+			queue_js_file('datesearch');
+			queue_js_file('rangyinputs-jquery');
+			queue_css_file('datesearch');
+
+			queue_js_file('jquery.plugin.min');
+			queue_js_file('jquery.mousewheel.min');
+
+			queue_js_file('jquery.calendars.all.min');
+			queue_js_file('jquery.calendars.julian.min');
+			queue_js_file('jquery.calendars.picker.min');
+
+			$locale = get_html_lang();
+			$underscore=strpos($locale, "-");
+			$locale = ($underscore ? substr($locale,0,$underscore) : $locale);
+
+			if ($locale!="en") {
+				queue_js_file('jquery.calendars-'.$locale);
+				queue_js_file('jquery.calendars.picker-'.$locale);
+			}
+
+			queue_css_file('jquery.calendars.picker');
+
+
 		}
 	}
 
