@@ -9,4 +9,5 @@
   margin: 0px;
   display: block;
   float:left;
+  visibility: hidden;
 }
