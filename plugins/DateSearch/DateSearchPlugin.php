@@ -436,6 +436,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			$convert     = __("Convert");
 			$selectFirst = __("Please select a target text area first.");
 			$cancel      = __("Cancel");
+			$selectDate  = __("Please select a date or range to convert.");
 
 			queue_js_string("
 				var dateSearchLocale='$locale';
@@ -446,6 +447,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 				var dateSearchDate='$date';
 				var dateSearchSelectFirst='$selectFirst';
 				var dateSearchCancel='$cancel';
+				var dateSearchSelectDate='$selectDate';
 			");
 
 		}
