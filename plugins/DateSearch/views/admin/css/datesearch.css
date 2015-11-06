@@ -1,3 +1,12 @@
 .dateSearchButtons {
   text-align: right;
 }
+
+.dateSearchHiddenEdit {
+  width: 0px;
+  height: 0px;
+  padding: 0px;
+  margin: 0px;
+  display: block;
+  float:left;
+}
