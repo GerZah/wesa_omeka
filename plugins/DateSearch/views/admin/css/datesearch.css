@@ -1,5 +1,6 @@
 .dateSearchButtons {
-  text-align: right;
+  font-size: 90%;
+  padding-bottom: 1em;
 }
 
 .dateSearchHiddenEdit {
@@ -11,3 +12,5 @@
   float:left;
   visibility: hidden;
 }
+
+.dateSearchNoClear .calendars-cmd-clear { display: none; }

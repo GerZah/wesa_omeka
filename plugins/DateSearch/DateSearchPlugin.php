@@ -428,8 +428,25 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			}
 
 			queue_css_file('jquery.calendars.picker');
-			queue_js_string("var dateSearchLocale='$locale';");
 
+			$timespan    = __("Time Span");
+			$gregorian   = __("Gregorian");
+			$julian      = __("Julian");
+			$date        = __("Date (without prefix)");
+			$convert     = __("Convert");
+			$selectFirst = __("Please select a target text area first.");
+			$cancel      = __("Cancel");
+
+			queue_js_string("
+				var dateSearchLocale='$locale';
+				var dateSearchTimeSpan='$timespan';
+				var dateSearchConvert='$convert';
+				var dateSearchGregorian='$gregorian';
+				var dateSearchJulian='$julian';
+				var dateSearchDate='$date';
+				var dateSearchSelectFirst='$selectFirst';
+				var dateSearchCancel='$cancel';
+			");
 
 		}
 	}
