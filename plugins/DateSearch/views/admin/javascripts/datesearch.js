@@ -21,7 +21,7 @@ jQuery(document).bind("omeka:elementformload", function() {
                 "<button class='dateSearchBtn' data-caltype='J'>"+julFirst+"</button>"+ // Julian
                 "<input type='checkbox' id='dateSearchTimeSpan'> "+
                 "<label for='dateSearchTimeSpan'>"+dateSearchTimeSpan+"</label> "+
-                "<br><strong>"+dateSearchConvert+":</strong> "+
+                "<br><strong>"+dateSearchConvert+":</strong><br>"+
                 "<a href='#' class='dateSearchConvLink' data-convto='G'>→ ["+dateSearchGregorian+"]</a> "+
                 "<a href='#' class='dateSearchConvLink' data-convto='J'>→ ["+dateSearchJulian+"]</a>"+
               "</div>"+
