@@ -49,6 +49,14 @@ msgstr ""
 msgid "Please select a date or time span to convert."
 msgstr ""
 
+#: DateSearchPlugin.php:440
+msgid "Can not edit selected date as %."
+msgstr ""
+
+#: DateSearchPlugin.php:441
+msgid "Can not convert selected date to %, as it is already %."
+msgstr ""
+
 #: config_form.php:3
 msgid "Use Gregorian / Julian Prefixes"
 msgstr ""

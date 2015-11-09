@@ -100,6 +100,17 @@ jQuery(document).bind("omeka:elementformload", function() {
     return result;
   }
 
+  function pickerFromType(calType) {
+    var result = "";
+    switch (calType) {
+      default  : result = ""; break;
+      case ""  : result = dateSearchDate; break;
+      case "G" : result = dateSearchGregorian; break;
+      case "J" : result = dateSearchJulian; break;
+    }
+    return result;
+  }
+
   // --------------------------------------------------------
 
   $(".dateSearchBtn").click(function(e) {
@@ -112,21 +123,22 @@ jQuery(document).bind("omeka:elementformload", function() {
       var selText = "";
       if (sel.start != sel.end) { selText = sel.text; }
 
+      var overrideCalType = "";
+
       var evPrefix = evaluatePrefix(selText);
       if (evPrefix.prefixLetter) {
-        calType = evPrefix.prefixLetter;
+        overrideCalType = evPrefix.prefixLetter;
         selText = evPrefix.croppedSelText;
+      }
+
+      if ( (overrideCalType) && (overrideCalType != calType) ) {
+        alert( dateSearchCantEdit.replace("%", pickerFromType(calType)) );
+        return;
       }
 
       curCalType = calTypeFromType(calType);
       curPrefix = prefixFromType(calType);
-
-      switch (calType) {
-        default  : curPickerStatus = ""; break;
-        case ""  : curPickerStatus = dateSearchDate; break;
-        case "G" : curPickerStatus = dateSearchGregorian; break;
-        case "J" : curPickerStatus = dateSearchJulian; break;
-      }
+      curPickerStatus = pickerFromType(calType);
 
       var isSpan = $("#dateSearchTimeSpan").is(':checked');
       if (selText.indexOf(" - ") >= 0) { isSpan=true; }
@@ -189,10 +201,17 @@ jQuery(document).bind("omeka:elementformload", function() {
         // console.log("convFrom " + convFrom + " / " + "convTo " + convTo);
 
         var evPrefix = evaluatePrefix(selText);
+        var overrideConvFrom = "";
         if (evPrefix.prefixLetter) {
-          convFrom = evPrefix.prefixLetter;
-          convTo = (convFrom == "G" ? "J" : "G");
+          // convFrom = evPrefix.prefixLetter;
+          // convTo = (convFrom == "G" ? "J" : "G");
+          overrideConvFrom = evPrefix.prefixLetter;
           selText = evPrefix.croppedSelText;
+        }
+
+        if (overrideConvFrom == convTo) {
+          alert( dateSearchCantConvert.replace(new RegExp("\%","g"), pickerFromType(convTo)) );
+          return;
         }
 
         convTo = calTypeFromType(convTo);
