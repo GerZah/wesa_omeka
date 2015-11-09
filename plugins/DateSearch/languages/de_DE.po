@@ -8,18 +8,55 @@ msgstr ""
 "Project-Id-Version: DateSearch\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-DateSearch/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2015-10-27 18:40+0100\n"
+"PO-Revision-Date: 2015-11-09 11:51+0100\n"
 "Last-Translator: Gero Zahn <gero.zahn@upb.de>\n"
 "Language-Team: de_DE <LL@li.org>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.5\n"
+"X-Generator: Poedit 1.8.6\n"
 
-#: #: DateSearchPlugin.php:324
+#: #: DateSearchPlugin.php:336
 msgid "Date Search Debug Output"
 msgstr "Datums-Suche Debug-Ausgabe"
+
+#: DateSearchPlugin.php:432
+msgid "Time Span"
+msgstr "Zeitspanne"
+
+#: DateSearchPlugin.php:433
+msgid "Gregorian"
+msgstr "Gregorianisch"
+
+#: DateSearchPlugin.php:434
+msgid "Julian"
+msgstr "Julianisch"
+
+#: DateSearchPlugin.php:435
+msgid "Date (without prefix)"
+msgstr "Datum (ohne Präfix)"
+
+#: DateSearchPlugin.php:436
+msgid "Convert"
+msgstr "Konvertieren"
+
+#: DateSearchPlugin.php:437
+msgid "Please select a target text area first."
+msgstr "Bitte wählen Sie zuerst ein Eingabefeld als Ziel."
+
+#: DateSearchPlugin.php:439
+msgid "Please select a date or time span to convert."
+msgstr "Bitte wählen Sie ein Datum oder eine Zeitspanne zur Konversion."
+
+#: DateSearchPlugin.php:440
+msgid "Can not edit selected date as %."
+msgstr "Selektiertes Datum nicht als % editierbar."
+
+#: DateSearchPlugin.php:441
+msgid "Can not convert selected date to %, as it is already %."
+msgstr ""
+"Kann selektiertes Datum nicht nach % konvertieren, da es bereits % ist."
 
 msgid "Use Gregorian / Julian Prefixes"
 msgstr "Gregorianische / Julianische Präfixe verwenden"
