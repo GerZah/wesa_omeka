@@ -33,8 +33,21 @@ if (isset($_GET['dependent'])) { $def_dependent_id = intval($_GET['dependent']);
             $whereClause = "WHERE id NOT in ($ids_verb)";
           }
 
+          $elementSetsClause = "";
+          $validElementSets = conditionalElementsValidElementSets();
+          if ($validElementSets) {
+            $elementSetsClause = "element_set_id in (".implode(",", $validElementSets).")";
+            if ($whereClause) {
+              $whereClause .= " AND ".$elementSetsClause;
+            }
+            else {
+              $whereClause = "WHERE ".$elementSetsClause;
+            }
+          }
+
           $db = get_db();
           $select = "SELECT id, name FROM `$db->Element` $whereClause ORDER BY name";
+          # echo "<pre>$select</pre>";
           $results = $db->fetchAll($select);
 
           $dependent = array(0 => __('Select Below'));

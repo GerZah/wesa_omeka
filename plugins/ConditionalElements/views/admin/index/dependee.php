@@ -43,12 +43,18 @@ if (isset($_GET['dependee'])) { $def_dependee_id = intval($_GET['dependee']); }
             if (!$json) { $json="null"; }
             $dependencies = json_decode($json,true);
 
+            $validElementSets = conditionalElementsValidElementSets();
+            $elementSetsClause = ( $validElementSets ?
+                                        "AND es.element_set_id in (".implode(",", $validElementSets).")"
+                                        : "" );
+
             $select = "SELECT es.name AS name, es.id AS id, e.element_id AS vocab_id
                        FROM {$db->Element} es
                        JOIN {$db->SimpleVocabTerm} e
                        ON es.id = e.element_id
-                       WHERE es.id <> $dependent_id
+                       WHERE es.id <> $dependent_id $elementSetsClause
                        ORDER BY name";
+            # echo "<pre>$select</pre>";
             $db = get_db();
             $results = $db->fetchAll($select);
 
