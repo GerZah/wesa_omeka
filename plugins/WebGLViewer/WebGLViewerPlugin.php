@@ -22,8 +22,8 @@ class WebGLViewerPlugin extends Omeka_Plugin_AbstractPlugin {
     'after_delete_file',
 	);
 
-  private static $_zipMimeTypes = array('application/zip');
-	private static $_zipFileExtensions = array('zip');
+	protected $_zipMimeTypes = array('application/zip');
+	protected $_zipFileExtensions = array('zip');
 
   /**
    * Install the plugin.
@@ -52,8 +52,8 @@ class WebGLViewerPlugin extends Omeka_Plugin_AbstractPlugin {
 		/* */
 		add_file_display_callback(
 				array(
-						'mimeTypes' => self::$_zipMimeTypes,
-						'fileExtensions' => self::$_zipFileExtensions
+						'mimeTypes' => $this->_zipMimeTypes,
+						'fileExtensions' => $this->_zipFileExtensions
 				),
 				'WebGLViewerPlugin::displayWebGL',
 				array() # self::_getSettings()
