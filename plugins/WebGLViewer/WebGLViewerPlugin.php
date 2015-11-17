@@ -61,6 +61,10 @@ class WebGLViewerPlugin extends Omeka_Plugin_AbstractPlugin {
 		/* */
   }
 
+	protected function _requiredFileName($glName) {
+		return "$glName/WebGL/$glName.html";
+	}
+
   /**
    * Unzip ZIP files upon file upload.
    */
@@ -78,7 +82,7 @@ class WebGLViewerPlugin extends Omeka_Plugin_AbstractPlugin {
 
 		if ($matches) {
 			$glName = $matches[1];
-			$requiredFileName = "$glName/WebGL/$glName.html";
+			$requiredFileName = SELF::_requiredFileName($glName);
 
 			$zip = new ZipArchive;
 			$zipFilename = FILES_DIR . "/" . $file->getStoragePath();
@@ -127,21 +131,13 @@ class WebGLViewerPlugin extends Omeka_Plugin_AbstractPlugin {
 	 */
 	public function displayWebGL($file, $options) {
 
-		$zipFilename = WEB_FILES . "/" . $file->getStoragePath();
-		echo '<div class="item-file application-zip">'.
-					'<a href="'.$zipFilename.'">'.
-					__("Download file ").
-					$file->original_filename.
-					'</a>'.
-					"</div>\n";
-
 		$regEx = WEBGL_REGEX;
 		$matches = null;
 		if ( !preg_match("/$regEx/", $file->original_filename, $matches) ) { return; }
 
 		if ($matches) {
 			$glName = $matches[1];
-			$requiredFileName = "$glName/WebGL/$glName.html";
+			$requiredFileName = SELF::_requiredFileName($glName);
 
 			$pathParts = pathinfo($file->filename);
 			$zipPath = WEBGL_DIR . "/" . $pathParts["filename"];
@@ -149,14 +145,24 @@ class WebGLViewerPlugin extends Omeka_Plugin_AbstractPlugin {
 
 			if (file_exists($indexPath)) {
 				$url = WEBGL_WEBDIR . "/" . $pathParts["filename"] . "/" . $requiredFileName;
-				echo "<iframe src='".$url."' style='width:100%; height:500px;'></iframe>";
+				echo "<iframe src='".$url."' style='width:100%; height:500px; border:none;' id='webGlFrame'></iframe>";
 				echo '<div class="item-file">'.
 							"<a href='$url' target='_blank'>".
 							__("Open model in new window").
 							'</a>'.
 							'</div>';
+				$jsFile = WEB_PLUGIN."/WebGLViewer/WebGLhelper.js";
+				echo "<script src='$jsFile'></script>";
 			}
 		}
+
+		$zipFilename = WEB_FILES . "/" . $file->getStoragePath();
+		echo '<div class="item-file application-zip">'.
+					'<a href="'.$zipFilename.'">'.
+					__("Download file ").
+					$file->original_filename.
+					'</a>'.
+					"</div>\n";
 
 		# echo "<pre>" . print_r($file,1) . "</pre>";
 	}
