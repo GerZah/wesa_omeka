@@ -148,7 +148,7 @@ class WebGLViewerPlugin extends Omeka_Plugin_AbstractPlugin {
 				echo "<iframe src='".$url."' style='width:100%; height:500px; border:none;' id='webGlFrame'></iframe>";
 				echo '<div class="item-file">'.
 							"<a href='$url' target='_blank'>".
-							__("Open model in new window").
+							sprintf(__('Open WebGL model "%s" in new window'), $glName).
 							'</a>'.
 							'</div>';
 				$jsFile = WEB_PLUGIN."/WebGLViewer/WebGLhelper.js";
@@ -159,8 +159,7 @@ class WebGLViewerPlugin extends Omeka_Plugin_AbstractPlugin {
 		$zipFilename = WEB_FILES . "/" . $file->getStoragePath();
 		echo '<div class="item-file application-zip">'.
 					'<a href="'.$zipFilename.'">'.
-					__("Download file ").
-					$file->original_filename.
+					sprintf(__('Download zip file "%s"'), $file->original_filename).
 					'</a>'.
 					"</div>\n";
 
