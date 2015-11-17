@@ -573,8 +573,7 @@ public function filterAdminItemsFormTabs($tabs, $args)
   $item = $args['item'];
 
   $formSelectProperties = get_table_options('ItemRelationsProperty');
-  $subjectRelations = self::prepareSubjectRelations($item);
-  $objectRelations = self::prepareObjectRelations($item);
+  $allRelations = self::prepareAllRelations($item);
 
   ob_start();
   include 'item_relations_form.php';
@@ -600,7 +599,7 @@ public static function prepareAllRelations(Item $item)
            " JOIN `$db->ItemRelationsVocabulary` irv on irp.vocabulary_id = irv.id".
            " WHERE irr.subject_item_id = $item->id".
            " OR irr.object_item_id = $item->id".
-           " ORDER BY irp.vocabulary_id ASC".
+           " ORDER BY irv.name ASC, irp.vocabulary_id ASC".
            "";
   # echo "<pre>$query</pre>";
   $partners = $db->fetchAll($query);
@@ -617,6 +616,7 @@ public static function prepareAllRelations(Item $item)
         'item_relation_id' => $partner["irrid"],
         'relation_comment' => $partner["relation_comment"],
         'relation_text' => $partner["label"],
+        'relation_property' => $partner["property_id"],
         'relation_description' => $partner["irpdesc"],
         'vocabulary_id' => $partner["vocabulary_id"],
         'vocabulary' => $partner["name"],
@@ -638,59 +638,6 @@ public static function prepareAllRelations(Item $item)
 
   # echo "<pre>" . print_r($relations, true) . "</pre>";
   return $relations;
-}
-
-/**
-* Prepare subject item relations for display.
-*
-* @param Item $item
-* @return array
-*/
-public static function prepareSubjectRelations(Item $item)
-{
-  $subjects = get_db()->getTable('ItemRelationsRelation')->findBySubjectItemId($item->id);
-  $subjectRelations = array();
-
-  foreach ($subjects as $subject) {
-    if (!($item = get_record_by_id('item', $subject->object_item_id))) {
-      continue;
-    }
-    $subjectRelations[] = array(
-      'item_relation_id' => $subject->id,
-      'object_item_id' => $subject->object_item_id,
-      'relation_comment' => $subject->relation_comment,
-      'object_item_title' => self::getItemTitle($item),
-      'relation_text' => $subject->getPropertyText(),
-      'relation_description' => $subject->property_description
-    );
-  }
-  return $subjectRelations;
-}
-
-/**
-* Prepare object item relations for display.
-*
-* @param Item $item
-* @return array
-*/
-public static function prepareObjectRelations(Item $item)
-{
-  $objects = get_db()->getTable('ItemRelationsRelation')->findByObjectItemId($item->id);
-  $objectRelations = array();
-  foreach ($objects as $object) {
-    if (!($item = get_record_by_id('item', $object->subject_item_id))) {
-      continue;
-    }
-    $objectRelations[] = array(
-      'item_relation_id' => $object->id,
-      'subject_item_id' => $object->subject_item_id,
-      'relation_comment' => $object->relation_comment,
-      'subject_item_title' => self::getItemTitle($item),
-      'relation_text' => $object->getPropertyText(),
-      'relation_description' => $object->property_description
-    );
-  }
-  return $objectRelations;
 }
 
 /**
