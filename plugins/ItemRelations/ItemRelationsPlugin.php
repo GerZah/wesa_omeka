@@ -619,7 +619,8 @@ public static function prepareAllRelations(Item $item)
         'relation_text' => $partner["label"],
         'relation_description' => $partner["irpdesc"],
         'vocabulary_id' => $partner["vocabulary_id"],
-        'vocabulary' => $partner["description"],
+        'vocabulary' => $partner["name"],
+        'vocabulary_desc' => $partner["description"],
         'subject_item_id' => $partner["subject_item_id"],
         'object_item_id' => $partner["object_item_id"],
       );

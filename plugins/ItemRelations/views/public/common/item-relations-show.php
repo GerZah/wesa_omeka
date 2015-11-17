@@ -11,7 +11,10 @@
   			$lastVocab = -1;
   			foreach ($allRelations as $relation) {
   				if ($lastVocab != $relation["vocabulary_id"]) {
-  					echo "<tr><th colspan='$colspan'>".$relation["vocabulary"]."<th></tr>";
+  					echo "<tr><th colspan='$colspan'>"
+  					."<span title='".$relation["vocabulary_desc"]."'>"
+  					.$relation["vocabulary"]
+  					."</span><th></tr>";
   					$lastVocab = $relation["vocabulary_id"];
   				}
           echo "<tr>";
