@@ -57,6 +57,10 @@ msgstr ""
 msgid "Can not convert selected date to %, as it is already %."
 msgstr ""
 
+#: DateSearchPlugin.php:442
+msgid "Date Entry"
+msgstr ""
+
 #: config_form.php:3
 msgid "Use Gregorian / Julian Prefixes"
 msgstr ""

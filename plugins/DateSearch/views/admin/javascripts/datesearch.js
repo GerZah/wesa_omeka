@@ -15,6 +15,7 @@ jQuery(document).bind("omeka:elementformload", function() {
   $("#save")
     .append("<span id='dateSearchWrapper'>"+
               "<div class='dateSearchButtons field'>"+
+                "<div><label>"+dateSearchDateEntry+"</label></div><br>"+
                 "<input id='dateSearchEdit' class='dateSearchHiddenEdit'>"+
                 "<button class='dateSearchBtn' data-caltype='' >"+dateFirst+"</button>"+ // unspecific
                 "<button class='dateSearchBtn' data-caltype='G'>"+gregFirst+"</button>"+ // Gregorian

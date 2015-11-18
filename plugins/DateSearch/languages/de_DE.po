@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: DateSearch\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-DateSearch/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2015-11-09 11:51+0100\n"
+"PO-Revision-Date: 2015-11-18 18:02+0100\n"
 "Last-Translator: Gero Zahn <gero.zahn@upb.de>\n"
 "Language-Team: de_DE <LL@li.org>\n"
 "Language: de_DE\n"
@@ -58,6 +58,11 @@ msgid "Can not convert selected date to %, as it is already %."
 msgstr ""
 "Kann selektiertes Datum nicht nach % konvertieren, da es bereits % ist."
 
+#: DateSearchPlugin.php:442
+msgid "Date Entry"
+msgstr "Datumseingabe"
+
+#: config_form.php:3
 msgid "Use Gregorian / Julian Prefixes"
 msgstr "Gregorianische / Julianische Präfixe verwenden"
 

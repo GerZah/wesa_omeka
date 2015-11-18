@@ -439,6 +439,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			$selectDate  = __("Please select a date or time span to convert.");
 			$cantEdit    = __("Can not edit selected date as %.");
 			$cantConvert = __("Can not convert selected date to %, as it is already %.");
+			$dateEntry   = __("Date Entry");
 
 			queue_js_string("
 				var dateSearchLocale='$locale';
@@ -452,6 +453,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 				var dateSearchSelectDate='$selectDate';
 				var dateSearchCantEdit='$cantEdit';
 				var dateSearchCantConvert='$cantConvert';
+				var dateSearchDateEntry='$dateEntry';
 			");
 
 		}
