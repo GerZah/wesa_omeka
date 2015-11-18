@@ -17,8 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: RangeSearchPlugin.php:416
+#: RangeSearchPlugin.php:428
 msgid "Range Search Debug Output"
+msgstr ""
+
+#: RangeSearchPlugin.php:724
+msgid "Range Entry"
 msgstr ""
 
 #: config_form.php:3

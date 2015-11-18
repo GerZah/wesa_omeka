@@ -23,6 +23,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		'public_items_search', # add a time search field to the advanced search panel in public
 		'admin_items_show_sidebar', # Debug output of stored numbers/ranges in item's sidebar (if activated)
 		'items_browse_sql', # filter for a range after search page submission.
+		'admin_head', # add lightbox overlay to enter / edit / convert numbers & ranges
 	);
 
 	protected $_options = array(
@@ -702,5 +703,35 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	}
 
 	# ------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Sdd calendar sheet / date picker / Greg/Jul conversion functionality
+	 */
+	public function hookAdminHead() {
+		$request = Zend_Controller_Front::getInstance()->getRequest();
+
+		$module = $request->getModuleName();
+		if (is_null($module)) { $module = 'default'; }
+		$controller = $request->getControllerName();
+		$action = $request->getActionName();
+
+		if ($module === 'default'
+				&& $controller === 'items'
+				&& in_array($action, array('add', 'edit'))) {
+
+			queue_js_file('rangesearch');
+
+			$rangeEntry   = __("Range Entry");
+			$selectFirst = __("Please select a target text area first.");
+
+			queue_js_string("
+				var rangeSearchRangeEntry='$rangeEntry';
+				var rangeSearchSelectFirst='$selectFirst';
+			");
+
+
+		}
+	}
+
 
 } # class
