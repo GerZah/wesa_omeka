@@ -11,7 +11,13 @@
 *.bak
 
 # --- Omeka (Image-)Uploads
-/files/*
+/files/fullsize/*
+/files/original/*
+/files/square_thumbnails/*
+/files/theme_uploads/*
+/files/thumbnails/*
+/files/thumbnails/*
+/files/webgl/*
 
 # --- Omeka WebDAV-Verzeichnis
 /plugins/Dropbox/files/*
