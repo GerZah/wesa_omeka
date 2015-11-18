@@ -62,7 +62,8 @@ class WebGLViewerPlugin extends Omeka_Plugin_AbstractPlugin {
   }
 
 	protected function _requiredFileName($glName) {
-		return "$glName/WebGL/$glName.html";
+		# return "$glName/WebGL/$glName.html";
+		return "$glName/$glName.html";
 	}
 
   /**
