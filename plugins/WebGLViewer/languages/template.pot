@@ -17,12 +17,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: WebGLViewerPlugin.php:151
+#: WebGLViewerPlugin.php:161
 #, php-format
 msgid "Open WebGL model \"%s\" in new window"
 msgstr ""
 
-#: WebGLViewerPlugin.php:162
+#: WebGLViewerPlugin.php:172
 #, php-format
 msgid "Download zip file \"%s\""
+msgstr ""
+
+#: config_form.php:10
+msgid ""
+"Height of the embedded WebGL viewer, in pixels. Width will automatically "
+"adjust to fit the surrounding content."
 msgstr ""

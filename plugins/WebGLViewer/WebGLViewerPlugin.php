@@ -20,7 +20,13 @@ class WebGLViewerPlugin extends Omeka_Plugin_AbstractPlugin {
 		'uninstall',
     'after_save_file',
     'after_delete_file',
-	);
+		'config_form',
+		'config',
+);
+
+protected $_options = array(
+	'webgl_viewer_height' => 500,
+);
 
 	protected $_zipMimeTypes = array('application/zip');
 	protected $_zipFileExtensions = array('zip');
@@ -34,6 +40,7 @@ class WebGLViewerPlugin extends Omeka_Plugin_AbstractPlugin {
 		$indexfile = WEBGL_DIR."/index.html";
 		touch($indexfile);
 		copy(FILES_DIR."/original/index.html", $indexfile);
+		SELF::_installOptions();
 	}
 
   /**
@@ -42,6 +49,7 @@ class WebGLViewerPlugin extends Omeka_Plugin_AbstractPlugin {
   public function hookUninstall() {
 		SELF::_uninstallOptions();
 		SELF::_rmdir(WEBGL_DIR);
+		SELF::_uninstallOptions();
 	}
 
   /**
@@ -146,7 +154,8 @@ class WebGLViewerPlugin extends Omeka_Plugin_AbstractPlugin {
 
 			if (file_exists($indexPath)) {
 				$url = WEBGL_WEBDIR . "/" . $pathParts["filename"] . "/" . $requiredFileName;
-				echo "<iframe src='".$url."' style='width:100%; height:500px; border:none;' id='webGlFrame'></iframe>";
+				$webGlHeight = SELF::_webGlViewerHeight();
+				echo "<iframe src='".$url."' style='width:100%; height:".$webGlHeight."px; border:none;' id='webGlFrame'></iframe>";
 				echo '<div class="item-file">'.
 							"<a href='$url' target='_blank'>".
 							sprintf(__('Open WebGL model "%s" in new window'), $glName).
@@ -183,6 +192,31 @@ class WebGLViewerPlugin extends Omeka_Plugin_AbstractPlugin {
 	  	}
 	  	rmdir($dir);
 		}
+	}
+
+	/**
+	 * Default value for embedded WebGL viewer height
+	 */
+	private function _webGlViewerHeight() {
+		$webGlHeight = intval(get_option('webgl_viewer_height'));
+		if (!$webGlHeight) { $webGlHeight = 500; }
+		return $webGlHeight;
+	}
+
+	/**
+	 * Display the plugin configuration form.
+	 */
+	public static function hookConfigForm() {
+		$webGlHeight = SELF::_webGlViewerHeight();
+		require dirname(__FILE__) . '/config_form.php';
+	}
+
+	/**
+	 * Handle the plugin configuration form.
+	 */
+	public static function hookConfig() {
+		$webGlHeight = intval($_POST['webgl_viewer_height']);
+		set_option('webgl_viewer_height', $webGlHeight );
 	}
 
 }
