@@ -592,6 +592,8 @@ public function filterAdminItemsFormTabs($tabs, $args)
 */
 public static function prepareAllRelations(Item $item)
 {
+  if (!isset($item->id)) { return array(); }
+
   $db = get_db();
   $query = "SELECT *, irr.id irrid, irp.description irpdesc".
            " FROM `$db->ItemRelationsRelations` irr".
