@@ -1,17 +1,14 @@
-var lightbox = lity(); // https://www.npmjs.com/package/lity
-
 jQuery(document).bind("omeka:elementformload", function() {
   var $ = jQuery; // use noConflict version of jQuery as the short $ within this block
+
+  var lightbox = lity(); // https://www.npmjs.com/package/lity
 
   // --------------------------------------------------------
 
   $("#rangeSearchWrapper").remove();
   $("#save")
     .append("<span id='rangeSearchWrapper'>"+
-              "<div class='rangeSearchButtons field'>"+
-                "<label>"+rangeSearchRangeEntry+"</label> "+
-                "<button class='rangeSearchBtn'>"+"Foo"+"</button>"+
-                "</div>"+
+              $("#range-search-controls").html()+
               "</span>");
 
   // --------------------------------------------------------
