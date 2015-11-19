@@ -214,7 +214,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 	/**
 	 * Encode content of textarea on config page to be stored as a JSON array in DB option
-	 */                                
+	 */
 	private function _encodeUnitsFromTextArea($textArea) {
 		$textArea = str_replace(chr(10), chr(13), $textArea);
 		$textArea = str_replace(chr(13).chr(13), chr(13), $textArea);
@@ -664,17 +664,17 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	 */
 	private function _expandNumberRange($range) {
 		$result = $range;
-	
+
 		#echo "<pre>_expandNumberRange:\n" . print_r($range,true) . "</pre>";
 
 		if (!is_array($result)) { $result = array($result, $result); }
-	
+
 		$result[0] = SELF::_updateRange($result[0], -1); # -1 == left edge, xxxxxxxxxx-00-00
 		$result[1] = SELF::_updateRange($result[1], +1); # +1 == right edge, xxxxxxxxxx-99-99
-		
+
 		return $result;
 	}
-	
+
 	# ------------------------------------------------------------------------------------------------------
 
 	/**
@@ -719,16 +719,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 				&& $controller === 'items'
 				&& in_array($action, array('add', 'edit'))) {
 
-			queue_js_file('rangesearch');
-
-			$rangeEntry   = __("Range Entry");
-			$selectFirst = __("Please select a target text area first.");
-
-			queue_js_string("
-				var rangeSearchRangeEntry='$rangeEntry';
-				var rangeSearchSelectFirst='$selectFirst';
-			");
-
+			require dirname(__FILE__) . '/RangeSearchUI.php';
 
 		}
 	}

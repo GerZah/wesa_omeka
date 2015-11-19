@@ -1,3 +1,5 @@
+var lightbox = lity(); // https://www.npmjs.com/package/lity
+
 jQuery(document).bind("omeka:elementformload", function() {
   var $ = jQuery; // use noConflict version of jQuery as the short $ within this block
 
@@ -28,15 +30,19 @@ jQuery(document).bind("omeka:elementformload", function() {
       var selText = "";
       if (sel.start != sel.end) { selText = sel.text; }
 
-      // +#+#+#
-
+      lightbox("#range-search-popup");
       console.log(selText);
-      // alert(selText);
-
-      currentTextArea.replaceSelectedText("FOO");
 
     }
     else { alert(rangeSearchSelectFirst); }
+  });
+
+  // --------------------------------------------------------
+
+  $(document).on('lity:close', function(event, lightbox) {
+    if (currentTextArea) {
+      currentTextArea.replaceSelectedText("FOO");
+    }
   });
 
   // --------------------------------------------------------
