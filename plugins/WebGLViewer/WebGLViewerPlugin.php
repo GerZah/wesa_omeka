@@ -28,6 +28,8 @@ protected $_options = array(
 	'webgl_viewer_height' => 500,
 );
 
+protected static $numIframes = 0;
+
 	protected $_zipMimeTypes = array('application/zip');
 	protected $_zipFileExtensions = array('zip');
 
@@ -155,7 +157,11 @@ protected $_options = array(
 			if (file_exists($indexPath)) {
 				$url = WEBGL_WEBDIR . "/" . $pathParts["filename"] . "/" . $requiredFileName;
 				$webGlHeight = SELF::_webGlViewerHeight();
-				echo "<iframe src='".$url."' style='width:100%; height:".$webGlHeight."px; border:none;' id='webGlFrame'></iframe>";
+				echo "<iframe src='".$url."' style='width:100%;".
+																	" height:".$webGlHeight."px; border:none;'".
+																	" class='webGlFrame'".
+																	" id='webGlFrame".(++SELF::$numIframes)."'>".
+							"</iframe>";
 				echo '<div class="item-file">'.
 							"<a href='$url' target='_blank'>".
 							sprintf(__('Open WebGL model "%s" in new window'), $glName).
