@@ -18,7 +18,7 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   // --------------------------------------------------------
 
-  $(".rangeSearchButtons").click(function(e) {
+  $(".rangeSearchButtons button").click(function(e) {
     e.preventDefault();
 
     if (currentTextArea) {

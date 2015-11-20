@@ -175,28 +175,29 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 	}
 
 	/**
-	 * Fetch JSON array from DB option and prepare it to be edited in textarea on config page
+	 * Fetch JSON array from DB option as a PHP array
 	 */
-	private function _prepareUnitsFromJsonForEdit() {
+	private function _fetchUnitArray() {
 		$json = get_option('range_search_units');
 		$json = ( $json ? $json : "[]" );
-
-		$arr = json_decode($json);
-		$result = ( $arr ? implode("\n", $arr) : "" );
-
-		return $result;
+		return json_decode($json);
 	}
 
 	/**
-	 * Fetch JSON array from DB option and transform plausible entries for use in RegEx
+	 * Transform unit array to be edited in textarea on config page
+	 */
+	private function _prepareUnitsFromJsonForEdit() {
+		$arr = SELF::_fetchUnitArray();
+		return ( $arr ? implode("\n", $arr) : "" );
+	}
+
+	/**
+	 * Transform plausible entries from units array for use in RegEx
 	 */
 	private function _decodeUnitsForRegEx() {
 		$result = array();
 
-		$json = get_option('range_search_units');
-		$json = ( $json ? $json : "[]" );
-		$arr = json_decode($json);
-
+		$arr = SELF::_fetchUnitArray();
 		if ($arr) {
 			foreach($arr as $unit) {
 				if ( substr_count($unit, "-") == 2 ) { // e.h. "RT-Gr-d"

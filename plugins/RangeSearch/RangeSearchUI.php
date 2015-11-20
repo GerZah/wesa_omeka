@@ -14,12 +14,18 @@
 
 <div id="range-search-popup" style="overflow: auto; padding: 20px; border-radius: 6px; background: #fff" class="lity-hide">
   <h2>Foo</h2>
+  <?php
+    $units = array( -1 => __("Select below")) + SELF::_fetchUnitArray();
+
+    $view = get_view();
+    echo $view->formSelect('units', -1, array(), $units);
+?>
   <a href="#" id="add-relation" class="green button" data-lity-close>Bar</a>
 </div>
 
 <div id="range-search-controls" style="display:none;">
   <div class='rangeSearchButtons field'>
     <label><?php echo $rangeEntry; ?>:</label>
-    <button class='rangeSearchBtn'>Foo</button>
+    <button class='rangeSearchBtn'><?php echo __("Entry"); ?></button>
   </div>
 </div>
