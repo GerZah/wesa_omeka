@@ -71,7 +71,7 @@ $provideRelationComments = get_option('item_relations_provide_relation_comments'
               echo "</td>";
     				}
             ?>
-            <td><input type="checkbox" name="item_relations_item_relation_delete[]" value="<?php echo $objectRelation['item_relation_id']; ?>" /></td>
+            <td><input type="checkbox" name="item_relations_item_relation_delete[]" value="<?php echo $relation['item_relation_id']; ?>" /></td>
             <?php
             echo "</tr>";
           }
