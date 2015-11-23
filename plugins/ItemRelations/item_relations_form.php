@@ -148,8 +148,10 @@ $provideRelationComments = get_option('item_relations_provide_relation_comments'
           </div>
 
           <link href="<?php echo PUBLIC_BASE_URL; ?>/plugins/ItemRelations/lity/lity.min.css" rel="stylesheet">
+          <?php if (!defined("LITYLOADED")) { ?>
           <script type="text/javascript" src="<?php echo PUBLIC_BASE_URL; ?>/plugins/ItemRelations/lity/lity.min.js"></script>
           <link href="<?php echo PUBLIC_BASE_URL; ?>/plugins/ItemRelations/item_relations_styles.css" rel="stylesheet">
+          <?php DEFINE("LITYLOADED", 1); } ?>
           <script type="text/javascript">
           var url = '<?php echo url('item-relations/lookup/'); ?>';
           </script>

@@ -1,6 +1,9 @@
 <?php
-  queue_css_file("lity.min");
-  queue_js_file('lity.min');
+  if (!defined("LITYLOADED")) {
+    queue_css_file("lity.min");
+    queue_js_file('lity.min');
+    DEFINE("LITYLOADED", 1);
+  }
 
   queue_js_file('rangesearch');
 
