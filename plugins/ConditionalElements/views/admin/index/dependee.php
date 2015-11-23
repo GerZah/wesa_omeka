@@ -61,6 +61,7 @@ if (isset($_GET['dependee'])) { $def_dependee_id = intval($_GET['dependee']); }
             e.name AS element_name, it.name AS item_type_name
             FROM {$db->ElementSet} es
             JOIN {$db->Element} e ON es.id = e.element_set_id
+            JOIN {$db->SimpleVocabTerm} s ON e.id = s.element_id
             LEFT JOIN {$db->ItemTypesElements} ite ON e.id = ite.element_id
             LEFT JOIN {$db->ItemType} it ON ite.item_type_id = it.id
             WHERE es.id <> $dependent_id $elementSetsClause
