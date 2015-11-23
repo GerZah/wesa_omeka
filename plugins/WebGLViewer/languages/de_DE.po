@@ -1,36 +1,33 @@
 # Translation for the WebGL Viewer plugin for Omeka.
 # Copyright (C) 2015 Gero Zahn
 # This file is distributed under the same license as the Omeka package.
-# Gero Zahn <gero.zahn@upb.de>, 2015.
 #
+# Translators:
 msgid ""
 msgstr ""
-"Project-Id-Version: WebGLViewer\n"
+"Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-WebGLViewer/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2015-11-18 17:36+0100\n"
-"Last-Translator: Gero Zahn <gero.zahn@upb.de>\n"
-"Language-Team: en_US <LL@li.org>\n"
-"Language: de_DE\n"
+"PO-Revision-Date: 2015-11-23 11:46+0100\n"
+"Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
+"Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de_DE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.6\n"
 
-#: WebGLViewerPlugin.php:151
+#: WebGLViewerPlugin.php:161
 #, php-format
 msgid "Open WebGL model \"%s\" in new window"
 msgstr "Öffnen Sie das WebGL-Modell „%s“ in neuem Fenster"
 
-#: WebGLViewerPlugin.php:162
+#: WebGLViewerPlugin.php:172
 #, php-format
 msgid "Download zip file \"%s\""
 msgstr "Zip-Datei „%s“ herunterladen"
 
 #: config_form.php:10
-msgid ""
-"Height of the embedded WebGL viewer, in pixels. Width will automatically "
-"adjust to fit the surrounding content."
-msgstr ""
-"Höhe der eingebetteten WebGL-Darstellung in Pixeln. Die Breite wird "
-"automatisch dem umgebenden Inhalt angepasst."
+msgid "Height of the embedded WebGL viewer, in pixels. Width will automatically adjust to fit the surrounding content."
+msgstr "Höhe der eingebetteten WebGL-Darstellung in Pixeln. Die Breite wird automatisch dem umgebenden Inhalt angepasst."
