@@ -36,10 +36,15 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   // --------------------------------------------------------
 
-  $(document).on('lity:close', function(event, lightbox) {
+  $("#range-search-close").click(function () {
     if (currentTextArea) {
       currentTextArea.replaceSelectedText("FOO");
     }
+  });
+
+  // --------------------------------------------------------
+
+  $(document).on('lity:close', function(event, lightbox) {
   });
 
   // --------------------------------------------------------
