@@ -147,11 +147,11 @@ $provideRelationComments = get_option('item_relations_provide_relation_comments'
             <a href="#" id="add-relation" class="green button" data-lity-close><?php echo __('Add Relation'); ?></a>
           </div>
 
-          <link href="<?php echo PUBLIC_BASE_URL; ?>/plugins/ItemRelations/lity/lity.min.css" rel="stylesheet">
           <?php if (!defined("LITYLOADED")) { ?>
+          <link href="<?php echo PUBLIC_BASE_URL; ?>/plugins/ItemRelations/lity/lity.min.css" rel="stylesheet">
           <script type="text/javascript" src="<?php echo PUBLIC_BASE_URL; ?>/plugins/ItemRelations/lity/lity.min.js"></script>
-          <link href="<?php echo PUBLIC_BASE_URL; ?>/plugins/ItemRelations/item_relations_styles.css" rel="stylesheet">
           <?php DEFINE("LITYLOADED", 1); } ?>
+          <link href="<?php echo PUBLIC_BASE_URL; ?>/plugins/ItemRelations/item_relations_styles.css" rel="stylesheet">
           <script type="text/javascript">
           var url = '<?php echo url('item-relations/lookup/'); ?>';
           </script>
