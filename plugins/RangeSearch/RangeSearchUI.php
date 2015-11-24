@@ -41,8 +41,8 @@
   <h2><?php echo __("Range Entry"); ?></h2>
   <p>
   <?php
-    $units = array( -1 => __("Select Below") ) + SELF::_fetchUnitArray();
-    $saniUnits = array();
+    $units = SELF::_fetchUnitArray();
+    $saniUnits = array( -1 => __("Select Below") );
     foreach($units as $unit) {
       if ( substr_count($unit, "-") == 2 ) { $saniUnits[] = $unit;}
     }
