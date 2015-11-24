@@ -36,7 +36,7 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   // --------------------------------------------------------
 
-  $("#range-search-close").click(function () {
+  $("#range-search-apply").click(function () {
     if (currentTextArea) {
       currentTextArea.replaceSelectedText("FOO");
     }

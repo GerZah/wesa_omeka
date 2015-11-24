@@ -20,14 +20,19 @@
   <h2>Foo</h2>
   <div>
   <?php
-    $units = array( -1 => __("Select below")) + SELF::_fetchUnitArray();
+    $units = array( -1 => __("Select Below") ) + SELF::_fetchUnitArray();
 
     $view = get_view();
     echo $view->formSelect('units', -1, array(), $units);
   ?>
   </div>
   <p>
-    <a href="#" id="range-search-close" class="green button" data-lity-close>Bar</a>
+    <a href="#" id="range-search-Cancel" class="green button" data-lity-close>
+      <?php echo __("Cancel"); ?>
+    </a>
+    <a href="#" id="range-search-apply" class="green button" data-lity-close>
+      <?php echo __("Apply"); ?>
+    </a>
   </p>
 </div>
 
