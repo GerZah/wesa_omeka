@@ -34,29 +34,27 @@ class ItemRelations_VocabulariesController extends Omeka_Controller_AbstractActi
     */
     public function saveAction()
     {
-        $vocabulary = $this->_helper->db->findById();
-      // Only custom vocabularies can be edited.
-      if (!$vocabulary->custom) {
-          throw new Omeka_Controller_Exception_404;
-      }
 
-      // Handle edit vocabulary.
-      if ($this->getRequest()->isPost()) {
-        #echo "<pre>"; print_r($vocabulary); die("</pre>");
-        $vocabularyName = $this->_getParam('vocabulary_name');
-        $vocabularyDescription = $this->_getParam('vocabulary_description');
-        $vocabulary = $this->_helper->db->getTable('ItemRelationsVocabulary')->find($vocabularyName);
-        $vocabulary->name = $vocabularyName;
-        $vocabulary->description = $vocabularyDescription;
-        $vocabulary->save();
+       if ($this->getRequest()->isPost()) {
+         $vocabularyName = $this->_getParam('vocabulary_name');
+         $vocabularyDescription = $this->_getParam('vocabulary_description');
+         $vocabularyId = intval($this->_getParam('vocabulary_id'));
+         if (($vocabularyName) and ($vocabularyId)){
+           $db = get_db();
+           $sql = "UPDATE `$db->ItemRelationsVocabulary` set name = '$vocabularyName', description = '$vocabularyDescription'  where id = $vocabularyId";
+           #echo "<pre>"; print_r($sql); die("</pre>");
+           $db->query($sql);
+           $this->_helper->flashMessenger(__('The vocabulary was successfully edited.'), 'success');
+         }
+        else {
+           $this->_helper->flashMessenger(__('The vocabulary name cannot be empty.'), 'error');
+         }
 
-      // Redirect to browse.
-      $this->_helper->flashMessenger(__('The vocabulary was successfully edited.'), 'success');
-      $this->_helper->redirector('browse');
-      return;
-  }
+       $this->_helper->redirector('browse');
+       return;
 
     }
+  }
     /**
      * Edit action.
      */

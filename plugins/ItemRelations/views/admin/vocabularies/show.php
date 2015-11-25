@@ -3,7 +3,8 @@ echo head(array('title' => __('Vocabulary Properties')));
 $vocabulary = $this->item_relations_vocabulary;
 $properties = $vocabulary->getProperties();
 ?>
-<form method="post">
+
+<form method="post" action="<?php echo url('item-relations/vocabularies/save', array('vocabulary_id' => $vocabulary->id)); ?>">
 <?php if ($vocabulary->custom): ?>
   <h2><?php echo $this->formText("vocabulary_name", $vocabulary->name, array('size' => 20)); ?></h2>
   <p><?php echo $this->formTextarea("vocabulary_description", $vocabulary->description, array('cols' => 50, 'rows' => 2)); ?></p>
@@ -42,7 +43,7 @@ $properties = $vocabulary->getProperties();
 <a class="button" href="<?php echo html_escape($this->url("item-relations/vocabularies/edit/id/{$vocabulary->id}")); ?>" class="edit"><?php echo __('Edit Vocabulary'); ?></a>
 <?php endif; ?>
 <?php if ($vocabulary->custom): ?>
-<a class="button" href="<?php echo html_escape($this->url("item-relations/vocabularies/browse/id/{$vocabulary->id}")); ?>" class="edit"><?php echo __('Save Vocabulary'); ?></a>
+<input type="submit" class="button" name="submit" value="<?php echo __('Save Vocabulary'); ?>">
 <?php endif; ?>
 </form>
 <?php echo foot(); ?>
