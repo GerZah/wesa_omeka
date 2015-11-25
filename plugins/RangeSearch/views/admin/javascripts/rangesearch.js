@@ -3,6 +3,9 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   var lightbox = lity(); // https://www.npmjs.com/package/lity
 
+  var textFields = ["#rangeSearch1", "#rangeSearch2", "#rangeSearch3",
+                    "#rangeSearch4", "#rangeSearch5", "#rangeSearch6"];
+
   // --------------------------------------------------------
 
   $("#rangeSearchWrapper").remove();
@@ -18,6 +21,46 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   // --------------------------------------------------------
 
+  function showHideSecondTriple(range) {
+    if (range) { $("#rangeSearchSecondTriple").slideDown("fast"); }
+    else { $("#rangeSearchSecondTriple").slideUp("fast"); }
+  }
+
+  // -------------------
+
+  function presetFormValues(selText) {
+    var usableSelection = rangeSearchFullMatch(selText); // in RangeSearchUI.php
+
+    if (usableSelection) {
+      var decimals = selText.match(/(\d+)/g); // decimals
+      var cnt = decimals.length;
+      var range = (cnt == 3 ? false : true);
+      $("#rangeSearchRange").prop("checked", range);
+      showHideSecondTriple(range);
+
+      for (i = 0; i < cnt; i++) { $(textFields[i]).val(decimals[i]); }
+      for (i = cnt; i < 6; i++) { $(textFields[i]).val(""); }
+
+      var units = selText.match(/((?![-| ])\D)+/g); // no dashes, no blanks
+      units = units.slice(0,3).join("-");
+      for(var idx in rangeSearchUnits) {
+        if (units == rangeSearchUnits[idx]) {
+          $("#rangeSearchUnits").val(idx);
+          return;
+        }
+      }
+    }
+    else {
+      for (i = 0; i < 6; i++) { $(textFields[i]).val(""); }
+      $("#rangeSearchRange").prop("checked", false);
+      $("#rangeSearchUnits").val(-1);
+      showHideSecondTriple(false);
+    }
+
+  }
+
+  // -------------------
+
   $(".rangeSearchButtons button").click(function(e) {
     e.preventDefault();
 
@@ -27,9 +70,8 @@ jQuery(document).bind("omeka:elementformload", function() {
     var selText = "";
     if (sel.start != sel.end) { selText = sel.text; }
 
-    console.log(selText);
     lightbox("#range-search-popup");
-    showHideSecondTriple();
+    presetFormValues(selText);
   });
 
   // --------------------------------------------------------
@@ -44,27 +86,13 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   // -------------------
 
-  function showHideSecondTriple() {
-    if (isRange()) {
-      $("#rangeSearchSecondTriple").slideDown("fast");
-    }
-    else {
-      $("#rangeSearchSecondTriple").slideUp("fast");
-    }
-  }
-
-  // -------------------
-
-  $("#rangeSearchRange").change(function() {
-    showHideSecondTriple();
-  });
+  $("#rangeSearchRange").change(function() { showHideSecondTriple(isRange()); });
 
   // --------------------------------------------------------
 
-  function checkTextfields(textFields) {
-    var textField;
-    for(textField of textFields) {
-      if (!$(textField).val().match(/\d+/)) {
+  function checkTextfields(curTextFields) {
+    for(var textField of curTextFields) {
+      if (!$(textField).val().match(/^\d+$/)) {
         alert(rangeSearchEnterNumber);
         $(textField).focus();
         return false;
@@ -84,14 +112,10 @@ jQuery(document).bind("omeka:elementformload", function() {
       return;
     }
 
-    var textFields = ["#rangeSearch1", "#rangeSearch2", "#rangeSearch3"];
-    if (!checkTextfields(textFields)) { return; }
-
+    if (!checkTextfields(textFields.slice(0, 3))) { return; }
     var range = isRange();
-
     if (range) {
-      var textFields = ["#rangeSearch4", "#rangeSearch5", "#rangeSearch6"];
-      if (!checkTextfields(textFields)) { return; }
+      if (!checkTextfields(textFields.slice(3))) { return; }
     }
 
     var units = $('#rangeSearchUnits option:selected').text();

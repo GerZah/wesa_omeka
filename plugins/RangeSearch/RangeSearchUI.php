@@ -20,6 +20,18 @@
 
   $view = get_view();
 
+  $regEx = SELF::_constructRegEx();
+  # foreach($regEx as $key => $val) { $$key = $val; }
+  # echo "<!--" . print_r($regEx, true) . "-->\n";
+  $combined = $regEx["combinedRegEx"];
+
+  $fullMatchRegEx=<<<EOT
+      function rangeSearchFullMatch(str) {
+        return str.match(/^$combined$/i);
+      }
+EOT;
+  queue_js_string($fullMatchRegEx);
+
   // ------------------------------------------------------
 
   function editFieldHTML($textField, $view = false) {
@@ -49,6 +61,7 @@
     echo __("Units") . ": ". $view->formSelect('rangeSearchUnits', -1, array(), $saniUnits);
   ?>
   </p>
+  <?php queue_js_string("var rangeSearchUnits=" . json_encode($saniUnits) . ";"); ?>
   <p>
     <?php
       $textFields = array("rangeSearch1", "rangeSearch2", "rangeSearch3");
