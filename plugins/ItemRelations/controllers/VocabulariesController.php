@@ -41,9 +41,8 @@ class ItemRelations_VocabulariesController extends Omeka_Controller_AbstractActi
          $vocabularyId = intval($this->_getParam('vocabulary_id'));
          if (($vocabularyName) and ($vocabularyId)){
            $db = get_db();
-           $sql = "UPDATE `$db->ItemRelationsVocabulary` set name = '$vocabularyName', description = '$vocabularyDescription'  where id = $vocabularyId";
-           #echo "<pre>"; print_r($sql); die("</pre>");
-           $db->query($sql);
+           $sql = "UPDATE `$db->ItemRelationsVocabulary` set name = ?, description = ?  where id = $vocabularyId";
+           $db->query($sql, array(addslashes($vocabularyName) ,addslashes($vocabularyDescription)));
            $this->_helper->flashMessenger(__('The vocabulary was successfully edited.'), 'success');
          }
         else {
