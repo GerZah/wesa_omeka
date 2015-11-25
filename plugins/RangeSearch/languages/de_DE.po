@@ -3,28 +3,19 @@
 # This file is distributed under the same license as the Omeka package.
 #
 # Translators:
-<<<<<<< HEAD
-=======
 # Gero Zahn <gerozahn@campus.uni-paderborn.de>, 2015
->>>>>>> RangeSearchDevel
 msgid ""
 msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-RangeSearch/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-<<<<<<< HEAD
-"PO-Revision-Date: 2015-11-23 11:45+0100\n"
-"Last-Translator: githanjalli <anjallinhere@gmail.com>\n"
-=======
-"PO-Revision-Date: 2015-11-25 18:04+0100\n"
-"Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
->>>>>>> RangeSearchDevel
-"Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: de_DE\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.6\n"
 
 #: RangeSearchPlugin.php:429
