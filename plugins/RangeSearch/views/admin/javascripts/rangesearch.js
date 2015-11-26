@@ -44,7 +44,7 @@ jQuery(document).bind("omeka:elementformload", function() {
       var units = selText.match(/((?![-| ])\D)+/g); // no dashes, no blanks
       units = units.slice(0,3).join("-");
       for(var idx in rangeSearchUnits) {
-        if (units == rangeSearchUnits[idx]) {
+        if (units.toLowerCase() == rangeSearchUnits[idx].toLowerCase()) {
           $("#rangeSearchUnits").val(idx);
           return;
         }
