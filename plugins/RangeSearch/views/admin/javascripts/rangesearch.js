@@ -34,17 +34,18 @@ jQuery(document).bind("omeka:elementformload", function() {
     if (usableSelection) {
       var decimals = selText.match(/(\d+)/g); // decimals
       var cnt = decimals.length;
-      var range = (cnt == 3 ? false : true);
+      var range = (cnt <= 3 ? false : true);
       $("#rangeSearchRange").prop("checked", range);
       showHideSecondTriple(range);
 
       for (i = 0; i < cnt; i++) { $(textFields[i]).val(decimals[i]); }
-      for (i = cnt; i < 6; i++) { $(textFields[i]).val(""); }
+      for (i = cnt; i < 6; i++) { $(textFields[i]).val("0"); }
 
       var units = selText.match(/((?![-| ])\D)+/g); // no dashes, no blanks
-      units = units.slice(0,3).join("-");
+      units = units.slice(0,3).join("-").toLowerCase();
+      var unitsLen = units.length;
       for(var idx in rangeSearchUnits) {
-        if (units.toLowerCase() == rangeSearchUnits[idx].toLowerCase()) {
+        if (units == rangeSearchUnits[idx].toLowerCase().substr(0,unitsLen)) {
           $("#rangeSearchUnits").val(idx);
           return;
         }
