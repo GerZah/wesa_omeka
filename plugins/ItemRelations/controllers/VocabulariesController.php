@@ -30,11 +30,9 @@ class ItemRelations_VocabulariesController extends Omeka_Controller_AbstractActi
       $vocabularyName = $this->_getParam('vocabulary_name');
       $vocabularyDescription = $this->_getParam('vocabulary_description');
       $db = get_db();
-
-      $query = "SELECT COUNT(name) FROM `$db->ItemRelationsVocabulary` WHERE name = '{$vocabularyName}'";
-      #echo "<pre>"; print_r($query); die("</pre>");
-      $result = $db->query($query);
-      if ($result > 0)
+      $select = "SELECT name FROM `$db->ItemRelationsVocabulary` WHERE `name` = ?";
+      $result = $db->fetchAll($select, array(addslashes($vocabularyName)));
+      if ($result)
       {
         $this->_helper->flashMessenger(__('The vocabulary name already exists. Please choose a different one.'), 'error');
       }
