@@ -65,7 +65,7 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
 		SELF::_installOptions();
 
-		SELF::_batchProcessExistingItems();
+		# SELF::_batchProcessExistingItems(); # Don't ... Do it only if configured.
 	}
 
 	/**
