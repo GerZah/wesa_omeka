@@ -79,6 +79,13 @@ class ItemRelations_VocabulariesController extends Omeka_Controller_AbstractActi
     }
   }
   /**
+  * Delete action.
+  */
+  public function deleteAction()
+  {
+
+  }
+  /**
   * Edit action.
   */
   public function editAction()

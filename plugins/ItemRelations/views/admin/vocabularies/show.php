@@ -19,7 +19,7 @@ $properties = $vocabulary->getProperties();
     <input type="submit" class="button" name="submit" value="<?php echo __('Save Vocabulary'); ?>">
   <?php endif; ?>
   <?php if (!$properties): ?>
-    <a class="button" href="<?php echo html_escape($this->url("item-relations/vocabularies/delete/id/{$vocabulary->id}")); ?>" class="delete"><?php echo __('Delete Vocabulary'); ?></a>
+    <a class="button" href="<?php echo url('item-relations/vocabularies/delete', array('vocabulary_id' => $vocabulary->id));?>" class="delete"><?php echo __('Delete Vocabulary'); ?></a>
     <p>
       <?php echo __('This vocabulary has no properties.'); ?>
       <?php if ($vocabulary->custom): ?>
