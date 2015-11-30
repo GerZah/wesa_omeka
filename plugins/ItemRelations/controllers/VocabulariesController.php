@@ -22,21 +22,35 @@ class ItemRelations_VocabulariesController extends Omeka_Controller_AbstractActi
 
   /**
   *
-  * add action
+  * create action
   */
-  public function addAction()
+  public function createAction()
   {
     if ($this->getRequest()->isPost()) {
       $vocabularyName = $this->_getParam('vocabulary_name');
       $vocabularyDescription = $this->_getParam('vocabulary_description');
-      if ($vocabularyName){
-        $db = get_db();
-        $sql = "insert into `$db->ItemRelationsVocabulary`(`name`, `description`,`custom`) values (?,?)";
-        $db->query($sql, array(addslashes($vocabularyName) ,addslashes($vocabularyDescription), 1));
-        $this->_helper->flashMessenger(__('The vocabulary is successfully added.'), 'success');
+      $db = get_db();
+
+      $query = "SELECT COUNT(name) FROM `$db->ItemRelationsVocabulary` WHERE name = '{$vocabularyName}'";
+      #echo "<pre>"; print_r($query); die("</pre>");
+      $result = $db->query($query);
+      if ($result > 0)
+      {
+        $this->_helper->flashMessenger(__('The vocabulary name already exists. Please choose a different one.'), 'error');
       }
-      else{
-        $this->_helper->flashMessenger(__('The vocabulary name cannot be empty.'), 'error');
+      else
+      {
+        if ($vocabularyName){
+          $db->query("INSERT INTO `{$db->ItemRelationsVocabulary}` (`name`, `description`, `custom`) VALUES (?, ?, ?)", array(
+            addslashes($vocabularyName),
+            addslashes($vocabularyDescription),
+            1
+          ));
+          $this->_helper->flashMessenger(__('The vocabulary is successfully added.'), 'success');
+        }
+        else{
+          $this->_helper->flashMessenger(__('The vocabulary cannot be added.'), 'error');
+        }
       }
       $this->_helper->redirector('browse');
       return;
