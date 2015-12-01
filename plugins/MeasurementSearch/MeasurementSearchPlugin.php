@@ -551,7 +551,6 @@ class MeasurementSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 
       # echo "<pre>$lower / $higher</pre>";
 
-      /* * /
 			$db = get_db();
 			$select
 					->join(
@@ -559,8 +558,13 @@ class MeasurementSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 							"measurement_search_values.item_id = items.id",
 							array()
 					)
-          # +#+#+# ... build intersection through "where" clause
-					->where("'$searchFromNum'<=measurement_search_values.tonum and '$searchToNum'>=measurement_search_values.fromnum");
+					->where(
+            "('$higher' >= measurement_search_values.height and '$lower' <= measurement_search_values.height) or ".
+            "('$higher' >= measurement_search_values.width  and '$lower' <= measurement_search_values.width) or ".
+            "('$higher' >= measurement_search_values.depth  and '$lower' <= measurement_search_values.depth)"
+          );
+
+      # echo "<pre>$select</pre>";
 
 			if ( (isset($params['measurement_search_unit'])) and (is_array($params['measurement_search_unit'])) ) {
 				$measurementSearchFormUnits = array();
@@ -571,20 +575,18 @@ class MeasurementSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 						$MeasurementSearchUnits = array_keys($validUnits);
 						$dbUnits = array();
 						foreach($measurementSearchFormUnits as $unit) {
-							if (isset($MeasurementSearchUnits[$unit])) { $dbUnits[] = addslashes(MmeasurementSearchUnits[$unit]); }
+							if (isset($MeasurementSearchUnits[$unit])) { $dbUnits[] = addslashes($validUnits[$unit]); }
 						}
+            #echo "<pre>" . print_r($dbUnits, true) . "</pre>"; die();
 						if ($dbUnits) {
 							$dbUnits = "'" . implode("','", $dbUnits) . "'";
 							$select->where("measurement_search_values.unit in ($dbUnits)");
 						}
-					}
-				}
-			}
+					} # if ($validUnits)
+				} # if ($measurementSearchFormUnits)
+			} # if ( (isset($params['measurement_search_unit']))
 
-			# die("<pre>$searchFromNum / $searchToNum --- $select</pre>");
-
-      /* */
-		}
+		} # if (	(isset($params['measurement_search_term'])) ...
 	} # hookItemsBrowseSql()
 
   # ----------------------------------------------------------------------------
