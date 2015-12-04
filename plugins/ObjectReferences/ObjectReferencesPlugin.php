@@ -12,16 +12,17 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     'install',
     'uninstall',
     'after_save_item',
-    'admin_items_form_files',
+    'admin_items_object_references',
     'define_acl',
+    'config_form',
+    'config',
   );
 
   //Define Filters
   protected $_filters = array('admin_navigation_main','element_input');
 
   protected $_options = array(
-    'reassign_files_delete_orphaned_items' => 1,
-		'reassign_files_local_reassign' => 0,
+		'object_references_local_enable' => 0,
   );
   public function hookInitialize()
   {
@@ -90,17 +91,15 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   }
 
   /**
-  * Display the reassignfiles list on the  item form.
-  * This simply adds a heading to the output
+  * Display the Object References list on the item form.
   */
-  public function hookAdminItemsFormFiles()
+  public function hookAdminItemsObjectReferences()
   {
-    $localReassign = (int)(boolean) get_option('reassign_files_local_reassign');
-    if ($localReassign) {
-      echo '<h3>' . __('Add Files from Other Items') . '</h3>';
+    $localObjectReferences = (int)(boolean) get_option('object_references_local_enable');
+    if ($localObjectReferences) {
+      echo '<h3>' . __('Object References') . '</h3>';
       $itemId = metadata('item', 'id');
-      $fileNames = reassignFiles_getFileNames($itemId); // from helpers/ReassignFilesFunctions.php
-      echo common('reassignfileslist', array( "fileNames" => $fileNames ), 'index');
+      echo common('objectreferenceslist', array( "ItemId" => $itemId ), 'index');
     }
   }
 
@@ -112,15 +111,22 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
     $record = $args['record'];
     $post = $args['post'];
-    #echo "<pre>"; print_r($_POST); die("</pre>");
-
-    // reassign the selected files from other items to the current item
-    if (isset($post['reassignFilesFiles']) and (isset($post['itemId']))) {
-      $itemID = ( $post['itemId'] ? $post['itemId'] : $args["record"]["id"] );
-      $errMsg = reassignFiles_reassignFiles($itemID, $post['reassignFilesFiles']);
-      # if ($errMsg) { $this->_helper->flashMessenger( $errMsg, 'error' ); }
-      // ... turns out, we don't actually have a $this->_helper object here :-(
     }
+
+  /**
+  * Display the plugin configuration form.
+  */
+  public static function hookConfigForm() {
+    $localObjectReferences = (int)(boolean) get_option('object_references_local_enable');
+    require dirname(__FILE__) . '/config_form.php';
+  }
+
+  /**
+  * Handle the plugin configuration form.
+  */
+  public static function hookConfig() {
+    $localObjectReferences = (int)(boolean) $_POST['object_references_local_enable'];
+    set_option('object_references_local_enable', $localObjectReferences);
   }
 
 }
