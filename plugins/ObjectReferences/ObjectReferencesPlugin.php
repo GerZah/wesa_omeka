@@ -12,7 +12,7 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     'install',
     'uninstall',
     'after_save_item',
-    'admin_items_object_references',
+    'admin_items_form_item_types',
     'define_acl',
     'config_form',
     'config',
@@ -66,7 +66,7 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   public function filterElementInput($components, $args)
   {
       // Use the cached vocab terms instead of
-      $terms = explode("\n", $this->_simpleVocabTerms[$args['element']->id]);
+    //  $terms = explode("\n", $this->_simpleVocabTerms[$args['element']->id]);
       $selectTerms = array('' => 'Select Below') + array_combine($terms, $terms);
       $components['input'] = get_view()->formSelect(
           $args['input_name_stem'] . '[text]',
@@ -93,7 +93,7 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   /**
   * Display the Object References list on the item form.
   */
-  public function hookAdminItemsObjectReferences()
+  public function hookAdminItemsFormItemTypes()
   {
     $localObjectReferences = (int)(boolean) get_option('object_references_local_enable');
     if ($localObjectReferences) {
