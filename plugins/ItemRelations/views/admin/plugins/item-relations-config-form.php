@@ -21,7 +21,7 @@
                         echo '<li>';
                         echo $this->formCheckbox('item_relations_allow_vocabularies[]', $vocabulary->name,
                             array('checked' => in_array($vocabulary->name, $currentVocabularies) ? 'checked' : ''));
-                        echo $vocabulary->name;
+                        echo " ".$vocabulary->name;
                         echo '</li>';
                     }
                     echo '</ul>';
