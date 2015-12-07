@@ -9,10 +9,12 @@
         <?php if (!$subjectRelations && !$objectRelations): ?>
         <p><?php echo __('This item has no relations.'); ?></p>
         <?php else:
-            echo common('item-relations-show-list', array(
+						$mode = get_option('item_relations_admin_display_mode') ?: 'table';
+            echo common('item-relations-show-' . $mode, array(
                 'item' => $item,
                 'subjectRelations' => $subjectRelations,
                 'objectRelations' => $objectRelations,
+								'allRelations' => $allRelations,
             ));
         endif; ?>
     </div>

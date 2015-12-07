@@ -8,6 +8,7 @@
             'item' => $item,
             'subjectRelations' => $subjectRelations,
             'objectRelations' => $objectRelations,
+            'allRelations' => $allRelations,
         ));
     endif; ?>
 </div>
