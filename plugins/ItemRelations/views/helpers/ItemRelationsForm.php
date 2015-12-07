@@ -38,9 +38,12 @@ class ItemRelations_View_Helper_ItemRelationsForm extends Zend_View_Helper_Abstr
             'itemTypesList' => $itemTypesList,
         ));
 
-        $html .= '<link href="' . css_src('lity.min', 'javascripts/lity') . '" rel="stylesheet">';
+        if (!defined("LITYLOADED")) {
+          $html .= '<link href="' . css_src('lity.min', 'javascripts/lity') . '" rel="stylesheet">';
+          $html .= js_tag('lity.min', $dir = 'javascripts/lity');
+          DEFINE("LITYLOADED", 1);
+        }
         $html .= '<link href="' . css_src('item-relations') . '" rel="stylesheet">';
-        $html .= js_tag('lity.min', $dir = 'javascripts/lity');
         $html .= '<script type="text/javascript">var url = ' . json_encode(url('item-relations/lookup/')) . '</script>';
         $html .= js_tag('item-relations');
 
