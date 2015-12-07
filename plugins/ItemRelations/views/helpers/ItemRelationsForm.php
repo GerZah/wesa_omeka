@@ -15,14 +15,6 @@ class ItemRelations_View_Helper_ItemRelationsForm extends Zend_View_Helper_Abstr
         $view = $this->view;
         $db = get_db();
 
-        // Prepare the list of subjects to avoid sql queries in the view.
-        $subjectRelations = ItemRelationsPlugin::prepareSubjectRelations($item);
-        $sql = "SELECT id FROM {$db->ItemRelationsProperty} WHERE label = ?";
-        foreach ($subjectRelations as &$subjectRelation) {
-            // Get the default value to be selected in dropdown.
-            $subjectRelation['subject_id'] = $db->fetchOne($sql, array($subjectRelation['relation_text']));
-        }
-
         // Prepare list of used item types for the select form.
         $itemTypesList = array(
             '-1' => '- ' . __('All') . ' -',
@@ -33,8 +25,7 @@ class ItemRelations_View_Helper_ItemRelationsForm extends Zend_View_Helper_Abstr
             'item' => $item,
             'provideRelationComments' => get_option('item_relations_provide_relation_comments'),
             'formSelectProperties' => get_table_options('ItemRelationsProperty'),
-            'subjectRelations' => $subjectRelations,
-            'objectRelations' => ItemRelationsPlugin::prepareObjectRelations($item),
+            'allRelations' => ItemRelationsPlugin::prepareAllRelations($item),
             'itemTypesList' => $itemTypesList,
         ));
 
