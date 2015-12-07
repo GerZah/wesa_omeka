@@ -24,7 +24,6 @@
                                   'id' => 'item_relations_vocab_id_'.$vocabulary->id,
                                   )
                           );
-                        # echo " ".$vocabulary->name;
                         echo " " .
                               $this->formLabel('item_relations_vocab_id_'.$vocabulary->id,
                                                 $vocabulary->name,
