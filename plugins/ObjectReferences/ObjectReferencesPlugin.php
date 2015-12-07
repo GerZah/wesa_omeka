@@ -100,6 +100,8 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       echo '<h3>' . __('Object References') . '</h3>';
       $itemId = metadata('item', 'id');
       echo common('objectreferenceslist', array( "ItemId" => $itemId ), 'index');
+      add_filter(array('Object Reference',$itemId),
+                 array($this, 'filterElementInput'));
     }
   }
 
