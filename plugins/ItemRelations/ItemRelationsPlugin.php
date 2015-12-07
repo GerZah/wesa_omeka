@@ -277,12 +277,7 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
         if (get_option('item_relations_public_append_to_items_show')) {
             $item = get_current_record('item');
 
-            echo common('item-relations-show', array(
-                'item' => $item,
-                'subjectRelations' => self::prepareSubjectRelations($item),
-                'objectRelations' => self::prepareObjectRelations($item),
-                'allRelations' => self::prepareAllRelations($item),
-            ));
+            echo common('item-relations-show', array('item' => $item));
         }
     }
 
@@ -297,12 +292,7 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
         if ($adminSidebarOrMaincontent == "maincontent") {
             $item = $args['item'];
 
-            echo common('item-relations-show', array(
-                'item' => $item,
-                'subjectRelations' => self::prepareSubjectRelations($item),
-                'objectRelations' => self::prepareObjectRelations($item),
-                'allRelations' => self::prepareAllRelations($item),
-            ));
+            echo common('item-relations-show', array('item' => $item));
         }
     }
 
@@ -317,12 +307,7 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
         if ($adminSidebarOrMaincontent != "maincontent") {
             $item = $args['item'];
 
-            echo common('item-relations-show', array(
-                'item' => $item,
-                'subjectRelations' => self::prepareSubjectRelations($item),
-                'objectRelations' => self::prepareObjectRelations($item),
-                'allRelations' => self::prepareAllRelations($item),
-            ));
+            echo common('item-relations-show', array('item' => $item));
         }
     }
 
