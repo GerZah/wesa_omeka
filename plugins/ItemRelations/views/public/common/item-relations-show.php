@@ -14,7 +14,7 @@
   					echo "<tr><th colspan='$colspan'>"
   					."<span title='".$relation["vocabulary_desc"]."'>"
   					.$relation["vocabulary"]
-  					."</span><th></tr>";
+  					."</span></th></tr>";
   					$lastVocab = $relation["vocabulary_id"];
   				}
           echo "<tr>";
@@ -31,12 +31,13 @@
   										$relation['object_item_title'] . "</a>"
   							).
                 "</td>";
-  				if ( ($provideRelationComments) and ($relation['relation_comment']) ) {
+          # if ( ($provideRelationComments) and ($relation['relation_comment']) ) {
+  				if ($provideRelationComments) {
   					echo "<td>(".$relation['relation_comment'].")</td>";
   				}
           echo "</tr>";
   			} # foreach
+        echo "</table>";
   		} # else
-      echo "</table>";
   	?>
 </div>
