@@ -12,13 +12,14 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     'install',
     'uninstall',
     'after_save_item',
+    'admin_items_form_item_types',
     'define_acl',
     'config_form',
     'config',
   );
 
   //Define Filters
-  protected $_filters = array('admin_navigation_main','element_input');
+  protected $_filters = array('admin_navigation_main');
 
   protected $_options = array(
 		'object_references_local_enable' => 0,
@@ -26,6 +27,8 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   public function hookInitialize()
   {
     add_translation_source(dirname(__FILE__) . '/languages');
+    $front = Zend_Controller_Front::getInstance();
+    $front->registerPlugin(new ObjectReferences_Controller_Plugin_SelectFilter);
   }
 
   /**
@@ -54,28 +57,6 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     return $nav;
   }
 
-  /**
-   * Filter the element input.
-   *
-   * @param array $components
-   * @param array $args
-   * @return array
-   */
-  public function filterElementInput($components, $args)
-  {
-
-      // Use the cached vocab terms instead of
-    //  $terms = explode("\n", $this->_simpleVocabTerms[$args['element']->id]);
-      $selectTerms = array('' => 'Select Below') + array_combine($terms, $terms);
-      $components['input'] = get_view()->formSelect(
-          $args['input_name_stem'] . '[text]',
-          $args['value'],
-          array('style' => 'width: 300px;'),
-          $selectTerms
-      );
-      $components['html_checkbox'] = false;
-      return $components;
-  }
 
   /*
   * Define ACL entry for reassignfiles controller.
@@ -89,20 +70,21 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
   }
 
-  // /**
-  // * Display the Object References list on the item form.
-  // */
-  // public function hookAdminItemsFormItemTypes()
-  // {
-  //   $localObjectReferences = (int)(boolean) get_option('object_references_local_enable');
-  //   if ($localObjectReferences) {
-  //     echo '<h3>' . __('Object References') . '</h3>';
-  //     $itemId = metadata('item', 'id');
-  //     #echo common('objectreferenceslist', array( "ItemId" => $itemId ), 'index');
-  //     add_filter(array('Object Reference',$itemId),
-  //                array($this, 'filterElementInput'));
-  //   }
-  // }
+
+  /**
+  * Display the Object References list on the item form.
+  */
+  public function hookAdminItemsFormItemTypes()
+  {
+    $localObjectReferences = (int)(boolean) get_option('object_references_local_enable');
+    if ($localObjectReferences) {
+      echo '<h3>' . __('Object References') . '</h3>';
+      $itemId = metadata('item', 'id');
+      echo common('objectreferenceslist', array( "ItemId" => $itemId ), 'index');
+      add_filter(array('Object Reference',$itemId),
+                 array($this, 'FilterElementInput'));
+    }
+  }
 
   public function hookAfterSaveItem($args)
   {
@@ -122,7 +104,7 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   */
   public static function hookConfigForm() {
     $localObjectReferences = (int)(boolean) get_option('object_references_local_enable');
-    
+
     require dirname(__FILE__) . '/config_form.php';
   }
 
