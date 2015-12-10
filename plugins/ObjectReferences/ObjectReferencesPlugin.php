@@ -12,7 +12,6 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     'install',
     'uninstall',
     'after_save_item',
-    'admin_items_form_item_types',
     'define_acl',
     'config_form',
     'config',
@@ -33,7 +32,6 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   * Install the plugin.
   */
   public function hookInstall() {
-
     SELF::_installOptions();
   }
 
@@ -65,6 +63,7 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
    */
   public function filterElementInput($components, $args)
   {
+
       // Use the cached vocab terms instead of
     //  $terms = explode("\n", $this->_simpleVocabTerms[$args['element']->id]);
       $selectTerms = array('' => 'Select Below') + array_combine($terms, $terms);
@@ -90,20 +89,20 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
   }
 
-  /**
-  * Display the Object References list on the item form.
-  */
-  public function hookAdminItemsFormItemTypes()
-  {
-    $localObjectReferences = (int)(boolean) get_option('object_references_local_enable');
-    if ($localObjectReferences) {
-      echo '<h3>' . __('Object References') . '</h3>';
-      $itemId = metadata('item', 'id');
-      echo common('objectreferenceslist', array( "ItemId" => $itemId ), 'index');
-      add_filter(array('Object Reference',$itemId),
-                 array($this, 'filterElementInput'));
-    }
-  }
+  // /**
+  // * Display the Object References list on the item form.
+  // */
+  // public function hookAdminItemsFormItemTypes()
+  // {
+  //   $localObjectReferences = (int)(boolean) get_option('object_references_local_enable');
+  //   if ($localObjectReferences) {
+  //     echo '<h3>' . __('Object References') . '</h3>';
+  //     $itemId = metadata('item', 'id');
+  //     #echo common('objectreferenceslist', array( "ItemId" => $itemId ), 'index');
+  //     add_filter(array('Object Reference',$itemId),
+  //                array($this, 'filterElementInput'));
+  //   }
+  // }
 
   public function hookAfterSaveItem($args)
   {
@@ -113,13 +112,17 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
     $record = $args['record'];
     $post = $args['post'];
-    }
+    $elements = $post['referenceElement'];
+    set_option('object_references_elements', json_encode($elements));
+
+  }
 
   /**
   * Display the plugin configuration form.
   */
   public static function hookConfigForm() {
     $localObjectReferences = (int)(boolean) get_option('object_references_local_enable');
+    
     require dirname(__FILE__) . '/config_form.php';
   }
 
@@ -129,6 +132,7 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   public static function hookConfig() {
     $localObjectReferences = (int)(boolean) $_POST['object_references_local_enable'];
     set_option('object_references_local_enable', $localObjectReferences);
-  }
+    }
+
 
 }

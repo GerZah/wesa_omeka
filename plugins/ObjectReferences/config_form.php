@@ -15,7 +15,6 @@
   </div>
   <div class="inputs five columns omega">
       <?php
-      $itemNames = array();
       $sqlDb = get_db();
       $select = "
       SELECT es.name AS element_set_name, e.id AS element_id,
@@ -35,9 +34,7 @@
           $elements[$optGroup][$record['element_id']] = $value;
       }
       echo get_view()->formSelect('referenceElements[]', null, array('multiple' => true, 'size' => 10, 'style' => 'width: 600px;'), $elements);
+
     ?>
-    <div class="field">
-      <button type="submit" name="reference-button" class="add big green button"><?php echo __("Apply references"); ?></button>
-    </div>
   </div>
   </div>
