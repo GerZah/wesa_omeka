@@ -1,15 +1,39 @@
-jQuery(document).bind("omeka:elementformload", function() {
+var reorderElementTextsAlreadyDone = false;
 
+jQuery(document).bind("omeka:elementformload", function() {
 	var $ = jQuery; // use noConflict version of jQuery as the short $ within this block
 
-  // alert("foo");
+	if (reorderElementTextsAlreadyDone) return;
+	reorderElementTextsAlreadyDone = true;
 
-  // Concept:
+	var url = location.href;
+	var itemId = url.substr( url.lastIndexOf("/")+1 );
 
-  // Select div.field .inputs .input-block
-  // and count them: https://api.jquery.com/size/
-  // Then add button, etc. etc.
+	if (!isNaN(itemId)) {
 
-  $(".field .inputs .input-block").css("border", "thin dotted black");
+		var inputs = $(".field");
+
+		inputs.each( function(input) {
+			var inputBlocks = $(this).find(".inputs .input-block");
+			var size = $(inputBlocks).size();
+
+			if (size>1) {
+				var button = $(this).find("input:submit").first();
+				var div = $(button).parent();
+
+				var rawID = $(button).attr("id");
+				var elementId = rawID.substr( rawID.lastIndexOf("_")+1 );
+
+				// var reorderElementTestsButton = "Reorder Inputs";
+
+				console.log(itemId + " / " + elementId);
+				// $(div).append(itemId + " / " + elementId);
+				$(div).append("<a href="+reorderElementTextsUrl+"?item="+itemId+"&element="+elementId+
+												" class='blue button'>"+reorderElementTestsButton+
+												"</a>");
+			}
+		} );
+
+	}
 
 } );
