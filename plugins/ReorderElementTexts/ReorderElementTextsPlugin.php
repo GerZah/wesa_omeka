@@ -38,7 +38,7 @@ class ReorderElementTextsPlugin extends Omeka_Plugin_AbstractPlugin {
      * Add the translations.
      */
   public function hookInitialize() {
-    // add_translation_source(dirname(__FILE__) . '/languages');
+    add_translation_source(dirname(__FILE__) . '/languages');
   }
 
 	public function hookAdminHead($args) {

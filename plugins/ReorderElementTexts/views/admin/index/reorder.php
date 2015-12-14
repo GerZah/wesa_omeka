@@ -10,7 +10,7 @@
 
     echo "<h3>$title</h3>";
     echo "<h4>".__("Please select new text element order.")."</h3>";
-    echo "<p>".__("Simply drag the text element with your mouse.")."</p>";
+    echo "<p>".__("Simply drag the text elements with your mouse.")."</p>";
 
     $backUrl=url("items/show/".$itemId);
     echo "<p><a href='".$backUrl."' class='green button'>".__("Cancel")."</a></p>";
