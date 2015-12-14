@@ -3,7 +3,6 @@
   echo head(array('title'=>$pageTitle));
   # echo flash();
 
-  $elements = ReorderElementTextsPlugin::checkItemElement();
   if ($elements) {
     // echo "<pre>" . print_r($elements,true) . "</pre>";
     $itemId = intval($_GET["item"]);
@@ -30,6 +29,8 @@
     echo "<input type='submit' value='".__("Reorder Inputs")."'>";
     echo "</form>";
   }
+
+  else { echo $output; }
 
   echo foot();
 ?>

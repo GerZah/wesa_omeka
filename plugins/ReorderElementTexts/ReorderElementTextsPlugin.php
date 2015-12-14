@@ -64,34 +64,4 @@ class ReorderElementTextsPlugin extends Omeka_Plugin_AbstractPlugin {
 		} # if ($module === 'default' ...
 	} # public function hookAdminHead()
 
-	public function checkItemElement() {
-		$elements = false;
-
-		$returnLink = "<a href='javascript:window.history.back();'>" .
-	                __("Please return to the referring page.").
-	                "</a>";
-
-	  $itemId = ( isset($_GET["item"]) ? intval($_GET["item"]) : 0 );
-	  $elementId = ( isset($_GET["element"]) ? intval($_GET["element"]) : 0 );
-
-	  if (!$itemId) { echo __("No item ID specified.") . " " . $returnLink; }
-	  else if (!$elementId) { echo __("No element ID specified.") . " " . $returnLink; }
-
-	  else {
-	    $db = get_db();
-	    $itemExists = $db->fetchOne("SELECT count(*) FROM $db->Items WHERE id = $itemId");
-	    if (!$itemExists) { echo __("Item not found.") . " " . $returnLink; }
-
-	    else {
-	      $sql = "SELECT * FROM $db->ElementTexts".
-	              " WHERE record_id = $itemId".
-	              " AND element_id = $elementId";
-	      $elements = $db->fetchAll($sql);
-	      if (!$elements) { echo __("Specified elements not found in item.") . " " . $returnLink; }
-			}
-		}
-
-		return $elements;
-	}
-
 } # class

@@ -12,11 +12,102 @@
 */
 class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActionController {
 
+  public function checkItemElement() {
+		$elements = false;
+		$output = "";
+
+		$returnLink = "<a href='javascript:window.history.back();'>" .
+	                __("Please return to the referring page.").
+	                "</a>";
+
+	  $itemId = ( isset($_GET["item"]) ? intval($_GET["item"]) : 0 );
+	  $elementId = ( isset($_GET["element"]) ? intval($_GET["element"]) : 0 );
+
+	  if (!$itemId) { $output .= __("No item ID specified.") . " " . $returnLink; }
+	  else if (!$elementId) { $output .= __("No element ID specified.") . " " . $returnLink; }
+
+	  else {
+	    $db = get_db();
+	    $itemExists = $db->fetchOne("SELECT count(*) FROM $db->Items WHERE id = $itemId");
+	    if (!$itemExists) { $output .= __("Item not found.") . " " . $returnLink; }
+
+	    else {
+	      $sql = "SELECT * FROM $db->ElementTexts".
+	              " WHERE record_id = $itemId".
+	              " AND element_id = $elementId";
+	      $elements = $db->fetchAll($sql);
+	      if (!$elements) { $output .= __("Specified elements not found in item.") . " " . $returnLink; }
+			}
+		}
+
+		return array("elements" => $elements, "output" => $output);
+	}
+
   public function reorderAction() {
     queue_js_file('reorderelementtexts_drag');
     queue_css_file('reorderelementtexts_drag');
+    $data = SELF::checkItemElement();
+    $this->view->elements = $data["elements"];
+    $this->view->output = $data["output"];
   }
 
-  public function updateAction() { }
+  public function updateAction() {
+    $data = SELF::checkItemElement();
+    $elements = $data["elements"];
+    $output = $data["output"];
+
+    if ($elements) {
+      // echo "<pre>" . print_r($_GET,true) . "</pre>";
+      // echo "<pre>Elements: " . print_r($elements,true) . "</pre>";
+      $itemId = intval($_GET["item"]);
+  	  $elementId = intval($_GET["element"]);
+
+      $order = json_decode($_GET["reorderElementTextsOrder"]);
+      // echo "<pre>Order: " . print_r($order,true) . "</pre>";
+
+      if (count($order) != count($elements)) {
+        $returnLink = "<a href='javascript:window.history.back();'>" .
+    	                __("Please return to the referring page.").
+    	                "</a>";
+        $output .= (__("Mismatching number of elements.") . " " . $returnLink);
+      }
+
+      else {
+
+        $index = array();
+        foreach($elements as $idx => $element) {
+          $index[$element["id"]] = $idx;
+        }
+        // echo "<pre>Index: " . print_r($index,true) . "</pre>";
+
+        $newOrder = array();
+        foreach($order as $txt) {
+          $newOrder[] = array(
+                          "text" => $elements[$index[$txt]]["text"],
+                          "html" => $elements[$index[$txt]]["html"]
+                        );
+        }
+        // echo "<pre>NewOrder: " . print_r($newOrder,true) . "</pre>";
+
+        $db = get_db();
+
+        foreach($elements as $idx => $element) {
+          $sql = "UPDATE $db->ElementTexts".
+                  " SET text='".addslashes($newOrder[$idx]["text"])."',".
+                  " html=".$newOrder[$idx]["html"].
+                  " WHERE id=".$element["id"];
+          $db->query($sql);
+        }
+
+        $output .= "<p>".__("Done.")."</p>";
+
+        $backUrl=url("items/show/".$itemId);
+        $output .= "<p><a href='".$backUrl."' class='green button'>".__("Back")."</a></p>";
+
+      }
+    }
+
+    $this->view->output = $output;
+  }
 
 }
