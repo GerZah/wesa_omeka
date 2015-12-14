@@ -8,7 +8,8 @@
     $itemId = intval($_GET["item"]);
 	  $elementId = intval($_GET["element"]);
 
-    echo "<h3>".__("Please select new text element order")."</h3>";
+    echo "<h3>$title</h3>";
+    echo "<h4>".__("Please select new text element order.")."</h3>";
     echo "<p>".__("Simply drag the text element with your mouse.")."</p>";
 
     $backUrl=url("items/show/".$itemId);

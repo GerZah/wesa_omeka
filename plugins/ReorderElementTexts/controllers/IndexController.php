@@ -14,6 +14,7 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
 
   public function checkItemElement() {
 		$elements = false;
+    $title = "";
 		$output = "";
 
 		$returnLink = "<a href='javascript:window.history.back();'>" .
@@ -37,10 +38,24 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
 	              " AND element_id = $elementId";
 	      $elements = $db->fetchAll($sql);
 	      if (!$elements) { $output .= __("Specified elements not found in item.") . " " . $returnLink; }
+        else {
+          $title = __("Item")." #".$itemId;
+          $sql = "SELECT id FROM $db->Elements WHERE name='Title'";
+          $titleElement = $db->fetchOne($sql);
+          if ($titleElement) {
+            $sql = "SELECT text".
+                    " from $db->ElementTexts".
+                    " WHERE record_id=$itemId".
+                    " AND element_id=$titleElement".
+                    " LIMIT 1";
+            $titleVerb = $db->fetchOne($sql);
+            if ($titleVerb) { $title .= ": " . $titleVerb;}
+          }
+        }
 			}
 		}
 
-		return array("elements" => $elements, "output" => $output);
+		return array("elements" => $elements, "output" => $output, "title" => $title);
 	}
 
   public function reorderAction() {
@@ -49,12 +64,19 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
     $data = SELF::checkItemElement();
     $this->view->elements = $data["elements"];
     $this->view->output = $data["output"];
+    $this->view->title = $data["title"];
   }
 
   public function updateAction() {
     $data = SELF::checkItemElement();
+
+    $this->view->elements = $data["elements"];
+    $this->view->output = $data["output"];
+    $this->view->title = $data["title"];
+
     $elements = $data["elements"];
     $output = $data["output"];
+    $title = $data["title"];
 
     if ($elements) {
       // echo "<pre>" . print_r($_GET,true) . "</pre>";
@@ -91,15 +113,20 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
 
         $db = get_db();
 
+        $success = true; # Init -- nothing done yet, so sucess ;-)
+
         foreach($elements as $idx => $element) {
           $sql = "UPDATE $db->ElementTexts".
                   " SET text='".addslashes($newOrder[$idx]["text"])."',".
                   " html=".$newOrder[$idx]["html"].
                   " WHERE id=".$element["id"];
-          $db->query($sql);
+          $locSuccess = ( $db->query($sql) );
+          $success = ( ($success) AND ($locSuccess) ) ;
         }
 
-        $output .= "<p>".__("Done.")."</p>";
+        $output .= "<p>".
+                    ( $success ? __("Reordering successful.") : __("Reordering failed.") ).
+                    "</p>";
 
         $backUrl=url("items/show/".$itemId);
         $output .= "<p><a href='".$backUrl."' class='green button'>".__("Back")."</a></p>";
