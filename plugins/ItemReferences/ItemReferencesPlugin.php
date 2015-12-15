@@ -1,10 +1,10 @@
 <?php
 /**
-* ObjectReferences plugin.
+* ItemReferences plugin.
 *
-* @package Omeka\Plugins\ObjectReferences
+* @package Omeka\Plugins\ItemReferences
 */
-class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
+class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 {
   // Define Hooks
   protected $_hooks = array(
@@ -22,13 +22,13 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   protected $_filters = array('admin_navigation_main');
 
   protected $_options = array(
-		'object_references_local_enable' => 0,
+		'item_references_local_enable' => 0,
   );
   public function hookInitialize()
   {
     add_translation_source(dirname(__FILE__) . '/languages');
     $front = Zend_Controller_Front::getInstance();
-    $front->registerPlugin(new ObjectReferences_Controller_Plugin_SelectFilter);
+    $front->registerPlugin(new ItemReferences_Controller_Plugin_SelectFilter);
   }
 
   /**
@@ -51,8 +51,8 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   public function filterAdminNavigationMain($nav)
   {
 
-    if(is_allowed('ObjectReferences_Index', 'index')) {
-      $nav[] = array('label' => __('Object References'), 'uri' => url('object-references'));
+    if(is_allowed('ItemReferences_Index', 'index')) {
+      $nav[] = array('label' => __('Item References'), 'uri' => url('item-references'));
     }
     return $nav;
   }
@@ -65,23 +65,23 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   {
     $acl = $args['acl'];
 
-    $indexResource = new Zend_Acl_Resource('ObjectReferences_Index');
+    $indexResource = new Zend_Acl_Resource('ItemReferences_Index');
     $acl->add($indexResource);
 
   }
 
 
   /**
-  * Display the Object References list on the item form.
+  * Display the Item References list on the item form.
   */
   public function hookAdminItemsFormItemTypes()
   {
-    $localObjectReferences = (int)(boolean) get_option('object_references_local_enable');
-    if ($localObjectReferences) {
-      echo '<h3>' . __('Object References') . '</h3>';
+    $localItemReferences = (int)(boolean) get_option('item_references_local_enable');
+    if ($localItemReferences) {
+      echo '<h3>' . __('Item References') . '</h3>';
       $itemId = metadata('item', 'id');
-      echo common('objectreferenceslist', array( "ItemId" => $itemId ), 'index');
-      add_filter(array('Object Reference',$itemId),
+      echo common('itemreferenceslist', array( "ItemId" => $itemId ), 'index');
+      add_filter(array('Item Reference',$itemId),
                  array($this, 'FilterElementInput'));
     }
   }
@@ -95,7 +95,7 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     $record = $args['record'];
     $post = $args['post'];
     $elements = $post['referenceElement'];
-    set_option('object_references_elements', json_encode($elements));
+    set_option('item_references_elements', json_encode($elements));
 
   }
 
@@ -103,7 +103,7 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   * Display the plugin configuration form.
   */
   public static function hookConfigForm() {
-    $localObjectReferences = (int)(boolean) get_option('object_references_local_enable');
+    $localItemReferences = (int)(boolean) get_option('item_references_local_enable');
 
     require dirname(__FILE__) . '/config_form.php';
   }
@@ -112,8 +112,8 @@ class ObjectReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   * Handle the plugin configuration form.
   */
   public static function hookConfig() {
-    $localObjectReferences = (int)(boolean) $_POST['object_references_local_enable'];
-    set_option('object_references_local_enable', $localObjectReferences);
+    $localItemReferences = (int)(boolean) $_POST['item_references_local_enable'];
+    set_option('item_references_local_enable', $localItemReferences);
     }
 
 

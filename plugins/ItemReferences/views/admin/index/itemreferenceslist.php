@@ -1,4 +1,4 @@
-<p><?php echo __('Enter the object references.'); ?></p>
+<p><?php echo __('Enter the item references.'); ?></p>
 <div class="field" id="type-select">
   <div class="two columns alpha">
     <?php echo $this->formLabel('item-type', __('Element')); ?>
@@ -20,25 +20,25 @@ foreach ($itemtypes as $type) {
 }
 ?>
 <div id="item-relation-selector" style="overflow: auto; padding: 20px; border-radius: 6px; background: #fff" class="lity-hide">
-  <p><label for="new_relation_object_item_type_id"><?php echo __('Item Types'); ?>: </label>
-    <?php echo $this->formSelect('new_relation_object_item_type_id', null, array('multiple' => false), $m); ?></p>
+  <p><label for="new_relation_item_item_type_id"><?php echo __('Item Types'); ?>: </label>
+    <?php echo $this->formSelect('new_relation_item_item_type_id', null, array('multiple' => false), $m); ?></p>
 
     <p>
       <?php echo __('Item Sort'); ?>:
       <fieldset>
-        <input type="radio" name="itemsListSort" id="new_selectObjectSortTimestamp" value="timestamp" checked>
-        <label for="selectObjectSortTimeStamp"><?php echo __("Most recently updated"); ?></label>
+        <input type="radio" name="itemsListSort" id="new_selectItemSortTimestamp" value="timestamp" checked>
+        <label for="selectItemSortTimeStamp"><?php echo __("Most recently updated"); ?></label>
 
-        <input type="radio" name="itemsListSort" id="new_selectObjectSortName" value="name">
-        <label for="selectObjectSortName"><?php echo __("Alphabetically"); ?></label>
+        <input type="radio" name="itemsListSort" id="new_selectItemSortName" value="name">
+        <label for="selectItemSortName"><?php echo __("Alphabetically"); ?></label>
       </fieldset>
     </p>
 
-    <p><?php echo __('Object Title'); ?>: <span id="object_title"></span></p>
-    <input id="new_relation_object_item_id" type="hidden">
+    <p><?php echo __('Item Title'); ?>: <span id="item_title"></span></p>
+    <input id="new_relation_item_item_id" type="hidden">
 
-    <label for="partial_object_title"><?php echo __('Partial Object Title'); ?>: </label>
-    <input id="partial_object_title">
+    <label for="partial_item_title"><?php echo __('Partial Item Title'); ?>: </label>
+    <input id="partial_item_title">
 
     <br>
     <ul class="pagination">

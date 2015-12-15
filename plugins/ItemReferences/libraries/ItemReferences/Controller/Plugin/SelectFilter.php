@@ -2,9 +2,9 @@
 /**
  * Filter selected form elements to a select menu containing custom terms.
  *
- * @package Omeka\Plugins\ ObjectReferences
+ * @package Omeka\Plugins\ ItemReferences
  */
-class ObjectReferences_Controller_Plugin_SelectFilter extends Zend_Controller_Plugin_Abstract
+class ItemReferences_Controller_Plugin_SelectFilter extends Zend_Controller_Plugin_Abstract
 {
     /**
      * All routes that render an item element form, including those requested
@@ -20,7 +20,7 @@ class ObjectReferences_Controller_Plugin_SelectFilter extends Zend_Controller_Pl
     );
 
 
-    protected $_objectReferences;
+    protected $_itemReferences;
 
     /**
      * Set the filters pre-dispatch only on configured routes.
@@ -38,7 +38,7 @@ class ObjectReferences_Controller_Plugin_SelectFilter extends Zend_Controller_Pl
 
         // Allow plugins to register routes that contain form inputs rendered by
         // Omeka_View_Helper_ElementForm::_displayFormInput().
-        $routes = apply_filters('object_references_routes', $this->_defaultRoutes);
+        $routes = apply_filters('item_references_routes', $this->_defaultRoutes);
 
         // Apply filters to defined routes.
         foreach ($routes as $route) {
@@ -56,8 +56,8 @@ class ObjectReferences_Controller_Plugin_SelectFilter extends Zend_Controller_Pl
             $select = $db->getTable('SimpleVocabTerm')->getSelect()
                 ->reset(Zend_Db_Select::COLUMNS)
                 ->columns(array('element_id', 'terms'));
-            $this->_objectReferences = $db->fetchPairs($select);
-            foreach ($this->_objectReferences as $element_id => $terms) {
+            $this->_itemReferences = $db->fetchPairs($select);
+            foreach ($this->_itemReferences as $element_id => $terms) {
                 $element = $db->getTable('Element')->find($element_id);
                 $elementSet = $db->getTable('ElementSet')->find($element->element_set_id);
                 add_filter(array('ElementInput', 'Item', $elementSet->name, $element->name),
@@ -79,7 +79,7 @@ class ObjectReferences_Controller_Plugin_SelectFilter extends Zend_Controller_Pl
     public function filterElementInput($components, $args)
     {
         // Use the cached vocab terms instead of
-        $terms = explode("\n", $this->_objectReferences[$args['element']->id]);
+        $terms = explode("\n", $this->_itemReferences[$args['element']->id]);
         $selectTerms = array('' => 'Select Below') + array_combine($terms, $terms);
         $components['input'] = get_view()->formSelect(
             $args['input_name_stem'] . '[text]',

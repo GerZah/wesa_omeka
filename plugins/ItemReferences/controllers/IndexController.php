@@ -1,16 +1,16 @@
 <?php
 /**
-* Controller for ObjectReferences admin pages.
+* Controller for ItemReferences admin pages.
 *
-* @package ObjectReferences
+* @package ItemReferences
 */
-class ObjectReferences_IndexController extends Omeka_Controller_AbstractActionController
+class ItemReferences_IndexController extends Omeka_Controller_AbstractActionController
 {
   /**
   * Front admin page.
   */
   public function indexAction() {
-    $this->_helper->db->setDefaultModelName('ObjectReferences');
+    $this->_helper->db->setDefaultModelName('ItemReferences');
     #if (!$json) { $json="[]"; } else { $json = $this->_removeOutdatedDependencies($json); }
   }
   /**
