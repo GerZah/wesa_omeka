@@ -20,7 +20,7 @@ echo pagination_links();
     <?php echo $this->googleMap('map_browse', array('list' => 'map-links', 'params' => $params)); ?>
     <div id="map-links"><h2><?php echo __('Find An Item on the Map'); ?></h2></div>
     <?php
-      $overlays = GeolocationConvertOverlayJsonForUse();
+      $overlays = GeolocationPlugin::GeolocationConvertOverlayJsonForUse();
       if ($overlays) {
           $overlay = -1;
           echo '<div>'.

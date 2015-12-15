@@ -22,7 +22,7 @@ class Geolocation_View_Helper_ItemGoogleMap extends Zend_View_Helper_Abstract
                                       . '<div class="geolocation_balloon_thumbnail">' . $thumbnailLink . '</div>'
                                       . '<p class="geolocation_balloon_description">' . $description . '</p></div>';
             }
-            $overlays = GeolocationConvertOverlayJsonForUse();
+            $overlays = GeolocationPlugin::GeolocationConvertOverlayJsonForUse();
             $options = array();
             $options['mapType'] = get_option('geolocation_map_type');
             if ($overlays) { $options['overlay'] = $location->overlay; }
