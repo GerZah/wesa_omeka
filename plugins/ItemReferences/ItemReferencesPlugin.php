@@ -12,7 +12,6 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     'install',
     'uninstall',
     'after_save_item',
-    'admin_items_form_item_types',
     'define_acl',
     'config_form',
     'config',
@@ -68,22 +67,6 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     $indexResource = new Zend_Acl_Resource('ItemReferences_Index');
     $acl->add($indexResource);
 
-  }
-
-
-  /**
-  * Display the Item References list on the item form.
-  */
-  public function hookAdminItemsFormItemTypes()
-  {
-    $localItemReferences = (int)(boolean) get_option('item_references_local_enable');
-    if ($localItemReferences) {
-      echo '<h3>' . __('Item References') . '</h3>';
-      $itemId = metadata('item', 'id');
-      echo common('itemreferenceslist', array( "ItemId" => $itemId ), 'index');
-      add_filter(array('Item Reference',$itemId),
-                 array($this, 'FilterElementInput'));
-    }
   }
 
   public function hookAfterSaveItem($args)

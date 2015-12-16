@@ -1,4 +1,3 @@
-<p><?php echo __('Enter the item references.'); ?></p>
 <div class="field" id="type-select">
   <div class="two columns alpha">
     <?php echo $this->formLabel('item-type', __('Element')); ?>
