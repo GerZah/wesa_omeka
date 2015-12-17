@@ -20,8 +20,6 @@ class ItemReferences_Controller_Plugin_SelectFilter extends Zend_Controller_Plug
     );
 
 
-    protected $_itemReferences;
-
     /**
      * Set the filters pre-dispatch only on configured routes.
      *
@@ -51,27 +49,9 @@ class ItemReferences_Controller_Plugin_SelectFilter extends Zend_Controller_Plug
                 continue;
             }
 
-            // Add the filters if the current route is registered. Cache the
-            // vocab terms for use by the filter callbacks.
-            $select = $db->getTable('SimpleVocabTerm')->getSelect()
-                ->reset(Zend_Db_Select::COLUMNS)
-                ->columns(array('element_id', 'terms'));
-            $this->_itemReferences = $db->fetchPairs($select);
-            // Fetches array of form  [52] => Rathaus
-                // Kirche
-                // Wallanlage
-
-
             $referenceElementsJson=get_option('item_references_select');
             if (!$referenceElementsJson) { $referenceElementsJson="null"; }
             $referenceElements = json_decode($referenceElementsJson,true);
-              //array of form
-                //
-                // [0] => 69
-                // [1] => 67
-                // [2] => 63
-                // [3] => 137
-            #echo "<pre>";print_r($referenceElements); print_r($this->_itemReferences); die("</pre>");
 
             foreach($referenceElements as $element_id ) {
                 $element = $db->getTable('Element')->find($element_id);
@@ -95,8 +75,7 @@ class ItemReferences_Controller_Plugin_SelectFilter extends Zend_Controller_Plug
     public function filterElementInput($components, $args)
     {
 
-        #$terms = explode("\n", $this->_itemReferences[$args['element']->id]);
-        #$selectTerms = array('' => 'Select Below') + array_combine($terms, $terms);
+        //Need to include the desired input fields
         $components['input'] = get_view()->formText( $args['input_name_stem'] . '[text]',  $args['value'], array('style' => 'width: 300px;'),null);
         $components['html_checkbox'] = false;
         return $components;
