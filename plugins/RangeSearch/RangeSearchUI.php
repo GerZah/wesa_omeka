@@ -56,6 +56,13 @@ EOT;
     $units = SELF::_fetchUnitArray();
     $saniUnits = array( -1 => __("Select Below") );
     foreach($units as $unit) {
+      $blankBracket = strpos($unit, " (");
+      if ($blankBracket) {
+        $conversion = substr($unit, $blankBracket+2);
+        $conversion = substr($conversion, 0, strpos($conversion, ")") );
+        #echo "<pre>#$conversion#</pre>"; die();
+        $unit = substr($unit, 0, $blankBracket);
+      }
       if ( substr_count($unit, "-") == 2 ) { $saniUnits[] = $unit;}
     }
     echo __("Units") . ": ". $view->formSelect('rangeSearchUnits', -1, array(), $saniUnits);

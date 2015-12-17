@@ -202,7 +202,9 @@ class RangeSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 		$arr = SELF::_fetchUnitArray();
 		if ($arr) {
 			foreach($arr as $unit) {
-				if ( substr_count($unit, "-") == 2 ) { // e.h. "RT-Gr-d"
+				$blankBracket = strpos($unit, " (");
+				if ($blankBracket) { $unit = substr($unit, 0, $blankBracket); }
+				if ( substr_count($unit, "-") == 2 ) { // e.g. "RT-Gr-d"
 					$units = explode("-", $unit);
 					foreach(array_keys($units) as $idx) { $units[$idx] = preg_quote(trim($units[$idx])); }
 					if ( $units[0] && $units[1] && $units[2] ) {
