@@ -33,7 +33,8 @@
           $value = __($record['element_name']);
           $elements[$optGroup][$record['element_id']] = $value;
       }
-      echo get_view()->formSelect('referenceElements[]', null, array('multiple' => true, 'size' => 10, 'style' => 'width: 600px;'), $elements);
+
+      echo get_view()->formSelect('item_references_select', $itemReferencesSelect, array('multiple' => true, 'size' => 10, 'style' => 'width: 600px;'), $elements);
 
     ?>
   </div>

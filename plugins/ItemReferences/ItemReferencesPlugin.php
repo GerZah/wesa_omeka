@@ -15,6 +15,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     'define_acl',
     'config_form',
     'config',
+    'admin_head',
   );
 
   //Define Filters
@@ -22,6 +23,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
   protected $_options = array(
 		'item_references_local_enable' => 0,
+    'item_references_select' => "[]",
   );
   public function hookInitialize()
   {
@@ -77,8 +79,6 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
     $record = $args['record'];
     $post = $args['post'];
-    $elements = $post['referenceElement'];
-    set_option('item_references_elements', json_encode($elements));
 
   }
 
@@ -88,8 +88,12 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   public static function hookConfigForm() {
     $localItemReferences = (int)(boolean) get_option('item_references_local_enable');
 
+    $itemReferencesSelect = get_option('item_references_select');
+    $itemReferencesSelect = ( $itemReferencesSelect ? json_decode($itemReferencesSelect) : array() );
+
     require dirname(__FILE__) . '/config_form.php';
-  }
+
+    }
 
   /**
   * Handle the plugin configuration form.
@@ -97,7 +101,35 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   public static function hookConfig() {
     $localItemReferences = (int)(boolean) $_POST['item_references_local_enable'];
     set_option('item_references_local_enable', $localItemReferences);
+
+    $itemReferencesSelect = array();
+    $postIds=false;
+    if (isset($_POST["item_references_select"])) { $postIds = $_POST["item_references_select"]; }
+    if (is_array($postIds)) {
+			foreach($postIds as $postId) {
+				$postId = intval($postId);
+				if ($postId) { $itemReferencesSelect[] = $postId; }
+			}
+		}
+		$itemReferencesSelect = json_encode($itemReferencesSelect);
+    set_option('item_references_select', $itemReferencesSelect );
+
     }
 
+    public function hookAdminHead() {
+  		$request = Zend_Controller_Front::getInstance()->getRequest();
+
+  		$module = $request->getModuleName();
+  		if (is_null($module)) { $module = 'default'; }
+  		$controller = $request->getControllerName();
+  		$action = $request->getActionName();
+
+  		if ($module === 'default'
+  				&& $controller === 'items'
+  				&& in_array($action, array('add', 'edit'))) {
+        //require dirname(__FILE__) . '/itemreferenceslist.php';
+
+  		}
+  	}
 
 }

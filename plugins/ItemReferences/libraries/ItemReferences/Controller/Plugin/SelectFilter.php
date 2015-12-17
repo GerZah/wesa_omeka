@@ -78,7 +78,7 @@ class ItemReferences_Controller_Plugin_SelectFilter extends Zend_Controller_Plug
      */
     public function filterElementInput($components, $args)
     {
-        echo common('itemreferenceslist', null, 'index');
+
         $terms = explode("\n", $this->_itemReferences[$args['element']->id]);
         $selectTerms = array('' => 'Select Below') + array_combine($terms, $terms);
         $components['input'] = get_view()->formText( $args['input_name_stem'] . '[text]',  $args['value'], array('style' => 'width: 300px;'),null);
