@@ -11,12 +11,7 @@
   $selectFirst = __("Please select a target text area first.");
   $selectUnit = __("Please select a unit.");
   $enterNumber = __("Please enter a number.");
-
-  queue_js_string("
-    var rangeSearchSelectFirst='$selectFirst';
-    var rangeSearchSelectUnit='$selectUnit';
-    var rangeSearchEnterNumber='$enterNumber';
-  ");
+  # queue_js_string() of these variables further down below
 
   $view = get_view();
 
@@ -30,7 +25,7 @@
         return str.match(/^$combined$/i);
       }
 EOT;
-  queue_js_string($fullMatchRegEx);
+  # queue_js_string() of these variables further down below
 
   // ------------------------------------------------------
 
@@ -46,6 +41,14 @@ EOT;
                             );
   }
 
+  function editFieldTable($htmlTextFields) {
+    $spanclass = "rangeTextArea";
+    $result = "<span class='rangeTextArea'>";
+    $result .= implode("</span> – <span class='rangeTextArea'>", $htmlTextFields);
+    $result .="</span>";
+    return $result;
+  }
+
   // ------------------------------------------------------
 ?>
 
@@ -54,21 +57,43 @@ EOT;
   <p>
   <?php
     $units = SELF::_fetchUnitArray();
-    $saniUnits = array( -1 => __("Select Below") );
+    $saniUnits = array( ); # -1 => __("Select Below") ); # Both arrays ...
+    $saniConversions = array(); # ... starting with index 0
     foreach($units as $unit) {
       $blankBracket = strpos($unit, " (");
       if ($blankBracket) {
         $conversion = substr($unit, $blankBracket+2);
         $conversion = substr($conversion, 0, strpos($conversion, ")") );
-        #echo "<pre>#$conversion#</pre>"; die();
+        preg_match_all("(\d+)", $conversion, $conversionDecimals);
+        if ($conversionDecimals) { $conversionDecimals = $conversionDecimals[0]; }
+        # echo "<pre>#$conversion#</pre>"; #die();
+        # echo "<pre>" . print_r($conversionDecimals,true) . "</pre>"; # die();
         $unit = substr($unit, 0, $blankBracket);
       }
-      if ( substr_count($unit, "-") == 2 ) { $saniUnits[] = $unit;}
+      else { $conversionDecimals = array(); }
+      if ( substr_count($unit, "-") == 2 ) {
+        $saniUnits[] = $unit;
+        $saniConversions[] = $conversionDecimals;
+      }
     }
-    echo __("Units") . ": ". $view->formSelect('rangeSearchUnits', -1, array(), $saniUnits);
+    // echo "<pre>" . print_r($saniUnits,true) . "</pre>";
+    // echo "<pre>" . print_r($saniConversions,true) . "</pre>";
+    $unitSelect = array( -1 => __("Select Below") ) + $saniUnits;
+    echo __("Units") . ": ". $view->formSelect('rangeSearchUnits', -1, array(), $unitSelect);
   ?>
   </p>
-  <?php queue_js_string("var rangeSearchUnits=" . json_encode($saniUnits) . ";"); ?>
+  <?php
+    $jsonSaniUnits = json_encode($saniUnits);
+    $jsonSaniConversions = json_encode($saniConversions);
+    queue_js_string("
+      var rangeSearchSelectFirst='$selectFirst';
+      var rangeSearchSelectUnit='$selectUnit';
+      var rangeSearchEnterNumber='$enterNumber';
+      $fullMatchRegEx
+      var rangeSearchUnits=$jsonSaniUnits;
+      var rangeSearchConversions=$jsonSaniConversions;
+    ");
+  ?>
   <p>
     <?php
       $textFields = array("rangeSearch1", "rangeSearch2", "rangeSearch3");
@@ -76,7 +101,7 @@ EOT;
       foreach($textFields as $textField) {
         $htmlTextFields[] = editFieldHTML($textField, $view);
       }
-      echo implode(" — ", $htmlTextFields);
+      echo editFieldTable($htmlTextFields);
     ?>
   </p>
   <p>
@@ -95,7 +120,27 @@ EOT;
       foreach($textFields as $textField) {
         $htmlTextFields[] = editFieldHTML($textField, $view);
       }
-      echo implode(" — ", $htmlTextFields);
+      echo editFieldTable($htmlTextFields);
+    ?>
+  </p>
+  <p id="rangeSearchConversions">
+    <?php
+      echo __("Conversion Rates") . ":<br>";
+      $textFields = array("rangeSearchConversion0", "rangeSearchConversion1", "rangeSearchConversion2");
+      $htmlTextFields = array();
+      foreach($textFields as $textField) {
+        $htmlTextFields[] = editFieldHTML($textField, $view);
+      }
+      echo editFieldTable($htmlTextFields)."<br>";
+
+      $btnFields = array("rangerSearchConvert0", "rangerSearchConvert1", "rangerSearchConvert2");
+      $htmlBtnFields = array();
+      foreach($btnFields as $btnField) {
+        $htmlBtnFields[] = "<button class='rangerSearchConvert blue button' id=$btnField>".
+                            __("Convert").
+                            "</button>";
+      }
+      echo editFieldTable($htmlBtnFields);
     ?>
   </p>
   <p style="text-align: center;">

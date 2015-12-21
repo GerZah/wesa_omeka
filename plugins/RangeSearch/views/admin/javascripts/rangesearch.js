@@ -46,7 +46,7 @@ jQuery(document).bind("omeka:elementformload", function() {
       var unitsLen = units.length;
       for(var idx in rangeSearchUnits) {
         if (units == rangeSearchUnits[idx].toLowerCase().substr(0,unitsLen)) {
-          $("#rangeSearchUnits").val(idx);
+          $("#rangeSearchUnits").val(idx).change();
           return;
         }
       }
@@ -54,7 +54,7 @@ jQuery(document).bind("omeka:elementformload", function() {
     else {
       for (i = 0; i < 6; i++) { $(textFields[i]).val(""); }
       $("#rangeSearchRange").prop("checked", false);
-      $("#rangeSearchUnits").val(-1);
+      $("#rangeSearchUnits").val(-1).change();
       showHideSecondTriple(false);
     }
 
@@ -73,6 +73,39 @@ jQuery(document).bind("omeka:elementformload", function() {
 
     lightbox("#range-search-popup");
     presetFormValues(selText);
+  });
+
+  // --------------------------------------------------------
+
+  $("#rangeSearchUnits").change(function(e) {
+    var curSelect = $("#rangeSearchUnits").val();
+
+    var conversions = new Array;
+
+    if (typeof rangeSearchConversions[curSelect] != 'undefined') {
+      conversions = rangeSearchConversions[curSelect];
+    }
+
+    var conversionsLength = conversions.length;
+
+    if (conversionsLength!=3) {
+      $("#rangeSearchConversions").slideUp("fast");
+    }
+    else {
+      $("#rangeSearchConversions").slideDown("fast");
+      for(idx=0 ; (idx<=2) ; idx++) { $("#rangeSearchConversion"+idx).val(conversions[idx]); }
+      $("#rangeSearchConversion0").prop("readonly", true);
+    }
+
+  });
+
+  // --------------------------------------------------------
+
+  $(".rangerSearchConvert").click(function(e) {
+    e.preventDefault();
+    console.log("rangerSearchConvert click");
+
+    // +#+#+# Here comes the conversion calculation
   });
 
   // --------------------------------------------------------
