@@ -38,8 +38,8 @@ jQuery(document).bind("omeka:elementformload", function() {
       $("#rangeSearchRange").prop("checked", range);
       showHideSecondTriple(range);
 
-      for (i = 0; i < cnt; i++) { $(textFields[i]).val(decimals[i]); }
-      for (i = cnt; i < 6; i++) { $(textFields[i]).val("0"); }
+      for(var i = 0; i < cnt; i++) { $(textFields[i]).val(decimals[i]); }
+      for(var i = cnt; i < 6; i++) { $(textFields[i]).val("0"); }
 
       var units = selText.match(/((?![-| ])\D)+/g); // no dashes, no blanks
       units = units.slice(0,3).join("-").toLowerCase();
@@ -52,7 +52,7 @@ jQuery(document).bind("omeka:elementformload", function() {
       }
     }
     else {
-      for (i = 0; i < 6; i++) { $(textFields[i]).val(""); }
+      for(var i = 0; i < 6; i++) { $(textFields[i]).val(""); }
       $("#rangeSearchRange").prop("checked", false);
       $("#rangeSearchUnits").val(-1).change();
       showHideSecondTriple(false);
@@ -93,7 +93,7 @@ jQuery(document).bind("omeka:elementformload", function() {
     }
     else {
       $("#rangeSearchConversions").slideDown("fast");
-      for(idx=0 ; (idx<=2) ; idx++) { $("#rangeSearchConversion"+idx).val(conversions[idx]); }
+      for(var idx=0 ; (idx<=2) ; idx++) { $("#rangeSearchConversion"+idx).val(conversions[idx]); }
       $("#rangeSearchConversion0").prop("readonly", true);
     }
 
@@ -103,9 +103,46 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   $(".rangerSearchConvert").click(function(e) {
     e.preventDefault();
-    console.log("rangerSearchConvert click");
-
-    // +#+#+# Here comes the conversion calculation
+    var btnId = e.target.id;
+    var btnNum = parseInt( btnId.match(/(\d+)/g) );
+    if (btnNum) {
+      var nums = new Array;
+      for(var idx=1; (idx<=6); idx++) {
+        var num = parseInt( $("#rangeSearch"+idx).val() );
+        nums[idx] = ( isNaN(num) ? 0 : num );
+      }
+      var conversions = new Array;
+      for(var idx=0; (idx<=2); idx++) {
+        var num = parseInt( $("#rangeSearchConversion"+idx).val() );
+        conversions[idx] = ( isNaN(num) ? 1 : num );
+        conversions[idx] = ( conversions[idx]<2 ? 1 : conversions[idx] );
+        $("#rangeSearchConversion"+idx).val( conversions[idx] );
+      }
+      // First normalize to lowest -- as if btnNum == 3
+      nums[3] = nums[3]
+              + nums[2] * conversions[2]
+              + nums[1] * conversions[1] * conversions[2];
+      nums[2] = nums[1] = 0;
+      nums[6] = nums[6]
+              + nums[5] * conversions[2]
+              + nums[4] * conversions[1] * conversions[2];
+      nums[5] = nums[4] = 0;
+      if ( (btnNum == 2) || (btnNum == 1) ) { // Normalize to second
+        nums[2] = Math.floor(nums[3] / conversions[2]);
+        nums[3] = nums[3] % conversions[2];
+        nums[5] = Math.floor(nums[6] / conversions[2]);
+        nums[6] = nums[6] % conversions[2];
+      }
+      if (btnNum == 1) { // Normalize to first
+        nums[1] = Math.floor(nums[2] / conversions[1]);
+        nums[2] = nums[2] % conversions[1];
+        nums[4] = Math.floor(nums[5] / conversions[1]);
+        nums[5] = nums[5] % conversions[1];
+      }
+      for(var idx=1; (idx<=6); idx++) {
+        $("#rangeSearch"+idx).val( nums[idx] );
+      }
+    }
   });
 
   // --------------------------------------------------------

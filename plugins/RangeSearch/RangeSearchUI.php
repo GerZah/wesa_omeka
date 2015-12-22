@@ -133,7 +133,7 @@ EOT;
       }
       echo editFieldTable($htmlTextFields)."<br>";
 
-      $btnFields = array("rangerSearchConvert0", "rangerSearchConvert1", "rangerSearchConvert2");
+      $btnFields = array("rangerSearchConvert1", "rangerSearchConvert2", "rangerSearchConvert3");
       $htmlBtnFields = array();
       foreach($btnFields as $btnField) {
         $htmlBtnFields[] = "<button class='rangerSearchConvert blue button' id=$btnField>".
