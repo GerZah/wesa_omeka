@@ -36,7 +36,7 @@ EOT;
                             array("type" => "text",
                                   "class" => "rangeSearchTextField",
                                   "size" => 4,
-                                  "maxlength" => 10,
+                                  "maxlength" => 4,
                                 )
                             );
   }
@@ -65,7 +65,13 @@ EOT;
         $conversion = substr($unit, $blankBracket+2);
         $conversion = substr($conversion, 0, strpos($conversion, ")") );
         preg_match_all("(\d+)", $conversion, $conversionDecimals);
-        if ($conversionDecimals) { $conversionDecimals = $conversionDecimals[0]; }
+        if ($conversionDecimals) {
+          $conversionDecimals = $conversionDecimals[0];
+          foreach(array_keys($conversionDecimals) as $idx) {
+            $conversionDecimals[$idx] = ( $conversionDecimals[$idx]<1 ? 1 : $conversionDecimals[$idx] );
+          }
+          if ($conversionDecimals[0] != 1) { $conversionDecimals[0] = 1; }
+        }
         # echo "<pre>#$conversion#</pre>"; #die();
         # echo "<pre>" . print_r($conversionDecimals,true) . "</pre>"; # die();
         $unit = substr($unit, 0, $blankBracket);
