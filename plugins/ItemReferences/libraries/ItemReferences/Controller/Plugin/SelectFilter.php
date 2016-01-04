@@ -76,7 +76,7 @@ class ItemReferences_Controller_Plugin_SelectFilter extends Zend_Controller_Plug
     {
 
         //Need to include the desired input fields
-        $components['input'] = get_view()->formText( $args['input_name_stem'] . '[text]',  $args['value'], array('style' => 'width: 300px;'),null);
+        $components['input'] = get_view()->formText( $args['input_name_stem'] . '[text]',  $args['value'], array('class' => 'itemRef','style' => 'width: 300px;'),null);
         $components['html_checkbox'] = false;
         return $components;
     }

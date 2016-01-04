@@ -117,19 +117,15 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     }
 
     public function hookAdminHead() {
-  		$request = Zend_Controller_Front::getInstance()->getRequest();
+        queue_js_file('itemreferences');
+  		// $request = Zend_Controller_Front::getInstance()->getRequest();
+    	// 	if ($module === 'default'
+  		// 		&& $controller === 'items'
+  		// 		&& in_array($action, array('add', 'edit'))) {
+      //
+      //   require dirname(__FILE__) . '/ItemReferencesUI.php';
 
-  		$module = $request->getModuleName();
-  		if (is_null($module)) { $module = 'default'; }
-  		$controller = $request->getControllerName();
-  		$action = $request->getActionName();
-
-  		if ($module === 'default'
-  				&& $controller === 'items'
-  				&& in_array($action, array('add', 'edit'))) {
-        //require dirname(__FILE__) . '/itemreferenceslist.php';
-
-  		}
+  		//}
   	}
 
 }
