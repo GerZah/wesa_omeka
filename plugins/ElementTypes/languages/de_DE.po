@@ -1,22 +1,21 @@
 # Translation for the Element Types plugin for Omeka.
 # Copyright (C) 2015 BibLibre
 # This file is distributed under the same license as the Omeka package.
+# Julian Maurice <julian.maurice@biblibre.com>, 2015
 #
-# Translators:
 msgid ""
 msgstr ""
-"Project-Id-Version: WeSa Omeka\n"
+"Project-Id-Version: ElementTypes\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-04-30 09:27+0000\n"
-"PO-Revision-Date: 2015-11-23 11:42+0100\n"
-"Last-Translator: githanjalli <anjallinhere@gmail.com>\n"
-"Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
+"PO-Revision-Date: 2015-06-05 11:29+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de_DE\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 1.8.1\n"
 
 #: controllers/IndexController.php:42 controllers/IndexController.php:81
 msgid "Successfully saved configuration"
@@ -53,26 +52,10 @@ msgstr "Speichern"
 msgid "Change type of element %s"
 msgstr "Typ von Element %s ändern"
 
-#: ElementTypesPlugin.php:114
+#: ElementTypesPlugin.php:165
 msgid "Element types"
 msgstr "Elementtypen"
 
-#: ElementTypesPlugin.php:150
-msgid "Time Span"
-msgstr "Zeitspanne"
-
-#: ElementTypesPlugin.php:151
-msgid "Convert"
-msgstr "Konvertieren"
-
-#: ElementTypesPlugin.php:152
-msgid "Gregorian"
-msgstr "Gregorianisch"
-
-#: ElementTypesPlugin.php:153
-msgid "Julian"
-msgstr "Julianisch"
-
-#: ElementTypesPlugin.php:270
+#: ElementTypesPlugin.php:281
 msgid "See the list of all possible formats"
 msgstr "Liste aller verfügbaren Formate anzeigen"
