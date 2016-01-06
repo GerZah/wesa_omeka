@@ -1,5 +1,5 @@
 <div class="field">
-  <div class="two columns alpha">
+  <!-- <div class="two columns alpha">
     <?php echo get_view()->formLabel('item_references_local_enable', __('Enable References in Item Editor')); ?>
   </div>
   <div class="inputs five columns omega">
@@ -9,7 +9,7 @@
       ?>
     </p>
     <?php echo get_view()->formCheckbox('item_references_local_enable', null, array('checked' => $localItemReferences)); ?>
-  </div>
+  </div> -->
   <div class="two columns alpha">
     <?php echo get_view()->formLabel('item_references_select', __('Select elements to transform into references')); ?>
   </div>
@@ -23,7 +23,8 @@
       JOIN {$sqlDb->Element} e ON es.id = e.element_set_id
       LEFT JOIN {$sqlDb->ItemTypesElements} ite ON e.id = ite.element_id
       LEFT JOIN {$sqlDb->ItemType} it ON ite.item_type_id = it.id
-      ORDER BY e.name";
+      WHERE es.id = 3
+      ORDER BY it.name, e.name";
       $records = $sqlDb->fetchAll($select);
       $elements = array();
       foreach ($records as $record) {
@@ -34,7 +35,7 @@
           $elements[$optGroup][$record['element_id']] = $value;
       }
 
-      echo get_view()->formSelect('item_references_select', $itemReferencesSelect, array('multiple' => true, 'size' => 10, 'style' => 'width: 600px;'), $elements);
+      echo get_view()->formSelect('item_references_select', $itemReferencesSelect, array('multiple' => true, 'size' => 10), $elements);
 
     ?>
   </div>

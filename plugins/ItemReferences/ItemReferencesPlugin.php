@@ -22,7 +22,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   protected $_filters = array('admin_navigation_main');
 
   protected $_options = array(
-		'item_references_local_enable' => 0,
+		'item_references_local_enable' => 0, // +#+#+# actually obsolete
     'item_references_select' => "[]",
   );
   public function hookInitialize()
@@ -86,7 +86,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   * Display the plugin configuration form.
   */
   public static function hookConfigForm() {
-    $localItemReferences = (int)(boolean) get_option('item_references_local_enable');
+    // $localItemReferences = (int)(boolean) get_option('item_references_local_enable');
 
     $itemReferencesSelect = get_option('item_references_select');
     $itemReferencesSelect = ( $itemReferencesSelect ? json_decode($itemReferencesSelect) : array() );
@@ -99,8 +99,8 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   * Handle the plugin configuration form.
   */
   public static function hookConfig() {
-    $localItemReferences = (int)(boolean) $_POST['item_references_local_enable'];
-    set_option('item_references_local_enable', $localItemReferences);
+    // $localItemReferences = (int)(boolean) $_POST['item_references_local_enable'];
+    // set_option('item_references_local_enable', $localItemReferences);
 
     $itemReferencesSelect = array();
     $postIds=false;
