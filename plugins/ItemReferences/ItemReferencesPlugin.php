@@ -21,6 +21,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   //Define Filters
   protected $_filters = array('admin_navigation_main');
 
+
   protected $_options = array(
 		'item_references_local_enable' => 0, // +#+#+# actually obsolete
     'item_references_select' => "[]",
@@ -28,8 +29,27 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   public function hookInitialize()
   {
     add_translation_source(dirname(__FILE__) . '/languages');
-    $front = Zend_Controller_Front::getInstance();
-    $front->registerPlugin(new ItemReferences_Controller_Plugin_SelectFilter);
+    $db = get_db();
+
+    // Add filters
+    $filter_names = array(
+        'Display',
+        'ElementInput',
+    );
+    $referenceElementsJson=get_option('item_references_select');
+    if (!$referenceElementsJson) { $referenceElementsJson="null"; }
+    $referenceElements = json_decode($referenceElementsJson,true);
+
+    foreach($referenceElements as $element_id ) {
+      $element = $db->getTable('Element')->find($element_id);
+      $elementSet = $db->getTable('ElementSet')->find($element->element_set_id);
+        foreach ($filter_names as $filter_name) {
+        add_filter(
+            array($filter_name, 'Item', $elementSet->name, $element->name),
+            array($this, 'filter' . $filter_name)
+        );
+        }
+}
   }
 
   /**
@@ -128,4 +148,20 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   		//}
   	}
 
+
+    // Date type callbacks //
+
+    public function filterElementInput($components, $args)
+    {
+      $view = get_view();
+      $components['input'] = $view->formText( $args['input_name_stem'] . '[text]',  $args['value'], array('class' => 'itemRef','style' => 'width: 250px;'),null);
+      $components['input'] .= "<button class='itemReferencesBtn'>".__("Select")."</button>";
+      $components['html_checkbox'] = false;
+      return $components;
+    }
+
+    public function filterDisplay($text, $args)
+    {
+         return $text."(modified)";
+    }
 }
