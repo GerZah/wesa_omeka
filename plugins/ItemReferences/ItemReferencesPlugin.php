@@ -145,7 +145,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   		//}
   	}
 
-    protected function _getTitleForId($itemId) {
+    public function getTitleForId($itemId) {
       $itemId = intval($itemId);
       $result = "#$itemId"; // Sanity
       if ($itemId) {
@@ -169,7 +169,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       $view = get_view();
 
       $itemId = intval($args['value']);
-      $itemTitle = SELF::_getTitleForId($itemId);
+      $itemTitle = SELF::getTitleForId($itemId);
 
       $components['input'] = "";
       $components['input'] .= $view->formText(
@@ -191,6 +191,6 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function filterDisplay($text, $args) {
       // return $text." (filtered)";
-      return __("Reference").": " . SELF::_getTitleForId($text);
+      return __("Reference").": " . SELF::getTitleForId($text);
     }
 }

@@ -51,6 +51,23 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
             $titleVerb = $db->fetchOne($sql);
             if ($titleVerb) { $title .= ": " . $titleVerb;}
           }
+
+          $referenceElementsJson=get_option('item_references_select');
+          if (!$referenceElementsJson) { $referenceElementsJson="null"; }
+          $referenceElements = json_decode($referenceElementsJson,true);
+
+          if (in_array($elementId, $referenceElements)) {
+            foreach(array_keys($elements) as $idx) {
+              $itemId = intval($elements[$idx]["text"]);
+              $refText = "#".$elements[$idx]["text"];
+              if ($itemId) {
+                $title = ItemReferencesPlugin::getTitleForId($itemId);
+                $refText = ($title ? __("Reference").": ".$title : "#" . $itemId );
+              }
+              $elements[$idx]["refText"] = $refText;
+            }
+          }
+          // echo "<pre>" . print_r($elements,true) . "</pre>"; die();
         }
 			}
 		}
