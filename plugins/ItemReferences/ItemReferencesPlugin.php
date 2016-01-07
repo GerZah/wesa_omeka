@@ -148,13 +148,16 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   		//}
   	}
 
-
-    // Date type callbacks //
-
     public function filterElementInput($components, $args)
     {
       $view = get_view();
-      $components['input'] = $view->formText( $args['input_name_stem'] . '[text]',  $args['value'], array('class' => 'itemRef','style' => 'width: 250px;'),null);
+          //hidden field formHidden
+      $components['input'] = $view->formHidden( $args['input_name_stem'].'[text]'.'id', $args['value'] , array('style' => 'width: 250px;'),null);
+
+//readonly
+      $components['input'] .= $view->formText( $args['input_name_stem'] . '[text]'.'title',  $args['value'], array('readonly' => 'true','class' => 'itemRef','style' => 'width: 250px;'),null);
+
+
       $components['input'] .= "<button class='itemReferencesBtn'>".__("Select")."</button>";
       $components['html_checkbox'] = false;
       return $components;
