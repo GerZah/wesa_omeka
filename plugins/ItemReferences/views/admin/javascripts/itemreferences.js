@@ -11,14 +11,16 @@ jQuery(document).bind("omeka:elementformload", function() {
     $("#add-relation").hide();
     $("#add-relation").parent().append("<a href='#' id='select_item' class='green button'>Select Item</a>");
 
-    //var hiddenId = $('#new_relation_property_id').val();
 
-    var currentHidden = $(this).prev().attr("id"); //for id
+//<input id="new_relation_object_item_id" type="hidden" value="1">
+//<input type="text" name="Elements[137][0][text]title" id="Elements-137-0-texttitle" value="Berlin" readonly="readonly" class="itemRef" style="width: 250px;">
+    var currentHidden = $(this).prev().attr("id"); //for id //textbox only
     var currentEdit = $(currentHidden).prev().attr("id"); //for title
     $("#select_item").click(function(e) {
       e.preventDefault();
-      $("#"+currentHidden).val($("#object_title").html());
-//      $("#"+currentHidden).val($("#new_relation_property_id").html());
+//      $("#"+currentHidden).val($("#object_title").html());
+
+     $("#"+currentHidden).val($('#new_relation_object_item_id').val());
 
       lightbox.close();
     });
