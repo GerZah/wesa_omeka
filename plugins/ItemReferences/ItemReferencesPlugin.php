@@ -147,7 +147,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function getTitleForId($itemId) {
       $itemId = intval($itemId);
-      $result = "#$itemId"; // Sanity
+      $result = ""; // "#$itemId"; // Sanity
       if ($itemId) {
         $db = get_db();
         $sql = "SELECT id FROM $db->Elements WHERE name = 'Title'"; // 50
