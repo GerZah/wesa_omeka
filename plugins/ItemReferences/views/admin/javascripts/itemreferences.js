@@ -2,12 +2,6 @@ jQuery(document).bind("omeka:elementformload", function() {
   var $ = jQuery; // use noConflict version of jQuery as the short $ within this block
 
   var lightbox = lity(); // https://www.npmjs.com/package/lity
-  var buttonSelect = "Select";
-
-  $(".itemReferencesWrapper").remove();
-  $(".itemRef").parent().append("<span class='itemReferencesWrapper'>"+
-                  "<button class='itemReferencesBtn' data-caltype='' >"+buttonSelect+"</button>"+
-            "</span>");
 
   $(".itemReferencesBtn").click(function(e) {
     e.preventDefault();
@@ -17,7 +11,7 @@ jQuery(document).bind("omeka:elementformload", function() {
     $("#add-relation").hide();
     $("#add-relation").parent().append("<a href='#' id='select_item' class='green button'>Select Item</a>");
 
-    var currentEdit = $(this).parent().prev().attr("id");
+    var currentEdit = $(this).prev().attr("id");
 
     $("#select_item").click(function(e) {
       e.preventDefault();

@@ -58,6 +58,8 @@ class ItemReferences_Controller_Plugin_SelectFilter extends Zend_Controller_Plug
                 $elementSet = $db->getTable('ElementSet')->find($element->element_set_id);
                 add_filter(array('ElementInput', 'Item', $elementSet->name, $element->name),
                            array($this, 'filterElementInput'));
+               add_filter(array('Display', 'Item', $elementSet->name, $element->name),
+                          array($this, 'filterDisplay'));
             }
             // Once the filter is applied for one route there is no need to
             // continue looping the routes.
@@ -76,8 +78,15 @@ class ItemReferences_Controller_Plugin_SelectFilter extends Zend_Controller_Plug
     {
 
         //Need to include the desired input fields
-        $components['input'] = get_view()->formText( $args['input_name_stem'] . '[text]',  $args['value'], array('class' => 'itemRef','style' => 'width: 300px;'),null);
+        $components['input'] = get_view()->formText( $args['input_name_stem'] . '[text]',  $args['value'], array('class' => 'itemRef','style' => 'width: 250px;'),null);
+        $components['input'] .= "<button class='itemReferencesBtn'>".__("Select")."</button>";
         $components['html_checkbox'] = false;
         return $components;
     }
+
+    public function filterDisplay($text, $args)
+    {
+      return $text." (modified)";
+    }
+
 }
