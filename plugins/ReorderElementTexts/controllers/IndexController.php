@@ -52,7 +52,7 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
                     " AND element_id=$titleElement".
                     " LIMIT 1";
             $titleVerb = $db->fetchOne($sql);
-            if ($titleVerb) { $title .= ": " . $titleVerb;}
+            if ($titleVerb) { $title .= ': "' . $titleVerb . '"';}
           }
 
           $referenceElementsJson=get_option('item_references_select');
