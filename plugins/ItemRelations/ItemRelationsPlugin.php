@@ -428,6 +428,28 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
                 }
             }
         }
+
+        $provideRelationComments = get_option('item_relations_provide_relation_comments');
+        if ($provideRelationComments) {
+            $itemId = intval($args["record"]["id"]);
+            $sql = "SELECT relation_comment".
+                    " FROM $db->ItemRelationsRelations".
+                    " WHERE subject_item_id = $itemId";
+            $rawComments = $db->fetchAll($sql);
+
+            if ($rawComments) {
+                $comments = array();
+                foreach($rawComments as $rawComment) {
+                    $comments[] = $rawComment["relation_comment"];
+                }
+                if ($comments) {
+                    $item = get_record_by_id('Item', $itemId);
+                    $item->addSearchText(implode(" ", $comments));
+                    $item->save();
+                }
+            }
+        }
+
     }
 
     /**
