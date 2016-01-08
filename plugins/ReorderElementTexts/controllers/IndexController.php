@@ -148,8 +148,6 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
         $backUrl=url("items/show/".$itemId);
         $output .= "<p><a href='".$backUrl."' class='green button'>".__("Back")."</a></p>";
 
-        // $item = get_record_by_id('Item', $itemId);
-        // $item->save();
         update_item($itemId);
       }
     }
