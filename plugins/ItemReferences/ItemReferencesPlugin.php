@@ -195,7 +195,12 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     }
 
     public function filterDisplay($text, $args) {
-      // return $text." (filtered)";
-      return __("Reference").": " . SELF::getTitleForId($text);
+      $itemId = intval($text);
+      return ( !$itemId ? $text :
+                __("Reference").": " .
+                "<a href='".url('items/show/' . $text)."'>".
+                SELF::getTitleForId($text).
+                "</a>"
+            );
     }
 }
