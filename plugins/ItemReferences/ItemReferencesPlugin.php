@@ -134,15 +134,20 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     }
 
     public function hookAdminHead() {
-        queue_js_file('itemreferences');
-  		// $request = Zend_Controller_Front::getInstance()->getRequest();
-    	// 	if ($module === 'default'
-  		// 		&& $controller === 'items'
-  		// 		&& in_array($action, array('add', 'edit'))) {
-      //
-      //   require dirname(__FILE__) . '/ItemReferencesUI.php';
+      $request = Zend_Controller_Front::getInstance()->getRequest();
 
-  		//}
+      $module = $request->getModuleName();
+      if (is_null($module)) {
+          $module = 'default';
+      }
+      $controller = $request->getControllerName();
+      $action = $request->getActionName();
+
+      if ($module === 'default'
+          && $controller === 'items'
+          && in_array($action, array('add', 'edit'))) {
+        queue_js_file('itemreferences');
+      }
   	}
 
     public function getTitleForId($itemId) {
@@ -175,13 +180,13 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       $components['input'] .= $view->formText(
                                 $args['input_name_stem'] . '[text]'.'-title',
                                 $itemTitle,
-                                array('readonly' => 'true', 'style' => 'width: 250px;'),
+                                array('readonly' => 'true', 'style' => 'width: auto;'),
                                 null
                               );
       $components['input'] .= $view->formHidden(
                                 $args['input_name_stem'].'[text]',
                                 $itemId,
-                                array('readonly' => 'true', 'style' => 'width: 250px;'),
+                                array('readonly' => 'true', 'style' => 'width: auto;'),
                                 null
                               );
       $components['input'] .= " <button class='itemReferencesBtn'>".__("Select")."</button>";
