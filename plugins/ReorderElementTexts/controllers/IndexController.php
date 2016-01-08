@@ -15,6 +15,7 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
   public function checkItemElement() {
 		$elements = false;
     $title = "";
+    $elementTitle = "";
 		$output = "";
 
 		$returnLink = "<a href='javascript:window.history.back();'>" .
@@ -30,7 +31,9 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
 	  else {
 	    $db = get_db();
 	    $itemExists = $db->fetchOne("SELECT count(*) FROM $db->Items WHERE id = $itemId");
+      $elementTitle = $db->fetchOne("SELECT name FROM $db->Elements WHERE id = $elementId");
 	    if (!$itemExists) { $output .= __("Item not found.") . " " . $returnLink; }
+      else if (!$elementTitle) { $output .= __("Element not found.") . " " . $returnLink; }
 
 	    else {
 	      $sql = "SELECT * FROM $db->ElementTexts".
@@ -61,8 +64,8 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
               $itemId = intval($elements[$idx]["text"]);
               $refText = "#".$elements[$idx]["text"];
               if ($itemId) {
-                $title = ItemReferencesPlugin::getTitleForId($itemId);
-                $refText = ($title ? __("Reference").": ".$title : "#" . $itemId );
+                $refTitle = ItemReferencesPlugin::getTitleForId($itemId);
+                $refText = ($refTitle ? __("Reference").": ".$refTitle : "#" . $itemId );
               }
               $elements[$idx]["refText"] = $refText;
             }
@@ -72,7 +75,9 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
 			}
 		}
 
-		return array("elements" => $elements, "output" => $output, "title" => $title);
+    $result = array("elements" => $elements, "output" => $output, "title" => $title, "elementTitle" => $elementTitle);
+    // echo "<pre>" . print_r($result,true) . "</pre>"; die();
+		return $result;
 	}
 
   public function reorderAction() {
@@ -82,6 +87,7 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
     $this->view->elements = $data["elements"];
     $this->view->output = $data["output"];
     $this->view->title = $data["title"];
+    $this->view->elementTitle = $data["elementTitle"];
   }
 
   public function updateAction() {
@@ -90,6 +96,7 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
     $this->view->elements = $data["elements"];
     $this->view->output = $data["output"];
     $this->view->title = $data["title"];
+    $this->view->elementTitle = $data["elementTitle"];
 
     $elements = $data["elements"];
     $output = $data["output"];
