@@ -152,19 +152,10 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function getTitleForId($itemId) {
       $itemId = intval($itemId);
-      $result = ""; // "#$itemId"; // Sanity
+      $result = "";
       if ($itemId) {
-        $db = get_db();
-        $sql = "SELECT id FROM $db->Elements WHERE name = 'Title'"; // 50
-        $titleElement = $db->fetchOne($sql);
-        if ($titleElement) {
-          $sql = "SELECT text".
-                 " FROM $db->element_texts".
-                 " WHERE record_id = $itemId".
-                 " AND element_id = $titleElement".
-                 " LIMIT 1";
-          $title = $db->fetchOne($sql);
-        }
+        $item = get_record_by_id('Item', $itemId);
+        $title = metadata($item, array('Dublin Core', 'Title'), array('no_filter' => true));
         $result = ($title ? $title : $result);
       }
       return $result;
