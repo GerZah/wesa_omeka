@@ -43,17 +43,9 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
 	      if (!$elements) { $output .= __("Specified elements not found in item.") . " " . $returnLink; }
         else {
           $title = __("Item")." #".$itemId;
-          $sql = "SELECT id FROM $db->Elements WHERE name='Title'";
-          $titleElement = $db->fetchOne($sql);
-          if ($titleElement) {
-            $sql = "SELECT text".
-                    " from $db->ElementTexts".
-                    " WHERE record_id=$itemId".
-                    " AND element_id=$titleElement".
-                    " LIMIT 1";
-            $titleVerb = $db->fetchOne($sql);
-            if ($titleVerb) { $title .= ': "' . $titleVerb . '"';}
-          }
+          $item = get_record_by_id('Item', $itemId);
+          $titleVerb = metadata($item, array('Dublin Core', 'Title'), array('no_filter' => true));
+          if ($titleVerb) { $title .= ': "' . $titleVerb . '"';}
 
           $referenceElementsJson=get_option('item_references_select');
           if (!$referenceElementsJson) { $referenceElementsJson="null"; }
@@ -64,7 +56,8 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
               $itemId = intval($elements[$idx]["text"]);
               $refText = "#".$elements[$idx]["text"];
               if ($itemId) {
-                $refTitle = ItemReferencesPlugin::getTitleForId($itemId);
+                $item = get_record_by_id('Item', $itemId);
+                $refTitle = metadata($item, array('Dublin Core', 'Title'), array('no_filter' => true));
                 $refText = ($refTitle ? __("Reference").": ".$refTitle : "#" . $itemId );
               }
               $elements[$idx]["refText"] = $refText;
@@ -155,6 +148,8 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
         $backUrl=url("items/show/".$itemId);
         $output .= "<p><a href='".$backUrl."' class='green button'>".__("Back")."</a></p>";
 
+        $item = get_record_by_id('Item', $itemId);
+        $item->save();
       }
     }
 
