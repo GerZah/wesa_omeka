@@ -25,8 +25,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 		'item_references_local_enable' => 0, // +#+#+# actually obsolete
     'item_references_select' => "[]",
   );
-  public function hookInitialize()
-  {
+  public function hookInitialize() {
     add_translation_source(dirname(__FILE__) . '/languages');
     $db = get_db();
 
@@ -160,67 +159,67 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 		$itemReferencesSelect = json_encode($itemReferencesSelect);
     set_option('item_references_select', $itemReferencesSelect );
 
+  }
+
+  public function hookAdminHead() {
+    $request = Zend_Controller_Front::getInstance()->getRequest();
+
+  $module = $request->getModuleName();
+    if (is_null($module)) {
+        $module = 'default';
     }
+    $controller = $request->getControllerName();
+    $action = $request->getActionName();
 
-    public function hookAdminHead() {
-      $request = Zend_Controller_Front::getInstance()->getRequest();
+  if ($module === 'default'
+        && $controller === 'items'
+        && in_array($action, array('add', 'edit'))) {
+      queue_js_file('itemreferences');
+    }
+  }
 
-      $module = $request->getModuleName();
-      if (is_null($module)) {
-          $module = 'default';
-      }
-      $controller = $request->getControllerName();
-      $action = $request->getActionName();
-
-      if ($module === 'default'
-          && $controller === 'items'
-          && in_array($action, array('add', 'edit'))) {
-        queue_js_file('itemreferences');
-      }
-  	}
-
-    public function getTitleForId($itemId) {
-      $itemId = intval($itemId);
-      $result = "";
-      if ($itemId) {
-        $item = get_record_by_id('Item', $itemId);
-        $title = metadata($item, array('Dublin Core', 'Title'), array('no_filter' => true));
-        $result = ($title ? $title : $result);
+  public function getTitleForId($itemId) {
+    $itemId = intval($itemId);
+    $result = "";
+    if ($itemId) {
+      $item = get_record_by_id('Item', $itemId);
+      $title = metadata($item, array('Dublin Core', 'Title'), array('no_filter' => true));
+      $result = ($title ? $title : $result);
       }
       return $result;
-    }
+  }
 
-    public function filterElementInput($components, $args) {
-      $view = get_view();
+  public function filterElementInput($components, $args) {
+    $view = get_view();
 
-      $itemId = intval($args['value']);
-      $itemTitle = SELF::getTitleForId($itemId);
+    $itemId = intval($args['value']);
+    $itemTitle = SELF::getTitleForId($itemId);
 
-      $components['input'] = "";
-      $components['input'] .= $view->formText(
-                                $args['input_name_stem'] . '[text]'.'-title',
-                                $itemTitle,
-                                array('readonly' => 'true', 'style' => 'width: auto;'),
-                                null
-                              );
-      $components['input'] .= $view->formHidden(
-                                $args['input_name_stem'].'[text]',
-                                $itemId,
-                                array('readonly' => 'true', 'style' => 'width: auto;'),
-                                null
-                              );
-      $components['input'] .= " <button class='itemReferencesBtn'>".__("Select")."</button>";
-      $components['html_checkbox'] = false;
-      return $components;
-    }
+    $components['input'] = "";
+    $components['input'] .= $view->formText(
+                              $args['input_name_stem'] . '[text]'.'-title',
+                              $itemTitle,
+                              array('readonly' => 'true', 'style' => 'width: auto;'),
+                              null
+                            );
+    $components['input'] .= $view->formHidden(
+                              $args['input_name_stem'].'[text]',
+                              $itemId,
+                              array('readonly' => 'true', 'style' => 'width: auto;'),
+                              null
+                            );
+    $components['input'] .= " <button class='itemReferencesBtn'>".__("Select")."</button>";
+    $components['html_checkbox'] = false;
+    return $components;
+  }
 
-    public function filterDisplay($text, $args) {
-      $itemId = intval($text);
-      return ( !$itemId ? $text :
-                __("Reference").": " .
-                "<a href='".url('items/show/' . $text)."'>".
-                SELF::getTitleForId($text).
-                "</a>"
-            );
-    }
+  public function filterDisplay($text, $args) {
+    $itemId = intval($text);
+    return ( !$itemId ? $text :
+              __("Reference").": " .
+              "<a href='".url('items/show/' . $text)."'>".
+              SELF::getTitleForId($text).
+              "</a>"
+          );
+  }
 }
