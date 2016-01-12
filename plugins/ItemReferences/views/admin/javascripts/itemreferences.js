@@ -15,8 +15,8 @@ jQuery(document).bind("omeka:elementformload", function() {
     var currentTitle = $(this).prev().prev().attr("id"); // for title
     var currentId = $(this).prev().attr("id"); // for id
 
-    console.log(currentTitle);
-    console.log(currentId);
+    // console.log(currentTitle);
+    // console.log(currentId);
 
     $("#select_item").click(function(e) {
       e.preventDefault();
@@ -28,6 +28,16 @@ jQuery(document).bind("omeka:elementformload", function() {
 
     lightbox("#item-relation-selector");
   });
+
+  $(".itemReferencesClearBtn").click(function(e) {
+    e.preventDefault();
+
+    var currentTitle = $(this).prev().prev().prev().attr("id"); // for title
+    var currentId = $(this).prev().prev().attr("id"); // for id
+
+    $("#"+currentTitle).val("");
+    $("#"+currentId).val("");
+  } );
 
   $("#item-relation-selector button").click(function(e) { e.preventDefault(); });
 

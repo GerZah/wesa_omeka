@@ -43,13 +43,13 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     foreach($referenceElements as $element_id ) {
       $element = $db->getTable('Element')->find($element_id);
       $elementSet = $db->getTable('ElementSet')->find($element->element_set_id);
-        foreach ($filter_names as $filter_name) {
-          add_filter(
-              array($filter_name, 'Item', $elementSet->name, $element->name),
-              array($this, 'filter' . $filter_name)
-            );
-        }
+      foreach ($filter_names as $filter_name) {
+        add_filter(
+            array($filter_name, 'Item', $elementSet->name, $element->name),
+            array($this, "filter$filter_name")
+        );
       }
+    }
 
     SELF::$_withGeoLoc = SELF::_withGeoLoc();
   }
@@ -76,7 +76,6 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   * Uninstall the plugin.
   */
   public function hookUninstall() {
-
     SELF::_uninstallOptions();
   }
 
@@ -224,6 +223,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
                               null
                             );
     $components['input'] .= " <button class='itemReferencesBtn'>".__("Select")."</button>";
+    $components['input'] .= "<button class='itemReferencesClearBtn'>".__("Clear")."</button>";
     $components['html_checkbox'] = false;
     return $components;
   }
@@ -237,20 +237,28 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       $itemTitle = SELF::getTitleForId($text);
       $result .= "<a href='".url('items/show/' . $text)."'>$itemTitle</a>";
 
-      if (!SELF::$_withGeoLoc) {
-        self::$_geoLocations[$itemId] = array();
+      $element_id = $args["element_text"]->element_id;
+
+      if (!isset(self::$_geoLocations[$element_id])) {
+        self::$_geoLocations[$element_id] = array();
       }
-      else {
+      if (!isset(self::$_geoLocations[$element_id][$itemId])) {
+        self::$_geoLocations[$element_id][$itemId] = array();
+      }
+
+      if (SELF::$_withGeoLoc) {
         $db = get_db();
         $sql = "SELECT * FROM $db->Locations WHERE item_id = $itemId";
         $geoLoc = $db->fetchAll($sql);
         if ($geoLoc) {
-          self::$_geoLocations[$itemId] = $geoLoc[0];
+          self::$_geoLocations[$element_id][$itemId] = $geoLoc[0];
+          $lat = $geoLoc[0]["latitude"];
+          $lng = $geoLoc[0]["longitude"];
+          $zoom = $geoLoc[0]["zoom_level"];
           $result .= " (".__("Google Maps").": ";
-          $result .= "<a href='https://www.google.de/maps/@".
-                      $geoLoc[0]["latitude"].",".
-                      $geoLoc[0]["longitude"].",".
-                      $geoLoc[0]["zoom_level"]."z' target='_blank'>";
+          $result .= "<a href='https://www.google.de/maps".
+                      "/place/$lat+$lng".
+                      "/@$lat,$lng,$zoom"."z' target='_blank'>";
           $result .= ( $geoLoc[0]["address"] ? $geoLoc[0]["address"] : $itemTitle );
           $result .= "</a>";
           $result .= ")";
@@ -263,10 +271,18 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   public function hookAdminItemsShow() {
     // echo "foo";
 
-    // if ( (SELF::$_withGeoLoc) AND (self::$_geoLocations) ) {
-    //   echo "<h2>".__("References Geo Locations")."</h2>\n";
-    //   echo "<pre>" . print_r(self::$_geoLocations,true) . "</pre>";
-    // }
+    if ( (SELF::$_withGeoLoc) AND (self::$_geoLocations) ) {
+
+      echo "<h2>".__("References Geo Locations")."</h2>\n";
+      // echo "<pre>" . print_r(self::$_geoLocations,true) . "</pre>";
+
+      foreach(self::$_geoLocations as $geoLocation) {
+        if ($geoLocation) {
+
+        }
+      }
+
+    }
 
   }
 
