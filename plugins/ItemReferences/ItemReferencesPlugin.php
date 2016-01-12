@@ -17,6 +17,8 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     'config',
     'admin_head',
     'admin_items_show',
+    'public_head',
+    // 'public_items_show',
   );
 
   //Define Filters
@@ -59,10 +61,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
   private function _withGeoLoc() {
     $db = get_db();
-    $result = false;
-    try { $result = $db->fetchOne("SELECT 1 FROM $db->Locations LIMIT 1"); }
-    catch (Exception $e) { $result = false; }
-    return $result;
+    return $db->fetchOne("SELECT active FROM $db->Plugins WHERE name='GeoLocation' LIMIT 1");
   }
 
   /**
@@ -177,18 +176,30 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
   public function hookAdminHead() {
     $request = Zend_Controller_Front::getInstance()->getRequest();
-
-  $module = $request->getModuleName();
-    if (is_null($module)) {
-        $module = 'default';
-    }
+    $module = $request->getModuleName();
+    if (is_null($module)) { $module = 'default'; }
     $controller = $request->getControllerName();
     $action = $request->getActionName();
 
-  if ($module === 'default'
-        && $controller === 'items'
-        && in_array($action, array('add', 'edit'))) {
+    if ($module === 'default' && $controller === 'items' && in_array($action, array('add', 'edit'))) {
       queue_js_file('itemreferences');
+    }
+
+    if ($module === 'default' && $controller === 'items' && $action === 'show') {
+      queue_js_file('referencemap');
+    }
+
+  }
+
+  public function hookPublicHead() {
+    $request = Zend_Controller_Front::getInstance()->getRequest();
+    $module = $request->getModuleName();
+    if (is_null($module)) { $module = 'default'; }
+    $controller = $request->getControllerName();
+    $action = $request->getActionName();
+
+    if ($module === 'default' && $controller === 'items' && $action === 'show') {
+      queue_js_file('referencemap');
     }
   }
 
@@ -274,13 +285,41 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     if ( (SELF::$_withGeoLoc) AND (self::$_geoLocations) ) {
 
       echo "<h2>".__("References Geo Locations")."</h2>\n";
-      // echo "<pre>" . print_r(self::$_geoLocations,true) . "</pre>";
 
-      foreach(self::$_geoLocations as $geoLocation) {
+      $mapsData = array();
+
+      foreach(self::$_geoLocations as $elementId => $geoLocation) {
         if ($geoLocation) {
+          $db = get_db();
+          $sql = "SELECT name FROM $db->Elements WHERE id = $elementId";
+          $elementName = $db->fetchOne($sql);
+          echo "<h4>$elementName</h4>\n";
+
+          $data = array(
+            "mapId" => "map".$elementId,
+            "coords" => array(),
+          );
+
+          foreach($geoLocation as $pin) {
+            $data["coords"][] = array(
+              "title" => $pin["address"],
+              "lat" => $pin["latitude"],
+              "lng" => $pin["longitude"],
+            );
+          }
+
+          echo "<div id='".$data["mapId"]."' style='height:350px; width:100%;'></div>\n";
+
+          $mapsData[] = $data;
 
         }
+
       }
+
+      // echo "<pre>" . print_r($mapsData,true) . "</pre>";
+      // echo "<pre>" . json_encode($mapsdata) . "</pre>";
+
+      echo "<script>var mapsData=".json_encode($mapsData)."</script>\n";
 
     }
 
