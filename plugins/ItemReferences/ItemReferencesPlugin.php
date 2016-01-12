@@ -185,8 +185,8 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       $item = get_record_by_id('Item', $itemId);
       $title = metadata($item, array('Dublin Core', 'Title'), array('no_filter' => true));
       $result = ($title ? $title : $result);
-      }
-      return $result;
+    }
+    return $result;
   }
 
   public function filterElementInput($components, $args) {
