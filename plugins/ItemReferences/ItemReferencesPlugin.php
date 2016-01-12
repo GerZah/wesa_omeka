@@ -11,7 +11,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     'initialize',
     'install',
     'uninstall',
-    'after_save_item',
+    // 'after_save_item',
     // 'define_acl',
     'config_form',
     'config',
@@ -94,39 +94,40 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   *
   * @param array $args
   */
-  public function hookAfterSaveItem($args) {
-    if (!$args['post']) {
-      return;
-    }
-
-    $itemId = intval($args["record"]["id"]);
-    if ($itemId) {
-      $item = get_record_by_id('Item', $itemId);
-
-      $itemReferencesSelect = get_option('item_references_select');
-      $itemReferencesSelect = ( $itemReferencesSelect ? json_decode($itemReferencesSelect) : array() );
-
-      if ($itemReferencesSelect) {
-        $elementIds = implode(",", $itemReferencesSelect);
-        $db = get_db();
-        $sql = "SELECT text FROM $db->ElementTexts".
-                " WHERE record_id = $itemId".
-                " AND element_id in ($elementIds)";
-        $refItemIds = $db->fetchAll($sql);
-
-        if ($refItemIds) {
-          $refItemTitles = array();
-          foreach($refItemIds as $refItemId) {
-            $refItemTitles[] = SELF::getTitleForId($refItemId["text"]);
-          }
-          if ($refItemTitles) {
-            $item->addSearchText(implode(" ", $refItemTitles));
-            $item->save();
-          }
-        } // if ($refItemIds)
-      } // if ($itemReferencesSelect)
-    } // if ($itemId)
-  }
+  // +#+#+# saving reference titles into the search index does not work consistently like that. :-(
+  // public function hookAfterSaveItem($args) {
+  //   if (!$args['post']) {
+  //     return;
+  //   }
+  //
+  //   $itemId = intval($args["record"]["id"]);
+  //   if ($itemId) {
+  //     $item = get_record_by_id('Item', $itemId);
+  //
+  //     $itemReferencesSelect = get_option('item_references_select');
+  //     $itemReferencesSelect = ( $itemReferencesSelect ? json_decode($itemReferencesSelect) : array() );
+  //
+  //     if ($itemReferencesSelect) {
+  //       $elementIds = implode(",", $itemReferencesSelect);
+  //       $db = get_db();
+  //       $sql = "SELECT text FROM $db->ElementTexts".
+  //               " WHERE record_id = $itemId".
+  //               " AND element_id in ($elementIds)";
+  //       $refItemIds = $db->fetchAll($sql);
+  //
+  //       if ($refItemIds) {
+  //         $refItemTitles = array();
+  //         foreach($refItemIds as $refItemId) {
+  //           $refItemTitles[] = SELF::getTitleForId($refItemId["text"]);
+  //         }
+  //         if ($refItemTitles) {
+  //           $item->addSearchText(implode(" ", $refItemTitles));
+  //           $item->save();
+  //         }
+  //       } // if ($refItemIds)
+  //     } // if ($itemReferencesSelect)
+  //   } // if ($itemId)
+  // }
 
   /**
   * Display the plugin configuration form.
