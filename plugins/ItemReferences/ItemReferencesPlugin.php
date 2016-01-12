@@ -16,6 +16,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     'config_form',
     'config',
     'admin_head',
+    'admin_items_show',
   );
 
   //Define Filters
@@ -25,6 +26,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 		'item_references_local_enable' => 0, // +#+#+# actually obsolete
     'item_references_select' => "[]",
   );
+
   public function hookInitialize() {
     add_translation_source(dirname(__FILE__) . '/languages');
     $db = get_db();
@@ -48,6 +50,19 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
             );
         }
       }
+
+    SELF::$_withGeoLoc = SELF::_withGeoLoc();
+  }
+
+  private static $_withGeoLoc;
+  private static $_geoLocations = array();
+
+  private function _withGeoLoc() {
+    $db = get_db();
+    $result = false;
+    try { $result = $db->fetchOne("SELECT 1 FROM $db->Locations LIMIT 1"); }
+    catch (Exception $e) { $result = false; }
+    return $result;
   }
 
   /**
@@ -214,12 +229,45 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   }
 
   public function filterDisplay($text, $args) {
+    $result = $text;
+
     $itemId = intval($text);
-    return ( !$itemId ? $text :
-              __("Reference").": " .
-              "<a href='".url('items/show/' . $text)."'>".
-              SELF::getTitleForId($text).
-              "</a>"
-          );
+    if ($itemId) {
+      $result = __("Reference").": ";
+      $itemTitle = SELF::getTitleForId($text);
+      $result .= "<a href='".url('items/show/' . $text)."'>$itemTitle</a>";
+
+      if (!SELF::$_withGeoLoc) {
+        self::$_geoLocations[$itemId] = array();
+      }
+      else {
+        $db = get_db();
+        $sql = "SELECT * FROM $db->Locations WHERE item_id = $itemId";
+        $geoLoc = $db->fetchAll($sql);
+        if ($geoLoc) {
+          self::$_geoLocations[$itemId] = $geoLoc[0];
+          $result .= " (".__("Google Maps").": ";
+          $result .= "<a href='https://www.google.de/maps/@".
+                      $geoLoc[0]["latitude"].",".
+                      $geoLoc[0]["longitude"].",".
+                      $geoLoc[0]["zoom_level"]."z' target='_blank'>";
+          $result .= ( $geoLoc[0]["address"] ? $geoLoc[0]["address"] : $itemTitle );
+          $result .= "</a>";
+          $result .= ")";
+        }
+      }
+    }
+    return $result;
   }
+
+  public function hookAdminItemsShow() {
+    // echo "foo";
+
+    // if ( (SELF::$_withGeoLoc) AND (self::$_geoLocations) ) {
+    //   echo "<h2>".__("References Geo Locations")."</h2>\n";
+    //   echo "<pre>" . print_r(self::$_geoLocations,true) . "</pre>";
+    // }
+
+  }
+
 }
