@@ -18,7 +18,7 @@
           <label for="item_references_show_maps"><?php echo __('Display Reference Map'); ?></label>
       </div>
       <div class="inputs five columns omega">
-          <p class="explanation"><?php echo __('Check this if you want geolocations from referenced elements to displayed together in a combined map on the items/show page.'); ?></p>
+          <p class="explanation"><?php echo __('Check this if you want geolocations from referenced items to be displayed together in a combined map on the items/show page.'); ?></p>
           <?php
             echo $view->formCheckbox('item_references_show_maps',
               true,
