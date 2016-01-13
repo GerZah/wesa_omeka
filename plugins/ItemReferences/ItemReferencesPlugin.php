@@ -334,6 +334,8 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
       $mapsData = array();
 
+      $overlays = GeolocationPlugin::GeolocationConvertOverlayJsonForUse();
+
       foreach(self::$_geoLocations as $elementId => $geoLocation) {
         if ($geoLocation) {
           $db = get_db();
@@ -346,18 +348,41 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
             "coords" => array(),
           );
 
+          $reqOverlays = array();
+
           foreach($geoLocation as $pin) {
             if ($pin) {
-              $data["coords"][] = array(
+              $data["coords"][] = array( // see below (*)
                 "title" => $pin["geo_title"],
                 "lat" => $pin["latitude"],
                 "lng" => $pin["longitude"],
                 "url" => $pin["url"],
+                "ovl" => $pin["overlay"],
               );
+              if (isset($reqOverlays[$pin["overlay"]])) {
+                $reqOverlays[$pin["overlay"]]++;
+              }
+              else {
+                $reqOverlays[$pin["overlay"]] = 1;
+              }
             }
           }
 
+          $ovlDefault = -1;
+          if (count($reqOverlays) == 1) { $ovlDefault = array_keys($reqOverlays)[0]; }
+
           echo "<div id='".$data["mapId"]."' style='height:".$itemReferencesMapHeight."px; width:100%;'></div>\n";
+          echo "<div><strong>".__("Select Map Overlay:")."</strong> ".
+            get_view()->formSelect(
+              $data["mapId"]."_ovl",
+              $ovlDefault,
+              array(
+                "class" => "refMapOvlSel",
+                "data-map-arr" => count($mapsData), // latest added IDX - see above (*)
+              ),
+              $overlays["jsSelect"]
+            ).
+            "</div>";
 
           $mapsData[] = $data;
 
@@ -369,6 +394,8 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       // echo "<pre>" . json_encode($mapsdata) . "</pre>";
 
       echo "<script>var mapsData=".json_encode($mapsData)."</script>\n";
+      $js = "var mapOverlays = ".$overlays["jsData"];
+      echo "<script type='text/javascript'>" . $js . "</script>";
 
     }
 

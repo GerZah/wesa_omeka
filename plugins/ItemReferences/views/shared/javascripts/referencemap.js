@@ -34,6 +34,30 @@ jQuery( document ).ready(function() {
       }
       mapsData[i].map.fitBounds(latLngBounds);
     }
+
+    $(".refMapOvlSel").change( function() {
+      var overlayIdx = this.value;
+      var mapArr = $(this).data("map-arr");
+      var map = mapsData[mapArr].map;
+      mapSelOverlay(overlayIdx, map)
+    } );
+    $(".refMapOvlSel").change();
+
+    function mapSelOverlay(overlayIdx, map) {
+      if (typeof map.mapOverlay != 'undefined') { map.mapOverlay.setMap(null); }
+      if ( (overlayIdx>=0) && (typeof mapOverlays[overlayIdx] != 'undefined') ) {
+        var overlayData = mapOverlays[overlayIdx];
+        var imageBounds = {
+          north: parseFloat(overlayData["latNorth"]),
+          south: parseFloat(overlayData["latSouth"]),
+          west:  parseFloat(overlayData["lngWest"]),
+          east:  parseFloat(overlayData["lngEast"])
+        };
+        map.mapOverlay = new google.maps.GroundOverlay( overlayData["imgUrl"], imageBounds);
+        map.mapOverlay.setMap(map);
+      }
+    }
+
   }
 
 } );
