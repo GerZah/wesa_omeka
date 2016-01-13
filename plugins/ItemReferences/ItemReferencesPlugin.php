@@ -25,9 +25,9 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   // protected $_filters = array('admin_navigation_main');
 
   protected $_options = array(
-		'item_references_local_enable' => 0, // +#+#+# actually obsolete
-    'item_references_map_height' => 300,
     'item_references_select' => "[]",
+    'item_references_map_height' => 300,
+    'item_references_show_maps' => true,
   );
 
   public function hookInitialize() {
@@ -146,10 +146,31 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   * Display the plugin configuration form.
   */
   public static function hookConfigForm() {
-    // $localItemReferences = (int)(boolean) get_option('item_references_local_enable');
+    $sqlDb = get_db();
+    $select = "
+    SELECT es.name AS element_set_name, e.id AS element_id,
+    e.name AS element_name, it.name AS item_type_name
+    FROM {$sqlDb->ElementSet} es
+    JOIN {$sqlDb->Element} e ON es.id = e.element_set_id
+    LEFT JOIN {$sqlDb->ItemTypesElements} ite ON e.id = ite.element_id
+    LEFT JOIN {$sqlDb->ItemType} it ON ite.item_type_id = it.id
+    WHERE es.id = 3
+    ORDER BY it.name, e.name";
+    $records = $sqlDb->fetchAll($select);
+    $elements = array();
+    foreach ($records as $record) {
+        $optGroup = $record['item_type_name']
+                  ? __('Item Type') . ': ' . __($record['item_type_name'])
+                  : __($record['element_set_name']);
+        $value = __($record['element_name']);
+        $elements[$optGroup][$record['element_id']] = $value;
+    }
 
     $itemReferencesSelect = get_option('item_references_select');
     $itemReferencesSelect = ( $itemReferencesSelect ? json_decode($itemReferencesSelect) : array() );
+
+    $itemReferencesShowMaps = !!get_option('item_references_show_maps');
+
     $itemReferencesMapHeight = intval(get_option('item_references_map_height'));
 
     require dirname(__FILE__) . '/config_form.php';
@@ -159,9 +180,6 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   * Handle the plugin configuration form.
   */
   public static function hookConfig() {
-    // $localItemReferences = (int)(boolean) $_POST['item_references_local_enable'];
-    // set_option('item_references_local_enable', $localItemReferences);
-
     $itemReferencesSelect = array();
     $postIds=false;
     if (isset($_POST["item_references_select"])) { $postIds = $_POST["item_references_select"]; }
@@ -171,14 +189,17 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 				if ($postId) { $itemReferencesSelect[] = $postId; }
 			}
 		}
+    $itemReferencesSelect = array_unique($itemReferencesSelect);
 		$itemReferencesSelect = json_encode($itemReferencesSelect);
     set_option('item_references_select', $itemReferencesSelect );
+
+    $itemReferencesShowMaps = !!$_POST["item_references_show_maps"];
+    set_option('item_references_show_maps', intval($itemReferencesShowMaps) );
 
     $itemReferencesMapHeight = 0;
     if (isset($_POST["item_references_map_height"])) {
       $itemReferencesMapHeight = intval($_POST["item_references_map_height"]);
     }
-
     set_option('item_references_map_height', $itemReferencesMapHeight );
 
   }
@@ -299,6 +320,9 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   public function hookAdminItemsShow() { SELF::_DisplayReferences(); }
 
   protected function _DisplayReferences() {
+
+    $itemReferencesShowMaps = !!get_option('item_references_show_maps');
+    if (!$itemReferencesShowMaps) { return; }
 
     if ( (SELF::$_withGeoLoc) AND (self::$_geoLocations) ) {
 
