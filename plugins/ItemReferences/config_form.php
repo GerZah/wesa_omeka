@@ -1,6 +1,7 @@
+<?php $view = get_view(); ?>
 <div class="field">
   <!-- <div class="two columns alpha">
-    <?php echo get_view()->formLabel('item_references_local_enable', __('Enable References in Item Editor')); ?>
+    <?php echo $view->formLabel('item_references_local_enable', __('Enable References in Item Editor')); ?>
   </div>
   <div class="inputs five columns omega">
     <p class="explanation">
@@ -8,13 +9,14 @@
       echo __('Check this if you want to have the item references functionality on the "Item Type Metadata" tab inside the admin item editor. ');
       ?>
     </p>
-    <?php echo get_view()->formCheckbox('item_references_local_enable', null, array('checked' => $localItemReferences)); ?>
+    <?php echo $view->formCheckbox('item_references_local_enable', null, array('checked' => $localItemReferences)); ?>
   </div> -->
   <div class="two columns alpha">
-    <?php echo get_view()->formLabel('item_references_select', __('Select elements to transform into references')); ?>
+    <?php echo $view->formLabel('item_references_select', __('Reference Elements')); ?>
   </div>
   <div class="inputs five columns omega">
-      <?php
+    <p class="explanation"><?php echo __('Select elements to transform into item references, i.e. that should represent references to other items.'); ?></p>
+    <?php
       $sqlDb = get_db();
       $select = "
       SELECT es.name AS element_set_name, e.id AS element_id,
@@ -35,8 +37,17 @@
           $elements[$optGroup][$record['element_id']] = $value;
       }
 
-      echo get_view()->formSelect('item_references_select', $itemReferencesSelect, array('multiple' => true, 'size' => 10), $elements);
+      echo $view->formSelect('item_references_select', $itemReferencesSelect, array('multiple' => true, 'size' => 10), $elements);
 
     ?>
   </div>
+  <div class="field">
+      <div class="two columns alpha">
+          <label for="item_references_map_height"><?php echo __('Height for Reference Map'); ?></label>
+      </div>
+      <div class="inputs five columns omega">
+          <p class="explanation"><?php echo __('The height of the map displayed on your items/show page. If left blank, the default height of 300px will be used.'); ?></p>
+          <?php echo $view->formText('item_references_map_height', $itemReferencesMapHeight); ?>
+      </div>
   </div>
+</div>

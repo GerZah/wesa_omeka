@@ -26,7 +26,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
   protected $_options = array(
 		'item_references_local_enable' => 0, // +#+#+# actually obsolete
-    'item_references_map_height' => 350,
+    'item_references_map_height' => 300,
     'item_references_select' => "[]",
   );
 
@@ -150,6 +150,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
     $itemReferencesSelect = get_option('item_references_select');
     $itemReferencesSelect = ( $itemReferencesSelect ? json_decode($itemReferencesSelect) : array() );
+    $itemReferencesMapHeight = intval(get_option('item_references_map_height'));
 
     require dirname(__FILE__) . '/config_form.php';
   }
@@ -172,6 +173,13 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 		}
 		$itemReferencesSelect = json_encode($itemReferencesSelect);
     set_option('item_references_select', $itemReferencesSelect );
+
+    $itemReferencesMapHeight = 0;
+    if (isset($_POST["item_references_map_height"])) {
+      $itemReferencesMapHeight = intval($_POST["item_references_map_height"]);
+    }
+
+    set_option('item_references_map_height', $itemReferencesMapHeight );
 
   }
 
@@ -297,6 +305,9 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       // echo "<pre>" . print_r(self::$_geoLocations,true) . "</pre>";
       echo "<h2>".__("Geolocations of References Items")."</h2>\n";
 
+      $itemReferencesMapHeight = intval(get_option('item_references_map_height'));
+      if (!$itemReferencesMapHeight) { $itemReferencesMapHeight = 300; }
+
       $mapsData = array();
 
       foreach(self::$_geoLocations as $elementId => $geoLocation) {
@@ -322,7 +333,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
             }
           }
 
-          echo "<div id='".$data["mapId"]."' style='height:350px; width:100%;'></div>\n";
+          echo "<div id='".$data["mapId"]."' style='height:".$itemReferencesMapHeight."px; width:100%;'></div>\n";
 
           $mapsData[] = $data;
 
