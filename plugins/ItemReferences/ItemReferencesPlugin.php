@@ -18,7 +18,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     'admin_head',
     'admin_items_show',
     'public_head',
-    // 'public_items_show',
+    'public_items_show',
   );
 
   //Define Filters
@@ -26,6 +26,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
   protected $_options = array(
 		'item_references_local_enable' => 0, // +#+#+# actually obsolete
+    'item_references_map_height' => 350,
     'item_references_select' => "[]",
   );
 
@@ -286,11 +287,14 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     return $result;
   }
 
-  public function hookAdminItemsShow() {
-    // echo "foo";
+  public function hookPublicItemsShow() { SELF::_DisplayReferences(); }
+  public function hookAdminItemsShow() { SELF::_DisplayReferences(); }
+
+  protected function _DisplayReferences() {
 
     if ( (SELF::$_withGeoLoc) AND (self::$_geoLocations) ) {
 
+      // echo "<pre>" . print_r(self::$_geoLocations,true) . "</pre>";
       echo "<h2>".__("Geolocations of References Items")."</h2>\n";
 
       $mapsData = array();
