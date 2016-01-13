@@ -244,9 +244,10 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
     $itemId = intval($text);
     if ($itemId) {
+      $referenceUrl = url('items/show/' . $text);
       $result = __("Reference").": ";
       $itemTitle = SELF::getTitleForId($text);
-      $result .= "<a href='".url('items/show/' . $text)."'>$itemTitle</a>";
+      $result .= "<a href='$referenceUrl'>$itemTitle</a>";
 
       $element_id = $args["element_text"]->element_id;
 
@@ -262,17 +263,23 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
         $sql = "SELECT * FROM $db->Locations WHERE item_id = $itemId";
         $geoLoc = $db->fetchAll($sql);
         if ($geoLoc) {
+          $geoLoc[0]["url"] = $referenceUrl;
+          $geoLoc[0]["geo_title"] = $itemTitle;
+          $geoLoc[0]["geo_title"] .= ( $geoLoc[0]["address"] ? " - " . $geoLoc[0]["address"] : "" );
           self::$_geoLocations[$element_id][$itemId] = $geoLoc[0];
+          /* * /
           $lat = $geoLoc[0]["latitude"];
           $lng = $geoLoc[0]["longitude"];
           $zoom = $geoLoc[0]["zoom_level"];
-          $result .= " (".__("Google Maps").": ";
+          $title = $geoLoc[0]["geo_title"];
+          $result .= "<br>(".__("Geolocation").": ";
           $result .= "<a href='https://www.google.de/maps".
                       "/place/$lat+$lng".
                       "/@$lat,$lng,$zoom"."z' target='_blank'>";
-          $result .= ( $geoLoc[0]["address"] ? $geoLoc[0]["address"] : $itemTitle );
+          $result .= $title;
           $result .= "</a>";
           $result .= ")";
+          /* */
         }
       }
     }
@@ -284,7 +291,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
     if ( (SELF::$_withGeoLoc) AND (self::$_geoLocations) ) {
 
-      echo "<h2>".__("References Geo Locations")."</h2>\n";
+      echo "<h2>".__("Geolocations of References Items")."</h2>\n";
 
       $mapsData = array();
 
@@ -301,11 +308,14 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
           );
 
           foreach($geoLocation as $pin) {
-            $data["coords"][] = array(
-              "title" => $pin["address"],
-              "lat" => $pin["latitude"],
-              "lng" => $pin["longitude"],
-            );
+            if ($pin) {
+              $data["coords"][] = array(
+                "title" => $pin["geo_title"],
+                "lat" => $pin["latitude"],
+                "lng" => $pin["longitude"],
+                "url" => $pin["url"],
+              );
+            }
           }
 
           echo "<div id='".$data["mapId"]."' style='height:350px; width:100%;'></div>\n";

@@ -18,12 +18,18 @@ jQuery( document ).ready(function() {
         var curTitle = mapsData[i].coords[j].title;
         var curLat = mapsData[i].coords[j].lat;
         var curLng = mapsData[i].coords[j].lng;
+        var curUrl = mapsData[i].coords[j].url;
         latLngBounds.extend(new google.maps.LatLng(curLat, curLng));
 
         mapsData[i].coords[j].marker = new google.maps.Marker({
           title: curTitle,
           position: {lat: curLat, lng: curLng},
-          map: mapsData[i].map
+          map: mapsData[i].map,
+          linkUrl: curUrl
+        });
+
+        google.maps.event.addListener(mapsData[i].coords[j].marker, 'click', function() {
+          window.location.href = this.linkUrl;
         });
       }
       mapsData[i].map.fitBounds(latLngBounds);
