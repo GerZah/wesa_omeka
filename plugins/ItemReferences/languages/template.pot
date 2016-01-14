@@ -17,20 +17,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ItemReferencesPlugin.php:267
+#: ItemReferencesPlugin.php:271
 msgid "Clear"
 msgstr ""
 
-#: ItemReferencesPlugin.php:278
+#: ItemReferencesPlugin.php:282
 msgid "Reference"
 msgstr ""
 
 #. /pre>";
-#: ItemReferencesPlugin.php:330
+#: ItemReferencesPlugin.php:334
 msgid "Geolocations of References Items"
 msgstr ""
 
-#: ItemReferencesPlugin.php:375
+#: ItemReferencesPlugin.php:379
 msgid "Select Map Overlay:"
 msgstr ""
 
@@ -55,10 +55,20 @@ msgid ""
 msgstr ""
 
 #: config_form.php:32
-msgid "Height for Reference Map"
+msgid "Connect References with a Line"
 msgstr ""
 
 #: config_form.php:35
+msgid ""
+"In case you selected to display the reference map, you may check this if you "
+"want the geolocations to be connected by a line."
+msgstr ""
+
+#: config_form.php:46
+msgid "Height for Reference Map"
+msgstr ""
+
+#: config_form.php:49
 msgid ""
 "The height of the map displayed on your items/show page. If left blank, the "
 "default height of 300px will be used."

@@ -28,6 +28,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     'item_references_select' => "[]",
     'item_references_map_height' => 300,
     'item_references_show_maps' => true,
+    'item_references_show_lines' => false,
   );
 
   public function hookInitialize() {
@@ -170,7 +171,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     $itemReferencesSelect = ( $itemReferencesSelect ? json_decode($itemReferencesSelect) : array() );
 
     $itemReferencesShowMaps = !!get_option('item_references_show_maps');
-
+    $itemReferencesShowLines = !!get_option('item_references_show_lines');
     $itemReferencesMapHeight = intval(get_option('item_references_map_height'));
 
     require dirname(__FILE__) . '/config_form.php';
@@ -195,6 +196,9 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
     $itemReferencesShowMaps = !!$_POST["item_references_show_maps"];
     set_option('item_references_show_maps', intval($itemReferencesShowMaps) );
+
+    $itemReferencesShowLines = !!$_POST["item_references_show_lines"];
+    set_option('item_references_show_lines', intval($itemReferencesShowLines) );
 
     $itemReferencesMapHeight = 0;
     if (isset($_POST["item_references_map_height"])) {
@@ -393,9 +397,12 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       // echo "<pre>" . print_r($mapsData,true) . "</pre>";
       // echo "<pre>" . json_encode($mapsdata) . "</pre>";
 
-      echo "<script>var mapsData=".json_encode($mapsData)."</script>\n";
-      $js = "var mapOverlays = ".$overlays["jsData"];
-      echo "<script type='text/javascript'>" . $js . "</script>";
+      $itemReferencesShowLines = intval(!!get_option('item_references_show_lines'));
+
+      $js = "var mapsData=".json_encode($mapsData).";\n".
+            "var mapOverlays = ".$overlays["jsData"].";\n".
+            "var itemReferencesShowLines = $itemReferencesShowLines;";
+      echo "<script type='text/javascript'>\n" . $js . "\n</script>";
 
     }
 

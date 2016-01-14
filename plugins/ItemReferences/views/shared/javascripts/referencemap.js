@@ -13,6 +13,7 @@ jQuery( document ).ready(function() {
 
       var numCoords = mapsData[i].coords.length;
       var latLngBounds = new google.maps.LatLngBounds();
+      var polyLineCoordinates = [ ];
 
       for (var j = 0; j < numCoords; j++) {
         var curTitle = mapsData[i].coords[j].title;
@@ -31,8 +32,23 @@ jQuery( document ).ready(function() {
         google.maps.event.addListener(mapsData[i].coords[j].marker, 'click', function() {
           window.location.href = this.linkUrl;
         });
+
+        if (itemReferencesShowLines) {
+          polyLineCoordinates.push( { lat: curLat, lng: curLng } );
+        }
       }
       mapsData[i].map.fitBounds(latLngBounds);
+
+      if (itemReferencesShowLines) {
+        var polyLine = new google.maps.Polyline({
+            path: polyLineCoordinates,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+          });
+        polyLine.setMap(mapsData[i].map);
+      }
     }
 
     $(".refMapOvlSel").change( function() {

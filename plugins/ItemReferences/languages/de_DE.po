@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-ItemReferences/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-01-13 18:41+0100\n"
+"PO-Revision-Date: 2016-01-14 11:44+0100\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -19,20 +19,20 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.6\n"
 
-#: ItemReferencesPlugin.php:267
+#: ItemReferencesPlugin.php:271
 msgid "Clear"
 msgstr "Löschen"
 
-#: ItemReferencesPlugin.php:278
+#: ItemReferencesPlugin.php:282
 msgid "Reference"
 msgstr "Referenz"
 
 #. /pre>";
-#: ItemReferencesPlugin.php:330
+#: ItemReferencesPlugin.php:334
 msgid "Geolocations of References Items"
 msgstr "Geolokalisierungen von referenzierten Objekten"
 
-#: ItemReferencesPlugin.php:375
+#: ItemReferencesPlugin.php:379
 msgid "Select Map Overlay:"
 msgstr "Kartenüberlagerung auswählen:"
 
@@ -53,10 +53,18 @@ msgid "Check this if you want geolocations from referenced items to be displayed
 msgstr "Aktivieren Sie diese Einstellung, wenn Sie die Geolokalisierungen der referenzierten Objekte zusammen in einer gemeinsamen Karte auf der Objekt/Anzeigen-Seite anzeigen möchten."
 
 #: config_form.php:32
+msgid "Connect References with a Line"
+msgstr "Referenzen mit einer Linie verbinden"
+
+#: config_form.php:35
+msgid "In case you selected to display the reference map, you may check this if you want the geolocations to be connected by a line."
+msgstr "Wenn die Referenz-Karte angezeigt wird, können Sie diese Einstellung aktivieren, um die Geolokalisierungen mit einer Linie zu verbinden."
+
+#: config_form.php:46
 msgid "Height for Reference Map"
 msgstr "Höhe der Referenz-Karte"
 
-#: config_form.php:35
+#: config_form.php:49
 msgid "The height of the map displayed on your items/show page. If left blank, the default height of 300px will be used."
 msgstr "Die Höhe der Karte, die bei Ihrer Objekt/Anzeigen-Seite verwendet werden soll. Wenn Sie diese Einstellung leer lassen, werden als Standard-Höhe 300 Pixel verwendet."
 

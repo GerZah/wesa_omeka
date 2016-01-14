@@ -29,6 +29,20 @@
   </div>
   <div class="field">
       <div class="two columns alpha">
+          <label for="item_references_show_lines"><?php echo __('Connect References with a Line'); ?></label>
+      </div>
+      <div class="inputs five columns omega">
+          <p class="explanation"><?php echo __('In case you selected to display the reference map, you may check this if you want the geolocations to be connected by a line.'); ?></p>
+          <?php
+            echo $view->formCheckbox('item_references_show_lines',
+              true,
+              array('checked' => $itemReferencesShowLines)
+            );
+          ?>
+      </div>
+  </div>
+  <div class="field">
+      <div class="two columns alpha">
           <label for="item_references_map_height"><?php echo __('Height for Reference Map'); ?></label>
       </div>
       <div class="inputs five columns omega">
