@@ -14,6 +14,7 @@ jQuery( document ).ready(function() {
       var numCoords = mapsData[i].coords.length;
       var latLngBounds = new google.maps.LatLngBounds();
       var polyLineCoordinates = [ ];
+      var itemReferencesShowLines = mapsData[i].line;
 
       for (var j = 0; j < numCoords; j++) {
         var curTitle = mapsData[i].coords[j].title;
