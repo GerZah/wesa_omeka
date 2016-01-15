@@ -23,6 +23,11 @@ jQuery( document ).ready(function() {
         latLngBounds.extend(new google.maps.LatLng(curLat, curLng));
 
         mapsData[i].coords[j].marker = new google.maps.Marker({
+          // https://groups.google.com/d/msg/google-maps-api/2k3T5hwI5Ck/RRso0D2jB1oJ
+          // http://www.lass.it/Web/viewer.aspx?id=4
+          // yellow, green, ltblue, blue, red, purple, pink, orange
+          // *.png *-dot.png *-pushpin.png
+          icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
           title: curTitle,
           position: {lat: curLat, lng: curLng},
           map: mapsData[i].map,
