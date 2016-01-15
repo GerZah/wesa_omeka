@@ -17,20 +17,24 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ItemReferencesPlugin.php:271
+#: ItemReferencesPlugin.php:276
 msgid "Clear"
 msgstr ""
 
-#: ItemReferencesPlugin.php:282
+#: ItemReferencesPlugin.php:287
 msgid "Reference"
 msgstr ""
 
+#: ItemReferencesPlugin.php:350
+msgid "Items Referencing this Item"
+msgstr ""
+
 #. /pre>";
-#: ItemReferencesPlugin.php:334
+#: ItemReferencesPlugin.php:373
 msgid "Geolocations of References Items"
 msgstr ""
 
-#: ItemReferencesPlugin.php:379
+#: ItemReferencesPlugin.php:418
 msgid "Select Map Overlay:"
 msgstr ""
 

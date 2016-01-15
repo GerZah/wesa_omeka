@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-ItemReferences/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-01-14 11:44+0100\n"
+"PO-Revision-Date: 2016-01-15 14:46+0100\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -19,20 +19,24 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.6\n"
 
-#: ItemReferencesPlugin.php:271
+#: ItemReferencesPlugin.php:276
 msgid "Clear"
 msgstr "Löschen"
 
-#: ItemReferencesPlugin.php:282
+#: ItemReferencesPlugin.php:287
 msgid "Reference"
 msgstr "Referenz"
 
+#: ItemReferencesPlugin.php:350
+msgid "Items Referencing this Item"
+msgstr "Objekte, die dieses Objekt referenzieren"
+
 #. /pre>";
-#: ItemReferencesPlugin.php:334
+#: ItemReferencesPlugin.php:373
 msgid "Geolocations of References Items"
 msgstr "Geolokalisierungen von referenzierten Objekten"
 
-#: ItemReferencesPlugin.php:379
+#: ItemReferencesPlugin.php:418
 msgid "Select Map Overlay:"
 msgstr "Kartenüberlagerung auswählen:"
 

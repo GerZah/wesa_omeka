@@ -40,9 +40,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
         'Display',
         'ElementInput',
     );
-    $referenceElementsJson=get_option('item_references_select');
-    if (!$referenceElementsJson) { $referenceElementsJson="null"; }
-    $referenceElements = json_decode($referenceElementsJson,true);
+    $referenceElements = SELF::_retrieveReferenceElements();
 
     foreach($referenceElements as $element_id ) {
       $element = $db->getTable('Element')->find($element_id);
@@ -56,6 +54,13 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     }
 
     SELF::$_withGeoLoc = SELF::_withGeoLoc();
+  }
+
+  protected function _retrieveReferenceElements() {
+    $referenceElementsJson=get_option('item_references_select');
+    if (!$referenceElementsJson) { $referenceElementsJson="null"; }
+    $referenceElements = json_decode($referenceElementsJson,true);
+    return $referenceElements;
   }
 
   private static $_withGeoLoc;
@@ -320,10 +325,44 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     return $result;
   }
 
-  public function hookPublicItemsShow() { SELF::_DisplayReferences(); }
-  public function hookAdminItemsShow() { SELF::_DisplayReferences(); }
+  public function hookPublicItemsShow($args) { SELF::hookAdminItemsShow($args); }
+  public function hookAdminItemsShow($args) {
+    SELF::_DisplaySelfReferences($args);
+    SELF::_DisplayReferenceMaps($args);
+  }
 
-  protected function _DisplayReferences() {
+  protected function _DisplaySelfReferences($args) {
+
+    $referenceElements = SELF::_retrieveReferenceElements();
+    if (!$referenceElements) { return; }
+    $referenceElementsStr = implode(",", $referenceElements);
+
+    $item = $args['item'];
+    $itemId = $item->id;
+
+    $db = get_db();
+    $sql = "SELECT record_id FROM `$db->ElementTexts`".
+          " WHERE element_id in ($referenceElementsStr)".
+          " AND text = '$itemId'";
+    $referencers = $db->fetchAll($sql);
+
+    if ($referencers) {
+      echo "<h2>".__("Items Referencing this Item")."</h2>\n";
+
+      echo "<ul>\n";
+      foreach($referencers as $referencer) {
+        $referencerId = $referencer["record_id"];
+        $referencerUrl = url('items/show/' . $referencerId);
+        echo "<li><a href='" . $referencerUrl . "'>" .
+              SELF::getTitleForId($referencerId) .
+              "</a></li>\n";
+      }
+      echo "</ul>\n";
+    }
+
+  }
+
+  protected function _DisplayReferenceMaps($args) {
 
     $itemReferencesShowMaps = !!get_option('item_references_show_maps');
     if (!$itemReferencesShowMaps) { return; }
