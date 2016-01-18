@@ -51,15 +51,17 @@ jQuery( document ).ready(function() {
         break;
       }
 
-      var fallbackZl = 0;
+      var curLat = 0;
+      var curLng = 0;
+      var curZl = 0;
 
       for (var j = 0; j < numCoords; j++) {
         var curTitle = mapsData[i].coords[j].title;
-        var curLat = mapsData[i].coords[j].lat;
-        var curLng = mapsData[i].coords[j].lng;
+        curLat = mapsData[i].coords[j].lat;
+        curLng = mapsData[i].coords[j].lng;
         var curUrl = mapsData[i].coords[j].url;
-        var curZl = mapsData[i].coords[j].zl;
-        if (curZl > fallbackZl) { fallbackZl = curZl; }
+        curZl = mapsData[i].coords[j].zl;
+
         latLngBounds.extend(new google.maps.LatLng(curLat, curLng));
 
         mapsData[i].coords[j].marker = new google.maps.Marker({
@@ -82,12 +84,14 @@ jQuery( document ).ready(function() {
           polyLineCoordinates.push( { lat: curLat, lng: curLng } );
         }
       }
-      thismap.fitBounds(latLngBounds);
 
-      var listener = google.maps.event.addListener(thismap, "idle", function() {
-        if (thismap.getZoom() > fallbackZl) thismap.setZoom(fallbackZl);
-        google.maps.event.removeListener(listener);
-      });
+      if (numCoords==1) {
+        thismap.setCenter( new google.maps.LatLng(curLat, curLng) );
+        thismap.setZoom( curZl );
+      }
+      else {
+        thismap.fitBounds(latLngBounds);
+      }
 
       if (itemReferencesShowLines) {
         var polyLine = new google.maps.Polyline({
