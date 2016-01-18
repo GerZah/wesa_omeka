@@ -301,11 +301,13 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
   public function getTitleForId($itemId) {
     $itemId = intval($itemId);
-    $result = "";
+    $result = false;
     if ($itemId) {
       $item = get_record_by_id('Item', $itemId);
-      $title = metadata($item, array('Dublin Core', 'Title'), array('no_filter' => true));
-      $result = ($title ? $title : $result);
+      if ($item) {
+        $title = metadata($item, array('Dublin Core', 'Title'), array('no_filter' => true));
+        $result = ($title ? $title : "#$itemId" );
+      }
     }
     return $result;
   }
@@ -343,6 +345,8 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       $referenceUrl = url('items/show/' . $text);
       $result = __("Reference").": ";
       $itemTitle = SELF::getTitleForId($text);
+      if ($itemTitle === false) { return; }
+
       $result .= "<a href='$referenceUrl'>$itemTitle</a>";
 
       $element_id = $args["element_text"]->element_id;
