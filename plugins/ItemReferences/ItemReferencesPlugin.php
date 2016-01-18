@@ -441,7 +441,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     if ( (SELF::$_withGeoLoc) AND (self::$_geoLocations) ) {
 
       // echo "<pre>" . print_r(self::$_geoLocations,true) . "</pre>";
-      echo "<h2>".__("Geolocations of References Items")."</h2>\n";
+      $output = "<h2>".__("Geolocations of References Items")."</h2>\n";
 
       $itemReferencesMapHeight = intval(get_option('item_references_map_height'));
       if (!$itemReferencesMapHeight) { $itemReferencesMapHeight = 300; }
@@ -452,10 +452,14 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
       foreach(self::$_geoLocations as $elementId => $geoLocation) {
         if ( ($geoLocation) and ($itemReferencesConfiguration[$elementId]>0) ) {
+          $nonEmtpyGeoLocs = 0;
+          foreach($geoLocation as $geoLoc) { if ($geoLoc) { $nonEmtpyGeoLocs++; } }
+          if (!$nonEmtpyGeoLocs) { break; }
+
           $db = get_db();
           $sql = "SELECT name FROM $db->Elements WHERE id = $elementId";
           $elementName = $db->fetchOne($sql);
-          echo "<h4>$elementName</h4>\n";
+          $output .= "<h4>$elementName</h4>\n";
 
           $data = array(
             "mapId" => "map".$elementId,
@@ -488,8 +492,8 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
           $ovlDefault = -1;
           if (count($reqOverlays) == 1) { $ovlDefault = array_keys($reqOverlays)[0]; }
 
-          echo "<div id='".$data["mapId"]."' style='height:".$itemReferencesMapHeight."px; width:100%;'></div>\n";
-          echo "<div><strong>".__("Select Map Overlay:")."</strong> ".
+          $output .= "<div id='".$data["mapId"]."' style='height:".$itemReferencesMapHeight."px; width:100%;'></div>\n";
+          $output .= "<div><strong>".__("Select Map Overlay:")."</strong> ".
             get_view()->formSelect(
               $data["mapId"]."_ovl",
               $ovlDefault,
@@ -507,14 +511,17 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
       }
 
-      // echo "<pre>" . print_r($mapsData,true) . "</pre>";
-      // echo "<pre>" . json_encode($mapsdata) . "</pre>";
+      if ($mapsData) {
+        echo $output;
+        // echo "<pre>" . print_r($mapsData,true) . "</pre>";
+        // echo "<pre>" . json_encode($mapsdata) . "</pre>";
 
-      // $itemReferencesShowLines = intval(!!get_option('item_references_show_lines'));
+        // $itemReferencesShowLines = intval(!!get_option('item_references_show_lines'));
 
-      $js = "var mapsData=".json_encode($mapsData).";\n".
-            "var mapOverlays = ".$overlays["jsData"].";";
-      echo "<script type='text/javascript'>\n" . $js . "\n</script>";
+        $js = "var mapsData=".json_encode($mapsData).";\n".
+              "var mapOverlays = ".$overlays["jsData"].";";
+        echo "<script type='text/javascript'>\n" . $js . "\n</script>";
+      }
 
     }
 
