@@ -438,9 +438,6 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     $needsMaps = ( in_array(1,$itemReferencesConfiguration) or in_array(2,$itemReferencesConfiguration));
     if (!SELF::_needsMaps($itemReferencesConfiguration)) { return; }
 
-    // $itemReferencesShowMaps = !!get_option('item_references_show_maps');
-    // if (!$itemReferencesShowMaps) { die("bar"); return; }
-
     if ( (SELF::$_withGeoLoc) AND (self::$_geoLocations) ) {
 
       // echo "<pre>" . print_r(self::$_geoLocations,true) . "</pre>";
@@ -477,6 +474,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
                 "lng" => $pin["longitude"],
                 "url" => $pin["url"],
                 "ovl" => $pin["overlay"],
+                "zl" => $pin["zoom_level"],
               );
               if (isset($reqOverlays[$pin["overlay"]])) {
                 $reqOverlays[$pin["overlay"]]++;

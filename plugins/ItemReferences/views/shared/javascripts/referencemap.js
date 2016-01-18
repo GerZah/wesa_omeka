@@ -10,6 +10,7 @@ jQuery( document ).ready(function() {
         center: {lat: 0, lng: 0},
         zoom: 0
       });
+      var thismap = mapsData[i].map;
 
       var numCoords = mapsData[i].coords.length;
       var latLngBounds = new google.maps.LatLngBounds();
@@ -50,11 +51,15 @@ jQuery( document ).ready(function() {
         break;
       }
 
+      var fallbackZl = 0;
+
       for (var j = 0; j < numCoords; j++) {
         var curTitle = mapsData[i].coords[j].title;
         var curLat = mapsData[i].coords[j].lat;
         var curLng = mapsData[i].coords[j].lng;
         var curUrl = mapsData[i].coords[j].url;
+        var curZl = mapsData[i].coords[j].zl;
+        if (curZl > fallbackZl) { fallbackZl = curZl; }
         latLngBounds.extend(new google.maps.LatLng(curLat, curLng));
 
         mapsData[i].coords[j].marker = new google.maps.Marker({
@@ -65,7 +70,7 @@ jQuery( document ).ready(function() {
           icon: 'http://maps.google.com/mapfiles/ms/icons/'+pinVerbColor+'-dot.png',
           title: curTitle,
           position: {lat: curLat, lng: curLng},
-          map: mapsData[i].map,
+          map: thismap,
           linkUrl: curUrl
         });
 
@@ -77,7 +82,12 @@ jQuery( document ).ready(function() {
           polyLineCoordinates.push( { lat: curLat, lng: curLng } );
         }
       }
-      mapsData[i].map.fitBounds(latLngBounds);
+      thismap.fitBounds(latLngBounds);
+
+      var listener = google.maps.event.addListener(thismap, "idle", function() {
+        if (thismap.getZoom() > fallbackZl) thismap.setZoom(fallbackZl);
+        google.maps.event.removeListener(listener);
+      });
 
       if (itemReferencesShowLines) {
         var polyLine = new google.maps.Polyline({
@@ -87,7 +97,7 @@ jQuery( document ).ready(function() {
             strokeOpacity: 1.0,
             strokeWeight: 2
           });
-        polyLine.setMap(mapsData[i].map);
+        polyLine.setMap(thismap);
       }
     }
 
