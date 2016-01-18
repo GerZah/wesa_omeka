@@ -208,6 +208,12 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     }
   }
 
+  protected function minMax($x, $min, $max) {
+    $x = ($x < $min ? $min : $x);
+    $x = ($x > $max ? $max : $x);
+    return $x;
+  }
+
   /**
   * Handle the plugin configuration form.
   */
@@ -232,10 +238,14 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
           $elementConfigurations = array();
 
           foreach($itemReferencesElements as $itemReferencesElement) {
-            $elementConfiguration = intval(@$_POST["item_references_$itemReferencesElement"]);
-            $elementConfiguration = ($elementConfiguration < 0 ? 0 : $elementConfiguration);
-            $elementConfiguration = ($elementConfiguration > 2 ? 2 : $elementConfiguration);
-            $elementConfigurations[$itemReferencesElement] = $elementConfiguration;
+            $elementConfigurationType = intval(@$_POST["item_reference_type_$itemReferencesElement"]);
+            $elementConfigurationType = SELF::minMax($elementConfigurationType, 0, 2);
+            $elementConfigurationColor = intval(@$_POST["item_reference_color_$itemReferencesElement"]);
+            $elementConfigurationColor = SELF::minMax($elementConfigurationColor, 0, 7);
+            $elementConfigurations[$itemReferencesElement] = array(
+              $elementConfigurationType,
+              $elementConfigurationColor,
+            );
           }
 
           $itemReferencesConfiguration = json_encode($elementConfigurations);
@@ -374,11 +384,11 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
   public function hookPublicItemsShow($args) { SELF::hookAdminItemsShow($args); }
   public function hookAdminItemsShow($args) {
-    SELF::_DisplaySelfReferences($args);
-    SELF::_DisplayReferenceMaps($args);
+    SELF::_displaySelfReferences($args);
+    SELF::_displayReferenceMaps($args);
   }
 
-  protected function _DisplaySelfReferences($args) {
+  protected function _displaySelfReferences($args) {
 
     $referenceElements = SELF::_retrieveReferenceElements();
     if (!$referenceElements) { return; }
@@ -409,11 +419,20 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
   }
 
-  protected function _DisplayReferenceMaps($args) {
+  protected function _needsMaps($itemReferencesConfiguration) {
+    $result = false;
+    foreach($itemReferencesConfiguration as $itemReference) {
+      $result = ($itemReference[0] != 0);
+      if ($result) { break; }
+    }
+    return $result;
+  }
+
+  protected function _displayReferenceMaps($args) {
 
     $itemReferencesConfiguration = SELF::_retrieveReferenceElementConfiguration();
     $needsMaps = ( in_array(1,$itemReferencesConfiguration) or in_array(2,$itemReferencesConfiguration));
-    if (!$needsMaps) { return; }
+    if (!SELF::_needsMaps($itemReferencesConfiguration)) { return; }
 
     // $itemReferencesShowMaps = !!get_option('item_references_show_maps');
     // if (!$itemReferencesShowMaps) { die("bar"); return; }
@@ -440,7 +459,8 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
           $data = array(
             "mapId" => "map".$elementId,
             "coords" => array(),
-            "line" => intval($itemReferencesConfiguration[$elementId]==2),
+            "line" => intval($itemReferencesConfiguration[$elementId][0]==2),
+            "color" => intval($itemReferencesConfiguration[$elementId][1]),
           );
 
           $reqOverlays = array();

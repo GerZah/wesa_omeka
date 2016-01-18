@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-ItemReferences/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-01-15 14:46+0100\n"
+"PO-Revision-Date: 2016-01-18 13:35+0100\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -19,24 +19,24 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.6\n"
 
-#: ItemReferencesPlugin.php:276
+#: ItemReferencesPlugin.php:333
 msgid "Clear"
 msgstr "Löschen"
 
-#: ItemReferencesPlugin.php:287
+#: ItemReferencesPlugin.php:344
 msgid "Reference"
 msgstr "Referenz"
 
-#: ItemReferencesPlugin.php:350
+#: ItemReferencesPlugin.php:407
 msgid "Items Referencing this Item"
 msgstr "Objekte, die dieses Objekt referenzieren"
 
 #. /pre>";
-#: ItemReferencesPlugin.php:373
+#: ItemReferencesPlugin.php:443
 msgid "Geolocations of References Items"
 msgstr "Geolokalisierungen von referenzierten Objekten"
 
-#: ItemReferencesPlugin.php:418
+#: ItemReferencesPlugin.php:490
 msgid "Select Map Overlay:"
 msgstr "Kartenüberlagerung auswählen:"
 
@@ -48,29 +48,93 @@ msgstr "Referenz-Elemente"
 msgid "Select elements to transform into item references, i.e. that should represent references to other items."
 msgstr "Bitte wählen Sie diejenigen Elemente aus, die Sie in Objektreferenzen verwandeln wollen, d.h. die Referenzen auf andere Objekte darstellen sollen."
 
-#: config_form.php:18
-msgid "Display Reference Map"
-msgstr "Referenz-Karte anzeigen"
+#: config_form.php:18 config_form2.php:5
+msgid "Reference Element Configuration"
+msgstr "Referenz-Elemente-Konfiguration"
 
-#: config_form.php:21
-msgid "Check this if you want geolocations from referenced items to be displayed together in a combined map on the items/show page."
-msgstr "Aktivieren Sie diese Einstellung, wenn Sie die Geolokalisierungen der referenzierten Objekte zusammen in einer gemeinsamen Karte auf der Objekt/Anzeigen-Seite anzeigen möchten."
+#: config_form.php:23
+msgid "Click button below to configure the reference representation (e.g. to display reference geolocations together in a map)."
+msgstr "Klicken Sie unten stehenden Button, um die Darstellung der Referenzen zu konfigurieren (beispielsweise um alle Referenz-Geolokalisierungen zusammen in einer Karte darzustellen)."
 
-#: config_form.php:32
-msgid "Connect References with a Line"
-msgstr "Referenzen mit einer Linie verbinden"
-
-#: config_form.php:35
-msgid "In case you selected to display the reference map, you may check this if you want the geolocations to be connected by a line."
-msgstr "Wenn die Referenz-Karte angezeigt wird, können Sie diese Einstellung aktivieren, um die Geolokalisierungen mit einer Linie zu verbinden."
-
-#: config_form.php:46
+#: config_form2.php:8
 msgid "Height for Reference Map"
 msgstr "Höhe der Referenz-Karte"
 
-#: config_form.php:49
+#: config_form2.php:11
 msgid "The height of the map displayed on your items/show page. If left blank, the default height of 300px will be used."
 msgstr "Die Höhe der Karte, die bei Ihrer Objekt/Anzeigen-Seite verwendet werden soll. Wenn Sie diese Einstellung leer lassen, werden als Standard-Höhe 300 Pixel verwendet."
+
+#: config_form2.php:15
+msgid "References Representation"
+msgstr "Referenz-Darstellung"
+
+#: config_form2.php:18
+msgid "Please select for each reference element how it should be represented. It will always be displayed in the form of a list of clickable item titles. But in addition to that, you may decide whether or not you would like to display the referenced items' geolocations together in a map, and if the markers should be connected with a multi-segment line or not."
+msgstr "Bitte wählen Sie für jedes Referenz-Element, wie dieses dargestellt werden soll. Es wird in jedem Fall in Form einer Liste anklickbarer Objekt-Titel angezeigt. Zusätzlich dazu können Sie jedoch entscheiden, ob die Geolokalisierungen der referenzierten Objekte gemeinsam in einer Karte dargestellt werden sollen, und ob die Markierungen durch eine Mehr-Segment-Linie miteinander verbunden werden sollen."
+
+#: config_form2.php:36
+msgid "Reference List only"
+msgstr "nur Referenz-Liste"
+
+#: config_form2.php:37
+msgid "Reference Map"
+msgstr "Referenz-Landkarte"
+
+#: config_form2.php:38
+msgid "Reference Map with Line"
+msgstr "Referenz-Landkarte mit Verbindungslinien"
+
+#: config_form2.php:43
+msgid "Color in Reference maps (both markers and lines):"
+msgstr "Farbe in Referenz-Landkarte (sowohl Markierung als auch Linie):"
+
+#: config_form2.php:52
+msgid "red"
+msgstr "rot"
+
+#: config_form2.php:53
+msgid "orange"
+msgstr "orange"
+
+#: config_form2.php:54
+msgid "yellow"
+msgstr "gelb"
+
+#: config_form2.php:55
+msgid "green"
+msgstr "grün"
+
+#: config_form2.php:56
+msgid "light blue"
+msgstr "hellblau"
+
+#: config_form2.php:57
+msgid "blue"
+msgstr "blau"
+
+#: config_form2.php:58
+msgid "purple"
+msgstr "violett"
+
+#: config_form2.php:59
+msgid "pink"
+msgstr "rosa"
+
+#: config_form2.php:68
+msgid "Display Reference Map"
+msgstr "Referenz-Karte anzeigen"
+
+#: config_form2.php:71
+msgid "Check this if you want geolocations from referenced items to be displayed together in a combined map on the items/show page."
+msgstr "Aktivieren Sie diese Einstellung, wenn Sie die Geolokalisierungen der referenzierten Objekte zusammen in einer gemeinsamen Karte auf der Objekt/Anzeigen-Seite anzeigen möchten."
+
+#: config_form2.php:82
+msgid "Connect References with a Line"
+msgstr "Referenzen mit einer Linie verbinden"
+
+#: config_form2.php:85
+msgid "In case you selected to display the reference map, you may check this if you want the geolocations to be connected by a line."
+msgstr "Wenn die Referenz-Karte angezeigt wird, können Sie diese Einstellung aktivieren, um die Geolokalisierungen mit einer Linie zu verbinden."
 
 #: views/admin/index/index.php:2
 msgid "Item References"

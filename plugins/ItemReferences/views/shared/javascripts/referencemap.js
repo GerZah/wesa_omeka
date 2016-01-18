@@ -16,6 +16,40 @@ jQuery( document ).ready(function() {
       var polyLineCoordinates = [ ];
       var itemReferencesShowLines = mapsData[i].line;
 
+      var itemReferencesColor = mapsData[i].color;
+      var pinVerbColor = "red";
+      var pinRgbColor = "#ff4d4f";
+      switch (parseInt(itemReferencesColor)) {
+        case 1:
+          pinVerbColor = "orange";
+          pinRgbColor = "#fc8707";
+        break;
+        case 2:
+          pinVerbColor = "yellow";
+          pinRgbColor = "#fff44c";
+        break;
+        case 3:
+          pinVerbColor = "green";
+          pinRgbColor = "#00ec37";
+        break;
+        case 4:
+          pinVerbColor = "ltblue";
+          pinRgbColor = "#00ddd6";
+        break;
+        case 5:
+          pinVerbColor = "blue";
+          pinRgbColor = "#387dff";
+        break;
+        case 6:
+          pinVerbColor = "purple";
+          pinRgbColor = "#8749ff";
+        break;
+        case 7:
+          pinVerbColor = "pink";
+          pinRgbColor = "#ff359c";
+        break;
+      }
+
       for (var j = 0; j < numCoords; j++) {
         var curTitle = mapsData[i].coords[j].title;
         var curLat = mapsData[i].coords[j].lat;
@@ -28,7 +62,7 @@ jQuery( document ).ready(function() {
           // http://www.lass.it/Web/viewer.aspx?id=4
           // yellow, green, ltblue, blue, red, purple, pink, orange
           // *.png *-dot.png *-pushpin.png
-          icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+          icon: 'http://maps.google.com/mapfiles/ms/icons/'+pinVerbColor+'-dot.png',
           title: curTitle,
           position: {lat: curLat, lng: curLng},
           map: mapsData[i].map,
@@ -49,7 +83,7 @@ jQuery( document ).ready(function() {
         var polyLine = new google.maps.Polyline({
             path: polyLineCoordinates,
             geodesic: true,
-            strokeColor: '#FF0000',
+            strokeColor: pinRgbColor,
             strokeOpacity: 1.0,
             strokeWeight: 2
           });

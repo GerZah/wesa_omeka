@@ -25,9 +25,12 @@
       echo "$elementName";
       echo "</div>";
       echo '<div class="inputs five columns omega">';
+      echo '<div style="float:left; padding-right:1em; width:45%; border-right:thin dotted black;">';
+      $defaultType = $itemReferencesConfiguration[$elementId][0];
+      $defaultType = ( $defaultType ? $defaultType : 0);
       echo $view->formRadio(
-        "item_references_$elementId",
-        $itemReferencesConfiguration[$elementId],
+        "item_reference_type_$elementId",
+        $defaultType,
         array(),
         array(
           0 => __("Reference List only"),
@@ -35,6 +38,28 @@
           2 => __("Reference Map with Line")
         )
       );
+      echo "</div>";
+      echo '<div style="float:left; padding-left:1em; width:45%;">';
+      echo __("Color in Reference maps (both markers and lines):");
+      // echo get_view()->formSelect('date_search_limit_fields', $LimitFields, array('multiple' => true, 'size' => 10), $searchElements);
+      $defaultColor = $itemReferencesConfiguration[$elementId][1];
+      $defaultColor = ( $defaultColor ? $defaultColor : 0);
+      echo $view->formSelect(
+        "item_reference_color_$elementId",
+        $defaultColor,
+        array(), # option
+        array(
+          0 => __("red"),
+          1 => __("orange"),
+          2 => __("yellow"),
+          3 => __("green"),
+          4 => __("light blue"), # ltblue
+          5 => __("blue"),
+          6 => __("purple"),
+          7 => __("pink"),
+        )
+      );
+      echo '</div>';
       echo "</div>";
     }
   ?>
