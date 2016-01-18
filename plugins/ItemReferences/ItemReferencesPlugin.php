@@ -413,7 +413,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
     $itemReferencesConfiguration = SELF::_retrieveReferenceElementConfiguration();
     $needsMaps = ( in_array(1,$itemReferencesConfiguration) or in_array(2,$itemReferencesConfiguration));
-    if (!$needsMaps) { die("foo");return; }
+    if (!$needsMaps) { return; }
 
     // $itemReferencesShowMaps = !!get_option('item_references_show_maps');
     // if (!$itemReferencesShowMaps) { die("bar"); return; }
