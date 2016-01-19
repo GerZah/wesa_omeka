@@ -1,4 +1,7 @@
 <?php
+
+DEFINE("ITEM_REFERENCES_MAP_HEIGHT_DEFAULT", 300);
+
 /**
 * ItemReferences plugin.
 *
@@ -15,8 +18,8 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     'config_form',
     'config',
     'admin_head',
-    'admin_items_show',
     'public_head',
+    'admin_items_show',
     'public_items_show',
   );
 
@@ -26,7 +29,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   protected $_options = array(
     'item_references_select' => "[]",
     'item_references_second_level' => true,
-    'item_references_map_height' => 300,
+    'item_references_map_height' => ITEM_REFERENCES_MAP_HEIGHT_DEFAULT,
     'item_references_show_maps' => true, // obsolete
     'item_references_show_lines' => false, // obsolete
     'item_references_configuration' => "[]",
@@ -38,6 +41,9 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   private static $_geoLocations = array(); // collecting geolocations of referenced items
   private static $_secondLevelGeoLocations = array(); // collecting geolocations of 2nd level referenced items
 
+  /**
+  * Initialize the plugin
+  */
   public function hookInitialize() {
     add_translation_source(dirname(__FILE__) . '/languages');
     $db = get_db();
@@ -64,6 +70,9 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     SELF::$_withSecondLevel = !!intval(get_option('item_references_second_level'));
   }
 
+  /**
+  * Retrieve the element IDs that are supposed to store references from JSON configuration variable
+  */
   protected function _retrieveReferenceElements() {
     $referenceElementsJson=get_option('item_references_select');
     if (!$referenceElementsJson) { $referenceElementsJson="null"; }
@@ -71,6 +80,9 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     return $referenceElements;
   }
 
+  /**
+  * Retrieve the element configurations (map style / color) from JSON configuration vafiable
+  */
   protected function _retrieveReferenceElementConfiguration() {
     $itemReferencesConfiguration = get_option('item_references_configuration');
     if (!$itemReferencesConfiguration) { $itemReferencesConfiguration="null"; }
@@ -78,6 +90,9 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     return $itemReferencesConfiguration;
   }
 
+  /**
+  * Determine whether or not the Geolocations plugin is installed
+  */
   private function _withGeoLoc() {
     $db = get_db();
     return $db->fetchOne("SELECT active FROM $db->Plugins WHERE name='GeoLocation' LIMIT 1");
@@ -191,6 +206,9 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     }
   }
 
+  /**
+  * Tiny min/max function to ensure a variable to be within a certain range
+  */
   protected function minMax($x, $min, $max) {
     $x = ($x < $min ? $min : $x);
     $x = ($x > $max ? $max : $x);
@@ -257,6 +275,9 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
   }
 
+  /**
+  * Add item references select JavaScript code to editor / reference map code to item show
+  */
   public function hookAdminHead() {
     $request = Zend_Controller_Front::getInstance()->getRequest();
     $module = $request->getModuleName();
@@ -274,18 +295,14 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
   }
 
-  public function hookPublicHead() {
-    $request = Zend_Controller_Front::getInstance()->getRequest();
-    $module = $request->getModuleName();
-    if (is_null($module)) { $module = 'default'; }
-    $controller = $request->getControllerName();
-    $action = $request->getActionName();
+  /**
+  * Same as hookAdminHead -- but for public item show (edit code obsolete in this scenario)
+  */
+  public function hookPublicHead() { SELF::hookAdminHead(); }
 
-    if ($module === 'default' && $controller === 'items' && $action === 'show') {
-      queue_js_file('referencemap');
-    }
-  }
-
+  /**
+  * Determine title for an item ID, numerical value if not present, or false if not accessible (public context)
+  */
   public function getTitleForId($itemId) {
     $itemId = intval($itemId);
     $result = false;
@@ -299,6 +316,9 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     return $result;
   }
 
+  /**
+  * Filter to modify reference fields in item editor -- to show the item select popup, etc.
+  */
   public function filterElementInput($components, $args) {
     $view = get_view();
 
@@ -324,6 +344,10 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     return $components;
   }
 
+  /**
+  * Filter to modify reference fields during rendering -- to display references item titles instead of IDs.
+  * PLUS: Collect geolocation data for combined reference maps / 2nd level refrence maps.
+  */
   public function filterDisplay($text, $args) {
     $result = $text;
 
@@ -378,6 +402,14 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
         $secondaryList = "";
 
+        // Collecting geolocations for this item -- inside this element, empty at first
+        if (!isset(self::$_geoLocations[$element_id])) {
+          self::$_secondLevelGeoLocations[$element_id] = array();
+        }
+        if (!isset(self::$_geoLocations[$element_id][$itemId])) {
+          self::$_secondLevelGeoLocations[$element_id][$itemId] = array();
+        }
+
         foreach($secondaryItems as $secondaryItem) {
           $secondaryItemId = intval($secondaryItem["text"]);
           if ($secondaryItemId) {
@@ -393,7 +425,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
                   $geoLoc[0]["url"] = $secondaryReferenceUrl;
                   $geoLoc[0]["geo_title"] = $secondaryItemTitle;
                   $geoLoc[0]["geo_title"] .= ( $geoLoc[0]["address"] ? " - " . $geoLoc[0]["address"] : "" );
-                  # self::$_geoLocations[$element_id][$itemId] = $geoLoc[0]; # +#+#+#
+                  self::$_secondLevelGeoLocations[$element_id][$itemId][$secondaryItemId] = $geoLoc[0];
                   /* * /
                   $lat = $geoLoc[0]["latitude"];
                   $lng = $geoLoc[0]["longitude"];
@@ -427,12 +459,24 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     return $result;
   }
 
-  public function hookPublicItemsShow($args) { SELF::hookAdminItemsShow($args); }
+  /**
+  * Additional item display: display reverse references and reference maps / 2nd level reference maps
+  */
   public function hookAdminItemsShow($args) {
     SELF::_displaySelfReferences($args);
     SELF::_displayReferenceMaps($args);
+    // echo "<pre>" . print_r(SELF::$_geoLocations,true) . "</pre>";
+    // echo "<pre>" . print_r(SELF::$_secondLevelGeoLocations,true) . "</pre>";
   }
 
+  /**
+  * Same as hookAdminItemsShow, but in public context
+  */
+  public function hookPublicItemsShow($args) { SELF::hookAdminItemsShow($args); }
+
+  /**
+  * Display list of reverse references (1st level only)
+  */
   protected function _displaySelfReferences($args) {
 
     $referenceElements = SELF::_retrieveReferenceElements();
@@ -464,6 +508,9 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
   }
 
+  /**
+  * Determine whether this item contains reference element and thus potentially draws reference maps
+  */
   protected function _needsMaps($itemReferencesConfiguration) {
     $result = false;
     foreach($itemReferencesConfiguration as $itemReference) {
@@ -473,19 +520,21 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     return $result;
   }
 
+  /**
+  * Display 1st level reference maps -- i.e. create HTML tags, push data into JavaScript to create Google Maps dynamically
+  */
   protected function _displayReferenceMaps($args) {
 
     $itemReferencesConfiguration = SELF::_retrieveReferenceElementConfiguration();
-    $needsMaps = ( in_array(1,$itemReferencesConfiguration) or in_array(2,$itemReferencesConfiguration));
     if (!SELF::_needsMaps($itemReferencesConfiguration)) { return; }
 
-    if ( (SELF::$_withGeoLoc) AND (self::$_geoLocations) ) {
+    if ( (SELF::$_withGeoLoc) AND (SELF::$_geoLocations) ) {
 
       // echo "<pre>" . print_r(self::$_geoLocations,true) . "</pre>";
       $output = "<h2>".__("Geolocations of References Items")."</h2>\n";
 
       $itemReferencesMapHeight = intval(get_option('item_references_map_height'));
-      if (!$itemReferencesMapHeight) { $itemReferencesMapHeight = 300; }
+      if (!$itemReferencesMapHeight) { $itemReferencesMapHeight = ITEM_REFERENCES_MAP_HEIGHT_DEFAULT; }
 
       $mapsData = array();
 
