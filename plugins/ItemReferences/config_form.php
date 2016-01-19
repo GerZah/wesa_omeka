@@ -13,6 +13,21 @@
       );
     ?>
   </div>
+  <div class="two columns alpha">
+    <?php echo $view->formLabel('item_references_second_level', __('2nd Level References')); ?>
+  </div>
+  <div class="inputs five columns omega">
+    <p class="explanation">
+      <?php echo __("Check this to follow second level references, i.e. check if referenced items reference other items."); ?><br>
+      <?php echo __("<em>Please note:</em> The second level is the last level of references to be taken into account. Higher level references are not supported."); ?><br>
+      <?php
+        echo $view->formCheckbox('item_references_second_level',
+          1,
+          array('checked' => $itemReferencesSecondLevel)
+        );
+      ?>
+    </p>
+  </div>
 <?php if ($itemReferencesSelect) { ?>
   <div class="two columns alpha">
     <?php echo $view->formLabel('item_references_configure', __('Reference Element Configuration')); ?>

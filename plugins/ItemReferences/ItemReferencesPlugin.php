@@ -12,7 +12,6 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     'install',
     'uninstall',
     // 'after_save_item',
-    // 'define_acl',
     'config_form',
     'config',
     'admin_head',
@@ -26,11 +25,18 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
   protected $_options = array(
     'item_references_select' => "[]",
+    'item_references_second_level' => true,
     'item_references_map_height' => 300,
-    'item_references_show_maps' => true,
-    'item_references_show_lines' => false,
+    'item_references_show_maps' => true, // obsolete
+    'item_references_show_lines' => false, // obsolete
     'item_references_configuration' => "[]",
   );
+
+  private static $_withGeoLoc; // flag -- is the GeoLocation plugin installed and active
+  private static $_withSecondLevel; // flag -- do or do not follow second level references
+
+  private static $_geoLocations = array(); // collecting geolocations of referenced items
+  private static $_secondLevelGeoLocations = array(); // collecting geolocations of 2nd level referenced items
 
   public function hookInitialize() {
     add_translation_source(dirname(__FILE__) . '/languages');
@@ -55,6 +61,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     }
 
     SELF::$_withGeoLoc = SELF::_withGeoLoc();
+    SELF::$_withSecondLevel = !!intval(get_option('item_references_second_level'));
   }
 
   protected function _retrieveReferenceElements() {
@@ -70,9 +77,6 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     $itemReferencesConfiguration = json_decode($itemReferencesConfiguration,true);
     return $itemReferencesConfiguration;
   }
-
-  private static $_withGeoLoc;
-  private static $_geoLocations = array();
 
   private function _withGeoLoc() {
     $db = get_db();
@@ -92,29 +96,6 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   public function hookUninstall() {
     SELF::_uninstallOptions();
   }
-
-  /**
-  * itemreferences admin navigation filter
-  */
-  // public function filterAdminNavigationMain($nav)
-  // {
-  //
-  //   if(is_allowed('ItemReferences_Index', 'index')) {
-  //     $nav[] = array('label' => __('Item References'), 'uri' => url('item-references'));
-  //   }
-  //   return $nav;
-  // }
-
-  /**
-  * Define ACL entry for reassignfiles controller.
-  */
-  // public function hookDefineAcl($args) {
-  //   $acl = $args['acl'];
-  //
-  //   $indexResource = new Zend_Acl_Resource('ItemReferences_Index');
-  //   $acl->add($indexResource);
-  //
-  // }
 
   /**
   * Retrieve referenced items' titles and add them to item's search text
@@ -201,6 +182,8 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
               $elements[$optGroup][$record['element_id']] = $value;
           }
 
+          $itemReferencesSecondLevel = SELF::$_withSecondLevel;
+
           $configPage2Url = url("plugins/config?name=ItemReferences&page=2");
 
           require dirname(__FILE__) . '/config_form.php';
@@ -264,7 +247,11 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       		}
           $itemReferencesSelect = array_unique($itemReferencesSelect);
       		$itemReferencesSelect = json_encode($itemReferencesSelect);
-          set_option('item_references_select', $itemReferencesSelect );
+          set_option('item_references_select', $itemReferencesSelect);
+
+          $itemReferencesSecondLevel = !!intval(@$_POST["item_references_second_level"]);
+          set_option('item_references_second_level', $itemReferencesSecondLevel);
+
         break;
     }
 
@@ -340,28 +327,28 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   public function filterDisplay($text, $args) {
     $result = $text;
 
-    $itemId = intval($text);
+    $itemId = intval($text); // this is our referenced item -- as stored in the element text
     if ($itemId) {
-      $referenceUrl = url('items/show/' . $text);
-      $result = __("Reference").": ";
       $itemTitle = SELF::getTitleForId($text);
-      if ($itemTitle === false) { return; }
+      if ($itemTitle === false) { return; } // if we can't access its title, it's probably not public
 
-      $result .= "<a href='$referenceUrl'>$itemTitle</a>";
+      $referenceUrl = url('items/show/' . $text);
+      $result = __("Reference").": ".
+                "<a href='$referenceUrl'>$itemTitle</a>";
 
       $element_id = $args["element_text"]->element_id;
 
+      // Collecting geolocations for this item -- inside this element, empty at first
       if (!isset(self::$_geoLocations[$element_id])) {
         self::$_geoLocations[$element_id] = array();
       }
-      if (!isset(self::$_geoLocations[$element_id][$itemId])) {
-        self::$_geoLocations[$element_id][$itemId] = array();
-      }
 
+      $db = get_db();
+
+      // collect the referenced item's geolocation only if the GeoLocation plugin is active
       if (SELF::$_withGeoLoc) {
-        $db = get_db();
         $sql = "SELECT * FROM $db->Locations WHERE item_id = $itemId";
-        $geoLoc = $db->fetchAll($sql);
+        $geoLoc = $db->fetchAll($sql); // just one result, i.e. one geoloc -- but fetchAll for "SELECT *"
         if ($geoLoc) {
           $geoLoc[0]["url"] = $referenceUrl;
           $geoLoc[0]["geo_title"] = $itemTitle;
@@ -382,6 +369,60 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
           /* */
         }
       }
+
+      if (SELF::$_withSecondLevel) {
+        // Let's find 2nd order references
+        $sql = "SELECT text FROM $db->element_texts".
+                " WHERE element_id = $element_id AND record_id = $itemId";
+        $secondaryItems = $db->fetchAll($sql);
+
+        $secondaryList = "";
+
+        foreach($secondaryItems as $secondaryItem) {
+          $secondaryItemId = intval($secondaryItem["text"]);
+          if ($secondaryItemId) {
+            $secondaryItemTitle = SELF::getTitleForId($secondaryItemId);
+            if ($secondaryItemTitle !== false) {
+              $secondaryReferenceUrl = url('items/show/' . $secondaryItemId);
+
+              // $gMapsLink = "";
+              if (SELF::$_withGeoLoc) {
+                $sql = "SELECT * FROM $db->Locations WHERE item_id = $secondaryItemId";
+                $geoLoc = $db->fetchAll($sql); // just one result, i.e. one geoloc -- but fetchAll for "SELECT *"
+                if ($geoLoc) {
+                  $geoLoc[0]["url"] = $secondaryReferenceUrl;
+                  $geoLoc[0]["geo_title"] = $secondaryItemTitle;
+                  $geoLoc[0]["geo_title"] .= ( $geoLoc[0]["address"] ? " - " . $geoLoc[0]["address"] : "" );
+                  # self::$_geoLocations[$element_id][$itemId] = $geoLoc[0]; # +#+#+#
+                  /* * /
+                  $lat = $geoLoc[0]["latitude"];
+                  $lng = $geoLoc[0]["longitude"];
+                  $zoom = $geoLoc[0]["zoom_level"];
+                  $title = $geoLoc[0]["geo_title"];
+                  $gMapsLink .= "<br>(".__("Geolocation").": ";
+                  $gMapsLink .= "<a href='https://www.google.de/maps".
+                                "/place/$lat+$lng".
+                                "/@$lat,$lng,$zoom"."z' target='_blank'>";
+                  $gMapsLink .= $title;
+                  $gMapsLink .= "</a>";
+                  $gMapsLink .= ")";
+                  /* */
+                }
+              }
+
+              $secondaryList .= "<li>".
+                                __("Reference").": ".
+                                "<a href='$secondaryReferenceUrl'>$secondaryItemTitle</a>".
+                                // $gMapsLink.
+                                "</li>";
+
+            }
+          }
+        }
+
+        if ($secondaryList) { $result .= "<ul>$secondaryList</ul>\n"; }
+      }
+
     }
     return $result;
   }
