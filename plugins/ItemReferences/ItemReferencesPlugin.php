@@ -345,6 +345,13 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   }
 
   /**
+  * Check is wanton array is still undefined -- and, if not, prepare an empty one
+  */
+  protected function _prepareArray(&$potentialArray) {
+    if (!isset($potentialArray)) { $potentialArray = array(); }
+  }
+
+  /**
   * Filter to modify reference fields during rendering -- to display references item titles instead of IDs.
   * PLUS: Collect geolocation data for combined reference maps / 2nd level refrence maps.
   */
@@ -362,11 +369,6 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
       $element_id = $args["element_text"]->element_id;
 
-      // Collecting geolocations for this item -- inside this element, empty at first
-      if (!isset(self::$_geoLocations[$element_id])) {
-        self::$_geoLocations[$element_id] = array();
-      }
-
       $db = get_db();
 
       // collect the referenced item's geolocation only if the GeoLocation plugin is active
@@ -377,7 +379,8 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
           $geoLoc[0]["url"] = $referenceUrl;
           $geoLoc[0]["geo_title"] = $itemTitle;
           $geoLoc[0]["geo_title"] .= ( $geoLoc[0]["address"] ? " - " . $geoLoc[0]["address"] : "" );
-          self::$_geoLocations[$element_id][$itemId] = $geoLoc[0];
+          SELF::_prepareArray(SELF::$_geoLocations[$element_id]);
+          SELF::$_geoLocations[$element_id][$itemId] = $geoLoc[0];
           /* * /
           $lat = $geoLoc[0]["latitude"];
           $lng = $geoLoc[0]["longitude"];
@@ -402,14 +405,6 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
         $secondaryList = "";
 
-        // Collecting geolocations for this item -- inside this element, empty at first
-        if (!isset(self::$_geoLocations[$element_id])) {
-          self::$_secondLevelGeoLocations[$element_id] = array();
-        }
-        if (!isset(self::$_geoLocations[$element_id][$itemId])) {
-          self::$_secondLevelGeoLocations[$element_id][$itemId] = array();
-        }
-
         foreach($secondaryItems as $secondaryItem) {
           $secondaryItemId = intval($secondaryItem["text"]);
           if ($secondaryItemId) {
@@ -425,7 +420,9 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
                   $geoLoc[0]["url"] = $secondaryReferenceUrl;
                   $geoLoc[0]["geo_title"] = $secondaryItemTitle;
                   $geoLoc[0]["geo_title"] .= ( $geoLoc[0]["address"] ? " - " . $geoLoc[0]["address"] : "" );
-                  self::$_secondLevelGeoLocations[$element_id][$itemId][$secondaryItemId] = $geoLoc[0];
+                  SELF::_prepareArray(SELF::$_secondLevelGeoLocations[$element_id]);
+                  SELF::_prepareArray(SELF::$_secondLevelGeoLocations[$element_id][$itemId]);
+                  SELF::$_secondLevelGeoLocations[$element_id][$itemId][$secondaryItemId] = $geoLoc[0];
                   /* * /
                   $lat = $geoLoc[0]["latitude"];
                   $lng = $geoLoc[0]["longitude"];
@@ -465,6 +462,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   public function hookAdminItemsShow($args) {
     SELF::_displaySelfReferences($args);
     SELF::_displayReferenceMaps($args);
+    SELF::_displaySecondLevelReferenceMaps($args);
     // echo "<pre>" . print_r(SELF::$_geoLocations,true) . "</pre>";
     // echo "<pre>" . print_r(SELF::$_secondLevelGeoLocations,true) . "</pre>";
   }
@@ -530,7 +528,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
     if ( (SELF::$_withGeoLoc) AND (SELF::$_geoLocations) ) {
 
-      // echo "<pre>" . print_r(self::$_geoLocations,true) . "</pre>";
+      // echo "<pre>1st " . print_r(self::$_geoLocations,true) . "</pre>";
       $output = "<h2>".__("Geolocations of References Items")."</h2>\n";
 
       $itemReferencesMapHeight = intval(get_option('item_references_map_height'));
@@ -539,14 +537,10 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       $mapsData = array();
 
       $overlays = GeolocationPlugin::GeolocationConvertOverlayJsonForUse();
+      $db = get_db();
 
-      foreach(self::$_geoLocations as $elementId => $geoLocation) {
-        if ( ($geoLocation) and ($itemReferencesConfiguration[$elementId]>0) ) {
-          $nonEmtpyGeoLocs = 0;
-          foreach($geoLocation as $geoLoc) { if ($geoLoc) { $nonEmtpyGeoLocs++; } }
-          if (!$nonEmtpyGeoLocs) { break; }
-
-          $db = get_db();
+      foreach(SELF::$_geoLocations as $elementId => $referenceMap) {
+        if ( ($referenceMap) and ($itemReferencesConfiguration[$elementId]>0) ) {
           $sql = "SELECT name FROM $db->Elements WHERE id = $elementId";
           $elementName = $db->fetchOne($sql);
           $output .= "<h4>$elementName</h4>\n";
@@ -560,7 +554,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
           $reqOverlays = array();
 
-          foreach($geoLocation as $pin) {
+          foreach($referenceMap as $pin) {
             if ($pin) {
               $data["coords"][] = array( // see below (*)
                 "title" => $pin["geo_title"],
@@ -606,8 +600,6 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
         // echo "<pre>" . print_r($mapsData,true) . "</pre>";
         // echo "<pre>" . json_encode($mapsdata) . "</pre>";
 
-        // $itemReferencesShowLines = intval(!!get_option('item_references_show_lines'));
-
         $js = "var mapsData=".json_encode($mapsData).";\n".
               "var mapOverlays = ".$overlays["jsData"].";";
         echo "<script type='text/javascript'>\n" . $js . "\n</script>";
@@ -616,5 +608,110 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     }
 
   }
+
+  /**
+  * Display 2nd level reference maps -- i.e. create HTML tags, push data into JavaScript to create Google Maps dynamically
+  */
+  protected function _displaySecondLevelReferenceMaps($args) {
+
+    $itemReferencesConfiguration = SELF::_retrieveReferenceElementConfiguration();
+    if (!SELF::_needsMaps($itemReferencesConfiguration)) { return; }
+
+    if ( (SELF::$_withGeoLoc) AND (SELF::$_secondLevelGeoLocations) ) {
+
+      // echo "<pre>2nd " . print_r(SELF::$_secondLevelGeoLocations,true) . "</pre>";
+      $output = "<h2>".__("Geolocations of Second Level References Items")."</h2>\n";
+
+      $itemReferencesMapHeight = intval(get_option('item_references_map_height'));
+      if (!$itemReferencesMapHeight) { $itemReferencesMapHeight = ITEM_REFERENCES_MAP_HEIGHT_DEFAULT; }
+
+      $secondLevelMapsData = array();
+
+      $overlays = GeolocationPlugin::GeolocationConvertOverlayJsonForUse();
+      $db = get_db();
+
+      foreach(SELF::$_secondLevelGeoLocations as $elementId => $firstLevelRef) {
+        if ( ($firstLevelRef) and ($itemReferencesConfiguration[$elementId]>0) ) {
+          $sql = "SELECT name FROM $db->Elements WHERE id = $elementId";
+          $elementName = $db->fetchOne($sql);
+          $output .= "<h4>$elementName</h4>\n";
+
+          $data = array(
+            "mapId" => "mapTwo".$elementId,
+            "line" => intval($itemReferencesConfiguration[$elementId][0]==2),
+            "refMaps" => array(),
+          );
+
+          $reqOverlays = array();
+
+          foreach($firstLevelRef as $firstLevelRefId => $referenceMap) {
+
+            $firstLevelRefTitle = SELF::getTitleForId($firstLevelRefId);
+
+            if ($firstLevelRefTitle !== false) {
+
+              $data["refMaps"][$firstLevelRefId] = array(
+                "title" => $firstLevelRefTitle,
+                "coords" => array(),
+              );
+
+              foreach($referenceMap as $secondLevelRefId => $pin) {
+                if ($pin) {
+                  $data["refMaps"][$firstLevelRefId]["coords"][] = array( // see below (*)
+                    "title" => $pin["geo_title"],
+                    "lat" => $pin["latitude"],
+                    "lng" => $pin["longitude"],
+                    "url" => $pin["url"],
+                    "ovl" => $pin["overlay"],
+                    "zl" => $pin["zoom_level"],
+                  );
+                  if (isset($reqOverlays[$pin["overlay"]])) {
+                    $reqOverlays[$pin["overlay"]]++;
+                  }
+                  else {
+                    $reqOverlays[$pin["overlay"]] = 1;
+                  }
+                } # if ($pin)
+              } # foreach($referenceMap
+
+            } # if ($firstLevelRefTitle
+
+          } # foreach($firstLevelRef
+
+          $ovlDefault = -1;
+          if (count($reqOverlays) == 1) { $ovlDefault = array_keys($reqOverlays)[0]; }
+
+          $output .= "<div id='".$data["mapId"]."' style='height:".$itemReferencesMapHeight."px; width:100%;'></div>\n";
+          $output .= "<div><strong>".__("Select Map Overlay:")."</strong> ".
+            get_view()->formSelect(
+              $data["mapId"]."_ovl",
+              $ovlDefault,
+              array(
+                "class" => "refMapOvlSel",
+                "data-map-arr" => count($secondLevelMapsData), // latest added IDX - see above (*)
+              ),
+              $overlays["jsSelect"]
+            ).
+            "</div>";
+
+          $secondLevelMapsData[] = $data;
+
+        } # if ( ($firstLevelRef)
+
+      } # foreach(SELF::$_secondLevelGeoLocations
+
+      if ($secondLevelMapsData) {
+        echo $output;
+        // echo "<pre>" . print_r($secondLevelMapsData,true) . "</pre>";
+        // echo "<pre>" . json_encode($secondLevelMapsData) . "</pre>";
+
+        $js = "var mapsTwoData=".json_encode($secondLevelMapsData).";\n".
+              "var mapOverlays = ".$overlays["jsData"].";";
+        echo "<script type='text/javascript'>\n" . $js . "\n</script>";
+      }
+
+    } # if ( (SELF::$_withGeoLoc) AND (SELF::$_secondLevelGeoLocations) )
+
+  } # function
 
 }

@@ -17,39 +17,9 @@ jQuery( document ).ready(function() {
       var polyLineCoordinates = [ ];
       var itemReferencesShowLines = mapsData[i].line;
 
-      var itemReferencesColor = mapsData[i].color;
-      var pinVerbColor = "red";
-      var pinRgbColor = "#ff4d4f";
-      switch (parseInt(itemReferencesColor)) {
-        case 1:
-          pinVerbColor = "orange";
-          pinRgbColor = "#fc8707";
-        break;
-        case 2:
-          pinVerbColor = "yellow";
-          pinRgbColor = "#fff44c";
-        break;
-        case 3:
-          pinVerbColor = "green";
-          pinRgbColor = "#00ec37";
-        break;
-        case 4:
-          pinVerbColor = "ltblue";
-          pinRgbColor = "#00ddd6";
-        break;
-        case 5:
-          pinVerbColor = "blue";
-          pinRgbColor = "#387dff";
-        break;
-        case 6:
-          pinVerbColor = "purple";
-          pinRgbColor = "#8749ff";
-        break;
-        case 7:
-          pinVerbColor = "pink";
-          pinRgbColor = "#ff359c";
-        break;
-      }
+      var gCol = googleColors(mapsData[i].color);
+      var pinVerbColor = gCol.verb;
+      var pinRgbColor = gCol.rgb;
 
       var curLat = 0;
       var curLng = 0;
@@ -65,10 +35,6 @@ jQuery( document ).ready(function() {
         latLngBounds.extend(new google.maps.LatLng(curLat, curLng));
 
         mapsData[i].coords[j].marker = new google.maps.Marker({
-          // https://groups.google.com/d/msg/google-maps-api/2k3T5hwI5Ck/RRso0D2jB1oJ
-          // http://www.lass.it/Web/viewer.aspx?id=4
-          // yellow, green, ltblue, blue, red, purple, pink, orange
-          // *.png *-dot.png *-pushpin.png
           icon: 'http://maps.google.com/mapfiles/ms/icons/'+pinVerbColor+'-dot.png',
           title: curTitle,
           position: {lat: curLat, lng: curLng},
@@ -113,21 +79,157 @@ jQuery( document ).ready(function() {
     } );
     $(".refMapOvlSel").change();
 
-    function mapSelOverlay(overlayIdx, map) {
-      if (typeof map.mapOverlay != 'undefined') { map.mapOverlay.setMap(null); }
-      if ( (overlayIdx>=0) && (typeof mapOverlays[overlayIdx] != 'undefined') ) {
-        var overlayData = mapOverlays[overlayIdx];
-        var imageBounds = {
-          north: parseFloat(overlayData["latNorth"]),
-          south: parseFloat(overlayData["latSouth"]),
-          west:  parseFloat(overlayData["lngWest"]),
-          east:  parseFloat(overlayData["lngEast"])
-        };
-        map.mapOverlay = new google.maps.GroundOverlay( overlayData["imgUrl"], imageBounds);
-        map.mapOverlay.setMap(map);
+  }
+
+  if (typeof mapsTwoData != 'undefined') {
+
+    var numTwoMaps = mapsTwoData.length;
+    for (var i = 0; i < numTwoMaps; i++) {
+
+      mapsTwoData[i].map = new google.maps.Map(document.getElementById(mapsTwoData[i].mapId), {
+        center: {lat: 0, lng: 0},
+        zoom: 0
+      });
+      var thismap = mapsTwoData[i].map;
+
+      var numTwoCoordsAll = 0;
+      var latLngTwoBounds = new google.maps.LatLngBounds();
+      var itemReferencesShowTwoLines = mapsTwoData[i].line;
+
+      var refMaps = mapsTwoData[i].refMaps;
+
+      var refMapsIds = Object.keys(refMaps);
+      var numRefMaps = refMapsIds.length;
+
+      var curLat = 0;
+      var curLng = 0;
+      var curZl = 0;
+
+      var curCol = -1;
+
+      for (var j = 0; j < numRefMaps; j++) {
+        var coords = refMaps[refMapsIds[j]].coords;
+        var numTwoCoords = coords.length;
+        numTwoCoordsAll += numTwoCoords;
+
+        curCol++;
+        var gCol = googleColors(curCol);
+        var pinVerbColor = gCol.verb;
+        var pinRgbColor = gCol.rgb;
+
+        var polyTwoLineCoordinates = [ ];
+
+        for (var k = 0; k < numTwoCoords; k++) {
+          var curTitle = coords[k].title;
+          curLat = coords[k].lat;
+          curLng = coords[k].lng;
+          var curUrl = coords[k].url;
+          curZl = coords[k].zl;
+
+          latLngTwoBounds.extend(new google.maps.LatLng(curLat, curLng));
+
+          coords[k].marker = new google.maps.Marker({
+            icon: 'http://maps.google.com/mapfiles/ms/icons/'+pinVerbColor+'-dot.png',
+            title: curTitle,
+            position: {lat: curLat, lng: curLng},
+            map: thismap,
+            linkUrl: curUrl
+          });
+
+          google.maps.event.addListener(coords[k].marker, 'click', function() {
+            window.location.href = this.linkUrl;
+          });
+
+          if (itemReferencesShowTwoLines) {
+            polyTwoLineCoordinates.push( { lat: curLat, lng: curLng } );
+          }
+        }
+
+        if (itemReferencesShowTwoLines) {
+          var polyTwoLine = new google.maps.Polyline({
+              path: polyTwoLineCoordinates,
+              geodesic: true,
+              strokeColor: pinRgbColor,
+              strokeOpacity: 1.0,
+              strokeWeight: 2
+            });
+          polyTwoLine.setMap(thismap);
+        }
+
       }
+
+      if (numTwoCoordsAll==1) {
+        thismap.setCenter( new google.maps.LatLng(curLat, curLng) );
+        thismap.setZoom( curZl );
+      }
+      else {
+        thismap.fitBounds(latLngTwoBounds);
+      }
+
     }
 
+  }
+
+  function mapSelOverlay(overlayIdx, map) {
+    if (typeof map.mapOverlay != 'undefined') { map.mapOverlay.setMap(null); }
+    if ( (overlayIdx>=0) && (typeof mapOverlays[overlayIdx] != 'undefined') ) {
+      var overlayData = mapOverlays[overlayIdx];
+      var imageBounds = {
+        north: parseFloat(overlayData["latNorth"]),
+        south: parseFloat(overlayData["latSouth"]),
+        west:  parseFloat(overlayData["lngWest"]),
+        east:  parseFloat(overlayData["lngEast"])
+      };
+      map.mapOverlay = new google.maps.GroundOverlay( overlayData["imgUrl"], imageBounds);
+      map.mapOverlay.setMap(map);
+    }
+  }
+
+  function minMax(x, min, max) {
+    x = (x < min ? min : x);
+    x = (x > max ? max : x);
+    return x;
+  }
+
+  // https://groups.google.com/d/msg/google-maps-api/2k3T5hwI5Ck/RRso0D2jB1oJ
+  // http://www.lass.it/Web/viewer.aspx?id=4
+  // yellow, green, ltblue, blue, red, purple, pink, orange
+  // *.png *-dot.png *-pushpin.png
+  function googleColors(colId) {
+    colId = minMax(parseInt(colId), 0, 7);
+    var pinVerbColor = "red";
+    var pinRgbColor = "#ff4d4f";
+    switch (parseInt(colId)) {
+      case 1:
+        pinVerbColor = "orange";
+        pinRgbColor = "#fc8707";
+      break;
+      case 2:
+        pinVerbColor = "yellow";
+        pinRgbColor = "#fff44c";
+      break;
+      case 3:
+        pinVerbColor = "green";
+        pinRgbColor = "#00ec37";
+      break;
+      case 4:
+        pinVerbColor = "ltblue";
+        pinRgbColor = "#00ddd6";
+      break;
+      case 5:
+        pinVerbColor = "blue";
+        pinRgbColor = "#387dff";
+      break;
+      case 6:
+        pinVerbColor = "purple";
+        pinRgbColor = "#8749ff";
+      break;
+      case 7:
+        pinVerbColor = "pink";
+        pinRgbColor = "#ff359c";
+      break;
+    }
+    return { verb: pinVerbColor, rgb: pinRgbColor };
   }
 
 } );
