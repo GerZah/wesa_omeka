@@ -160,6 +160,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     $page = intval(@$_GET["page"]);
 
     $itemReferencesSelect = SELF::_retrieveReferenceElements();
+    $itemReferencesSecondLevel = SELF::$_withSecondLevel;
 
     switch ($page) {
       case 2:
@@ -196,8 +197,6 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
               $value = __($record['element_name']);
               $elements[$optGroup][$record['element_id']] = $value;
           }
-
-          $itemReferencesSecondLevel = SELF::$_withSecondLevel;
 
           $configPage2Url = url("plugins/config?name=ItemReferences&page=2");
 

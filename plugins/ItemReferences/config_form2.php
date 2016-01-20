@@ -15,7 +15,10 @@
     <label for="item_references_representations"><?php echo __('References Representation'); ?></label>
   </div>
   <div class="inputs five columns omega">
-    <p class="explanation"><?php echo __('Please select for each reference element how it should be represented. It will always be displayed in the form of a list of clickable item titles. But in addition to that, you may decide whether or not you would like to display the referenced items\' geolocations together in a map, and if the markers should be connected with a multi-segment line or not.'); ?></p>
+    <p class="explanation"><?php echo __('Please select for each reference element how it should be represented. It will always be displayed in the form of a list of clickable item titles. But in addition to that, you may decide whether or not you would like to display the referenced items\' geolocations together in a map, and if the markers should be connected with a multi-segment line or not. You may also select the color in which the element\'s map markers and lines will be drawn.'); ?></p>
+    <?php if ($itemReferencesSecondLevel) { ?>
+    <p class="explanation"><?php echo __('<em>Please note:</em> In second level reference maps showing multiple first level reference groups of one element, the colors will be assigned automatically per refernce group; in that case, the specific color configuration for that particular element will be overridden.'); ?></p>
+    <?php } ?>
   </div>
   <?php
     foreach($itemReferencesArr as $itemReference) {

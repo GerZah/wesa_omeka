@@ -17,25 +17,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ItemReferencesPlugin.php:333
+#: ItemReferencesPlugin.php:341
 msgid "Clear"
 msgstr ""
 
-#: ItemReferencesPlugin.php:344
+#: ItemReferencesPlugin.php:366 ItemReferencesPlugin.php:442
 msgid "Reference"
 msgstr ""
 
-#: ItemReferencesPlugin.php:407
+#: ItemReferencesPlugin.php:493
 msgid "Items Referencing this Item"
 msgstr ""
 
 #. /pre>";
-#: ItemReferencesPlugin.php:443
+#: ItemReferencesPlugin.php:531
 msgid "Geolocations of References Items"
 msgstr ""
 
-#: ItemReferencesPlugin.php:490
+#: ItemReferencesPlugin.php:579 ItemReferencesPlugin.php:687
 msgid "Select Map Overlay:"
+msgstr ""
+
+#. /pre>";
+#: ItemReferencesPlugin.php:622
+msgid "Geolocations of Second Level References Items"
 msgstr ""
 
 #: config_form.php:4
@@ -48,11 +53,27 @@ msgid ""
 "represent references to other items."
 msgstr ""
 
-#: config_form.php:18 config_form2.php:5
+#: config_form.php:17
+msgid "2nd Level References"
+msgstr ""
+
+#: config_form.php:21
+msgid ""
+"Check this to follow second level references, i.e. check if referenced items "
+"reference other items."
+msgstr ""
+
+#: config_form.php:22
+msgid ""
+"<em>Please note:</em> The second level is the last level of references to be "
+"taken into account. Higher level references are not supported."
+msgstr ""
+
+#: config_form.php:33 config_form2.php:5
 msgid "Reference Element Configuration"
 msgstr ""
 
-#: config_form.php:23
+#: config_form.php:38
 msgid ""
 "Click button below to configure the reference representation (e.g. to "
 "display reference geolocations together in a map)."
@@ -78,72 +99,81 @@ msgid ""
 "will always be displayed in the form of a list of clickable item titles. But "
 "in addition to that, you may decide whether or not you would like to display "
 "the referenced items' geolocations together in a map, and if the markers "
-"should be connected with a multi-segment line or not."
+"should be connected with a multi-segment line or not. You may also select "
+"the color in which the element's map markers and lines will be drawn."
 msgstr ""
 
-#: config_form2.php:36
+#: config_form2.php:20
+msgid ""
+"<em>Please note:</em> In second level reference maps showing multiple first "
+"level reference groups of one element, the colors will be assigned "
+"automatically per refernce group; in that case, the specific color "
+"configuration for that particular element will be overridden."
+msgstr ""
+
+#: config_form2.php:39
 msgid "Reference List only"
 msgstr ""
 
-#: config_form2.php:37
+#: config_form2.php:40
 msgid "Reference Map"
 msgstr ""
 
-#: config_form2.php:38
+#: config_form2.php:41
 msgid "Reference Map with Line"
 msgstr ""
 
-#: config_form2.php:43
+#: config_form2.php:46
 msgid "Color in Reference maps (both markers and lines):"
 msgstr ""
 
-#: config_form2.php:52
+#: config_form2.php:55
 msgid "red"
 msgstr ""
 
-#: config_form2.php:53
+#: config_form2.php:56
 msgid "orange"
 msgstr ""
 
-#: config_form2.php:54
+#: config_form2.php:57
 msgid "yellow"
 msgstr ""
 
-#: config_form2.php:55
+#: config_form2.php:58
 msgid "green"
 msgstr ""
 
-#: config_form2.php:56
+#: config_form2.php:59
 msgid "light blue"
 msgstr ""
 
-#: config_form2.php:57
+#: config_form2.php:60
 msgid "blue"
 msgstr ""
 
-#: config_form2.php:58
+#: config_form2.php:61
 msgid "purple"
 msgstr ""
 
-#: config_form2.php:59
+#: config_form2.php:62
 msgid "pink"
 msgstr ""
 
-#: config_form2.php:68
+#: config_form2.php:71
 msgid "Display Reference Map"
 msgstr ""
 
-#: config_form2.php:71
+#: config_form2.php:74
 msgid ""
 "Check this if you want geolocations from referenced items to be displayed "
 "together in a combined map on the items/show page."
 msgstr ""
 
-#: config_form2.php:82
+#: config_form2.php:85
 msgid "Connect References with a Line"
 msgstr ""
 
-#: config_form2.php:85
+#: config_form2.php:88
 msgid ""
 "In case you selected to display the reference map, you may check this if you "
 "want the geolocations to be connected by a line."
