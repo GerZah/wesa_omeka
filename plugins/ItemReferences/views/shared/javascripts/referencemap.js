@@ -86,11 +86,14 @@ jQuery( document ).ready(function() {
     var numTwoMaps = mapsTwoData.length;
     for (var i = 0; i < numTwoMaps; i++) {
 
-      mapsTwoData[i].map = new google.maps.Map(document.getElementById(mapsTwoData[i].mapId), {
+      var mapTwoId = mapsTwoData[i].mapId;
+      mapsTwoData[i].map = new google.maps.Map(document.getElementById(mapTwoId), {
         center: {lat: 0, lng: 0},
         zoom: 0
       });
       var thismap = mapsTwoData[i].map;
+      var mapTwoLegend = mapTwoId + "_legend";
+      $("#"+mapTwoLegend).empty();
 
       var numTwoCoordsAll = 0;
       var latLngTwoBounds = new google.maps.LatLngBounds();
@@ -114,8 +117,17 @@ jQuery( document ).ready(function() {
 
         curCol++;
         var gCol = googleColors(curCol);
-        var pinVerbColor = gCol.verb;
+        var pinVerbName = gCol.name;
         var pinRgbColor = gCol.rgb;
+
+        var refMapTitle = refMaps[refMapsIds[j]].title;
+        var refMapUrl = refMaps[refMapsIds[j]].url;
+        var iconUrl = 'http://maps.google.com/mapfiles/ms/icons/'+pinVerbName+'.png';
+        $("#"+mapTwoLegend).append(
+            "<p><a href='"+refMapUrl+"' style='color:"+pinRgbColor+"'>"+
+            "<img src='"+iconUrl+"'> "+refMapTitle+
+            "</a></p>"
+          );
 
         var polyTwoLineCoordinates = [ ];
 
@@ -129,7 +141,7 @@ jQuery( document ).ready(function() {
           latLngTwoBounds.extend(new google.maps.LatLng(curLat, curLng));
 
           coords[k].marker = new google.maps.Marker({
-            icon: 'http://maps.google.com/mapfiles/ms/icons/'+pinVerbColor+'-dot.png',
+            icon: iconUrl,
             title: curTitle,
             position: {lat: curLat, lng: curLng},
             map: thismap,
@@ -166,6 +178,14 @@ jQuery( document ).ready(function() {
         thismap.fitBounds(latLngTwoBounds);
       }
 
+      thismap.controls[google.maps.ControlPosition.TOP_CENTER].push(
+        document.getElementById(mapTwoLegend));
+      setTimeout(
+        function() {
+          $("#"+mapTwoLegend).css("display", "block");
+        }, 250
+      );
+
     }
 
   }
@@ -187,6 +207,7 @@ jQuery( document ).ready(function() {
 
   function minMax(x, min, max) {
     x = (x < min ? min : x);
+    x = x % (max+1);
     x = (x > max ? max : x);
     return x;
   }
@@ -196,7 +217,8 @@ jQuery( document ).ready(function() {
   // yellow, green, ltblue, blue, red, purple, pink, orange
   // *.png *-dot.png *-pushpin.png
   function googleColors(colId) {
-    colId = minMax(parseInt(colId), 0, 7);
+    var colIdExt = minMax(parseInt(colId), 0, 15);
+    colId = minMax(colIdExt, 0, 7);
     var pinVerbColor = "red";
     var pinRgbColor = "#ff4d4f";
     switch (parseInt(colId)) {
@@ -229,7 +251,11 @@ jQuery( document ).ready(function() {
         pinRgbColor = "#ff359c";
       break;
     }
-    return { verb: pinVerbColor, rgb: pinRgbColor };
+    return {
+      verb: pinVerbColor,
+      name: pinVerbColor + ( colIdExt < 8 ? "-dot" : "" ),
+      rgb: pinRgbColor
+    };
   }
 
 } );

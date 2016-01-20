@@ -650,8 +650,11 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
             if ($firstLevelRefTitle !== false) {
 
+              $firstLevelRefUrl = url('items/show/' . $firstLevelRefId);
+
               $data["refMaps"][$firstLevelRefId] = array(
                 "title" => $firstLevelRefTitle,
+                "url" => $firstLevelRefUrl,
                 "coords" => array(),
               );
 
@@ -693,6 +696,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
               $overlays["jsSelect"]
             ).
             "</div>";
+          $output .= "<div id='".$data["mapId"]."_legend' class='itemRefTwoMapLegend'></div>";
 
           $secondLevelMapsData[] = $data;
 
@@ -708,6 +712,8 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
         $js = "var mapsTwoData=".json_encode($secondLevelMapsData).";\n".
               "var mapOverlays = ".$overlays["jsData"].";";
         echo "<script type='text/javascript'>\n" . $js . "\n</script>";
+        echo '<link href="' . css_src('item-references-maps') . '" rel="stylesheet">';
+        queue_css_file("item-references-maps");
       }
 
     } # if ( (SELF::$_withGeoLoc) AND (SELF::$_secondLevelGeoLocations) )
