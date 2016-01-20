@@ -690,7 +690,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
               $ovlDefault,
               array(
                 "class" => "refMapOvlSel",
-                "data-map-arr" => count($secondLevelMapsData), // latest added IDX - see above (*)
+                "data-map-two-arr" => count($secondLevelMapsData), // latest added IDX - see above (*)
               ),
               $overlays["jsSelect"]
             ).

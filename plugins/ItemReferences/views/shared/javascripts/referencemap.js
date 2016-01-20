@@ -70,15 +70,6 @@ jQuery( document ).ready(function() {
         polyLine.setMap(thismap);
       }
     }
-
-    $(".refMapOvlSel").change( function() {
-      var overlayIdx = this.value;
-      var mapArr = $(this).data("map-arr");
-      var map = mapsData[mapArr].map;
-      mapSelOverlay(overlayIdx, map)
-    } );
-    $(".refMapOvlSel").change();
-
   }
 
   if (typeof mapsTwoData != 'undefined') {
@@ -185,10 +176,24 @@ jQuery( document ).ready(function() {
           $("#"+mapTwoLegend).css("display", "block");
         }, 250
       );
-
     }
-
   }
+
+  $(".refMapOvlSel").change( function() {
+    var overlayIdx = this.value;
+    var mapArr;
+    var map;
+    if (typeof $(this).data("map-arr") != "undefined") {
+      mapArr = $(this).data("map-arr");
+      map = mapsData[mapArr].map;
+    }
+    else {
+      mapArr = $(this).data("map-two-arr");
+      map = mapsTwoData[mapArr].map;
+    }
+    mapSelOverlay(overlayIdx, map)
+  } );
+  $(".refMapOvlSel").change();
 
   function mapSelOverlay(overlayIdx, map) {
     if (typeof map.mapOverlay != 'undefined') { map.mapOverlay.setMap(null); }
