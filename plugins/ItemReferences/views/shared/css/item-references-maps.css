@@ -9,3 +9,14 @@
 .itemRefTwoMapLegend a { text-decoration: none; }
 .itemRefTwoMapLegend p { padding: 0; margin: 0; }
 .itemRefTwoMapLegend img { height: 16px; }
+
+.itemRefDetailsLink { cursor: pointer; }
+
+.itemRefDetailsText {
+  width: auto;
+  border: 1px solid #ccc;
+  background: white;
+  padding: 0.5em;
+  margin: 0.5em;
+  display: none;
+}

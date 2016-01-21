@@ -263,4 +263,15 @@ jQuery( document ).ready(function() {
     };
   }
 
+  $(".itemRefDetailsLink").click( function(){
+    var thisDiv;
+    thisDiv = $(this).next();
+    if (!thisDiv.hasClass('itemRefDetailsText')) {
+      thisDiv = $(this).parent().next();
+    }
+    var curVis = thisDiv.data("visible");
+    thisDiv.data("visible", !curVis);
+    if (curVis) { thisDiv.slideUp('fast'); } else { thisDiv.slideDown('fast'); }
+  } );
+
 } );

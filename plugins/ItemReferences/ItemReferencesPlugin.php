@@ -372,9 +372,12 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       if ($itemData === false) { return; } // if we can't access its title, it's probably not public
 
       $itemTitle = $itemData["title"];
+      $itemDescription = $itemData["description"];
       $referenceUrl = url('items/show/' . $text);
       $result = __("Reference").": ".
-                "<a href='$referenceUrl'>$itemTitle</a>";
+                "<a href='$referenceUrl'>$itemTitle</a>"." ".
+                "<span class='itemRefDetailsLink'>(".__("Details").")</span>".
+                "<div class='itemRefDetailsText'>$itemDescription</div>";
 
       $element_id = $args["element_text"]->element_id;
 
@@ -421,6 +424,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
             $secondaryItemData = SELF::getDataForId($secondaryItemId);
             if ($secondaryItemData !== false) {
               $secondaryItemTitle = $secondaryItemData["title"];
+              $secondaryItemDescription = $secondaryItemData["description"];
               $secondaryReferenceUrl = url('items/show/' . $secondaryItemId);
 
               // $gMapsLink = "";
@@ -453,7 +457,9 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
               $secondaryList .= "<li>".
                                 __("Reference").": ".
-                                "<a href='$secondaryReferenceUrl'>$secondaryItemTitle</a>".
+                                "<a href='$secondaryReferenceUrl'>$secondaryItemTitle</a>"." ".
+                                "<span class='itemRefDetailsLink'>(".__("Details").")</span>".
+                                "<div class='itemRefDetailsText'>$secondaryItemDescription</div>".
                                 // $gMapsLink.
                                 "</li>";
 
@@ -472,6 +478,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   * Additional item display: display reverse references and reference maps / 2nd level reference maps
   */
   public function hookAdminItemsShow($args) {
+    echo '<link href="' . css_src('item-references-maps') . '" rel="stylesheet">';
     if (SELF::$_enhancedGeoLog) {
       $overlays = GeolocationPlugin::GeolocationConvertOverlayJsonForUse();
     }
@@ -521,9 +528,13 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
         $data = SELF::getDataForId($referencerId);
         if ($data !== false) {
           $title = $data["title"];
+          $description = $data["description"];
           echo "<li><a href='" . $referencerUrl . "'>" .
-                $title . # " (".$data["description"].")" .
-                "</a></li>\n";
+                $title .
+                "</a>"." ".
+                "<span class='itemRefDetailsLink'>(".__("Details").")</span>".
+                "<div class='itemRefDetailsText'>$description</div>".
+                "</li>\n";
         }
       }
       echo "</ul>\n";
@@ -731,7 +742,6 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       if ($secondLevelMapsData) {
         echo $output;
         $js .= "var mapsTwoData=".json_encode($secondLevelMapsData).";\n";
-        echo '<link href="' . css_src('item-references-maps') . '" rel="stylesheet">';
       }
 
     } # if ( (SELF::$_withGeoLoc) AND (SELF::$_secondLevelGeoLocations) )
