@@ -307,14 +307,16 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   /**
   * Determine title for an item ID, numerical value if not present, or false if not accessible (public context)
   */
-  public function getTitleForId($itemId) {
+  public function getDataForId($itemId) {
     $itemId = intval($itemId);
     $result = false;
     if ($itemId) {
       $item = get_record_by_id('Item', $itemId);
       if ($item) {
         $title = metadata($item, array('Dublin Core', 'Title'), array('no_filter' => true));
-        $result = ($title ? $title : "#$itemId" );
+        $title = ($title ? $title : "#$itemId" );
+        $description = metadata($item, array('Dublin Core', 'Description'), array('no_filter' => true));
+        $result = array( "title" => $title, "description" => $description );
       }
     }
     return $result;
@@ -327,7 +329,9 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     $view = get_view();
 
     $itemId = intval($args['value']);
-    $itemTitle = SELF::getTitleForId($itemId);
+    $itemDetails = SELF::getDataForId($itemId);
+    $itemTitle = "";
+    if ($itemDetails !== false) { $itemTitle = $itemDetails["title"]; }
 
     $components['input'] = "";
     $components['input'] .= $view->formText(
@@ -364,9 +368,10 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
     $itemId = intval($text); // this is our referenced item -- as stored in the element text
     if ($itemId) {
-      $itemTitle = SELF::getTitleForId($text);
-      if ($itemTitle === false) { return; } // if we can't access its title, it's probably not public
+      $itemData = SELF::getDataForId($text);
+      if ($itemData === false) { return; } // if we can't access its title, it's probably not public
 
+      $itemTitle = $itemData["title"];
       $referenceUrl = url('items/show/' . $text);
       $result = __("Reference").": ".
                 "<a href='$referenceUrl'>$itemTitle</a>";
@@ -413,8 +418,9 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
         foreach($secondaryItems as $secondaryItem) {
           $secondaryItemId = intval($secondaryItem["text"]);
           if ($secondaryItemId) {
-            $secondaryItemTitle = SELF::getTitleForId($secondaryItemId);
-            if ($secondaryItemTitle !== false) {
+            $secondaryItemData = SELF::getDataForId($secondaryItemId);
+            if ($secondaryItemData !== false) {
+              $secondaryItemTitle = $secondaryItemData["title"];
               $secondaryReferenceUrl = url('items/show/' . $secondaryItemId);
 
               // $gMapsLink = "";
@@ -512,9 +518,13 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       foreach($referencers as $referencer) {
         $referencerId = $referencer["record_id"];
         $referencerUrl = url('items/show/' . $referencerId);
-        echo "<li><a href='" . $referencerUrl . "'>" .
-              SELF::getTitleForId($referencerId) .
-              "</a></li>\n";
+        $data = SELF::getDataForId($referencerId);
+        if ($data !== false) {
+          $title = $data["title"];
+          echo "<li><a href='" . $referencerUrl . "'>" .
+                $title . # " (".$data["description"].")" .
+                "</a></li>\n";
+        }
       }
       echo "</ul>\n";
     }
@@ -657,10 +667,11 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
           foreach($firstLevelRef as $firstLevelRefId => $referenceMap) {
 
-            $firstLevelRefTitle = SELF::getTitleForId($firstLevelRefId);
+            $firstLevelRefData = SELF::getDataForId($firstLevelRefId);
 
-            if ($firstLevelRefTitle !== false) {
+            if ($firstLevelRefData !== false) {
 
+              $firstLevelRefTitle = $firstLevelRefData["title"];
               $firstLevelRefUrl = url('items/show/' . $firstLevelRefId);
 
               $data["refMaps"][$firstLevelRefId] = array(
