@@ -315,8 +315,8 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       if ($item) {
         $title = metadata($item, array('Dublin Core', 'Title'), array('no_filter' => true));
         $title = ($title ? $title : "#$itemId" );
-        $description = metadata($item, array('Dublin Core', 'Description'), array('no_filter' => true));
-        $result = array( "title" => $title, "description" => $description );
+        $details = metadata($item, array('Dublin Core', 'Description'), array('no_filter' => true));
+        $result = array( "title" => $title, "details" => $details );
       }
     }
     return $result;
@@ -372,12 +372,14 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       if ($itemData === false) { return; } // if we can't access its title, it's probably not public
 
       $itemTitle = $itemData["title"];
-      $itemDescription = $itemData["description"];
+      $itemDetails = $itemData["details"];
       $referenceUrl = url('items/show/' . $text);
       $result = __("Reference").": ".
-                "<a href='$referenceUrl'>$itemTitle</a>"." ".
-                "<span class='itemRefDetailsLink'>(".__("Details").")</span>".
-                "<div class='itemRefDetailsText'>$itemDescription</div>";
+                "<a href='$referenceUrl'>$itemTitle</a>".
+                ( !$itemDetails ? "" :
+                  " <span class='itemRefDetailsLink'>(".__("Details").")</span>".
+                  "<div class='itemRefDetailsText'>$itemDetails</div>"
+                );
 
       $element_id = $args["element_text"]->element_id;
 
@@ -424,7 +426,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
             $secondaryItemData = SELF::getDataForId($secondaryItemId);
             if ($secondaryItemData !== false) {
               $secondaryItemTitle = $secondaryItemData["title"];
-              $secondaryItemDescription = $secondaryItemData["description"];
+              $secondaryItemDetails = $secondaryItemData["details"];
               $secondaryReferenceUrl = url('items/show/' . $secondaryItemId);
 
               // $gMapsLink = "";
@@ -457,9 +459,11 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
               $secondaryList .= "<li>".
                                 __("Reference").": ".
-                                "<a href='$secondaryReferenceUrl'>$secondaryItemTitle</a>"." ".
-                                "<span class='itemRefDetailsLink'>(".__("Details").")</span>".
-                                "<div class='itemRefDetailsText'>$secondaryItemDescription</div>".
+                                "<a href='$secondaryReferenceUrl'>$secondaryItemTitle</a>".
+                                ( !$secondaryItemDetails ? "" :
+                                  " <span class='itemRefDetailsLink'>(".__("Details").")</span>".
+                                  "<div class='itemRefDetailsText'>$secondaryItemDetails</div>"
+                                ).
                                 // $gMapsLink.
                                 "</li>";
 
@@ -528,12 +532,14 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
         $data = SELF::getDataForId($referencerId);
         if ($data !== false) {
           $title = $data["title"];
-          $description = $data["description"];
+          $details = $data["details"];
           echo "<li><a href='" . $referencerUrl . "'>" .
                 $title .
-                "</a>"." ".
-                "<span class='itemRefDetailsLink'>(".__("Details").")</span>".
-                "<div class='itemRefDetailsText'>$description</div>".
+                "</a>".
+                ( !$details ? "" :
+                  " <span class='itemRefDetailsLink'>(".__("Details").")</span>".
+                  "<div class='itemRefDetailsText'>$details</div>"
+                ).
                 "</li>\n";
         }
       }
