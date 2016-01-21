@@ -459,11 +459,15 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   * Additional item display: display reverse references and reference maps / 2nd level reference maps
   */
   public function hookAdminItemsShow($args) {
+    $overlays = GeolocationPlugin::GeolocationConvertOverlayJsonForUse();
     SELF::_displaySelfReferences($args);
-    SELF::_displayReferenceMaps($args);
-    SELF::_displaySecondLevelReferenceMaps($args);
-    // echo "<pre>" . print_r(SELF::$_geoLocations,true) . "</pre>";
-    // echo "<pre>" . print_r(SELF::$_secondLevelGeoLocations,true) . "</pre>";
+    $js = "";
+    $js .= SELF::_displayReferenceMaps($args, $overlays);
+    $js .= SELF::_displaySecondLevelReferenceMaps($args, $overlays);
+    if ($js) {
+      $js .= "var mapOverlays = ".$overlays["jsData"].";";
+      echo "<script type='text/javascript'>\n" . $js . "\n</script>";
+    }
   }
 
   /**
@@ -520,14 +524,14 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   /**
   * Display 1st level reference maps -- i.e. create HTML tags, push data into JavaScript to create Google Maps dynamically
   */
-  protected function _displayReferenceMaps($args) {
+  protected function _displayReferenceMaps($args, $overlays) {
+    $js = "";
 
     $itemReferencesConfiguration = SELF::_retrieveReferenceElementConfiguration();
     if (!SELF::_needsMaps($itemReferencesConfiguration)) { return; }
 
     if ( (SELF::$_withGeoLoc) AND (SELF::$_geoLocations) ) {
 
-      // echo "<pre>1st " . print_r(self::$_geoLocations,true) . "</pre>";
       $output = "<h2>".__("Geolocations of References Items")."</h2>\n";
 
       $itemReferencesMapHeight = intval(get_option('item_references_map_height'));
@@ -535,7 +539,6 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
       $mapsData = array();
 
-      $overlays = GeolocationPlugin::GeolocationConvertOverlayJsonForUse();
       $db = get_db();
 
       foreach(SELF::$_geoLocations as $elementId => $referenceMap) {
@@ -596,29 +599,25 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
       if ($mapsData) {
         echo $output;
-        // echo "<pre>" . print_r($mapsData,true) . "</pre>";
-        // echo "<pre>" . json_encode($mapsdata) . "</pre>";
-
-        $js = "var mapsData=".json_encode($mapsData).";\n".
-              "var mapOverlays = ".$overlays["jsData"].";";
-        echo "<script type='text/javascript'>\n" . $js . "\n</script>";
+        $js .= "var mapsData=".json_encode($mapsData).";\n";
       }
 
     }
 
+    return $js;
   }
 
   /**
   * Display 2nd level reference maps -- i.e. create HTML tags, push data into JavaScript to create Google Maps dynamically
   */
-  protected function _displaySecondLevelReferenceMaps($args) {
+  protected function _displaySecondLevelReferenceMaps($args, $overlays) {
+    $js = "";
 
     $itemReferencesConfiguration = SELF::_retrieveReferenceElementConfiguration();
     if (!SELF::_needsMaps($itemReferencesConfiguration)) { return; }
 
     if ( (SELF::$_withGeoLoc) AND (SELF::$_secondLevelGeoLocations) ) {
 
-      // echo "<pre>2nd " . print_r(SELF::$_secondLevelGeoLocations,true) . "</pre>";
       $output = "<h2>".__("Geolocations of Second Level References Items")."</h2>\n";
 
       $itemReferencesMapHeight = intval(get_option('item_references_map_height'));
@@ -626,7 +625,6 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
       $secondLevelMapsData = array();
 
-      $overlays = GeolocationPlugin::GeolocationConvertOverlayJsonForUse();
       $db = get_db();
 
       foreach(SELF::$_secondLevelGeoLocations as $elementId => $firstLevelRef) {
@@ -705,18 +703,13 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
       if ($secondLevelMapsData) {
         echo $output;
-        // echo "<pre>" . print_r($secondLevelMapsData,true) . "</pre>";
-        // echo "<pre>" . json_encode($secondLevelMapsData) . "</pre>";
-
-        $js = "var mapsTwoData=".json_encode($secondLevelMapsData).";\n".
-              "var mapOverlays = ".$overlays["jsData"].";";
-        echo "<script type='text/javascript'>\n" . $js . "\n</script>";
+        $js .= "var mapsTwoData=".json_encode($secondLevelMapsData).";\n";
         echo '<link href="' . css_src('item-references-maps') . '" rel="stylesheet">';
-        queue_css_file("item-references-maps");
       }
 
     } # if ( (SELF::$_withGeoLoc) AND (SELF::$_secondLevelGeoLocations) )
 
+    return $js;
   } # function
 
 }
