@@ -41,6 +41,8 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   private static $_geoLocations = array(); // collecting geolocations of referenced items
   private static $_secondLevelGeoLocations = array(); // collecting geolocations of 2nd level referenced items
 
+  private static $_enhancedGeoLog; // enhanced version of GeoLocations plugin supporting map overlays
+
   /**
   * Initialize the plugin
   */
@@ -68,6 +70,9 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
     SELF::$_withGeoLoc = SELF::_withGeoLoc();
     SELF::$_withSecondLevel = !!intval(get_option('item_references_second_level'));
+    SELF::$_enhancedGeoLog = ( (SELF::$_withGeoLoc) AND
+      $db->fetchOne("SHOW COLUMNS FROM $db->Locations LIKE 'overlay'")
+    );
   }
 
   /**
@@ -378,6 +383,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
           $geoLoc[0]["url"] = $referenceUrl;
           $geoLoc[0]["geo_title"] = $itemTitle;
           $geoLoc[0]["geo_title"] .= ( $geoLoc[0]["address"] ? " - " . $geoLoc[0]["address"] : "" );
+          if (!isset($geoLoc[0]["overlay"])) { $geoLoc[0]["overlay"] = -1; }
           SELF::_prepareArray(SELF::$_geoLocations[$element_id]);
           SELF::$_geoLocations[$element_id][$itemId] = $geoLoc[0];
           /* * /
@@ -419,6 +425,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
                   $geoLoc[0]["url"] = $secondaryReferenceUrl;
                   $geoLoc[0]["geo_title"] = $secondaryItemTitle;
                   $geoLoc[0]["geo_title"] .= ( $geoLoc[0]["address"] ? " - " . $geoLoc[0]["address"] : "" );
+                  if (!isset($geoLoc[0]["overlay"])) { $geoLoc[0]["overlay"] = -1; }
                   SELF::_prepareArray(SELF::$_secondLevelGeoLocations[$element_id]);
                   SELF::_prepareArray(SELF::$_secondLevelGeoLocations[$element_id][$itemId]);
                   SELF::$_secondLevelGeoLocations[$element_id][$itemId][$secondaryItemId] = $geoLoc[0];
@@ -459,13 +466,18 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   * Additional item display: display reverse references and reference maps / 2nd level reference maps
   */
   public function hookAdminItemsShow($args) {
-    $overlays = GeolocationPlugin::GeolocationConvertOverlayJsonForUse();
+    if (SELF::$_enhancedGeoLog) {
+      $overlays = GeolocationPlugin::GeolocationConvertOverlayJsonForUse();
+    }
+    else { $overlays = null; }
     SELF::_displaySelfReferences($args);
     $js = "";
     $js .= SELF::_displayReferenceMaps($args, $overlays);
     $js .= SELF::_displaySecondLevelReferenceMaps($args, $overlays);
     if ($js) {
-      $js .= "var mapOverlays = ".$overlays["jsData"].";";
+      if ($overlays) {
+        $js .= "var mapOverlays = ".$overlays["jsData"].";";
+      }
       echo "<script type='text/javascript'>\n" . $js . "\n</script>";
     }
   }
@@ -579,17 +591,19 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
           if (count($reqOverlays) == 1) { $ovlDefault = array_keys($reqOverlays)[0]; }
 
           $output .= "<div id='".$data["mapId"]."' style='height:".$itemReferencesMapHeight."px; width:100%;'></div>\n";
-          $output .= "<div><strong>".__("Select Map Overlay:")."</strong> ".
-            get_view()->formSelect(
-              $data["mapId"]."_ovl",
-              $ovlDefault,
-              array(
-                "class" => "refMapOvlSel",
-                "data-map-arr" => count($mapsData), // latest added IDX - see above (*)
-              ),
-              $overlays["jsSelect"]
-            ).
-            "</div>";
+          if ($overlays) {
+            $output .= "<div><strong>".__("Select Map Overlay:")."</strong> ".
+              get_view()->formSelect(
+                $data["mapId"]."_ovl",
+                $ovlDefault,
+                array(
+                  "class" => "refMapOvlSel",
+                  "data-map-arr" => count($mapsData), // latest added IDX - see above (*)
+                ),
+                $overlays["jsSelect"]
+              ).
+              "</div>";
+          }
 
           $mapsData[] = $data;
 
@@ -682,17 +696,19 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
           if (count($reqOverlays) == 1) { $ovlDefault = array_keys($reqOverlays)[0]; }
 
           $output .= "<div id='".$data["mapId"]."' style='height:".$itemReferencesMapHeight."px; width:100%;'></div>\n";
-          $output .= "<div><strong>".__("Select Map Overlay:")."</strong> ".
-            get_view()->formSelect(
-              $data["mapId"]."_ovl",
-              $ovlDefault,
-              array(
-                "class" => "refMapOvlSel",
-                "data-map-two-arr" => count($secondLevelMapsData), // latest added IDX - see above (*)
-              ),
-              $overlays["jsSelect"]
-            ).
-            "</div>";
+          if ($overlays) {
+            $output .= "<div><strong>".__("Select Map Overlay:")."</strong> ".
+              get_view()->formSelect(
+                $data["mapId"]."_ovl",
+                $ovlDefault,
+                array(
+                  "class" => "refMapOvlSel",
+                  "data-map-two-arr" => count($secondLevelMapsData), // latest added IDX - see above (*)
+                ),
+                $overlays["jsSelect"]
+              ).
+              "</div>";
+          }
           $output .= "<div id='".$data["mapId"]."_legend' class='itemRefTwoMapLegend'></div>";
 
           $secondLevelMapsData[] = $data;
