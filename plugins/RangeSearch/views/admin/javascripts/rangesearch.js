@@ -163,6 +163,7 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   function checkTextfields(curTextFields) {
     for(var textField of curTextFields) {
+      if ($(textField).val() == "") { $(textField).val(0); }
       if (!$(textField).val().match(/^\d+$/)) {
         alert(rangeSearchEnterNumber);
         $(textField).focus();
