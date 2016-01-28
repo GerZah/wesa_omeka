@@ -581,7 +581,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       $db = get_db();
 
       foreach(SELF::$_geoLocations as $elementId => $referenceMap) {
-        if ( ($referenceMap) and ($itemReferencesConfiguration[$elementId]>0) ) {
+        if ( ($referenceMap) and ($itemReferencesConfiguration[$elementId][0]>0) ) {
           $sql = "SELECT name FROM $db->Elements WHERE id = $elementId";
           $elementName = $db->fetchOne($sql);
           $output .= "<h4>$elementName</h4>\n";
@@ -669,7 +669,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       $db = get_db();
 
       foreach(SELF::$_secondLevelGeoLocations as $elementId => $firstLevelRef) {
-        if ( ($firstLevelRef) and ($itemReferencesConfiguration[$elementId]>0) ) {
+        if ( ($firstLevelRef) and ($itemReferencesConfiguration[$elementId][0]>0) ) {
           $sql = "SELECT name FROM $db->Elements WHERE id = $elementId";
           $elementName = $db->fetchOne($sql);
           $output .= "<h4>$elementName</h4>\n";
