@@ -517,7 +517,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     $itemId = $item->id;
 
     $db = get_db();
-    $sql = "SELECT record_id FROM `$db->ElementTexts`".
+    $sql = "SELECT DISTINCT record_id FROM `$db->ElementTexts`".
           " WHERE element_id in ($referenceElementsStr)".
           " AND text = '$itemId'";
     $referencers = $db->fetchAll($sql);
