@@ -171,11 +171,7 @@ jQuery( document ).ready(function() {
 
       thismap.controls[google.maps.ControlPosition.TOP_CENTER].push(
         document.getElementById(mapTwoLegend));
-      setTimeout(
-        function() {
-          $("#"+mapTwoLegend).css("display", "block");
-        }, 250
-      );
+      $("#"+mapTwoLegend).css("display", "block");
     }
   }
 
