@@ -24,11 +24,16 @@
 	$importItemTypeID = $db->fetchOne($sql);
 	if (!$importItemTypeID) { die("Item type '".importItemType."' not found."); }
 
+	if ( !isset($_GET["proceed"]) ) {
+    echo 'Please add "?proceed" to the end of this URL to proceed.'."\n\n";
+    die("Quitting ... done nothing yet.");
+  }
+
 	// -----------------------------------------------
 
 	$csv=array();
 
-	$file = fopen('ProsopographieWeSa.csv', 'r');
+	$file = fopen('ProsopographieWeSa2.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
@@ -37,7 +42,7 @@
 	#if (!$csv) { die("CSV file error."); }
 
 	// -----------------------------------------------
-	
+
 	$headers=array(); // Sanity state
 
 	$firstline=true;
