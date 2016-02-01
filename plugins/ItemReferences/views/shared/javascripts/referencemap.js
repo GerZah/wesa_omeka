@@ -34,7 +34,7 @@ jQuery( document ).ready(function() {
 
         latLngBounds.extend(new google.maps.LatLng(curLat, curLng));
 
-        var contentString = "<a href='"+curUrl+"'>"+curTitle+"</a>";
+        var contentString = "<a href='"+curUrl+"' class='refMapLink'>"+curTitle+"</a>";
         var infoWindow = new google.maps.InfoWindow({ content: contentString });
 
         mapsData[i].coords[j].marker = new google.maps.Marker({
@@ -134,7 +134,7 @@ jQuery( document ).ready(function() {
 
           latLngTwoBounds.extend(new google.maps.LatLng(curLat, curLng));
 
-          var contentString = "<a href='"+curUrl+"'>"+curTitle+"</a>";
+          var contentString = "<a href='"+curUrl+"' class='refMapLink'>"+curTitle+"</a>";
           var infoWindow = new google.maps.InfoWindow({ content: contentString });
 
           coords[k].marker = new google.maps.Marker({

@@ -20,3 +20,6 @@
   margin: 0.5em;
   display: none;
 }
+
+.refMapLink { font-weight: bold; }
+.refMapLink:hover { text-decoration: underline;  }
