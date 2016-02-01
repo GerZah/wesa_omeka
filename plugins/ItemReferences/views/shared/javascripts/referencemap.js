@@ -42,12 +42,10 @@ jQuery( document ).ready(function() {
           title: curTitle,
           position: {lat: curLat, lng: curLng},
           map: thismap,
-          // linkUrl: curUrl,
           infoWindow: infoWindow
         });
 
         google.maps.event.addListener(mapsData[i].coords[j].marker, 'click', function() {
-          // window.location.href = this.linkUrl;
           this.infoWindow.open(this.map, this);
         });
 
@@ -144,12 +142,10 @@ jQuery( document ).ready(function() {
             title: curTitle,
             position: {lat: curLat, lng: curLng},
             map: thismap,
-            // linkUrl: curUrl,
             infoWindow: infoWindow
           });
 
           google.maps.event.addListener(coords[k].marker, 'click', function() {
-            // window.location.href = this.linkUrl;
             this.infoWindow.open(this.map, this);
           });
 
