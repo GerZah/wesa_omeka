@@ -83,6 +83,18 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
     $this->view->elementTitle = $data["elementTitle"];
   }
 
+  protected function updateSearchTitle($itemId) {
+    $db = get_db();
+    $searchText = $db->getTable('SearchText')->findByRecord('Item', $itemId);
+    if (!$searchText) { return; }
+    $item = get_record_by_id('Item', $itemId);
+    $title = metadata($item, array('Dublin Core', 'Title'), array('no_filter' => true));
+    if ($title) {
+      $searchText->title = $title;
+      $searchText->save();
+    }
+  }
+
   public function updateAction() {
     $data = SELF::checkItemElement();
 
@@ -148,7 +160,7 @@ class ReorderElementTexts_IndexController extends Omeka_Controller_AbstractActio
         $backUrl=url("items/show/".$itemId);
         $output .= "<p><a href='".$backUrl."' class='green button'>".__("Back")."</a></p>";
 
-        update_item($itemId);
+        SELF::updateSearchTitle($itemId);
       }
     }
 

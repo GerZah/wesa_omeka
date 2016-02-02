@@ -337,6 +337,26 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
     }
 
     /**
+     * Manual implementation of addSearchItem()
+     */
+    protected function myAddSearchText($item, $enrichedSearchTexts) {
+      // http://omeka.org/forums/topic/adding-item-search-text-from-a-plugin
+      //look up the existing search text
+      $searchText = $this->_db->getTable('SearchText')->findByRecord('Item', $item->id);
+
+      // searchText should already exist, but if something goes wrong, create it
+      if (!$searchText) {
+        $searchText = new SearchText;
+        $searchText->record_type = 'Item';
+        $searchText->record_id = $item->id;
+        $searchText->public = $item->public;
+        $searchText->title = metadata($item, array('Dublin Core', 'Title'));
+      }
+      $searchText->text .= ' ' . $enrichedSearchTexts;
+      $searchText->save();
+    }
+
+    /**
      * Save the item relations after saving an item add/edit form.
      *
      * @param array $args
@@ -429,27 +449,27 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
             }
         }
 
-        // +#+#+# saving relation comments into the search index does not work consistently like that. :-(
-        // $provideRelationComments = get_option('item_relations_provide_relation_comments');
-        // if ($provideRelationComments) {
-        //     $itemId = intval($args["record"]["id"]);
-        //     $sql = "SELECT relation_comment".
-        //             " FROM $db->ItemRelationsRelations".
-        //             " WHERE subject_item_id = $itemId";
-        //     $rawComments = $db->fetchAll($sql);
-        //
-        //     if ($rawComments) {
-        //         $comments = array();
-        //         foreach($rawComments as $rawComment) {
-        //             $comments[] = $rawComment["relation_comment"];
-        //         }
-        //         if ($comments) {
-        //             $item = get_record_by_id('Item', $itemId);
-        //             $item->addSearchText(implode(" ", $comments));
-        //             $item->save();
-        //         }
-        //     }
-        // }
+        // saving relation comments into the search index
+        $provideRelationComments = get_option('item_relations_provide_relation_comments');
+        if ($provideRelationComments) {
+            $itemId = intval($args["record"]["id"]);
+            $sql = "SELECT relation_comment".
+                    " FROM $db->ItemRelationsRelations".
+                    " WHERE subject_item_id = $itemId";
+            $rawComments = $db->fetchAll($sql);
+
+            if ($rawComments) {
+                $comments = array();
+                foreach($rawComments as $rawComment) {
+                    $comments[] = $rawComment["relation_comment"];
+                }
+                if ($comments) {
+                    $item = get_record_by_id('Item', $itemId);
+                    $enrichedSearchTexts = implode(" ", $comments);
+                    SELF::myAddSearchText($item, $enrichedSearchTexts);
+                }
+            }
+        }
 
     }
 
