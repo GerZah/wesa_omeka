@@ -141,11 +141,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   */
   // saving relation comments into the search index
   public function hookAfterSaveItem($args) {
-    if (!$args['post']) {
-      return;
-    }
-
-    $itemId = intval($args["record"]["id"]);
+    $itemId = intval(@$args["record"]["id"]);
     if ($itemId) {
       $item = get_record_by_id('Item', $itemId);
 

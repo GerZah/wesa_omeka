@@ -363,13 +363,11 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookAfterSaveItem($args)
     {
-        if (!$args['post']) {
-            return;
-        }
+      $db = $this->_db;
+      if ($args['post']) {
 
         $record = $args['record'];
         $post = $args['post'];
-        $db = $this->_db;
 
         // Save item relations.
         if (isset($post['item_relations_property_id'])) {
@@ -448,11 +446,13 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
                 }
             }
         }
+      } # if ($args['post'])
 
+      $itemId = intval(@$args["record"]["id"]);
+      if ($itemId) {
         // saving relation comments into the search index
         $provideRelationComments = get_option('item_relations_provide_relation_comments');
         if ($provideRelationComments) {
-            $itemId = intval($args["record"]["id"]);
             $sql = "SELECT relation_comment".
                     " FROM $db->ItemRelationsRelations".
                     " WHERE subject_item_id = $itemId";
@@ -470,7 +470,7 @@ class ItemRelationsPlugin extends Omeka_Plugin_AbstractPlugin
                 }
             }
         }
-
+      }
     }
 
     /**
