@@ -73,6 +73,7 @@ class ItemRelations_VocabulariesController extends Omeka_Controller_AbstractActi
         $this->_helper->flashMessenger(__('The vocabulary name cannot be empty.'), 'error');
       }
 
+
       $this->_helper->redirector('browse');
       return;
 
@@ -103,7 +104,7 @@ class ItemRelations_VocabulariesController extends Omeka_Controller_AbstractActi
 
       // Redirect to browse.
       $this->_helper->flashMessenger(__('The vocabulary was successfully edited.'), 'success');
-      $this->_helper->redirector('browse');
+      $this->_helper->redirector('show', null, null, array('id'=>$vocabulary->id));
       return;
     }
 
