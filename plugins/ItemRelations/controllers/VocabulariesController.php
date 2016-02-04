@@ -120,9 +120,20 @@ class ItemRelations_VocabulariesController extends Omeka_Controller_AbstractActi
   {
     // Edit existing properties.
     $propertyDescriptions = $this->_getParam('property_description');
+    $propertyLabels = $this->_getParam('property_label');
+
+    // Edit property Descriptions
     foreach ($propertyDescriptions as $propertyId => $propertyDescription) {
       $property = $this->_helper->db->getTable('ItemRelationsProperty')->find($propertyId);
       $property->description = $propertyDescription;
+      $property->save();
+    }
+
+    // Edit property Labels
+    // Check duplicate Labels
+    foreach ($propertyLabels as $propertyId => $propertyLabel) {
+      $property = $this->_helper->db->getTable('ItemRelationsProperty')->find($propertyId);
+      $property->label = $propertyLabel;
       $property->save();
     }
 
