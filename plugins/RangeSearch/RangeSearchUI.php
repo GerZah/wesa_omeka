@@ -64,7 +64,7 @@ EOT;
     $unitSelect = $unitsDetails["unitSelect"];
     // echo "<pre>" . print_r($unitsDetails,true) . "</pre>";
     // die();
-    echo __("Units") . ": ". $view->formSelect('rangeSearchUnits', -1, array(), $unitSelect);
+    echo __("Triple Units") . ": ". $view->formSelect('rangeSearchUnits', -1, array(), $unitSelect);
   ?>
   </p>
   <?php
