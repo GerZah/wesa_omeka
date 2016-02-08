@@ -56,35 +56,14 @@ EOT;
   <h2><?php echo __("Range Entry"); ?></h2>
   <p>
   <?php
-    $units = SELF::_fetchUnitArray();
-    $saniUnits = array( ); # -1 => __("Select Below") ); # Both arrays ...
-    $saniConversions = array(); # ... starting with index 0
-    foreach($units as $unit) {
-      $blankBracket = strpos($unit, " (");
-      if ($blankBracket) {
-        $conversion = substr($unit, $blankBracket+2);
-        $conversion = substr($conversion, 0, strpos($conversion, ")") );
-        preg_match_all("(\d+)", $conversion, $conversionDecimals);
-        if ($conversionDecimals) {
-          $conversionDecimals = $conversionDecimals[0];
-          foreach(array_keys($conversionDecimals) as $idx) {
-            $conversionDecimals[$idx] = ( $conversionDecimals[$idx]<1 ? 1 : $conversionDecimals[$idx] );
-          }
-          if ($conversionDecimals[0] != 1) { $conversionDecimals[0] = 1; }
-        }
-        # echo "<pre>#$conversion#</pre>"; #die();
-        # echo "<pre>" . print_r($conversionDecimals,true) . "</pre>"; # die();
-        $unit = substr($unit, 0, $blankBracket);
-      }
-      else { $conversionDecimals = array(); }
-      if ( substr_count($unit, "-") == 2 ) {
-        $saniUnits[] = $unit;
-        $saniConversions[] = $conversionDecimals;
-      }
-    }
-    // echo "<pre>" . print_r($saniUnits,true) . "</pre>";
-    // echo "<pre>" . print_r($saniConversions,true) . "</pre>";
-    $unitSelect = array( -1 => __("Select Below") ) + $saniUnits;
+    $unitsDetails = SELF::_fetchUnitDetails();
+    $saniUnits = $unitsDetails["saniUnits"];
+    $saniConversions = $unitsDetails["saniConversions"];
+    $saniGroups = $unitsDetails["saniGroups"];
+    $existingGroups = $unitsDetails["existingGroups"];
+    $unitSelect = $unitsDetails["unitSelect"];
+    // echo "<pre>" . print_r($unitsDetails,true) . "</pre>";
+    // die();
     echo __("Units") . ": ". $view->formSelect('rangeSearchUnits', -1, array(), $unitSelect);
   ?>
   </p>
