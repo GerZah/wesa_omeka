@@ -36,7 +36,7 @@ EOT;
                             array("type" => "text",
                                   "class" => "rangeSearchTextField",
                                   "size" => 4,
-                                  "maxlength" => 4,
+                                  "maxlength" => 10,
                                 )
                             );
   }
