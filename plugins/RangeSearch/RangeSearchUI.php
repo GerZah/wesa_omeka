@@ -62,14 +62,36 @@ EOT;
     $saniGroups = $unitsDetails["saniGroups"];
     $existingGroups = $unitsDetails["existingGroups"];
     $unitSelect = $unitsDetails["unitSelect"];
+
+    $jsGroups = array( 0 => array(), 1 => array() );
+    // $jsGroups[0] is going to store the groups with numerical IDs
+    // ... as array containing the corresponding triple units
+    // $jsGroups[1] is going to store an array of the triple unit IDs
+    // ... containing the corresponding numerical group ID
+    foreach(array_keys($existingGroups) as $idx => $groupTitle) {
+      $jsGroups[0][$idx] = $existingGroups[$groupTitle];
+      foreach($existingGroups[$groupTitle] as $id) {
+        $jsGroups[1][$id] = $idx;
+      }
+    }
+    ksort($jsGroups[1]);
+    // In other words:
+    // $jsGroups[0] can be used to list all triple units based on a group ID
+    // $jsGroups[1] can be used to find one triple unit's group ID
+
+    // echo "<pre>" . print_r($jsGroups,true) . "</pre>";
     // echo "<pre>" . print_r($unitsDetails,true) . "</pre>";
     // die();
-    echo __("Triple Units") . ": ". $view->formSelect('rangeSearchUnits', -1, array(), $unitSelect);
+    echo __("Triple Units") . ": ". $view->formSelect('rangeSearchUnits', -1, array(), $unitSelect).
+        "<div id='rangeSergeAutoConvDiv'>".
+        __("Auto Conversions") . ": " . $view->formSelect('rangeSergeAutoConv', -1, array(), array("foo" => "bar")).
+        "</div>";
   ?>
   </p>
   <?php
     $jsonSaniUnits = json_encode($saniUnits);
     $jsonSaniConversions = json_encode($saniConversions);
+    $jsonJsGroups = json_encode($jsGroups);
     queue_js_string("
       var rangeSearchSelectFirst='$selectFirst';
       var rangeSearchSelectUnit='$selectUnit';
@@ -77,6 +99,7 @@ EOT;
       $fullMatchRegEx
       var rangeSearchUnits=$jsonSaniUnits;
       var rangeSearchConversions=$jsonSaniConversions;
+      var rangeSearchGroups=$jsonJsGroups;
     ");
   ?>
   <p>
