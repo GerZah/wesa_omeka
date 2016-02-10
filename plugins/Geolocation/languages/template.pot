@@ -2,12 +2,12 @@
 # Copyright (C) 2011 Roy Rosenzweig Center for History and New Media
 # This file is distributed under the same license as the Omeka package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: SimplePages\n"
-"Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Geolocation/issues\n"
+"Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Geolocation/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
@@ -17,77 +17,77 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: GeolocationPlugin.php:247
+#: GeolocationPlugin.php:243
 msgid "Geolocation"
 msgstr ""
 
-#: GeolocationPlugin.php:364
+#: GeolocationPlugin.php:360
 msgid "kilometers"
 msgstr ""
 
-#: GeolocationPlugin.php:366
+#: GeolocationPlugin.php:362
 msgid "miles"
 msgstr ""
 
-#: GeolocationPlugin.php:368
+#: GeolocationPlugin.php:364
 #, php-format
 msgid "within %1$s %2$s of \"%3$s\""
 msgstr ""
 
-#: GeolocationPlugin.php:388 GeolocationPlugin.php:394
+#: GeolocationPlugin.php:384 GeolocationPlugin.php:390
 msgid "Map"
 msgstr ""
 
-#: GeolocationPlugin.php:427
+#: GeolocationPlugin.php:423
 msgid "Browse Map"
 msgstr ""
 
-#: GeolocationPlugin.php:476
+#: GeolocationPlugin.php:472
 msgid "Find A Geographic Location For The "
 msgstr ""
 
-#: GeolocationPlugin.php:488
+#: GeolocationPlugin.php:484
 msgid "Geolocation Map"
 msgstr ""
 
-#: GeolocationPlugin.php:489
+#: GeolocationPlugin.php:485
 msgid "Show attached items on a map"
 msgstr ""
 
-#: GeolocationPlugin.php:577
+#: GeolocationPlugin.php:573
 msgid "Find a Location by Address:"
 msgstr ""
 
-#: GeolocationPlugin.php:635 views/admin/map/browse.php:19
+#: GeolocationPlugin.php:631 views/admin/map/browse.php:19
 #: views/public/map/browse.php:27
 msgid "Select Map Overlay:"
 msgstr ""
 
-#: GeolocationPlugin.php:643
+#: GeolocationPlugin.php:639
 msgid "Latitude:"
 msgstr ""
 
-#: GeolocationPlugin.php:647
+#: GeolocationPlugin.php:643
 msgid "Find a Location by Coordinates"
 msgstr ""
 
-#: GeolocationPlugin.php:652
+#: GeolocationPlugin.php:648
 msgid "Longitude:"
 msgstr ""
 
-#: GeolocationPlugin.php:676
+#: GeolocationPlugin.php:672
 msgid "Are you sure you want to change the location of the item?"
 msgstr ""
 
-#: GeolocationPlugin.php:677
+#: GeolocationPlugin.php:673
 msgid "Error: The center of the map has not been set!"
 msgstr ""
 
-#: GeolocationPlugin.php:678
+#: GeolocationPlugin.php:674
 msgid "Error: You have no map links div!"
 msgstr ""
 
-#: GeolocationPlugin.php:679
+#: GeolocationPlugin.php:675
 #, php-format
 msgid "Error: \"%s\" was not found!"
 msgstr ""
