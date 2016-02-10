@@ -42,16 +42,19 @@ the round brackets will always be “1”.
 Additionally, you may group multiple triple units into categories; you can do so
 by adding the category name in box brackets before the triple unit, e.g. like this:
 <pre>
-[Imperial] mi-yd-ft
+[Imperial] mi-yd-ft (1-1760-3)
 [Imperial] yd-ft-in (1-3-12)
-[Metric] km-m-cm
+[Metric] km-m-cm (1-1000-100)
 [Metric] m-cm-mm (1-100-10)
 </pre>
-As you can see, you may specify a category name even if you have not specified
-conversion factors.<br>
-<em>Please note:</em> While “yard” and “meter” are each specified twice in two
-different triple units, Range Search has now way to connect them semantically.
+<em>Please note:</em> Assigning a group name does not require adding conversion rates.</p>
+<p>
+“Yard” / “feet” and “meter” / “centimeter” are specified twice in two different
+triple units. Within the same group of triple units, Range Search will
+automatically create a semantic coherence between identical single units, so you
+will be able to convert between them, based on their respective conversion rates.
 </p>
+<hr>
 <p>
 Entering numbers or ranges (hence the name, Range Search) into metadata fields,
 you may use the pop-up tool that you can reach from within the item editor. You
