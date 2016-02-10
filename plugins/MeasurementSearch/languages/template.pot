@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MeasurementSearch\n"
-"Report-Msgid-Bugs-To: http://github.com/omeka/plugin-MeasurementSearch/"
+"Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-MeasurementSearch/"
 "issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: MeasurementSearchPlugin.php:502
+#: MeasurementSearchPlugin.php:495
 msgid "Measurement Search Debug Output"
 msgstr ""
 

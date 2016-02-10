@@ -2,12 +2,12 @@
 # Copyright (C) 2014 Roy Rosenzweig Center for History and New Media
 # This file is distributed under the same license as the Omeka package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Item Relations\n"
-"Report-Msgid-Bugs-To: http://github.com/omeka/plugin-ItemRelations/issues\n"
+"Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-ItemRelations/issues\n"
 "POT-Creation-Date: 2014-01-13 12:59-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
