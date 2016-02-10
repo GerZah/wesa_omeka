@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
-"Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Geolocation/issues\n"
+"Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Geolocation/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2015-11-23 11:43+0100\n"
+"PO-Revision-Date: 2016-02-10 14:19+0100\n"
 "Last-Translator: githanjalli <anjallinhere@gmail.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -18,76 +18,77 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.6\n"
 
-#: GeolocationPlugin.php:247
+#: GeolocationPlugin.php:243
 msgid "Geolocation"
 msgstr "Geolokalisierung"
 
-#: GeolocationPlugin.php:364
+#: GeolocationPlugin.php:360
 msgid "kilometers"
 msgstr "Kilometer"
 
-#: GeolocationPlugin.php:366
+#: GeolocationPlugin.php:362
 msgid "miles"
 msgstr "Meilen"
 
-#: GeolocationPlugin.php:368
+#: GeolocationPlugin.php:364
 #, php-format
 msgid "within %1$s %2$s of \"%3$s\""
 msgstr "im Abstand von %1$s %2$s von „%3$s“"
 
-#: GeolocationPlugin.php:388 GeolocationPlugin.php:394
+#: GeolocationPlugin.php:384 GeolocationPlugin.php:390
 msgid "Map"
 msgstr "Karte"
 
-#: GeolocationPlugin.php:427
+#: GeolocationPlugin.php:423
 msgid "Browse Map"
 msgstr "Durchsuchen der Karte"
 
-#: GeolocationPlugin.php:476
+#: GeolocationPlugin.php:472
 msgid "Find A Geographic Location For The "
 msgstr "Finde einen geographischen Standort für die"
 
-#: GeolocationPlugin.php:488
+#: GeolocationPlugin.php:484
 msgid "Geolocation Map"
 msgstr "Geolokalisierungs-Karte"
 
-#: GeolocationPlugin.php:489
+#: GeolocationPlugin.php:485
 msgid "Show attached items on a map"
 msgstr "Angefügte Elemente auf einer Karte anzeigen"
 
-#: GeolocationPlugin.php:577
+#: GeolocationPlugin.php:573
 msgid "Find a Location by Address:"
 msgstr "Finden Sie einen Ort anhand der Adresse:"
 
-#: GeolocationPlugin.php:635 views/admin/map/browse.php:19 views/public/map/browse.php:27
+#: GeolocationPlugin.php:631 views/admin/map/browse.php:19
+#: views/public/map/browse.php:27
 msgid "Select Map Overlay:"
 msgstr "Kartenüberlagerung auswählen:"
 
-#: GeolocationPlugin.php:643
+#: GeolocationPlugin.php:639
 msgid "Latitude:"
 msgstr "Breitengrad:"
 
-#: GeolocationPlugin.php:647
+#: GeolocationPlugin.php:643
 msgid "Find a Location by Coordinates"
 msgstr "Finden Sie einen Ort anhand der Koordinaten"
 
-#: GeolocationPlugin.php:652
+#: GeolocationPlugin.php:648
 msgid "Longitude:"
 msgstr "Längengrad:"
 
-#: GeolocationPlugin.php:676
+#: GeolocationPlugin.php:672
 msgid "Are you sure you want to change the location of the item?"
 msgstr "Sind Sie sicher, dass Sie den Ort des Objektes ändern wollen?"
 
-#: GeolocationPlugin.php:677
+#: GeolocationPlugin.php:673
 msgid "Error: The center of the map has not been set!"
 msgstr "Fehler: Das Zentrum der Karte wurde nicht definiert!"
 
-#: GeolocationPlugin.php:678
+#: GeolocationPlugin.php:674
 msgid "Error: You have no map links div!"
 msgstr "Fehler: Sie haben keinen Karten-Link div!"
 
-#: GeolocationPlugin.php:679
+#: GeolocationPlugin.php:675
 #, php-format
 msgid "Error: \"%s\" was not found!"
 msgstr "Fehler „%s“ wurde nicht gefunden!"
