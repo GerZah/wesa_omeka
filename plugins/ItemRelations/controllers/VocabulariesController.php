@@ -151,6 +151,7 @@ class ItemRelations_VocabulariesController extends Omeka_Controller_AbstractActi
 
       // Labels must be unique.
       if ($this->_helper->db->getTable('ItemRelationsProperty')->findByLabel($newPropertyLabel)) {
+          $this->_helper->flashMessenger(__('Existing vocabulary properties cannot be added again.'), 'error');
           continue;
         }
 
