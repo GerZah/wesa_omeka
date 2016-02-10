@@ -319,12 +319,45 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
     if ($module === 'default' && $controller === 'items' && in_array($action, array('add', 'edit'))) {
       queue_js_file('itemreferences');
+      $itemTypesList = array(
+          '-1' => '- ' . __('All') . ' -',
+      );
+      $itemTypesList += $this->_getUsedItemTypes();
+
+      #require dirname(__FILE__) . '/item-references-form.php';
+
     }
 
     if ($module === 'default' && $controller === 'items' && $action === 'show') {
       queue_js_file('referencemap');
     }
 
+  }
+  /**
+   * Get the list of used item types for select form.
+   *
+   * @return array
+   */
+  protected function _getUsedItemTypes()
+  {
+      $db = get_db();
+
+      $itemTypesTable = $db->getTable('ItemType');
+      $itemTypesAlias = $itemTypesTable->getTableAlias();
+
+      $select = $itemTypesTable->getSelect()
+          ->reset(Zend_Db_Select::COLUMNS)
+          ->from(array(), array($itemTypesAlias . '.id', $itemTypesAlias . '.name'))
+          ->joinInner(array('items' => $db->Item), "items.item_type_id = $itemTypesAlias.id", array())
+          ->group($itemTypesAlias . '.id')
+          ->order($itemTypesAlias . '.name ASC');
+
+      $permissions = new Omeka_Db_Select_PublicPermissions('Items');
+      $permissions->apply($select, 'items');
+
+      $itemTypes = $db->fetchPairs($select);
+
+      return $itemTypes;
   }
 
   /**
