@@ -322,9 +322,8 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       $itemTypesList = array(
           '-1' => '- ' . __('All') . ' -',
       );
-      $itemTypesList += $this->_getUsedItemTypes();
-
-      #require dirname(__FILE__) . '/item-references-form.php';
+      $itemTypesList += SELF::_getUsedItemTypes();
+      require dirname(__FILE__) . '/item-references-form.php';
 
     }
 

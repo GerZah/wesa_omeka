@@ -115,10 +115,9 @@ jQuery(document).bind("omeka:elementformload", function() {
   $(".itemReferencesBtn").unbind("click").click(function(e) {
     e.preventDefault();
 
-    $("#new_relation_property_id").hide().prev().hide().prev().hide();
-    $("#relation_comment").parent().hide();
-    $("#add-relation").hide();
-    $("#add-relation").parent().append("<a href='#' id='select_item' class='green button'>"+selectButtonTxt+"</a>");
+    //$("#new_relation_property_id").hide().prev().hide().prev().hide();
+    $("#add-reference").hide();
+    $("#add-reference").parent().append("<a href='#' id='select_item' class='green button'>"+selectButtonTxt+"</a>");
 
     var currentTitle = $(this).prev().prev().attr("id"); // for title
     var currentId = $(this).prev().attr("id"); // for id
@@ -134,7 +133,7 @@ jQuery(document).bind("omeka:elementformload", function() {
       lightbox.close();
     });
 
-    lightbox("#item-relation-selector");
+    lightbox("#item-reference-selector");
   });
 
   $(".itemReferencesClearBtn").click(function(e) {
@@ -147,12 +146,11 @@ jQuery(document).bind("omeka:elementformload", function() {
     $("#"+currentId).val("");
   } );
 
-  $("#item-relation-selector button").click(function(e) { e.preventDefault(); });
+  $("#item-reference-selector button").click(function(e) { e.preventDefault(); });
 
   $(document).on('lity:close', function(event, lightbox) {
-    $("#new_relation_property_id").show().prev().show().prev().show();
-    $("#relation_comment").parent().show();
-    $("#add-relation").show();
+    //$("#new_relation_property_id").show().prev().show().prev().show();
+    $("#add-reference").show();
     $("#select_item").remove();
   });
 

@@ -4,10 +4,13 @@
     queue_js_file('lity.min');
     DEFINE("LITYLOADED", 1);
   }
-  ?>
+  if(!$view){
+    $view = get_view();
+   }
+?>
 <div id="item-reference-selector" style="overflow: auto; padding: 20px; border-radius: 6px; background: #fff" class="lity-hide">
       <p><label for="new_relation_object_item_typeReference_id"><?php echo __('Item Types'); ?>: </label>
-      <?php echo $this->formSelect('new_relation_object_item_typeReference_id', null, array('multiple' => false), $itemTypesList); ?></p>
+      <?php echo $view->formSelect('new_relation_object_item_typeReference_id', null, array('multiple' => false), $itemTypesList); ?></p>
 
       <p><?php echo __('Item Sort'); ?>:
           <fieldset>
@@ -32,5 +35,5 @@
       <br>
       <ul id="lookup-resultsReference"></ul>
 
-  <a href="#" id="add-relation" class="green button" data-lity-close><?php echo __('Select'); ?></a>
+  <a href="#" id="add-reference" class="green button" data-lity-close><?php echo __('Select'); ?></a>
   </div>
