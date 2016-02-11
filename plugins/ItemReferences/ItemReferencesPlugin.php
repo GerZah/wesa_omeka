@@ -318,13 +318,13 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     $action = $request->getActionName();
 
     if ($module === 'default' && $controller === 'items' && in_array($action, array('add', 'edit'))) {
-      queue_js_file('itemreferences');
       $itemTypesList = array(
           '-1' => '- ' . __('All') . ' -',
       );
       $itemTypesList += SELF::_getUsedItemTypes();
+      queue_css_file("item-references");
       require dirname(__FILE__) . '/item-references-form.php';
-
+      queue_js_file('itemreferences');
     }
 
     if ($module === 'default' && $controller === 'items' && $action === 'show') {

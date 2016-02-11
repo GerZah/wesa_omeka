@@ -1,4 +1,6 @@
-jQuery(document).bind("omeka:elementformload", function() {
+//jQuery(document).bind("omeka:elementformload", function() {
+jQuery(document).ready(function () {
+
   var $ = jQuery; // use noConflict version of jQuery as the short $ within this block
 
   var options = {};
@@ -12,7 +14,7 @@ jQuery(document).bind("omeka:elementformload", function() {
       options = {
           partialReference: '',
           item_typeReference: -1,
-          sortReference: 'mod_desc',
+          sortReference: 'mod_desc_ref',
           pageReference: 0,
           per_pageReference: 15,
           max_pageReference: 0
@@ -25,11 +27,11 @@ jQuery(document).bind("omeka:elementformload", function() {
   function updateChoices() {
       options['partialReference'] = $('#partial_object_title_reference').val();
       options['item_typeReference'] = $('#new_relation_object_item_type_id_reference').val();
-      if ($('input[name=itemsListsortReference]:checked').val() === 'timestampReference') {
-          options['sortReference'] = 'mod_desc';
+      if ($('input[name=itemsListsortReference]:checked').val() === 'timestamp_reference') {
+          options['sortReference'] = 'mod_desc_ref';
       }
-      else {
-          options['sortReference'] = 'alpha_asc';
+      else{
+          options['sortReference'] = 'alpha_asc_ref';
       }
       if (options['pageReference'] < 0) {
           options['pageReference'] = 0;
@@ -56,17 +58,17 @@ jQuery(document).bind("omeka:elementformload", function() {
               options['max_pageReference'] = Math.floor(data['count'] / options['per_pageReference']);
 
               if (0 < options['pageReference']) {
-                  $('#selector-previous-page-reference').removeClass('pg_disabled_reference');
+                  $('#selector-previous-page-reference').removeClass('pg_disabled');
               }
               else {
-                  $('#selector-previous-page-reference').addClass('pg_disabled_reference');
+                  $('#selector-previous-page-reference').addClass('pg_disabled');
               }
 
               if (options['pageReference'] < options['max_pageReference']) {
-                  $('#selector-next-page-reference').removeClass('pg_disabled_reference');
+                  $('#selector-next-page-reference').removeClass('pg_disabled');
               }
               else {
-                  $('#selector-next-page-reference').addClass('pg_disabled_reference');
+                  $('#selector-next-page-reference').addClass('pg_disabled');
               }
           }
       });
