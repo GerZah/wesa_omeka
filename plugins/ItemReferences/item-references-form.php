@@ -21,19 +21,19 @@
           </fieldset>
       </p>
 
-      <p><?php echo __('Object Title'); ?>: <span id="object_titleReference"></span></p>
-      <input id="new_reference_object_item_id" type="hidden">
-      <label for="partialReference_object_titleReference"><?php echo __('Partial Object Title'); ?>: </label>
-      <input id="partialReference_object_titleReference">
+      <p><?php echo __('Object Title'); ?>: <span id="object_title_reference"></span></p>
+      <input id="new_reference_object_item_id_reference" type="hidden">
+      <label for="partial_object_title_reference"><?php echo __('Partial Object Title'); ?>: </label>
+      <input id="partial_object_title_reference">
 
       <br>
       <ul class="pagination">
-          <li id="selector-previous-pageReference" class="pg_disabledReference pagination_previous"><a href="#">&lt;</a></li>
-          <li id="selector-next-pageReference" class="pg_disabledReference pagination_next"><a href="#">&gt;</a></li>
+          <li id="selector-previous-page-reference" class="pg_disabled_reference pagination_previous"><a href="#">&lt;</a></li>
+          <li id="selector-next-page-reference" class="pg_disabled_reference pagination_next"><a href="#">&gt;</a></li>
       </ul>
 
       <br>
-      <ul id="lookup-resultsReference"></ul>
+      <ul id="lookup-results-reference"></ul>
 
   <a href="#" id="add-reference" class="green button" data-lity-close><?php echo __('Select'); ?></a>
   </div>
