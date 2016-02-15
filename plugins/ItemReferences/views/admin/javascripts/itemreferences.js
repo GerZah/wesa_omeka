@@ -1,5 +1,5 @@
-//jQuery(document).bind("omeka:elementformload", function() {
-jQuery(document).ready(function () {
+jQuery(document).bind("omeka:elementformload", function() {
+//jQuery(document).ready(function () {
 
   var $ = jQuery; // use noConflict version of jQuery as the short $ within this block
 
@@ -73,7 +73,6 @@ jQuery(document).ready(function () {
           }
       });
   }
-
   $('#lookup-results-reference').on('click', 'li', function () {
       $('#new_reference_object_item_id_reference').val($(this).attr('data-value'));
       $('#object_title_reference').html($(this).html());
@@ -112,13 +111,14 @@ jQuery(document).ready(function () {
 
 
   var lightbox = lity(); // https://www.npmjs.com/package/lity
-  var selectButtonTxt = $(".itemReferencesBtn").first().text();
+  //var selectButtonTxt = $(".itemReferencesBtn").first().text();
 
   $(".itemReferencesBtn").unbind("click").click(function(e) {
     e.preventDefault();
 
-    $("#add-reference").hide();
-    $("#add-reference").parent().append("<a href='#' id='select_item' class='green button'>"+selectButtonTxt+"</a>");
+  //  $("#new_relation_property_id").hide().prev().hide().prev().hide();
+  //  $("#add-reference").hide();
+  //  $("#add-reference").parent().append("<a href='#' id='select_item' class='green button'>"+selectButtonTxt+"</a>");
 
     var currentTitle = $(this).prev().prev().attr("id"); // for title
     var currentId = $(this).prev().attr("id"); // for id
@@ -148,8 +148,6 @@ jQuery(document).ready(function () {
   $("#item-reference-selector button").click(function(e) { e.preventDefault(); });
 
   $(document).on('lity:close', function(event, lightbox) {
-    $("#add-reference").show();
-    $("#select_item").remove();
   });
 
 } );

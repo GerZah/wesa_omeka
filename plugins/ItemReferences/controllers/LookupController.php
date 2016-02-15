@@ -43,7 +43,7 @@ class ItemReferences_LookupController extends Omeka_Controller_AbstractActionCon
       $offset = $page * $per_page;
 
       $order_clause = 'ORDER BY items.item_type_id ASC, text ASC';
-      switch ($this->_getParam('sort')) {
+      switch ($this->_getParam('sortReference')) {
       case 'mod_desc_ref':
           $order_clause = 'ORDER BY UNIX_TIMESTAMP(modified) DESC, items.item_type_id ASC, text ASC';
           break;

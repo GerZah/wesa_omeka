@@ -40,5 +40,5 @@
 
       <br>
       <ul id="lookup-results-reference"></ul>
-  <a href="#" id="add-reference" class="green button" data-lity-close><?php echo __('Select'); ?></a>
+  <a href="#" id="select_item" class="green button" data-lity-close><?php echo __('Select'); ?></a>
   </div>
