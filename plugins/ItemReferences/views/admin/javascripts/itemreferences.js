@@ -136,7 +136,6 @@ jQuery(document).ready(function () {
   });
 
   $(".itemReferencesClearBtn").click(function(e) {
-
     e.preventDefault();
 
     var currentTitle = $(this).prev().prev().prev().attr("id"); // for title
