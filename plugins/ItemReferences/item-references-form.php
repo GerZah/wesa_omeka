@@ -1,5 +1,14 @@
 <?php
   $view = get_view();
+
+  if (!defined("LITYLOADED")) {
+    queue_css_file("lity.min");
+    queue_js_file('lity.min');
+    DEFINE("LITYLOADED", 1);
+  }
+
+  queue_js_file('itemreferences');
+  queue_css_file('item-references');
 ?>
 <div id="item-reference-selector" style="overflow: auto; padding: 20px; border-radius: 6px; background: #fff" class="lity-hide">
       <p><label for="new_relation_object_item_type_id_reference"><?php echo __('Item Types'); ?>: </label>
@@ -29,13 +38,3 @@
       <ul id="lookup-results-reference"></ul>
   <a href="#" id="add-reference" class="green button" data-lity-close><?php echo __('Select'); ?></a>
   </div>
-  <?php
-  if (!defined("LITYLOADED")) { ?>
-    <link href="<?php echo css_src('lity.min'); ?>" rel="stylesheet" type="text/css" />;
-    <?php echo js_tag('lity.min');
-    DEFINE("LITYLOADED", 1);
-  }
-?>
-<link href="<?php echo css_src('item-references'); ?>" rel="stylesheet" type="text/css" />
-<script type="text/javascript">var url = '<?php echo json_encode(url('item-references/lookup/')); ?>'</script>
-<?php echo js_tag('itemreferences'); ?>
