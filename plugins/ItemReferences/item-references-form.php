@@ -7,8 +7,12 @@
     DEFINE("LITYLOADED", 1);
   }
 
-  queue_js_file('itemreferences');
   queue_css_file('item-references');
+  queue_js_string("
+    var itemReferencesUrl = ".json_encode(url('item-references/lookup/')).";
+  ");
+  queue_js_file('itemreferences');
+
 ?>
 <div id="item-reference-selector" style="overflow: auto; padding: 20px; border-radius: 6px; background: #fff" class="lity-hide">
       <p><label for="new_relation_object_item_type_id_reference"><?php echo __('Item Types'); ?>: </label>
