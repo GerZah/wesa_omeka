@@ -8,7 +8,7 @@ jQuery(document).ready(function () {
   function resetOptions() {
       options['partialReference'] = '';
       options['item_typeReference'] = -1;
-      options['sortReference'] = 'mod_desc';
+      options['sortReference'] = 'mod_desc_ref';
       options['pageReference'] = 0;
       options['per_pageReference'] = 15;
       options = {
