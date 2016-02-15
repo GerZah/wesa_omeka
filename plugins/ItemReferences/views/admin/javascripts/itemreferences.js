@@ -1,6 +1,6 @@
 //jQuery(document).bind("omeka:elementformload", function() {
 jQuery(document).ready(function () {
-  console.log(itemReferencesUrl);
+
   var $ = jQuery; // use noConflict version of jQuery as the short $ within this block
 
   var options = {};
