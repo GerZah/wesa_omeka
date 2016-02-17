@@ -13,6 +13,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 		'uninstall',
 		'config_form', # prepare and display configuration form
 		'config', # store config settings in the database
+    'admin_head',
 		// 'after_save_item',
 		// 'after_delete_item',
 		// 'admin_items_search',
@@ -211,10 +212,45 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
   # ----------------------------------------------------------------------------
 
   /**
+  * Add measurements JavaScript code to editor
+  */
+  public function hookAdminHead() {
+    $request = Zend_Controller_Front::getInstance()->getRequest();
+    $module = $request->getModuleName();
+    if (is_null($module)) { $module = 'default'; }
+    $controller = $request->getControllerName();
+    $action = $request->getActionName();
+
+    if ($module === 'default' && $controller === 'items' && in_array($action, array('add', 'edit'))) {
+      require dirname(__FILE__) . '/measurements-form.php';
+    }
+
+  }
+
+  # ----------------------------------------------------------------------------
+
+  /**
   * Filter to modify measurements fields in item editor -- to show the popup, etc.
   */
   public function filterElementInput($components, $args) {
     $view = get_view();
+    $visibleContent = ""; // "visible";
+    $invisibleContent = ""; // "invisible";
+    $components['input'] = "";
+    $components['input'] .= $view->formText(
+                              $args['input_name_stem'] . '[text]'.'-editdisplay',
+                              $visibleContent,
+                              array('readonly' => 'true', 'style' => 'width: auto;'),
+                              null
+                            );
+    $components['input'] .= $view->formHidden(
+                              $args['input_name_stem'].'[text]',
+                              $invisibleContent,
+                              array('readonly' => 'true', 'style' => 'width: auto;'),
+                              null
+                            );
+    $components['input'] .= " <button class='measurementsBtn'>".__("Edit")."</button>";
+    $components['input'] .= "<button class='measurementsClearBtn'>".__("Clear")."</button>";
     $components['html_checkbox'] = false;
     return $components;
   }
