@@ -2,6 +2,7 @@ jQuery(document).bind("omeka:elementformload", function() {
   var $ = jQuery; // use noConflict version of jQuery as the short $ within this block
 
   var lightbox = lity(); // https://www.npmjs.com/package/lity
+  var lightbox2 = lity();
 
   var currentVivisble;
   var currentInvisible;
@@ -48,5 +49,14 @@ jQuery(document).bind("omeka:elementformload", function() {
     lightbox.close();
   } );
 
+  // ---------------------------------------------------------------------------
+
+  $(".measurementsTextField").click(function(e) {
+    var currentEditId = this.id;
+    console.log(currentEditId);
+    lightbox2("#measurementsPopup2");
+  } );
+
+  // ---------------------------------------------------------------------------
 
 } );
