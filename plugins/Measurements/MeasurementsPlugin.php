@@ -234,8 +234,8 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
   */
   public function filterElementInput($components, $args) {
     $view = get_view();
-    $visibleContent = ""; // "visible";
-    $invisibleContent = ""; // "invisible";
+    $invisibleContent = $args['value']; // invisible text -- regular element's content, here JSON data
+    $visibleContent = "*$invisibleContent*"; // visible text -- transformed, readable version of $invisibleContent JSON
     $components['input'] = "";
     $components['input'] .= $view->formText(
                               $args['input_name_stem'] . '[text]'.'-editdisplay',
