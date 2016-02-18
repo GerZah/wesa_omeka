@@ -98,7 +98,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $saniUnits = array();
 
     // One potential unit -- e.g. "abc-def-ghi (1-10-10)"
-    $saniUnitRegex = "^\W*([a-zA-Z]+)-([a-zA-Z]+)-([a-zA-Z]+)\W+\(1-(\d+)-(\d+)\)\W*$";
+    $saniUnitRegex = "^\W*([a-zA-ZßäöüÄÖÜ]+)-([a-zA-ZßäöüÄÖÜ]+)-([a-zA-ZßäöüÄÖÜ]+)\W+\(1-(\d+)-(\d+)\)\W*$";
 
     foreach($units as $unit) {
       if (preg_match("/$saniUnitRegex/", $unit, $matches)) {

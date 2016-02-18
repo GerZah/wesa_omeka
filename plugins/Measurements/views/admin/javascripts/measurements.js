@@ -16,8 +16,6 @@ jQuery(document).bind("omeka:elementformload", function() {
   var curConv1;
   var curConv2;
   var curConv3;
-  var curSingleUnitSqared;
-  var curSingleUnitCubic;
 
   // ---------------------------------------------------------------------------
 
@@ -27,8 +25,13 @@ jQuery(document).bind("omeka:elementformload", function() {
     currentVivisble = $(this).prev().prev().attr("id"); // for visible text
     currentInvisible = $(this).prev().attr("id"); // for invisible text
 
-    // +#+#+# Clear values -- and/or populate with editable values
-    $("#measurementUnits").val(1).change(); // +#+#+# -1 == "Select Below"
+    // +#+#+# Clear values -- or better: populate with (possibly empty) editable values
+    $("#measurementUnits").val(-1).change();
+    for(var i=1; i<=3; i++) {
+      $("#measurementLength"+i).val("").removeData("values");
+    }
+    $("#measurementFace").val("").removeData("values");
+    $("#measurementVolume").val("").removeData("values");
 
     lightbox("#measurementsPopup");
   } );
@@ -71,28 +74,34 @@ jQuery(document).bind("omeka:elementformload", function() {
   $("#measurementUnits").change(function(e){
     curTripleUnit = $(this).val();
 
-    curSingleUnit1 = curSingleUnit2 = curSingleUnit3 = curSingleUnitSqared = curSingleUnitCubic = "";
+    curSingleUnit1 = curSingleUnit2 = curSingleUnit3 = "";
     curConv1 = curConv2 = curConv3 = 0;
 
     if (curTripleUnit>=0) {
       curSingleUnit1 = measurementsUnits[curTripleUnit]["units"][0];
       curSingleUnit2 = measurementsUnits[curTripleUnit]["units"][1];
       curSingleUnit3 = measurementsUnits[curTripleUnit]["units"][2];
-      curSingleUnitSqared = curSingleUnit3 + "²";
-      curSingleUnitCubic = curSingleUnit3 + "³";
       curConv1 = measurementsUnits[curTripleUnit]["convs"][0];
       curConv2 = measurementsUnits[curTripleUnit]["convs"][1];
       curConv3 = measurementsUnits[curTripleUnit]["convs"][2];
     }
+    updateUnitSpans();
 
+    // +#+#+# perform necessary automatic calculations to normalization / target values
+    for(var i=1; i<=3; i++) { recalcTripleToSingle("measurementLength"+i); }
+    recalcTripleToSingle("measurementFace");
+    recalcTripleToSingle("measurementVolume");
+  } );
+
+  function updateUnitSpans() {
     $(".measurementsLenghtUnit1").empty().append(curSingleUnit1);
     $(".measurementsLenghtUnit2").empty().append(curSingleUnit2);
     $(".measurementsLenghtUnit3").empty().append(curSingleUnit3);
-    $(".measurementsSurfaceUnit").empty().append(curSingleUnitSqared);
-    $(".measurementsVolumeUnit").empty().append(curSingleUnitCubic);
-
-    // +#+#+# perform necessary automatic calculations to normalization / target values
-  } );
+    if (curSingleUnit1) {
+      $(".measurementsFaceUnit").append("²");
+      $(".measurementsVolumeUnit").append("³");
+    }
+  }
 
   // ---------------------------------------------------------------------------
 
@@ -105,11 +114,22 @@ jQuery(document).bind("omeka:elementformload", function() {
     }
     else {
       currentEditId = this.id;
+
       var currentTitle = $("#"+currentEditId).data("title");
       $("#measurementsTripleEditTitle").empty().append(currentTitle);
+
       var values = $("#"+currentEditId).data("values");
       if (typeof values === "undefined") { values = [ null, "", "", "" ]; }
       for(var i=1; (i<=3); i++) { $("#measurementValue"+i).val(values[i]); }
+
+      var currentExp = $("#"+currentEditId).data("exp");
+      $(".measurementValue").removeClass("measurementsFaceUnit measurementsVolumeUnit");
+      switch (currentExp) {
+        case 2: $(".measurementValue").addClass("measurementsFaceUnit"); break;
+        case 3: $(".measurementValue").addClass("measurementsVolumeUnit"); break;
+      }
+      updateUnitSpans();
+
       lightbox2("#measurementsPopup2");
     }
   } );
@@ -146,11 +166,19 @@ jQuery(document).bind("omeka:elementformload", function() {
         values[i] = parseInt(values[i]);
       }
       $("#"+currentEditId).data("values", values);
-      var newval = (values[1] * curConv2 + values[2]) * curConv3 + values[3];
-      $("#"+currentEditId).val(newval);
+      recalcTripleToSingle(currentEditId);
       lightbox2.close();
     }
   } );
+
+  function recalcTripleToSingle(editId) {
+    var values = $("#"+editId).data("values");
+    var exp = parseInt($("#"+editId).data("exp"));
+    if (typeof values !== "undefined") {
+      var newval = (values[1] * Math.pow(curConv2,exp) + values[2]) * Math.pow(curConv3,exp) + values[3];
+      $("#"+editId).val(newval);
+    }
+  }
 
   // ---------------------------------------------------------------------------
 
