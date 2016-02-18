@@ -222,6 +222,10 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $action = $request->getActionName();
 
     if ($module === 'default' && $controller === 'items' && in_array($action, array('add', 'edit'))) {
+      $tripleSelect = array( -1 => __("Select Below") );
+      foreach(SELF::$_saniUnits as $idx => $saniUnit) {
+        $tripleSelect[$idx] = $saniUnit["verb"];
+      }
       require dirname(__FILE__) . '/measurements-form.php';
     }
 
