@@ -29,6 +29,9 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     'measurements_select' => '[]'
 	);
 
+  // One potential unit -- e.g. "abc-def-ghi (1-10-10)"
+  protected static $_saniUnitRegex = "^\W*([a-zA-ZßäöüÄÖÜ]+)-([a-zA-ZßäöüÄÖÜ]+)-([a-zA-ZßäöüÄÖÜ]+)\W+\(1-(\d+)-(\d+)\)\W*$";
+
   # ----------------------------------------------------------------------------
 
   private static $_saniUnits;
@@ -97,11 +100,8 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
     $saniUnits = array();
 
-    // One potential unit -- e.g. "abc-def-ghi (1-10-10)"
-    $saniUnitRegex = "^\W*([a-zA-ZßäöüÄÖÜ]+)-([a-zA-ZßäöüÄÖÜ]+)-([a-zA-ZßäöüÄÖÜ]+)\W+\(1-(\d+)-(\d+)\)\W*$";
-
     foreach($units as $unit) {
-      if (preg_match("/$saniUnitRegex/", $unit, $matches)) {
+      if (preg_match("/".SELF::$_saniUnitRegex."/", $unit, $matches)) {
         $saniUnit = array(
           "units" => array( $matches[1], $matches[2], $matches[3] ),
           "convs" => array( 1, intval($matches[4]), intval($matches[5]) ),
@@ -240,11 +240,12 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $view = get_view();
     $invisibleContent = $args['value']; // invisible text -- regular element's content, here JSON data
     $visibleContent = "*$invisibleContent*"; // visible text -- transformed, readable version of $invisibleContent JSON
+    $visibleContent = SELF::_verbatimSourceData($invisibleContent);
     $components['input'] = "";
-    $components['input'] .= $view->formText(
+    $components['input'] .= $view->formTextarea(
                               $args['input_name_stem'] . '[text]'.'-editdisplay',
                               $visibleContent,
-                              array('readonly' => 'true', 'style' => 'width: auto;'),
+                              array('readonly' => 'true', 'rows' => 8),
                               null
                             );
     $components['input'] .= $view->formHidden(
@@ -259,13 +260,59 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     return $components;
   }
 
+  protected function _verbatimSourceData($json, $br="") {
+    $sourceData = json_decode(html_entity_decode($json));
+    $result = "";
+
+    if ($sourceData) {
+      $tripleUnit =  $sourceData->u->v;
+      $result .= __("Unit") . ": $tripleUnit\n\n";
+
+      $singleUnits = array( "", "", "", "" );
+      if (preg_match("/".SELF::$_saniUnitRegex."/", $tripleUnit, $matches)) {
+        $singleUnits = array( "", $matches[1], $matches[2], $matches[3] );
+      }
+
+      $editFields = array(
+        array("l1", __("Length") . " 1", 1),
+        array("l2", __("Length") . " 2", 1),
+        array("l3", __("Length") . " 3", 1),
+        array("f", __("Surface"), 2),
+        array("v", __("Volume"), 3),
+      );
+      $indices = array( "", "", "²", "³" );
+
+      foreach(array_keys($editFields) as $i) {
+        $result .= $editFields[$i][1] . " = ";
+        $editField = $editFields[$i][0];
+        $values = $sourceData->$editField;
+        $result .= intval($values[0]) . " " . $singleUnits[3] . $indices[$editFields[$i][2]];
+
+        $result .= " (";
+        $valueText = array();
+        for($j=1; $j<=3; $j++) {
+          $valueText[] = $values[$j] . " " . $singleUnits[$j] . $indices[$editFields[$i][2]];
+        }
+        $result .= implode(" / ", $valueText);
+        $result .= ")\n";
+      }
+    }
+
+    if ($br) { $result = str_replace("\n", $br, $result); }
+
+    return $result;
+  }
+
   # ----------------------------------------------------------------------------
 
   /**
   * Filter to modify measurements fields during rendering -- to display calculated values, etc.
   */
   public function filterDisplay($text, $args) {
-    $result = $text." foo";
+    // $result = "JSON: " . $text;
+    // $data = json_decode(html_entity_decode($text));
+    // $result = "<pre>" . json_last_error_msg() . " - " . print_r($data, true) . "</pre>";
+    $result = SELF::_verbatimSourceData($text, "<br>");
     return $result;
   }
 

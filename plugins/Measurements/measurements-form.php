@@ -8,8 +8,12 @@
   }
 
   $i18nStrings = array(
-    "selectTriple" => "Please start by selecting a triple unit.",
-    "enterNumerical" => "Please enter numerical values into all fields (or leave them empty).",
+    "selectTriple" => __("Please start by selecting a triple unit."),
+    "enterNumerical" => __("Please enter numerical values into all fields (or leave them empty)."),
+    "unitVerb" => __("Unit"),
+    "lengthVerb" => __("Length"),
+    "surfaceVerb" => __("Surface"),
+    "volumeVerb" => __("Volume"),
   );
 
   queue_css_file('measurements');
@@ -47,6 +51,8 @@
       echo $view->formSelect('measurementUnits', -1, array(), $tripleSelect)
     ?>
   </p>
+
+  <h4><?php echo __("Data Entry"); ?></h4>
 
   <p>
     <?php
@@ -91,6 +97,8 @@
       ));
     ?>
   </p>
+
+  <!-- <h4><?php echo __("Derived Data"); ?></h4> -->
 
   <div class="centerButtons">
     <a href="#" id="measurementsApply" class="green button"><?php echo __('Apply'); ?></a>
