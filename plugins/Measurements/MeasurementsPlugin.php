@@ -30,7 +30,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 	);
 
   // One potential unit -- e.g. "abc-def-ghi (1-10-10)"
-  protected static $_saniUnitRegex = "^\W*([a-zA-ZßäöüÄÖÜ]+)-([a-zA-ZßäöüÄÖÜ]+)-([a-zA-ZßäöüÄÖÜ]+)\W+\(1-(\d+)-(\d+)\)\W*$";
+  protected static $_saniUnitRegex = "^\W*(\S+)-(\S+)-(\S+)\W+\(1-(\d+)-(\d+)\)\W*$";
 
   # ----------------------------------------------------------------------------
 
@@ -311,9 +311,6 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
   * Filter to modify measurements fields during rendering -- to display calculated values, etc.
   */
   public function filterDisplay($text, $args) {
-    // $result = "JSON: " . $text;
-    // $data = json_decode(html_entity_decode($text));
-    // $result = "<pre>" . json_last_error_msg() . " - " . print_r($data, true) . "</pre>";
     $result = SELF::_verbatimSourceData($text, "<br>");
     return $result;
   }
