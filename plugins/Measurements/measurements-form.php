@@ -56,7 +56,7 @@
 
   <p>
     <?php
-      echo "<strong>" . __("Length 1/2/3") . ":</strong> ";
+      echo "<strong>" . __("Length") . " 1/2/3" . ":</strong> ";
       for($i=1; $i<=3; $i++) {
         echo editField(array(
           "view" => $view,
@@ -72,16 +72,18 @@
   </p>
   <p>
     <?php
-      echo "<strong>" . __("Face") . ":</strong> ";
-      echo editField(array(
-        "view" => $view,
-        "id" => "measurementFace",
-        "title" => __("Face"),
-        "class" => "measurementsTextField",
-        "readonly" => true,
-        "exp" => 2,
-        "span" => "measurementsLenghtUnit3 measurementsFaceUnit",
-      ));
+      echo "<strong>" . __("Face") . " 1/2/3" . ":</strong> ";
+      for($i=1; $i<=3; $i++) {
+        echo editField(array(
+          "view" => $view,
+          "id" => "measurementFace$i",
+          "title" => __("Face")." $i",
+          "class" => "measurementsTextField",
+          "readonly" => true,
+          "exp" => 2,
+          "span" => "measurementsLenghtUnit3 measurementsFaceUnit",
+        ));
+      }
     ?>
   </p>
   <p>
@@ -90,7 +92,7 @@
       echo editField(array(
         "view" => $view,
         "id" => "measurementVolume",
-        "title" => __("Face"),
+        "title" => __("Volume"),
         "class" => "measurementsTextField",
         "readonly" => true,
         "exp" => 3,
@@ -119,16 +121,18 @@
   </p>
   <p>
     <?php
-      echo "<strong>" . __("Face") . ":</strong> ";
+    echo "<strong>" . __("Face") . " 1/2/3" . ":</strong> ";
+    for($i=1; $i<=3; $i++) {
       echo editField(array(
         "view" => $view,
-        "id" => "measurementFaceDerived",
-        "title" => __("Face"),
+        "id" => "measurementFace$i"."Derived",
+        "title" => __("Face")." $i",
         "class" => "measurementsTextFieldDerived",
         "readonly" => true,
         "exp" => 2,
         "span" => "measurementsLenghtUnit3 measurementsFaceUnit",
       ));
+    }
     ?>
   </p>
   <p>
@@ -137,7 +141,7 @@
       echo editField(array(
         "view" => $view,
         "id" => "measurementVolumeDerived",
-        "title" => __("Face"),
+        "title" => __("Volume"),
         "class" => "measurementsTextFieldDerived",
         "readonly" => true,
         "exp" => 3,

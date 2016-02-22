@@ -21,7 +21,9 @@ jQuery(document).bind("omeka:elementformload", function() {
     ["l1",  "measurementLength1", measurementsI18n["lengthVerb"] + " 1",  1],
     ["l2",  "measurementLength2", measurementsI18n["lengthVerb"] + " 2",  1],
     ["l3",  "measurementLength3", measurementsI18n["lengthVerb"] + " 3",  1],
-    ["f",   "measurementFace",    measurementsI18n["faceVerb"],        2],
+    ["f1",  "measurementFace1",   measurementsI18n["faceVerb"]   + " 1",  2],
+    ["f2",  "measurementFace2",   measurementsI18n["faceVerb"]   + " 2",  2],
+    ["f3",  "measurementFace3",   measurementsI18n["faceVerb"]   + " 3",  2],
     ["v",   "measurementVolume",  measurementsI18n["volumeVerb"],         3],
   ];
 
@@ -98,12 +100,12 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   // $("#measurementsCancel").click(function(e) { } ); // via  data-lity-close
 
-  $("#measurementsClear").unbind("click").click(function(e) {
+  $("#measurementsClear").click(function(e) { // unbind("click").
     clearValues();
     lightbox.close();
   } );
 
-  $("#measurementsApply").unbind("click").click(function(e) {
+  $("#measurementsApply").click(function(e) { // unbind("click").
     var targetData = new Object();
 
     var units = { };

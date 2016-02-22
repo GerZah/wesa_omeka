@@ -245,7 +245,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $components['input'] .= $view->formTextarea(
                               $args['input_name_stem'] . '[text]'.'-editdisplay',
                               $visibleContent,
-                              array('readonly' => 'true', 'rows' => 8, 'class' => 'measurementsField'),
+                              array('readonly' => 'true', 'rows' => 10, 'class' => 'measurementsField'),
                               null
                             );
     $components['input'] .= $view->formHidden(
@@ -277,7 +277,9 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         array("l1", __("Length") . " 1", 1),
         array("l2", __("Length") . " 2", 1),
         array("l3", __("Length") . " 3", 1),
-        array("f", __("Face"), 2),
+        array("f1", __("Face")   . " 1", 2),
+        array("f2", __("Face")   . " 2", 2),
+        array("f3", __("Face")   . " 3", 2),
         array("v", __("Volume"), 3),
       );
       $indices = array( "", "", "²", "³" );
