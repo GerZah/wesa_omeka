@@ -1,0 +1,105 @@
+# Translation for the Measurements plugin for Omeka.
+# Copyright (C) 2016 Gero Zahn
+# This file is distributed under the same license as the Omeka package.
+#
+# Translators:
+# Gero Zahn <gerozahn@campus.uni-paderborn.de>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: WeSa Omeka\n"
+"Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Measurements/issues\n"
+"POT-Creation-Date: 2012-01-09 21:49-0500\n"
+"PO-Revision-Date: 2016-02-22 11:22+0100\n"
+"Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
+"Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de_DE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.7\n"
+
+#: MeasurementsPlugin.php:258 measurements-form.php:105 measurements-form.php:130
+msgid "Clear"
+msgstr "Löschen"
+
+#: MeasurementsPlugin.php:269 measurements-form.php:13
+msgid "Unit"
+msgstr "Einheit"
+
+#: MeasurementsPlugin.php:277 MeasurementsPlugin.php:278 MeasurementsPlugin.php:279 measurements-form.php:14
+#: measurements-form.php:64 measurements-form.php:122
+msgid "Length"
+msgstr "Länge"
+
+#: MeasurementsPlugin.php:280 measurements-form.php:15
+msgid "Surface"
+msgstr "Fläche"
+
+#: MeasurementsPlugin.php:281 measurements-form.php:16 measurements-form.php:88
+msgid "Volume"
+msgstr "Volumen"
+
+#: config_form.php:4
+msgid "Measurements Units"
+msgstr "Maßeinheiten"
+
+#: config_form.php:8
+msgid "Please enter all triple units that you would like to support, one per line."
+msgstr "Bitte geben Sie alle Einheiten-Tripel ein, die Sie unterstützen wollen, eine pro Zeile."
+
+#: config_form.php:10
+msgid "Please use the form <em>\"abc-def-ghi (1-100-10)\"</em> with the numbers being the conversion rates."
+msgstr "Bitte verwenden Sie die Form <em>„abc-def-ghi (1-100-10)“</em>, wobei die Zahlen die Umrechnungsfaktoren bezeichnen."
+
+#: config_form.php:15
+msgid "Valid units that have been entered correctly:"
+msgstr "Gültige, korrekt definierte Einheiten:"
+
+#: config_form.php:25
+msgid "Measurement Elements"
+msgstr "Maß-Elemente"
+
+#: config_form.php:28
+msgid "Select elements to transform into measurements, i.e. that should store measurements."
+msgstr "Bitte wählen Sie diejenigen Elemente aus, in denen Sie Maße speichern wollen."
+
+#: measurements-form.php:11
+msgid "Please start by selecting a triple unit."
+msgstr "Bitte beginnen Sie damit, dass Sie ein Einheiten-Tripel auswählen."
+
+#: measurements-form.php:12
+msgid "Please enter numerical values into all fields (or leave them empty)."
+msgstr "Bitte geben Sie in alle Felder numerische Werte ein (oder lassen Sie diese leer)."
+
+#: measurements-form.php:46
+msgid "Measurements"
+msgstr "Maße"
+
+#: measurements-form.php:50
+msgid "Triple Unit"
+msgstr "Einheiten-Tripel"
+
+#: measurements-form.php:55
+msgid "Data Entry"
+msgstr "Dateneingabe"
+
+#: measurements-form.php:59
+msgid "Length 1/2/3"
+msgstr "Länge 1/2/3"
+
+#: measurements-form.php:75 measurements-form.php:79 measurements-form.php:92
+msgid "Face"
+msgstr "Fläche"
+
+#: measurements-form.php:101
+msgid "Derived Data"
+msgstr "Abgeleitete Daten"
+
+#: measurements-form.php:104 measurements-form.php:129
+msgid "Apply"
+msgstr "Anwenden"
+
+#: measurements-form.php:114
+msgid "Triple Unit Data"
+msgstr "Einheiten-Tripel-Daten"

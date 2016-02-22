@@ -1,0 +1,111 @@
+# Translation for the Measurements plugin for Omeka.
+# Copyright (C) 2016 Gero Zahn
+# This file is distributed under the same license as the Omeka package.
+# Gero Zahn <gero.zahn@upb.de>, 2016.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Measurements\n"
+"Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Measurements/issues\n"
+"POT-Creation-Date: 2012-01-09 21:49-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Gero Zahn<gero.zahn@upb.de>\n"
+"Language-Team: English (https://www.transifex.com/upb/wesa-omeka/language/"
+"en/)\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: MeasurementsPlugin.php:258 measurements-form.php:105
+#: measurements-form.php:130
+msgid "Clear"
+msgstr ""
+
+#: MeasurementsPlugin.php:269 measurements-form.php:13
+msgid "Unit"
+msgstr ""
+
+#: MeasurementsPlugin.php:277 MeasurementsPlugin.php:278
+#: MeasurementsPlugin.php:279 measurements-form.php:14 measurements-form.php:64
+#: measurements-form.php:122
+msgid "Length"
+msgstr ""
+
+#: MeasurementsPlugin.php:280 measurements-form.php:15
+msgid "Surface"
+msgstr ""
+
+#: MeasurementsPlugin.php:281 measurements-form.php:16 measurements-form.php:88
+msgid "Volume"
+msgstr ""
+
+#: config_form.php:4
+msgid "Measurements Units"
+msgstr ""
+
+#: config_form.php:8
+msgid ""
+"Please enter all triple units that you would like to support, one per line."
+msgstr ""
+
+#: config_form.php:10
+msgid ""
+"Please use the form <em>\"abc-def-ghi (1-100-10)\"</em> with the numbers "
+"being the conversion rates."
+msgstr ""
+
+#: config_form.php:15
+msgid "Valid units that have been entered correctly:"
+msgstr ""
+
+#: config_form.php:25
+msgid "Measurement Elements"
+msgstr ""
+
+#: config_form.php:28
+msgid ""
+"Select elements to transform into measurements, i.e. that should store "
+"measurements."
+msgstr ""
+
+#: measurements-form.php:11
+msgid "Please start by selecting a triple unit."
+msgstr ""
+
+#: measurements-form.php:12
+msgid "Please enter numerical values into all fields (or leave them empty)."
+msgstr ""
+
+#: measurements-form.php:46
+msgid "Measurements"
+msgstr ""
+
+#: measurements-form.php:50
+msgid "Triple Unit"
+msgstr ""
+
+#: measurements-form.php:55
+msgid "Data Entry"
+msgstr ""
+
+#: measurements-form.php:59
+msgid "Length 1/2/3"
+msgstr ""
+
+#: measurements-form.php:75 measurements-form.php:79 measurements-form.php:92
+msgid "Face"
+msgstr ""
+
+#: measurements-form.php:101
+msgid "Derived Data"
+msgstr ""
+
+#: measurements-form.php:104 measurements-form.php:129
+msgid "Apply"
+msgstr ""
+
+#: measurements-form.php:114
+msgid "Triple Unit Data"
+msgstr ""
