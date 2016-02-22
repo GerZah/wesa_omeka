@@ -31,6 +31,17 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   // ---------------------------------------------------------------------------
 
+  $(document).on('lity:ready', function(e, lb) {
+    var currentLb = $(lb).find(".lity-content").find(">:first-child").attr("id");
+    switch (currentLb) {
+      case "measurementsPopup": $("#measurementUnits").focus(); break;
+      case "measurementsPopup2": $("#measurementValue1").focus(); break;
+    }
+    //
+  });
+
+  // ---------------------------------------------------------------------------
+
   $(".measurementsField").unbind("click").click(function(e) {
     $(this).next().next().click();
   });
@@ -210,6 +221,7 @@ jQuery(document).bind("omeka:elementformload", function() {
   $(".measurementsTextField").unbind("click").click(function(e) {
     if ( (curTripleUnit === null) || (curTripleUnit<0) ) {
       alert(measurementsI18n["selectTriple"]);
+      $("#measurementUnits").focus();
       currentEditId = null;
     }
     else {
@@ -231,6 +243,7 @@ jQuery(document).bind("omeka:elementformload", function() {
       updateUnitSpans();
 
       lightbox2("#measurementsPopup2");
+      $("#measurementValue1").focus();
     }
   } );
 
@@ -284,23 +297,52 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   // ---------------------------------------------------------------------------
 
-  // $(document).on('lity:close', function(event, lightbox) {
-  // });
-
-  // ---------------------------------------------------------------------------
-
   function recalcDerivedValues() {
     // console.log("recalcDerivedValues");
 
+    var values = [];
+
     for(var i=0; i<editFields.length; i++) {
-      $("#"+editFields[i][1]+"Derived").val(
-        $("#"+editFields[i][1]).val()
-      );
-      // $("#"+editFields[i][1]+"Derived").data("values",
-      //   $("#"+editFields[i][1]).data("values")
-      // );
+      var curVal = $("#"+editFields[i][1]).val();
+      values[editFields[i][0]] = parseInt(curVal);
+      if (isNaN(curVal)) { curVal=0; }
+      $("#"+editFields[i][1]+"Derived").val( curVal )
+        .removeClass("measurementsCalculated measurementsDeriveError");
     }
 
+    var newValues = [];
+
+    if (values["l1"] && values["l2"] && values["l3"]) {
+      newValues["v"] = values["l1"] * values["l2"] * values["l3"];
+      newValues["f1"] = values["l1"] * values["l2"];
+      newValues["f2"] = values["l1"] * values["l3"];
+      newValues["f3"] = values["l2"] * values["l3"];
+    }
+
+    if (values["l1"] && values["l2"] && !values["l3"]) {
+      newValues["f1"] = values["l1"] * values["l2"];
+    }
+
+    if (values["l1"] && !values["l2"] && values["l3"]) {
+      newValues["f1"] = values["l1"] * values["l3"];
+    }
+
+    if (values["!l1"] && values["l2"] && values["l3"]) {
+      newValues["f1"] = values["l2"] * values["l3"];
+    }
+
+
+    // console.log(values);
+    // console.log(newValues);
+
+    for(var i=0; i<editFields.length; i++) {
+      var key = editFields[i][0];
+      if (typeof newValues[key] !== "undefined") {
+        var field = "#"+editFields[i][1]+"Derived";
+        $(field).val(newValues[key]).addClass("measurementsCalculated");
+        if (values[key] && values[key]!=newValues[key]) { $(field).addClass("measurementsDeriveError"); }
+      }
+    }
   }
 
   // ---------------------------------------------------------------------------
