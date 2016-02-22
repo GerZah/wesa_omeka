@@ -400,7 +400,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     $components['input'] .= $view->formText(
                               $args['input_name_stem'] . '[text]'.'-title',
                               $itemTitle,
-                              array('readonly' => 'true', 'style' => 'width: auto;'),
+                              array('readonly' => 'true', 'style' => 'width: auto;', 'class' => 'itemReferencesField'),
                               null
                             );
     $components['input'] .= $view->formHidden(

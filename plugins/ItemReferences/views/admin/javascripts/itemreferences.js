@@ -113,6 +113,10 @@ jQuery(document).bind("omeka:elementformload", function() {
   var lightbox = lity(); // https://www.npmjs.com/package/lity
   //var selectButtonTxt = $(".itemReferencesBtn").first().text();
 
+  $(".itemReferencesField").unbind("click").click(function(e) {
+    $(this).next().next().click();
+  } );
+
   $(".itemReferencesBtn").unbind("click").click(function(e) {
     e.preventDefault();
 
@@ -123,8 +127,7 @@ jQuery(document).bind("omeka:elementformload", function() {
     var currentTitle = $(this).prev().prev().attr("id"); // for title
     var currentId = $(this).prev().attr("id"); // for id
 
-
-    $("#select_item").click(function(e) {
+    $("#select_item").unbind("click").click(function(e) {
       e.preventDefault();
       $("#"+currentTitle).val($('#object_title_reference').text());
       $("#"+currentId).val($('#new_reference_object_item_id_reference').val());
