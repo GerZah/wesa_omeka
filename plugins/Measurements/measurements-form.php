@@ -12,7 +12,7 @@
     "enterNumerical" => __("Please enter numerical values into all fields (or leave them empty)."),
     "unitVerb" => __("Unit"),
     "lengthVerb" => __("Length"),
-    "surfaceVerb" => __("Surface"),
+    "faceVerb" => __("Face"),
     "volumeVerb" => __("Volume"),
   );
 
@@ -83,7 +83,8 @@
         "span" => "measurementsLenghtUnit3 measurementsFaceUnit",
       ));
     ?>
-    /
+  </p>
+  <p>
     <?php
       echo "<strong>" . __("Volume") . ":</strong> ";
       echo editField(array(
@@ -98,7 +99,52 @@
     ?>
   </p>
 
-  <!-- <h4><?php echo __("Derived Data"); ?></h4> -->
+  <h4><?php echo __("Derived Data"); ?></h4>
+
+  <p>
+    <?php
+      echo "<strong>" . __("Length 1/2/3") . ":</strong> ";
+      for($i=1; $i<=3; $i++) {
+        echo editField(array(
+          "view" => $view,
+          "id" => "measurementLength$i"."Derived",
+          "title" => __("Length")." $i",
+          "class" => "measurementsTextFieldDerived",
+          "readonly" => true,
+          "exp" => 1,
+          "span" => "measurementsLenghtUnit3", // all least significant unit that we will convert to
+        ));
+      }
+    ?>
+  </p>
+  <p>
+    <?php
+      echo "<strong>" . __("Face") . ":</strong> ";
+      echo editField(array(
+        "view" => $view,
+        "id" => "measurementFaceDerived",
+        "title" => __("Face"),
+        "class" => "measurementsTextFieldDerived",
+        "readonly" => true,
+        "exp" => 2,
+        "span" => "measurementsLenghtUnit3 measurementsFaceUnit",
+      ));
+    ?>
+  </p>
+  <p>
+    <?php
+      echo "<strong>" . __("Volume") . ":</strong> ";
+      echo editField(array(
+        "view" => $view,
+        "id" => "measurementVolumeDerived",
+        "title" => __("Face"),
+        "class" => "measurementsTextFieldDerived",
+        "readonly" => true,
+        "exp" => 3,
+        "span" => "measurementsLenghtUnit3 measurementsVolumeUnit",
+      ));
+    ?>
+  </p>
 
   <div class="centerButtons">
     <a href="#" id="measurementsApply" class="green button"><?php echo __('Apply'); ?></a>

@@ -1,2 +1,3 @@
-.measurementsTextField { background-color: #ddd; }
+.measurementsTextField { background-color: #e8e8e8; }
+.measurementsTextFieldDerived { background-color: #c8c8c8; }
 .centerButtons { text-align:center; }

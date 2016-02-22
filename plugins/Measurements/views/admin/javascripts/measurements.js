@@ -18,16 +18,20 @@ jQuery(document).bind("omeka:elementformload", function() {
   var curConv3;
 
   var editFields = [
-    ["l1", "measurementLength1", measurementsI18n["lengthVerb"] + " 1", 1],
-    ["l2", "measurementLength2", measurementsI18n["lengthVerb"] + " 2", 1],
-    ["l3", "measurementLength3", measurementsI18n["lengthVerb"] + " 3", 1],
-    ["f", "measurementFace", measurementsI18n["surfaceVerb"], 2],
-    ["v", "measurementVolume", measurementsI18n["volumeVerb"], 3],
+    ["l1",  "measurementLength1", measurementsI18n["lengthVerb"] + " 1",  1],
+    ["l2",  "measurementLength2", measurementsI18n["lengthVerb"] + " 2",  1],
+    ["l3",  "measurementLength3", measurementsI18n["lengthVerb"] + " 3",  1],
+    ["f",   "measurementFace",    measurementsI18n["faceVerb"],        2],
+    ["v",   "measurementVolume",  measurementsI18n["volumeVerb"],         3],
   ];
 
   var indices = [ "", "", "²", "³" ];
 
   // ---------------------------------------------------------------------------
+
+  $(".measurementsField").unbind("click").click(function(e) {
+    $(this).next().next().click();
+  });
 
   $(".measurementsBtn").unbind("click").click(function(e) {
     e.preventDefault();
@@ -39,7 +43,7 @@ jQuery(document).bind("omeka:elementformload", function() {
     for(var i=0; i<editFields.length; i++) {
       $("#"+editFields[i][1]).val("").removeData("values");
     }
-    $("#measurementUnits").val(-1).change();
+    $("#measurementUnits").val(-1);
 
     var json = $("#"+currentInvisible).val().trim();
     if (json == "") { json=null; }
@@ -66,9 +70,10 @@ jQuery(document).bind("omeka:elementformload", function() {
           }
         }
       }
-      $("#measurementUnits").val(unitId).change();
+      $("#measurementUnits").val(unitId);
     }
 
+    $("#measurementUnits").val(unitId).change(); // incl. update derived
 
     lightbox("#measurementsPopup");
   } );
@@ -93,12 +98,12 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   // $("#measurementsCancel").click(function(e) { } ); // via  data-lity-close
 
-  $("#measurementsClear").click(function(e) {
+  $("#measurementsClear").unbind("click").click(function(e) {
     clearValues();
     lightbox.close();
   } );
 
-  $("#measurementsApply").click(function(e) {
+  $("#measurementsApply").unbind("click").click(function(e) {
     var targetData = new Object();
 
     var units = { };
@@ -167,13 +172,13 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   // ---------------------------------------------------------------------------
 
-  $("#measurementUnits").change(function(e){
+  $("#measurementUnits").unbind("change").change(function(e){
     curTripleUnit = $(this).val();
 
     curSingleUnit1 = curSingleUnit2 = curSingleUnit3 = "";
     curConv1 = curConv2 = curConv3 = 0;
 
-    if (curTripleUnit>=0) {
+    if ( (curTripleUnit !== null) && (curTripleUnit>=0) ) {
       curSingleUnit1 = measurementsUnits[curTripleUnit]["units"][0];
       curSingleUnit2 = measurementsUnits[curTripleUnit]["units"][1];
       curSingleUnit3 = measurementsUnits[curTripleUnit]["units"][2];
@@ -182,11 +187,8 @@ jQuery(document).bind("omeka:elementformload", function() {
       curConv3 = measurementsUnits[curTripleUnit]["convs"][2];
     }
     updateUnitSpans();
-
-    // perform necessary automatic calculations to normalization values
     for(var i=0; i<editFields.length; i++) { recalcTripleToSingle(editFields[i][1]); }
-
-    // +#+#+# calculate derived values
+    recalcDerivedValues();
   } );
 
   function updateUnitSpans() {
@@ -203,8 +205,8 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   var currentEditId;
 
-  $(".measurementsTextField").click(function(e) {
-    if (curTripleUnit<0) {
+  $(".measurementsTextField").unbind("click").click(function(e) {
+    if ( (curTripleUnit === null) || (curTripleUnit<0) ) {
       alert(measurementsI18n["selectTriple"]);
       currentEditId = null;
     }
@@ -241,6 +243,7 @@ jQuery(document).bind("omeka:elementformload", function() {
   $("#measurementsValuesClear").click(function(e) {
     $("#"+currentEditId).val("");
     $("#"+currentEditId).removeData("values");
+    recalcDerivedValues();
     lightbox2.close();
   } );
 
@@ -263,6 +266,7 @@ jQuery(document).bind("omeka:elementformload", function() {
       }
       $("#"+currentEditId).data("values", values);
       recalcTripleToSingle(currentEditId);
+      recalcDerivedValues();
       lightbox2.close();
     }
   } );
@@ -274,6 +278,27 @@ jQuery(document).bind("omeka:elementformload", function() {
       var newval = (values[1] * Math.pow(curConv2,exp) + values[2]) * Math.pow(curConv3,exp) + values[3];
       $("#"+editId).val(newval);
     }
+  }
+
+  // ---------------------------------------------------------------------------
+
+  // $(document).on('lity:close', function(event, lightbox) {
+  // });
+
+  // ---------------------------------------------------------------------------
+
+  function recalcDerivedValues() {
+    // console.log("recalcDerivedValues");
+
+    for(var i=0; i<editFields.length; i++) {
+      $("#"+editFields[i][1]+"Derived").val(
+        $("#"+editFields[i][1]).val()
+      );
+      // $("#"+editFields[i][1]+"Derived").data("values",
+      //   $("#"+editFields[i][1]).data("values")
+      // );
+    }
+
   }
 
   // ---------------------------------------------------------------------------

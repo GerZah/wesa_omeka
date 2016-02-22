@@ -11,15 +11,14 @@ msgstr ""
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Gero Zahn<gero.zahn@upb.de>\n"
-"Language-Team: English (https://www.transifex.com/upb/wesa-omeka/"
-
+"Language-Team: English (https://www.transifex.com/upb/wesa-omeka/)\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: MeasurementsPlugin.php:258 measurements-form.php:105
-#: measurements-form.php:130
+#: MeasurementsPlugin.php:258 measurements-form.php:151
+#: measurements-form.php:176
 msgid "Clear"
 msgstr ""
 
@@ -29,15 +28,18 @@ msgstr ""
 
 #: MeasurementsPlugin.php:277 MeasurementsPlugin.php:278
 #: MeasurementsPlugin.php:279 measurements-form.php:14 measurements-form.php:64
-#: measurements-form.php:122
+#: measurements-form.php:111 measurements-form.php:168
 msgid "Length"
 msgstr ""
 
-#: MeasurementsPlugin.php:280 measurements-form.php:15
-msgid "Surface"
+#: MeasurementsPlugin.php:280 measurements-form.php:15 measurements-form.php:75
+#: measurements-form.php:79 measurements-form.php:93 measurements-form.php:122
+#: measurements-form.php:126 measurements-form.php:140
+msgid "Face"
 msgstr ""
 
-#: MeasurementsPlugin.php:281 measurements-form.php:16 measurements-form.php:88
+#: MeasurementsPlugin.php:281 measurements-form.php:16 measurements-form.php:89
+#: measurements-form.php:136
 msgid "Volume"
 msgstr ""
 
@@ -90,22 +92,18 @@ msgstr ""
 msgid "Data Entry"
 msgstr ""
 
-#: measurements-form.php:59
+#: measurements-form.php:59 measurements-form.php:106
 msgid "Length 1/2/3"
 msgstr ""
 
-#: measurements-form.php:75 measurements-form.php:79 measurements-form.php:92
-msgid "Face"
-msgstr ""
-
-#: measurements-form.php:101
+#: measurements-form.php:102
 msgid "Derived Data"
 msgstr ""
 
-#: measurements-form.php:104 measurements-form.php:129
+#: measurements-form.php:150 measurements-form.php:175
 msgid "Apply"
 msgstr ""
 
-#: measurements-form.php:114
+#: measurements-form.php:160
 msgid "Triple Unit Data"
 msgstr ""

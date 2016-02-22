@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Measurements/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-02-22 11:22+0100\n"
+"PO-Revision-Date: 2016-02-22 15:40+0100\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.7\n"
 
-#: MeasurementsPlugin.php:258 measurements-form.php:105 measurements-form.php:130
+#: MeasurementsPlugin.php:258 measurements-form.php:151 measurements-form.php:176
 msgid "Clear"
 msgstr "Löschen"
 
@@ -28,15 +28,16 @@ msgid "Unit"
 msgstr "Einheit"
 
 #: MeasurementsPlugin.php:277 MeasurementsPlugin.php:278 MeasurementsPlugin.php:279 measurements-form.php:14
-#: measurements-form.php:64 measurements-form.php:122
+#: measurements-form.php:64 measurements-form.php:111 measurements-form.php:168
 msgid "Length"
 msgstr "Länge"
 
-#: MeasurementsPlugin.php:280 measurements-form.php:15
-msgid "Surface"
+#: MeasurementsPlugin.php:280 measurements-form.php:15 measurements-form.php:75 measurements-form.php:79
+#: measurements-form.php:93 measurements-form.php:122 measurements-form.php:126 measurements-form.php:140
+msgid "Face"
 msgstr "Fläche"
 
-#: MeasurementsPlugin.php:281 measurements-form.php:16 measurements-form.php:88
+#: MeasurementsPlugin.php:281 measurements-form.php:16 measurements-form.php:89 measurements-form.php:136
 msgid "Volume"
 msgstr "Volumen"
 
@@ -84,22 +85,18 @@ msgstr "Einheiten-Tripel"
 msgid "Data Entry"
 msgstr "Dateneingabe"
 
-#: measurements-form.php:59
+#: measurements-form.php:59 measurements-form.php:106
 msgid "Length 1/2/3"
 msgstr "Länge 1/2/3"
 
-#: measurements-form.php:75 measurements-form.php:79 measurements-form.php:92
-msgid "Face"
-msgstr "Fläche"
-
-#: measurements-form.php:101
+#: measurements-form.php:102
 msgid "Derived Data"
 msgstr "Abgeleitete Daten"
 
-#: measurements-form.php:104 measurements-form.php:129
+#: measurements-form.php:150 measurements-form.php:175
 msgid "Apply"
 msgstr "Anwenden"
 
-#: measurements-form.php:114
+#: measurements-form.php:160
 msgid "Triple Unit Data"
-msgstr "Einheiten-Tripel-Daten"
+msgstr "Einheiten-Tripel Eingabe"
