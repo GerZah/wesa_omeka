@@ -169,38 +169,51 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   function verbatimTargetData(targetData) {
     var result = "";
+    var cache = [];
 
     for(var i=0; i<allEditFields.length; i++) {
       var currentField = allEditFields[i];
-      switch (currentField[0]) {
+      var key = currentField[0];
+      switch (key) {
         case "l1":
-            result += //measurementsI18n["unitVerb"] + ": " +  targetData["u"]["v"] + "\n\n"+
-                      measurementsI18n["enteredData"] + ":\n\n";
+            result += measurementsI18n["enteredData"] + ":\n\n";
           break;
         case "l1d":
-            result += "\n"+
-                      measurementsI18n["derivedData"] + ":\n\n";
+            result += "\n"+measurementsI18n["derivedData"] + ":\n\n";
           break;
       }
-      var values = targetData[currentField[0]];
+      var values = targetData[key];
+      var allZero = true;
       for(var j=0; j<4; j++) {
         values[j] = parseInt(values[j]);
         if (isNaN(values[j])) { values[j]=0; }
+        allZero &= !values[j];
       }
-      result += currentField[2] + " = " + values[0] + " " + curSingleUnit3;
-      result += indices[currentField[3]];
 
-      result += " (";
-      var valueText = new Array();
-      for(j=1; j<=3; j++) {
-        valueText.push(
-          values[j] + " " +
-          measurementsUnits[curTripleUnit]["units"][j-1] +
-          indices[currentField[3]]
-        );
+      var cacheHit = false;
+      if (key.slice(-1) != "d") {
+        cache[key] = JSON.stringify(values);
       }
-      result += valueText.join(" / ");
-      result += ")\n";
+      else if (typeof cache[key.slice(0, -1)] !== "undefined") {
+        var cached = cache[key.slice(0, -1)];
+        cacheHit = (JSON.stringify(values) == cached);
+      }
+
+      if ((!allZero) && (!cacheHit)) {
+        result += currentField[2] + " = " + values[0] + " " + curSingleUnit3;
+        result += indices[currentField[3]];
+        result += " (";
+        var valueText = new Array();
+        for(j=1; j<=3; j++) {
+          valueText.push(
+            values[j] + " " +
+            measurementsUnits[curTripleUnit]["units"][j-1] +
+            indices[currentField[3]]
+          );
+        }
+        result += valueText.join(" / ");
+        result += ")\n";
+      }
     }
 
     return result;

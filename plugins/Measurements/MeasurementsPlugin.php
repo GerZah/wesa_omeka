@@ -289,31 +289,49 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         array("vd", __("Volume"), 3),
       );
       $indices = array( "", "", "²", "³" );
+      $cache = array();
 
       foreach(array_keys($editFields) as $i) {
         $currentField = $editFields[$i];
-        switch ($currentField[0]) {
+        $key = $currentField[0];
+        switch ($key) {
           case 'l1':
-              $result .= // __("Unit") . ": $tripleUnit"."\n\n".
-                          __("Entered Data").": \n\n";
+              $result .= __("Entered Data").": \n\n";
             break;
           case 'l1d':
-              $result .= "\n".
-                          __("Derived Data").": \n\n";
+              $result .= "\n".__("Derived Data").": \n\n";
             break;
         }
-        $result .= $currentField[1] . " = ";
-        $editField = $currentField[0];
+        $editField = $key;
         $values = $sourceData->$editField;
-        $result .= intval($values[0]) . " " . $singleUnits[3] . $indices[$currentField[2]];
 
-        $result .= " (";
-        $valueText = array();
-        for($j=1; $j<=3; $j++) {
-          $valueText[] = intval($values[$j]) . " " . $singleUnits[$j] . $indices[$currentField[2]];
+        $allZero = true;
+        foreach(array_keys($values) as $idx) {
+          $values[$idx] = intval($values[$idx]);
+          $allZero &= !$values[$idx];
         }
-        $result .= implode(" / ", $valueText);
-        $result .= ")\n";
+
+        $cacheHit = false;
+        if (substr($key,-1) != "d") {
+          $cache[$key] = $values;
+        }
+        else if ( isset($cache[substr($key,0,2)]) ) {
+          $cached = $cache[substr($key,0,-1)];
+          $cacheHit = !array_diff_assoc($values,$cached);
+        }
+
+        if ( (!$allZero) and (!$cacheHit) ) {
+          $result .= $currentField[1] . " = ";
+          $result .= $values[0] . " " . $singleUnits[3] . $indices[$currentField[2]];
+
+          $result .= " (";
+          $valueText = array();
+          for($j=1; $j<=3; $j++) {
+            $valueText[] = $values[$j] . " " . $singleUnits[$j] . $indices[$currentField[2]];
+          }
+          $result .= implode(" / ", $valueText);
+          $result .= ")\n";
+        }
       }
     }
 
