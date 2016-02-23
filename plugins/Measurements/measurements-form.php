@@ -14,6 +14,8 @@
     "lengthVerb" => __("Length"),
     "faceVerb" => __("Face"),
     "volumeVerb" => __("Volume"),
+    "enteredData" => __("Entered Data"),
+    "derivedData" => __("Derived Data"),
   );
 
   queue_css_file('measurements');

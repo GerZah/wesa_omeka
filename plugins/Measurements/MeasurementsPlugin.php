@@ -266,7 +266,6 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
     if ($sourceData) {
       $tripleUnit =  $sourceData->u->v;
-      $result .= __("Unit") . ": $tripleUnit\n\n";
 
       $singleUnits = array( "", "", "", "" );
       if (preg_match("/".SELF::$_saniUnitRegex."/", $tripleUnit, $matches)) {
@@ -281,19 +280,37 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         array("f2", __("Face")   . " 2", 2),
         array("f3", __("Face")   . " 3", 2),
         array("v", __("Volume"), 3),
+        array("l1d", __("Length") . " 1", 1),
+        array("l2d", __("Length") . " 2", 1),
+        array("l3d", __("Length") . " 3", 1),
+        array("f1d", __("Face")   . " 1", 2),
+        array("f2d", __("Face")   . " 2", 2),
+        array("f3d", __("Face")   . " 3", 2),
+        array("vd", __("Volume"), 3),
       );
       $indices = array( "", "", "²", "³" );
 
       foreach(array_keys($editFields) as $i) {
-        $result .= $editFields[$i][1] . " = ";
-        $editField = $editFields[$i][0];
+        $currentField = $editFields[$i];
+        switch ($currentField[0]) {
+          case 'l1':
+              $result .= // __("Unit") . ": $tripleUnit"."\n\n".
+                          __("Entered Data").": \n\n";
+            break;
+          case 'l1d':
+              $result .= "\n".
+                          __("Derived Data").": \n\n";
+            break;
+        }
+        $result .= $currentField[1] . " = ";
+        $editField = $currentField[0];
         $values = $sourceData->$editField;
-        $result .= intval($values[0]) . " " . $singleUnits[3] . $indices[$editFields[$i][2]];
+        $result .= intval($values[0]) . " " . $singleUnits[3] . $indices[$currentField[2]];
 
         $result .= " (";
         $valueText = array();
         for($j=1; $j<=3; $j++) {
-          $valueText[] = $values[$j] . " " . $singleUnits[$j] . $indices[$editFields[$i][2]];
+          $valueText[] = intval($values[$j]) . " " . $singleUnits[$j] . $indices[$currentField[2]];
         }
         $result .= implode(" / ", $valueText);
         $result .= ")\n";

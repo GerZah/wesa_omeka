@@ -27,6 +27,16 @@ jQuery(document).bind("omeka:elementformload", function() {
     ["v",   "measurementVolume",  measurementsI18n["volumeVerb"],         3],
   ];
 
+  var allEditFields = editFields.concat([
+    ["l1d", "measurementLength1Derived", measurementsI18n["lengthVerb"] + " 1",  1],
+    ["l2d", "measurementLength2Derived", measurementsI18n["lengthVerb"] + " 2",  1],
+    ["l3d", "measurementLength3Derived", measurementsI18n["lengthVerb"] + " 3",  1],
+    ["f1d", "measurementFace1Derived",   measurementsI18n["faceVerb"]   + " 1",  2],
+    ["f2d", "measurementFace2Derived",   measurementsI18n["faceVerb"]   + " 2",  2],
+    ["f3d", "measurementFace3Derived",   measurementsI18n["faceVerb"]   + " 3",  2],
+    ["vd",  "measurementVolumeDerived",  measurementsI18n["volumeVerb"],         3],
+  ]);
+
   var indices = [ "", "", "²", "³" ];
 
   // ---------------------------------------------------------------------------
@@ -129,13 +139,14 @@ jQuery(document).bind("omeka:elementformload", function() {
     targetData["u"] = units;
 
     var nonZero = (curTripleUnit>=0);
-    for (var i = 0; i<editFields.length; i++) {
-      var currentEditId = editFields[i][1];
+    for (var i = 0; i<allEditFields.length; i++) {
+      var currentField = allEditFields[i];
+      var currentEditId = currentField[1];
       var values = $("#"+currentEditId).data("values");
       if (typeof values === "undefined") { values = [ null, "", "", "" ]; }
       values[0] = $("#"+currentEditId).val();
       if (values[0]!="") { values[0] = parseInt(values[0]); }
-      targetData[editFields[i][0]] = values;
+      targetData[currentField[0]] = values;
       if (!nonZero) {
         for(var j=0; j<4; j++) {
           var v = ( values[j]=="" ? 0 : parseInt(values[j]) );
@@ -144,6 +155,8 @@ jQuery(document).bind("omeka:elementformload", function() {
         }
       }
     }
+
+    // console.log(targetData);
 
     var invisible = (nonZero ? JSON.stringify(targetData) : "");
     $("#"+currentInvisible).val(invisible);
@@ -155,17 +168,27 @@ jQuery(document).bind("omeka:elementformload", function() {
   } );
 
   function verbatimTargetData(targetData) {
-    result = "";
-    result = measurementsI18n["unitVerb"] + ": " +  targetData["u"]["v"] + "\n\n";
+    var result = "";
 
-    for(var i=0; i<editFields.length; i++) {
-      var values = targetData[editFields[i][0]];
+    for(var i=0; i<allEditFields.length; i++) {
+      var currentField = allEditFields[i];
+      switch (currentField[0]) {
+        case "l1":
+            result += //measurementsI18n["unitVerb"] + ": " +  targetData["u"]["v"] + "\n\n"+
+                      measurementsI18n["enteredData"] + ":\n\n";
+          break;
+        case "l1d":
+            result += "\n"+
+                      measurementsI18n["derivedData"] + ":\n\n";
+          break;
+      }
+      var values = targetData[currentField[0]];
       for(var j=0; j<4; j++) {
         values[j] = parseInt(values[j]);
         if (isNaN(values[j])) { values[j]=0; }
       }
-      result += editFields[i][2] + " = " + values[0] + " " + curSingleUnit3;
-      result += indices[editFields[i][3]];
+      result += currentField[2] + " = " + values[0] + " " + curSingleUnit3;
+      result += indices[currentField[3]];
 
       result += " (";
       var valueText = new Array();
@@ -173,7 +196,7 @@ jQuery(document).bind("omeka:elementformload", function() {
         valueText.push(
           values[j] + " " +
           measurementsUnits[curTripleUnit]["units"][j-1] +
-          indices[editFields[i][3]]
+          indices[currentField[3]]
         );
       }
       result += valueText.join(" / ");
@@ -300,49 +323,74 @@ jQuery(document).bind("omeka:elementformload", function() {
   function recalcDerivedValues() {
     // console.log("recalcDerivedValues");
 
-    var values = [];
+    var origData = [];
 
     for(var i=0; i<editFields.length; i++) {
-      var curVal = $("#"+editFields[i][1]).val();
-      values[editFields[i][0]] = parseInt(curVal);
+      var curVal = parseInt($("#"+editFields[i][1]).val());
       if (isNaN(curVal)) { curVal=0; }
+      origData[editFields[i][0]] = curVal;
       $("#"+editFields[i][1]+"Derived").val( curVal )
         .removeClass("measurementsCalculated measurementsDeriveError");
+      $("#"+editFields[i][1]+"Derived").data("values", $("#"+editFields[i][1]).data("values"));
     }
 
-    var newValues = [];
+    var derivedData = [];
 
-    if (values["l1"] && values["l2"] && values["l3"]) {
-      newValues["v"] = values["l1"] * values["l2"] * values["l3"];
-      newValues["f1"] = values["l1"] * values["l2"];
-      newValues["f2"] = values["l1"] * values["l3"];
-      newValues["f3"] = values["l2"] * values["l3"];
+    if (origData["l1"] && origData["l2"] && origData["l3"]) {
+      derivedData["v"] = origData["l1"] * origData["l2"] * origData["l3"];
+      derivedData["f1"] = origData["l1"] * origData["l2"];
+      derivedData["f2"] = origData["l1"] * origData["l3"];
+      derivedData["f3"] = origData["l2"] * origData["l3"];
     }
 
-    if (values["l1"] && values["l2"] && !values["l3"]) {
-      newValues["f1"] = values["l1"] * values["l2"];
+    if (origData["l1"] && origData["l2"] && !origData["l3"]) {
+      derivedData["f1"] = origData["l1"] * origData["l2"];
     }
 
-    if (values["l1"] && !values["l2"] && values["l3"]) {
-      newValues["f1"] = values["l1"] * values["l3"];
+    if (origData["l1"] && !origData["l2"] && origData["l3"]) {
+      derivedData["f1"] = origData["l1"] * origData["l3"];
     }
 
-    if (values["!l1"] && values["l2"] && values["l3"]) {
-      newValues["f1"] = values["l2"] * values["l3"];
+    if (origData["!l1"] && origData["l2"] && origData["l3"]) {
+      derivedData["f1"] = origData["l2"] * origData["l3"];
     }
 
 
-    // console.log(values);
-    // console.log(newValues);
+    // console.log(origData);
+    // console.log(derivedData);
 
     for(var i=0; i<editFields.length; i++) {
       var key = editFields[i][0];
-      if (typeof newValues[key] !== "undefined") {
+      if (typeof derivedData[key] !== "undefined") {
         var field = "#"+editFields[i][1]+"Derived";
-        $(field).val(newValues[key]).addClass("measurementsCalculated");
-        if (values[key] && values[key]!=newValues[key]) { $(field).addClass("measurementsDeriveError"); }
+        $(field).val(derivedData[key]).addClass("measurementsCalculated");
+        if (origData[key] && origData[key]!=derivedData[key]) { $(field).addClass("measurementsDeriveError"); }
+        $(field).data("values", reUnitValue(i));
       }
     }
+  }
+
+  function reUnitValue(field) {
+    var exp = editFields[field][3] ;
+    var conv2 = Math.pow(curConv2, exp);
+    var conv3 = Math.pow(curConv3, exp);
+
+    var oldValue = parseInt($("#"+editFields[field][1]).val());
+    var newValue = parseInt($("#"+editFields[field][1]+"Derived").val());
+    var value = ( isNaN(newValue) ? oldValue : newValue );
+    value = parseInt( isNaN(value) ? 0 : value );
+
+    var result = [];
+    result[0] = value;
+
+    result[3] = value;
+    result[2] = Math.floor(result[3] / conv3);
+    result[3] = result[3] % conv3;
+    result[1] = Math.floor(result[2] / conv2);
+    result[2] = result[2] % conv2;
+
+    // console.log("exp: "+exp+" - "+conv2+"/"+conv3+" = "+result);
+    return result;
   }
 
   // ---------------------------------------------------------------------------
