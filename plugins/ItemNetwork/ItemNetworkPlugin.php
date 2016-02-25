@@ -19,6 +19,7 @@ class ItemNetworkPlugin extends Omeka_Plugin_AbstractPlugin
                               'uninstall',
                               'initialize',
                               'define_acl',
+                              'define_routes',
                               'config_form');
 
     /**
@@ -34,36 +35,49 @@ class ItemNetworkPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookInstall()
     {
         // Create the table.
-        $db = $this->_db;
-        $sql = "
-        CREATE TABLE IF NOT EXISTS `$db->ItemNetwork` (
-          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-          `modified_by_user_id` int(10) unsigned NOT NULL,
-          `created_by_user_id` int(10) unsigned NOT NULL,
-          `is_published` tinyint(1) NOT NULL,
-          `title` tinytext COLLATE utf8_unicode_ci NOT NULL,
-          `slug` tinytext COLLATE utf8_unicode_ci NOT NULL,
-          `text` mediumtext COLLATE utf8_unicode_ci,
-          `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-          `inserted` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-            PRIMARY KEY (`id`),
-            KEY `is_published` (`is_published`),
-            KEY `inserted` (`inserted`),
-            KEY `updated` (`updated`),
-            KEY `created_by_user_id` (`created_by_user_id`),
-            KEY `modified_by_user_id` (`modified_by_user_id`)
-          ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-        $db->query($sql);
+        $db_exhibit = $this->_db;
+        $sql_exhibit = "
+        CREATE TABLE IF NOT EXISTS `$db_exhibit->ItemNetworkExhibit` (
 
-        // Save an example network.
-        $network = new ItemNetwork;
-        $network->modified_by_user_id = current_user()->id;
-        $network->created_by_user_id = current_user()->id;
-        $network->is_published = 1;
-        $network->title = 'Title';
-        $network->slug = 'Slug';
-        $network->text = '<p>This is sample content.</p>';
-        $network->save();
+                id                      INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+                owner_id                INT(10) UNSIGNED NOT NULL,
+                added                   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                modified                TIMESTAMP NULL,
+                published               TIMESTAMP NULL,
+                item_query              TEXT NULL,
+                title                   TEXT NULL,
+                slug                    VARCHAR(100) NOT NULL,
+                public                  TINYINT(1) NOT NULL,
+                PRIMARY KEY             (id)
+
+          ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+        $db_exhibit->query($sql_exhibit);
+
+        $db_item = $this->_db;
+        $sql_item = "
+        CREATE TABLE IF NOT EXISTS `$db_item->ItemNetworkItem` (
+
+              id                      INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+              owner_id                INT(10) UNSIGNED NOT NULL,
+              item_id                 INT(10) UNSIGNED NULL,
+              exhibit_id              INT(10) UNSIGNED NULL,
+              added                   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+              modified                TIMESTAMP NULL,
+              slug                    VARCHAR(100) NULL,
+              title                   MEDIUMTEXT NULL,
+              item_title              MEDIUMTEXT NULL,
+              body                    MEDIUMTEXT NULL,
+              coverage                GEOMETRY NOT NULL,
+              tags                    TEXT NULL,
+              widgets                 TEXT NULL,
+              presenter               VARCHAR(100) NULL,
+              start_date              VARCHAR(100) NULL,
+              end_date                VARCHAR(100) NULL,
+              after_date              VARCHAR(100) NULL,
+              before_date             VARCHAR(100) NULL,
+              PRIMARY KEY             (id)
+          ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+        $db_item->query($sql_item);
 
         $this->_installOptions();
     }
@@ -74,9 +88,13 @@ class ItemNetworkPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookUninstall()
     {
         // Drop the table.
-        $db = $this->_db;
-        $sql = "DROP TABLE IF EXISTS `$db->ItemNetwork`";
-        $db->query($sql);
+        $db_exhibit = $this->_db;
+        $sql_exhibit = "DROP TABLE IF EXISTS `$db->ItemNetworkExhibit`";
+        $db_exhibit->query($sql_exhibit);
+
+        $db_item = $this->_db;
+        $sql_item = "DROP TABLE IF EXISTS `$db->ItemNetworkItem`";
+        $db_item->query($sql_item);
 
         $this->_uninstallOptions();
     }
@@ -97,7 +115,15 @@ class ItemNetworkPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookDefineAcl($args)
     {
-      $args['acl']->addResource('ItemNetwork_Index');
+      // Exhibits resource.
+      if (!$args['acl']->has('ItemNetwork_Exhibits')) {
+          $args['acl']->addResource('ItemNetwork_Exhibits');
+      }
+
+      // Records resource.
+      if (!$args['acl']->has('ItemNetwork_Items')) {
+          $args['acl']->addResource('ItemNetwork_Items');
+      }
 
     }
 
@@ -118,8 +144,7 @@ class ItemNetworkPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function filterAdminNavigationMain($nav)
     {
-
-      $nav[] = array('label' => 'Neatline', 'uri' => url('neatline'));
+      $nav[] = array('label' => 'Item Network', 'uri' => url('itemnetwork'));
       return $nav;
     }
 
@@ -131,8 +156,19 @@ class ItemNetworkPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function filterPublicNavigationMain($nav)
     {
-      $nav[] = array('label' => 'Neatline', 'uri' => url('neatline'));
+      $nav[] = array('label' => 'Item Network', 'uri' => url('itemnetwork'));
       return $nav;
+    }
+    /**
+     * Register routes.
+     *
+     * @param array $args Contains: `router` (Zend_Config).
+     */
+    public function hookDefineRoutes($args)
+    {
+        $args['router']->addConfig(new Zend_Config_Ini(
+            NL_DIR.'/routes.ini'
+        ));
     }
 
 

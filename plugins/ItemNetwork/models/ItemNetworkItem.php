@@ -11,7 +11,7 @@
  *
  * @package ItemNetwork
  */
-class ItemNetwork extends Omeka_Record_AbstractRecord implements Zend_Acl_Resource_Interface
+class ItemNetworkItem extends Omeka_Record_AbstractRecord implements Zend_Acl_Resource_Interface
 {
     public $modified_by_user_id;
     public $created_by_user_id;
