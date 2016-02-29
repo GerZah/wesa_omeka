@@ -484,6 +484,7 @@ class DateSearchPlugin extends Omeka_Plugin_AbstractPlugin {
 			// 2 == optional prefix: honor if present, but also parse dates without prefix
 			case 2 : $mainRegEx = $regEx["optionalJulGregTimeSpan"]; break;
 		}
+		$mainRegEx = "\b$mainRegEx\b";
 
 		$allCount = preg_match_all( "($mainRegEx)i", $text, $allMatches);
 		// echo "<p>$text</p>";
