@@ -291,7 +291,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
       $singleUnits = array( "", "", "", "" );
       if (preg_match("/".SELF::$_saniUnitRegex."/", $tripleUnit, $matches)) {
-        $singleUnits = array( "", $matches[1], $matches[2], $matches[3] );
+        $singleUnits = array( "", $matches[2], $matches[3], $matches[4] );
       }
 
       $editFields = array(
