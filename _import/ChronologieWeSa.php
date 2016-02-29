@@ -30,7 +30,7 @@
 
 	$csv=array();
 
-	$file = fopen('ChronologieWeSa.csv', 'r');
+	$file = fopen('ChronologieWeSa2.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
