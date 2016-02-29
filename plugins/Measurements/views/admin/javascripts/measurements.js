@@ -368,6 +368,13 @@ jQuery(document).bind("omeka:elementformload", function() {
       derivedData["f1"] = origData["l2"] * origData["l3"];
     }
 
+    if (origData["f1"] && origData["f2"] && origData["f3"]) {
+      derivedData["l1"] = Math.round( Math.sqrt( origData["f1"] * origData["f2"] / origData["f3"] ) );
+      derivedData["l2"] = Math.round( Math.sqrt( origData["f1"] * origData["f3"] / origData["f2"] ) );
+      derivedData["l3"] = Math.round( Math.sqrt( origData["f2"] * origData["f3"] / origData["f1"] ) );
+      derivedData["v"] = Math.round( Math.sqrt( origData["f1"] * origData["f2"] * origData["f3"] ) );
+      // derivedData["v"] = derivedData["l1"] * derivedData["l2"] * derivedData["l3"]; // alternatively
+    }
 
     // console.log(origData);
     // console.log(derivedData);
