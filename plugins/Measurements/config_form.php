@@ -15,8 +15,12 @@
         <strong><?php echo __("Valid units that have been entered correctly:"); ?></strong>
         <ul>
           <?php
-            foreach($saniUnits as $saniUnit) {
-              echo "<li>" . $saniUnit["verb"] . "</li>\n";
+            foreach($saniUnits as $groupName => $saniUnitsGroup) {
+              echo "<li>$groupName<ul>";
+              foreach($saniUnitsGroup as $saniUnit) {
+                echo "<li>" . $saniUnit["verb"] . "</li>\n";
+              }
+              echo "</ul></li>\n";
             }
           ?>
         </ul>

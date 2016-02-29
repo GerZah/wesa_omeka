@@ -29,8 +29,8 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     'measurements_select' => '[]'
 	);
 
-  // One potential unit -- e.g. "abc-def-ghi (1-10-10)"
-  protected static $_saniUnitRegex = "^\W*(\S+)-(\S+)-(\S+)\W+\(1-(\d+)-(\d+)\)\W*$";
+  // One potential unit -- e.g. "[Group] abc-def-ghi (1-10-10)" or "abc-def-ghi (1-10-10)"
+  protected static $_saniUnitRegex = "^\W*(?:\[(\S+)\]\W+)?(\S+)-(\S+)-(\S+)\W+\(1-(\d+)-(\d+)\)\W*$";
 
   # ----------------------------------------------------------------------------
 
@@ -100,19 +100,34 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
     $saniUnits = array();
 
+    $cnt = 0;
+
     foreach($units as $unit) {
       if (preg_match("/".SELF::$_saniUnitRegex."/", $unit, $matches)) {
+        $group = $matches[1];
+        // $group = ($group ? $group : __("[n/a]"));
         $saniUnit = array(
-          "units" => array( $matches[1], $matches[2], $matches[3] ),
-          "convs" => array( 1, intval($matches[4]), intval($matches[5]) ),
+          "units" => array( $matches[2], $matches[3], $matches[4] ),
+          "convs" => array( 1, intval($matches[5]), intval($matches[6]) ),
         );
         $saniUnit["verb"] = $saniUnit["units"][0]."-".$saniUnit["units"][1]."-".$saniUnit["units"][2]." ".
                             "(1-".$saniUnit["convs"][1]."-".$saniUnit["convs"][2].")";
         // echo "<pre>" . print_r($matches,true) . "</pre>";
         // echo "<pre>" . print_r($saniUnit,true) . "</pre>";
-        $saniUnits[] = $saniUnit;
+        if (!is_array(@$saniUnits[$group])) { $saniUnits[$group] = array(); }
+        $saniUnits[$group][$cnt++] = $saniUnit;
       }
     }
+
+    ksort($saniUnits);
+    if ($saniUnits[""]) {
+      $emptyKey = $saniUnits[""];
+      unset($saniUnits[""]);
+      $saniUnits[__("[n/a]")] = $emptyKey;
+    }
+
+    // echo "<pre>" . print_r($saniUnits,true) . "</pre>";
+    // die();
 
     return $saniUnits;
   }
@@ -223,8 +238,14 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
     if ($module === 'default' && $controller === 'items' && in_array($action, array('add', 'edit'))) {
       $tripleSelect = array( -1 => __("Select Below") );
-      foreach(SELF::$_saniUnits as $idx => $saniUnit) {
-        $tripleSelect[$idx] = $saniUnit["verb"];
+      $saniUnits = SELF::$_saniUnits;
+      $ungroupedSaniUnits = array();
+      foreach(SELF::$_saniUnits as $groupName => $saniUnitsGroup) {
+        $tripleSelect[$groupName] = array();
+        foreach($saniUnitsGroup as $idx => $saniUnit) {
+          $tripleSelect[$groupName][$idx] = $saniUnit["verb"];
+          $ungroupedSaniUnits[] = $saniUnit;
+        }
       }
       require dirname(__FILE__) . '/measurements-form.php';
     }

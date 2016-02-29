@@ -21,7 +21,7 @@
   queue_css_file('measurements');
   queue_js_file('measurements');
   queue_js_string(
-    "var measurementsUnits=".json_encode(SELF::$_saniUnits,true).";".
+    "var measurementsUnits=".json_encode($ungroupedSaniUnits,true).";".
     "var measurementsI18n=".json_encode($i18nStrings).";"
   );
 
@@ -50,7 +50,7 @@
   <p>
     <?php
       echo "<strong>" . __("Triple Unit") . ":</strong> ";
-      echo $view->formSelect('measurementUnits', -1, array(), $tripleSelect)
+      echo $view->formSelect('measurementUnits', -1, array(), $tripleSelect);
     ?>
   </p>
 
