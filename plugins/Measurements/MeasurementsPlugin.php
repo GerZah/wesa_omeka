@@ -1,5 +1,7 @@
 <?php
 
+define('MEASUREMENT_UNIT_LEN', 200);
+
 /**
 * Measurements plugin.
 *
@@ -151,6 +153,21 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 	*/
 	public function hookInstall() {
 		SELF::_installOptions();
+    return; # +#+#+#
+
+    $db = get_db();
+    $sql = "
+      CREATE TABLE IF NOT EXISTS `$db->Measurements` (
+          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+          `item_id` int(10) unsigned NOT NULL REFERENCES `$db->Item`,
+          `num` varchar(20) NOT NULL,
+          `unit` varchar(".MEASUREMENT_UNIT_LEN.") NOT NULL,
+          PRIMARY KEY (`id`),
+          INDEX (unit)
+      ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+    ";
+    $db->query($sql);
+
 	}
 
   # ----------------------------------------------------------------------------
