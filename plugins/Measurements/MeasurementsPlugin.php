@@ -48,7 +48,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
     // Add filters
     $filter_names = array(
-        // 'Display',
+        'Display',
         'ElementInput',
     );
 
