@@ -48,7 +48,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
     // Add filters
     $filter_names = array(
-        'Display',
+        // 'Display',
         'ElementInput',
     );
 
@@ -244,9 +244,10 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         $tripleSelect[$groupName] = array();
         foreach($saniUnitsGroup as $idx => $saniUnit) {
           $tripleSelect[$groupName][$idx] = $saniUnit["verb"];
-          $ungroupedSaniUnits[] = $saniUnit;
+          $ungroupedSaniUnits[$idx] = $saniUnit;
         }
       }
+      ksort($ungroupedSaniUnits);
       require dirname(__FILE__) . '/measurements-form.php';
     }
 
@@ -286,7 +287,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $result = "";
 
     if ($sourceData) {
-      $tripleUnit =  $sourceData->u->v;
+      $tripleUnit =  $sourceData->u;
 
       $singleUnits = array( "", "", "", "" );
       if (preg_match("/".SELF::$_saniUnitRegex."/", $tripleUnit, $matches)) {

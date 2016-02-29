@@ -76,17 +76,12 @@ jQuery(document).bind("omeka:elementformload", function() {
         $("#"+editFields[i][1]).val(x[0]).data("values", x);
       }
 
-      var unitId = parseInt(sourceData["u"]["ui"]);
-      if (unitId<0) {
-        unitVerb = "";
-      }
-      else {
-        var unitVerb = sourceData["u"]["v"];
-        for(var i=0; (i<measurementsUnits.length); i++) {
-          if (measurementsUnits[i]["verb"] == unitVerb) {
-            unitId=i;
-            break;
-          }
+      var unitId = -1;
+      var unitVerb = sourceData["u"];
+      for(var i=0; (i<measurementsUnits.length); i++) {
+        if (measurementsUnits[i]["verb"] == unitVerb) {
+          unitId=i;
+          break;
         }
       }
       $("#measurementUnits").val(unitId);
@@ -137,14 +132,11 @@ jQuery(document).bind("omeka:elementformload", function() {
       return;
     }
 
-    var units = { };
-    units["ui"] = curTripleUnit;
     var verb = "";
     if ( (curTripleUnit !== null) && (curTripleUnit>=0) ) {
       verb = measurementsUnits[curTripleUnit]["verb"];
     }
-    units["v"] = verb;
-    targetData["u"] = units;
+    targetData["u"] = verb;
 
     var nonZero = (curTripleUnit>=0);
     for (var i = 0; i<allEditFields.length; i++) {
