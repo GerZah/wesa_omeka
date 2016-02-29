@@ -7,7 +7,8 @@
         <p class="explanation">
             <?php echo __('Please enter all triple units that you would like to support, one per line.'); ?>
             <br>
-            <?php echo __('Please use the form <em>"abc-def-ghi (1-100-10)"</em> with the numbers being the conversion rates.'); ?>
+            <?php echo __('Please use the form <em>"abc-def-ghi (1-100-10)"</em> with the numbers being the conversion rates.'); ?><br>
+            <?php echo __('You may also group multiple triple units by adding a group name like this: <em>"[groupname] abc-def-ghi (1-100-10)"</em>.'); ?>
         </p>
         <?php
 				echo $view->formTextarea('measurements_units', $measurementUnits, array( "rows" => 8 ) );

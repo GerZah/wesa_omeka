@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Measurements/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-02-23 14:32+0100\n"
+"PO-Revision-Date: 2016-02-29 17:42+0100\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -19,32 +19,34 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.7\n"
 
-#: MeasurementsPlugin.php:258 measurements-form.php:157 measurements-form.php:182
+#: MeasurementsPlugin.php:126
+msgid "[n/a]"
+msgstr "[n.v.]"
+
+#: MeasurementsPlugin.php:280 measurements-form.php:157 measurements-form.php:182
 msgid "Clear"
 msgstr "Löschen"
 
-#: MeasurementsPlugin.php:276 MeasurementsPlugin.php:277 MeasurementsPlugin.php:278 MeasurementsPlugin.php:283
-#: MeasurementsPlugin.php:284 MeasurementsPlugin.php:285 measurements-form.php:14 measurements-form.php:61
-#: measurements-form.php:66 measurements-form.php:115 measurements-form.php:174
+#: MeasurementsPlugin.php:298 MeasurementsPlugin.php:299 MeasurementsPlugin.php:300 MeasurementsPlugin.php:305 MeasurementsPlugin.php:306 MeasurementsPlugin.php:307
+#: measurements-form.php:14 measurements-form.php:61 measurements-form.php:66 measurements-form.php:115 measurements-form.php:174
 msgid "Length"
 msgstr "Länge"
 
-#: MeasurementsPlugin.php:279 MeasurementsPlugin.php:280 MeasurementsPlugin.php:281 MeasurementsPlugin.php:286
-#: MeasurementsPlugin.php:287 MeasurementsPlugin.php:288 measurements-form.php:15 measurements-form.php:77
-#: measurements-form.php:82 measurements-form.php:126 measurements-form.php:131
+#: MeasurementsPlugin.php:301 MeasurementsPlugin.php:302 MeasurementsPlugin.php:303 MeasurementsPlugin.php:308 MeasurementsPlugin.php:309 MeasurementsPlugin.php:310
+#: measurements-form.php:15 measurements-form.php:77 measurements-form.php:82 measurements-form.php:126 measurements-form.php:131
 msgid "Face"
 msgstr "Fläche"
 
-#: MeasurementsPlugin.php:282 MeasurementsPlugin.php:289 measurements-form.php:16 measurements-form.php:93
-#: measurements-form.php:97 measurements-form.php:142 measurements-form.php:146
+#: MeasurementsPlugin.php:304 MeasurementsPlugin.php:311 measurements-form.php:16 measurements-form.php:93 measurements-form.php:97 measurements-form.php:142
+#: measurements-form.php:146
 msgid "Volume"
 msgstr "Volumen"
 
-#: MeasurementsPlugin.php:298 measurements-form.php:17
+#: MeasurementsPlugin.php:321 measurements-form.php:17
 msgid "Entered Data"
 msgstr "Eingegebene Daten"
 
-#: MeasurementsPlugin.php:302 measurements-form.php:18 measurements-form.php:106
+#: MeasurementsPlugin.php:324 measurements-form.php:18 measurements-form.php:106
 msgid "Derived Data"
 msgstr "Abgeleitete Daten"
 
@@ -60,15 +62,19 @@ msgstr "Bitte geben Sie alle Einheiten-Tripel ein, die Sie unterstützen wollen,
 msgid "Please use the form <em>\"abc-def-ghi (1-100-10)\"</em> with the numbers being the conversion rates."
 msgstr "Bitte verwenden Sie die Form <em>„abc-def-ghi (1-100-10)“</em>, wobei die Zahlen die Umrechnungsfaktoren bezeichnen."
 
-#: config_form.php:15
+#: config_form.php:11
+msgid "You may also group multiple triple units by adding a group name like this: <em>\"[groupname] abc-def-ghi (1-100-10)\"</em>."
+msgstr "Auf Wunsch können Sie mehrere Tripel-Einheiten gruppieren, indem Sie wie folgt einen Gruppennamen hinzufügen: <em>\"[Gruppenname] abc-def-ghi (1-100-10)\"</em>"
+
+#: config_form.php:16
 msgid "Valid units that have been entered correctly:"
 msgstr "Gültige, korrekt definierte Einheiten:"
 
-#: config_form.php:25
+#: config_form.php:30
 msgid "Measurement Elements"
 msgstr "Maß-Elemente"
 
-#: config_form.php:28
+#: config_form.php:33
 msgid "Select elements to transform into measurements, i.e. that should store measurements."
 msgstr "Bitte wählen Sie diejenigen Elemente aus, in denen Sie Maße speichern wollen."
 
