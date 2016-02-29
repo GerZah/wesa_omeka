@@ -132,6 +132,10 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   $("#measurementsApply").click(function(e) { // unbind("click").
     var targetData = new Object();
+    if ( (curTripleUnit==null) || (curTripleUnit<0) ) {
+      alert(measurementsI18n["selectTriple"]);
+      return;
+    }
 
     var units = { };
     units["ui"] = curTripleUnit;
