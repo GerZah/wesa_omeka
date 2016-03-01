@@ -145,7 +145,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     }
 
     ksort($saniUnits);
-    if ($saniUnits[""]) {
+    if (@$saniUnits[""]) {
       $emptyKey = $saniUnits[""];
       unset($saniUnits[""]);
       $saniUnits[__("[n/a]")] = $emptyKey;
@@ -276,7 +276,10 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     set_option('measurements_select', $measurementsSelect);
 
     $reprocess = (int)(boolean) $_POST['measurements_trigger_reindex'];
-		if ($reprocess) { SELF::_batchProcessExistingItems(); }
+    if ($reprocess) {
+      SELF::_initStatics();
+      SELF::_batchProcessExistingItems();
+    }
   }
 
   # ----------------------------------------------------------------------------
@@ -458,6 +461,8 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $db = get_db();
     $db->query("DELETE FROM `$db->MeasurementsValues` WHERE item_id=$itemId");
 
+    if (!SELF::$_measurementsElements) return;
+
     $measurementElements = implode(",", SELF::$_measurementsElements);
 
     $sql = "SELECT text FROM $db->ElementTexts".
@@ -470,8 +475,9 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
       foreach($elements as $element) {
         $json = $element["text"];
         $data = @json_decode($json,true);
-        $dataTuple = array( $itemId );
+        $dataTuple = array();
         if ($data) {
+          $dataTuple[] = $itemId;
           // $dataTuple["u"] = $db->quote($data["u"]); // full triple unit
           preg_match("/".SELF::$_saniUnitRegex."/", $data["u"], $matches);
           $dataTuple["u"] = $db->quote($matches[4]); // just lowest significant single unit
