@@ -16,8 +16,8 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 		'config_form', # prepare and display configuration form
 		'config', # store config settings in the database
     'admin_head',
-		// 'after_save_item',
-		// 'after_delete_item',
+		'after_save_item',
+		'after_delete_item',
 		// 'admin_items_search',
 		// 'public_items_search',
 		// 'admin_items_show_sidebar',
@@ -33,6 +33,9 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
   // One potential unit -- e.g. "[Group] abc-def-ghi (1-10-10)" or "abc-def-ghi (1-10-10)"
   protected static $_saniUnitRegex = "^\W*(?:\[(\S+)\]\W+)?(\S+)-(\S+)-(\S+)\W+\(1-(\d+)-(\d+)\)\W*$";
+
+  protected static $_indices = array( "", "", "²", "³" );
+  protected static $_editFields; // see _initEditFields()
 
   # ----------------------------------------------------------------------------
 
@@ -72,10 +75,30 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  protected function _initEditFields() {
+    SELF::$_editFields = array(
+      array("l1",  __("Length") . " 1", 1),
+      array("l2",  __("Length") . " 2", 1),
+      array("l3",  __("Length") . " 3", 1),
+      array("f1",  __("Face")   . " 1", 2),
+      array("f2",  __("Face")   . " 2", 2),
+      array("f3",  __("Face")   . " 3", 2),
+      array("v",   __("Volume"), 3),
+      array("l1d", __("Length") . " 1", 1),
+      array("l2d", __("Length") . " 2", 1),
+      array("l3d", __("Length") . " 3", 1),
+      array("f1d", __("Face")   . " 1", 2),
+      array("f2d", __("Face")   . " 2", 2),
+      array("f3d", __("Face")   . " 3", 2),
+      array("vd",  __("Volume"), 3),
+    );
+  }
+
   /**
 	* Initialize static variables (units, selected elements, etc.) so they can be used anywhere
 	*/
   protected function _initStatics() {
+    SELF::_initEditFields();
     SELF::$_saniUnits = SELF::_prepareSaniUnits( SELF::_getRawUnitsFromConfig() );
     SELF::$_measurementsElements = SELF::_retrieveMeasurementElements();
   }
@@ -153,14 +176,23 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 	*/
 	public function hookInstall() {
 		SELF::_installOptions();
-    return; # +#+#+#
+    SELF::_initEditFields(); // will fail to deliver i18n strings, which we won't need here
+    // return; # +#+#+#
+
+
+    $fields = array();
+    foreach(SELF::$_editFields as $editField) {
+      $key = $editField[0];
+      $fields[] = "`$key` varchar(20) default NULL,";
+    }
+    $fields = implode("\n", $fields);
 
     $db = get_db();
     $sql = "
-      CREATE TABLE IF NOT EXISTS `$db->Measurements` (
+      CREATE TABLE IF NOT EXISTS `$db->MeasurementsValues` (
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
           `item_id` int(10) unsigned NOT NULL REFERENCES `$db->Item`,
-          `num` varchar(20) NOT NULL,
+          $fields
           `unit` varchar(".MEASUREMENT_UNIT_LEN.") NOT NULL,
           PRIMARY KEY (`id`),
           INDEX (unit)
@@ -177,6 +209,9 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 	*/
 	public function hookUninstall() {
 		SELF::_uninstallOptions();
+
+    $db = get_db();
+		$db->query("DROP TABLE IF EXISTS `$db->MeasurementsValues`");
   }
 
   # ----------------------------------------------------------------------------
@@ -239,7 +274,10 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $measurementsSelect = array_unique($measurementsSelect);
     $measurementsSelect = json_encode($measurementsSelect);
     set_option('measurements_select', $measurementsSelect);
-	}
+
+    $reprocess = (int)(boolean) $_POST['measurements_trigger_reindex'];
+		if ($reprocess) { SELF::_batchProcessExistingItems(); }
+  }
 
   # ----------------------------------------------------------------------------
 
@@ -311,27 +349,10 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         $singleUnits = array( "", $matches[2], $matches[3], $matches[4] );
       }
 
-      $editFields = array(
-        array("l1", __("Length") . " 1", 1),
-        array("l2", __("Length") . " 2", 1),
-        array("l3", __("Length") . " 3", 1),
-        array("f1", __("Face")   . " 1", 2),
-        array("f2", __("Face")   . " 2", 2),
-        array("f3", __("Face")   . " 3", 2),
-        array("v", __("Volume"), 3),
-        array("l1d", __("Length") . " 1", 1),
-        array("l2d", __("Length") . " 2", 1),
-        array("l3d", __("Length") . " 3", 1),
-        array("f1d", __("Face")   . " 1", 2),
-        array("f2d", __("Face")   . " 2", 2),
-        array("f3d", __("Face")   . " 3", 2),
-        array("vd", __("Volume"), 3),
-      );
-      $indices = array( "", "", "²", "³" );
       $cache = array();
 
-      foreach(array_keys($editFields) as $i) {
-        $currentField = $editFields[$i];
+      foreach(array_keys(SELF::$_editFields) as $i) {
+        $currentField = SELF::$_editFields[$i];
         $key = $currentField[0];
         switch ($key) {
           case 'l1':
@@ -361,12 +382,12 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
         if ( (!$allZero) and (!$cacheHit) ) {
           $result .= $currentField[1] . " = ";
-          $result .= $values[0] . " " . $singleUnits[3] . $indices[$currentField[2]];
+          $result .= $values[0] . " " . $singleUnits[3] . SELF::$_indices[$currentField[2]];
 
           $result .= " (";
           $valueText = array();
           for($j=1; $j<=3; $j++) {
-            $valueText[] = $values[$j] . " " . $singleUnits[$j] . $indices[$currentField[2]];
+            $valueText[] = $values[$j] . " " . $singleUnits[$j] . SELF::$_indices[$currentField[2]];
           }
           $result .= implode(" / ", $valueText);
           $result .= ")\n";
@@ -387,6 +408,94 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
   public function filterDisplay($text, $args) {
     $result = SELF::_verbatimSourceData($text, "<br>");
     return $result;
+  }
+
+  # ----------------------------------------------------------------------------
+
+  # ----------------------------------------------------------------------------
+
+  /**
+	* Delete preprocessed measurements after an item has been deleted
+	*/
+	public function hookAfterDeleteItem($args) {
+		$itemId = intval($args["record"]["id"]);
+		if ($itemId) {
+      $db = get_db();
+			$db->query("DELETE FROM `$db->MeasurementsValues` WHERE item_id=$itemId");
+		}
+	}
+
+  # ----------------------------------------------------------------------------
+
+  /**
+  * Preprocess measurements after saving an item add/edit form.
+  */
+	public function hookAfterSaveItem($args) {
+			$itemId = intval(@$args["record"]["id"]);
+			if ($itemId) {
+        SELF::_preProcessItem($itemId);
+      }
+	}
+
+  # ----------------------------------------------------------------------------
+
+  /**
+	* Preprocess ALL existing items which could be rather EVIL in huge installations
+	*/
+	private function _batchProcessExistingItems() {
+		$db = get_db();
+		$sql= "select id from `$db->Items`";
+		$items = $db->fetchAll($sql);
+		foreach($items as $item) { SELF::_preProcessItem($item["id"]); }
+	}
+
+  # ----------------------------------------------------------------------------
+
+  /**
+	* Pre-process one item's textual data and measurements in search index table
+	*/
+	private function _preProcessItem($itemId) {
+    $db = get_db();
+    $db->query("DELETE FROM `$db->MeasurementsValues` WHERE item_id=$itemId");
+
+    $measurementElements = implode(",", SELF::$_measurementsElements);
+
+    $sql = "SELECT text FROM $db->ElementTexts".
+            " WHERE record_id=$itemId AND element_id IN ($measurementElements)";
+    $elements = $db->fetchAll($sql);
+
+    if ($elements) {
+
+      $dataTuples = array();
+      foreach($elements as $element) {
+        $json = $element["text"];
+        $data = @json_decode($json,true);
+        $dataTuple = array( $itemId );
+        if ($data) {
+          // $dataTuple["u"] = $db->quote($data["u"]); // full triple unit
+          preg_match("/".SELF::$_saniUnitRegex."/", $data["u"], $matches);
+          $dataTuple["u"] = $db->quote($matches[4]); // just lowest significant single unit
+          foreach(SELF::$_editFields AS $editField) {
+            $dataTuple[$editField[0]] = intval($data[$editField[0]][0]);
+          }
+        }
+        if ($dataTuple) { $dataTuples[] = implode(",",$dataTuple); }
+      }
+
+      if ($dataTuples) {
+
+        $dataSet = array( "item_id", "unit" );
+        foreach(SELF::$_editFields AS $editField) {
+          $dataSet[] = $editField[0];
+        }
+        $dataSet = implode(",", $dataSet);
+
+        $sql = "INSERT INTO `$db->MeasurementsValues` ($dataSet) values ".
+                "(" . implode("), (", $dataTuples) . ")";
+        $db->query($sql);
+
+      }
+    }
   }
 
   # ----------------------------------------------------------------------------

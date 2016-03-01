@@ -40,3 +40,36 @@
       ?>
     </div>
 </div>
+
+<div class="field">
+  <div class="two columns alpha">
+      <?php echo get_view()->formLabel('measurements_trigger_reindex', __('Trigger Re-indexing of Existing Content')); ?>
+  </div>
+  <div class="inputs five columns omega">
+      <p class="explanation">
+          <?php
+            echo __('<strong>Please note:</strong> Checking this box will re-generate the index <em>now</em> and '.
+                    'exactly <em>once</em>. This action will be carried out as soon as you click on "Save Changes".');
+          ?>
+      </p>
+      <?php echo get_view()->formCheckbox('measurements_trigger_reindex', null, array('checked' => false)); ?>
+      <p class="explanation">
+          <?php
+            echo __('<em>Explanation:</em> Measurements relies on a search index that is being created during content'.
+                    ' maintenance in the background. However, existing content will not be re-indexed automatically. '.
+                    'So if you have existing content or modify your settings, you should re-generate the search index.');
+          ?>
+      </p>
+  </div>
+</div>
+
+<script type="text/javascript">
+// <!--
+  jQuery(document).ready(function() {
+    var $ = jQuery; // use noConflict version of jQuery as the short $ within this block
+    $("#measurements_units").change( function() { activateReindexCheckbox(); } );
+    $("#measurements_elements").change( function() { activateReindexCheckbox(); } );
+    function activateReindexCheckbox() { $("#measurements_trigger_reindex").prop('checked', true); }
+  } );
+// -->
+</script>
