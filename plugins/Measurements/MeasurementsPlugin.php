@@ -20,7 +20,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 		'after_delete_item',
 		// 'admin_items_search',
 		// 'public_items_search',
-		// 'admin_items_show_sidebar',
+		'admin_items_show_sidebar',
 		// 'items_browse_sql',
 	);
 
@@ -28,7 +28,8 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
   protected $_options = array(
     'measurements_units' => '[]',
-    'measurements_select' => '[]'
+    'measurements_select' => '[]',
+    'measurements_debug_output' => false
 	);
 
   // One potential unit -- e.g. "[Group] abc-def-ghi (1-10-10)" or "abc-def-ghi (1-10-10)"
@@ -41,6 +42,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
   private static $_saniUnits;
   private static $_measurementsElements;
+  private static $_debugOutput;
 
   # ----------------------------------------------------------------------------
 
@@ -101,7 +103,8 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     SELF::_initEditFields();
     SELF::$_saniUnits = SELF::_prepareSaniUnits( SELF::_getRawUnitsFromConfig() );
     SELF::$_measurementsElements = SELF::_retrieveMeasurementElements();
-  }
+    SELF::$_debugOutput = (int)(boolean) get_option('measurements_debug_output');
+}
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -246,6 +249,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     }
 
     $measurementElements = SELF::$_measurementsElements;
+    $debugOutput = SELF::$_debugOutput; # comment line to remove debug output panel
 
 		require dirname(__FILE__) . '/config_form.php';
 	}
@@ -274,6 +278,9 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $measurementsSelect = array_unique($measurementsSelect);
     $measurementsSelect = json_encode($measurementsSelect);
     set_option('measurements_select', $measurementsSelect);
+
+    SELF::$_debugOutput = (int)(boolean) @$_POST['measurements_debug_output'];
+    set_option('measurements_debug_output', SELF::$_debugOutput);
 
     $reprocess = (int)(boolean) $_POST['measurements_trigger_reindex'];
     if ($reprocess) {
@@ -503,6 +510,46 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
       }
     }
   }
+
+  # ----------------------------------------------------------------------------
+
+  /**
+  * Debug output of stored measurements in item's sidebar (if activated)
+  */
+  public function hookAdminItemsShowSidebar($args) {
+		if (SELF::$_debugOutput) {
+			$itemID = $args['item']['id'];
+			if ($itemID) {
+				echo "<div class='panel'><h4>".__("Measurements Debug Output")."</h4>\n";
+				$db = get_db();
+				$sql = "select * from `$db->MeasurementsValues` where item_id=$itemID";
+				$measurements = $db->fetchAll($sql);
+				if ($measurements) {
+					echo "<ul>\n";
+					foreach($measurements as $measurement) {
+            $foundFirstDerived = false;
+            $data = array();
+            foreach(SELF::$_editFields AS $editField) {
+              $key = $editField[0];
+              $break = "";
+              if (!$foundFirstDerived) {
+                if (substr($key,-1) == "d") {
+                  $foundFirstDerived = true;
+                  $break="<br>";
+                }
+              }
+              $data[$key] = $break . "$key=" . $measurement[$key];
+            }
+            echo "<li><strong>".$measurement["unit"]."</strong>:<br>".
+                  implode(", ", $data).
+                  "</li>";
+					}
+					echo "</ul>\n";
+				}
+				echo "</div>\n";
+			}
+		}
+	}
 
   # ----------------------------------------------------------------------------
 

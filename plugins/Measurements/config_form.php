@@ -73,3 +73,14 @@
   } );
 // -->
 </script>
+
+<?php if (isset($debugOutput)) { ?>
+  <div class="field">
+    <div class="two columns alpha">
+        <?php echo get_view()->formLabel('measurements_debug_output', __('Debug Output')); ?>
+    </div>
+    <div class="inputs five columns omega">
+        <?php echo get_view()->formCheckbox('measurements_debug_output', null, array('checked' => $debugOutput)); ?>
+    </div>
+  </div>
+<?php } ?>
