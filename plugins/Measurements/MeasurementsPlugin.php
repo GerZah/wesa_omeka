@@ -18,8 +18,8 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     'admin_head',
 		'after_save_item',
 		'after_delete_item',
-		// 'admin_items_search',
-		// 'public_items_search',
+		'admin_items_search',
+		'public_items_search',
 		'admin_items_show_sidebar',
 		// 'items_browse_sql',
 	);
@@ -302,20 +302,30 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $action = $request->getActionName();
 
     if ($module === 'default' && $controller === 'items' && in_array($action, array('add', 'edit'))) {
-      $tripleSelect = array( -1 => __("Select Below") );
-      $saniUnits = SELF::$_saniUnits;
-      $ungroupedSaniUnits = array();
-      foreach(SELF::$_saniUnits as $groupName => $saniUnitsGroup) {
-        $tripleSelect[$groupName] = array();
-        foreach($saniUnitsGroup as $idx => $saniUnit) {
-          $tripleSelect[$groupName][$idx] = $saniUnit["verb"];
-          $ungroupedSaniUnits[$idx] = $saniUnit;
-        }
-      }
-      ksort($ungroupedSaniUnits);
+      $units = SELF::_getTripleUnits();
+      $tripleSelect = $units["tripleSelect"];
+      $ungroupedSaniUnits = $units["ungroupedSaniUnits"];
       require dirname(__FILE__) . '/measurements-form.php';
     }
 
+  }
+
+  protected function _getTripleUnits() {
+    $tripleSelect = array( -1 => __("Select Below") );
+    $saniUnits = SELF::$_saniUnits;
+    $ungroupedSaniUnits = array();
+    foreach(SELF::$_saniUnits as $groupName => $saniUnitsGroup) {
+      $tripleSelect[$groupName] = array();
+      foreach($saniUnitsGroup as $idx => $saniUnit) {
+        $tripleSelect[$groupName][$idx] = $saniUnit["verb"];
+        $ungroupedSaniUnits[$idx] = $saniUnit;
+      }
+    }
+    ksort($ungroupedSaniUnits);
+    return array(
+      "tripleSelect" => $tripleSelect,
+      "ungroupedSaniUnits" => $ungroupedSaniUnits
+    );
   }
 
   # ----------------------------------------------------------------------------
@@ -509,6 +519,32 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
       }
     }
+  }
+
+  # ----------------------------------------------------------------------------
+
+  /**
+	* Display the measurement search form on the admin advanced search page in admin
+	*/
+	public function hookAdminItemsSearch() { SELF::_itemsSearch();  }
+
+	/**
+	* Display the measurement search form on the admin advanced search page in public
+	*/
+	public function hookPublicItemsSearch() { SELF::_itemsSearch();  }
+
+  protected function _itemsSearch() {
+    $units = SELF::_getTripleUnits();
+    $tripleSelect = $units["tripleSelect"];
+    unset($tripleSelect[-1]); // remove "Select below"
+    foreach(array_keys($tripleSelect) as $tripleGroupIdx) {
+      foreach(array_keys($tripleSelect[$tripleGroupIdx]) as $idx) {
+        $singleUnit = $tripleSelect[$tripleGroupIdx][$idx];
+        preg_match("/".SELF::$_saniUnitRegex."/", $singleUnit, $matches);
+        $tripleSelect[$tripleGroupIdx][$idx] = $matches[4]; // just lowest significant single unit
+      }
+    }
+    echo common('measurements-advanced-search', array("tripleSelect" => $tripleSelect ));
   }
 
   # ----------------------------------------------------------------------------
