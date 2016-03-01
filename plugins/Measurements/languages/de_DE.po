@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Measurements/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-02-29 17:42+0100\n"
+"PO-Revision-Date: 2016-03-01 17:08+0100\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -19,36 +19,37 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.7\n"
 
-#: MeasurementsPlugin.php:126
-msgid "[n/a]"
-msgstr "[n.v.]"
-
-#: MeasurementsPlugin.php:280 measurements-form.php:157 measurements-form.php:182
-msgid "Clear"
-msgstr "Löschen"
-
-#: MeasurementsPlugin.php:298 MeasurementsPlugin.php:299 MeasurementsPlugin.php:300 MeasurementsPlugin.php:305 MeasurementsPlugin.php:306 MeasurementsPlugin.php:307
-#: measurements-form.php:14 measurements-form.php:61 measurements-form.php:66 measurements-form.php:115 measurements-form.php:174
+#: MeasurementsPlugin.php:82 MeasurementsPlugin.php:83 MeasurementsPlugin.php:84 MeasurementsPlugin.php:89 MeasurementsPlugin.php:90 MeasurementsPlugin.php:91 measurements-form.php:14 measurements-form.php:61 measurements-form.php:66 measurements-form.php:115 measurements-form.php:174
 msgid "Length"
 msgstr "Länge"
 
-#: MeasurementsPlugin.php:301 MeasurementsPlugin.php:302 MeasurementsPlugin.php:303 MeasurementsPlugin.php:308 MeasurementsPlugin.php:309 MeasurementsPlugin.php:310
-#: measurements-form.php:15 measurements-form.php:77 measurements-form.php:82 measurements-form.php:126 measurements-form.php:131
+#: MeasurementsPlugin.php:85 MeasurementsPlugin.php:86 MeasurementsPlugin.php:87 MeasurementsPlugin.php:92 MeasurementsPlugin.php:93 MeasurementsPlugin.php:94 measurements-form.php:15 measurements-form.php:77 measurements-form.php:82 measurements-form.php:126 measurements-form.php:131
 msgid "Face"
 msgstr "Fläche"
 
-#: MeasurementsPlugin.php:304 MeasurementsPlugin.php:311 measurements-form.php:16 measurements-form.php:93 measurements-form.php:97 measurements-form.php:142
-#: measurements-form.php:146
+#: MeasurementsPlugin.php:88 MeasurementsPlugin.php:95 measurements-form.php:16 measurements-form.php:93 measurements-form.php:97 measurements-form.php:142 measurements-form.php:146
 msgid "Volume"
 msgstr "Volumen"
 
-#: MeasurementsPlugin.php:321 measurements-form.php:17
+#: MeasurementsPlugin.php:154
+msgid "[n/a]"
+msgstr "[n.v.]"
+
+#: MeasurementsPlugin.php:345 measurements-form.php:157 measurements-form.php:182
+msgid "Clear"
+msgstr "Löschen"
+
+#: MeasurementsPlugin.php:369 measurements-form.php:17
 msgid "Entered Data"
 msgstr "Eingegebene Daten"
 
-#: MeasurementsPlugin.php:324 measurements-form.php:18 measurements-form.php:106
+#: MeasurementsPlugin.php:372 measurements-form.php:18 measurements-form.php:106
 msgid "Derived Data"
 msgstr "Abgeleitete Daten"
+
+#: MeasurementsPlugin.php:539
+msgid "Measurements Debug Output"
+msgstr "Maße Debug-Ausgabe"
 
 #: config_form.php:4
 msgid "Measurements Units"
@@ -77,6 +78,22 @@ msgstr "Maß-Elemente"
 #: config_form.php:33
 msgid "Select elements to transform into measurements, i.e. that should store measurements."
 msgstr "Bitte wählen Sie diejenigen Elemente aus, in denen Sie Maße speichern wollen."
+
+#: config_form.php:46
+msgid "Trigger Re-indexing of Existing Content"
+msgstr "Re-Indexierung von bestehendem Inhalt auslösen"
+
+#: config_form.php:51
+msgid "<strong>Please note:</strong> Checking this box will re-generate the index <em>now</em> and exactly <em>once</em>. This action will be carried out as soon as you click on \"Save Changes\"."
+msgstr "<strong>Bitte beachten:</strong> Wenn Sie diese Option auswählen, wird der Index <em>jetzt</em> und genau <em>einmal</em>neu generiert. Diese Aktion wird durchgeführt, sobald Sie auf „Änderungen speichern“ klicken."
+
+#: config_form.php:58
+msgid "<em>Explanation:</em> Measurements relies on a search index that is being created during content maintenance in the background. However, existing content will not be re-indexed automatically. So if you have existing content or modify your settings, you should re-generate the search index."
+msgstr "<em>Erläuterung:</em> Maße stützt sich auf einen Suchindex, der während der Inhaltspflege im Hintergrund erstellt wird. Jedoch werden vorhandene Inhalte nicht automatisch erneut indexiert. Sofern Ihre Datenbank also über bestehende Inhalte verfügt, oder wenn Sie Ihre Einstellungen ändern, sollten Sie den Suchindex neu generieren."
+
+#: config_form.php:80
+msgid "Debug Output"
+msgstr "Debug-Ausgabe"
 
 #: measurements-form.php:11
 msgid "Please start by selecting a triple unit."
