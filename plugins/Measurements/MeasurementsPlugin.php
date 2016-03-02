@@ -10,18 +10,18 @@ define('MEASUREMENT_UNIT_LEN', 200);
 class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
   protected $_hooks = array(
-		'initialize',
-		'install',
-		'uninstall',
-		'config_form', # prepare and display configuration form
-		'config', # store config settings in the database
+    'initialize',
+    'install',
+    'uninstall',
+    'config_form', # prepare and display configuration form
+    'config', # store config settings in the database
     'admin_head',
-		'after_save_item',
-		'after_delete_item',
-		'admin_items_search',
-		'public_items_search',
-		'admin_items_show_sidebar',
-		// 'items_browse_sql',
+    'after_save_item',
+    'after_delete_item',
+    'admin_items_search',
+    'items_browse_sql',
+    'public_items_search',
+    'admin_items_show_sidebar',
 	);
 
   # ----------------------------------------------------------------------------
@@ -432,8 +432,6 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
   # ----------------------------------------------------------------------------
 
-  # ----------------------------------------------------------------------------
-
   /**
 	* Delete preprocessed measurements after an item has been deleted
 	*/
@@ -533,6 +531,9 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 	*/
 	public function hookPublicItemsSearch() { SELF::_itemsSearch();  }
 
+  /**
+	* Display the measurement search form on the admin advanced search page
+	*/
   protected function _itemsSearch() {
     $units = SELF::_getTripleUnits();
     $tripleSelect = $units["tripleSelect"];
@@ -541,10 +542,63 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
       foreach(array_keys($tripleSelect[$tripleGroupIdx]) as $idx) {
         $singleUnit = $tripleSelect[$tripleGroupIdx][$idx];
         preg_match("/".SELF::$_saniUnitRegex."/", $singleUnit, $matches);
-        $tripleSelect[$tripleGroupIdx][$idx] = $matches[4]; // just lowest significant single unit
+        unset($tripleSelect[$tripleGroupIdx][$idx]);
+        $tripleSelect[$tripleGroupIdx][$idx."-1"] = $matches[4] . " (" . $singleUnit  .")";
+        $tripleSelect[$tripleGroupIdx][$idx."-2"] = $matches[4] . SELF::$_indices[2];
+        $tripleSelect[$tripleGroupIdx][$idx."-3"] = $matches[4] . SELF::$_indices[3];
       }
     }
+    // echo "<pre>" . print_r($tripleSelect,true) . "</pre>";
     echo common('measurements-advanced-search', array("tripleSelect" => $tripleSelect ));
+  }
+
+  # ----------------------------------------------------------------------------
+
+  /**
+	* Filter for a number after search page submission.
+	*/
+	public function hookItemsBrowseSql($args) {
+		$select = $args['select'];
+		$params = $args['params'];
+
+    $measurementsTerm = @$params["measurements_term"];
+
+    $regExOneOrTwoNum = "^\W*(\d+)(:?\W*-\W*(\d+))?\W*$";
+
+    if ($measurementsTerm) {
+      preg_match("/$regExOneOrTwoNum/", $measurementsTerm, $matches);
+      if ($matches) {
+        $from = $matches[1];
+        $to = @$matches[3];
+        if (!$to) { $to = $from; }
+
+        $units = array();
+
+        $tripleUnits = SELF::_getTripleUnits();
+        $ungroupedSaniUnits = $tripleUnits["ungroupedSaniUnits"];
+
+        $measurementsUnits = @$params["measurements_units"];
+        if (is_array($measurementsUnits)) {
+          foreach($measurementsUnits as $measurementsUnit) {
+            preg_match("/$regExOneOrTwoNum/", $measurementsUnit, $matches);
+            if ($matches) {
+              $unit = $matches[1];
+              $exp = @$matches[3];
+              if (!$exp) { $exp=1; }
+              $tripleUnit = $ungroupedSaniUnits[$unit];
+              $singleUnit = $tripleUnit["units"][2];
+              $units[] = array("u" => $unit, "e" => $exp, "s" => $singleUnit);
+            }
+          }
+        }
+
+        // +#+#+# create search query from $from / $two, limited bei $units
+        // +#+#+# whereas $unit[e] == 2 means faces / == 3 means volume
+
+        // echo "<pre>$from-$to\n" . print_r($units,true) . "</pre>";
+        // die();
+      }
+    }
   }
 
   # ----------------------------------------------------------------------------
