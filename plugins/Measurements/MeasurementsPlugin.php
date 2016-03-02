@@ -180,8 +180,6 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 	public function hookInstall() {
 		SELF::_installOptions();
     SELF::_initEditFields(); // will fail to deliver i18n strings, which we won't need here
-    // return; # +#+#+#
-
 
     $fields = array();
     foreach(SELF::$_editFields as $editField) {
@@ -568,9 +566,10 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     if ($measurementsTerm) {
       preg_match("/$regExOneOrTwoNum/", $measurementsTerm, $matches);
       if ($matches) {
+        $db = get_db();
+
         $from = $matches[1];
-        $to = @$matches[3];
-        if (!$to) { $to = $from; }
+        $to = @$matches[3]; // could be undefined and thus 0
 
         $units = array();
 
@@ -585,17 +584,56 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
               $unit = $matches[1];
               $exp = @$matches[3];
               if (!$exp) { $exp=1; }
-              $tripleUnit = $ungroupedSaniUnits[$unit];
-              $singleUnit = $tripleUnit["units"][2];
-              $units[] = array("u" => $unit, "e" => $exp, "s" => $singleUnit);
+              $tripleUnit = @$ungroupedSaniUnits[$unit];
+              if ($tripleUnit) {
+                $singleUnit = $tripleUnit["units"][2];
+                $units[] = array("u" => $unit, "e" => $exp, "s" => $singleUnit);
+              }
             }
           }
         }
 
-        // +#+#+# create search query from $from / $two, limited bei $units
-        // +#+#+# whereas $unit[e] == 2 means faces / == 3 means volume
+  			$select
+  					->join(
+  							array('measurements_values' => $db->MeasurementsValues),
+  							"measurements_values.item_id = items.id",
+  							array()
+  					);
+
+        $conditions = array();
+
+        if (!$units) { $units[] = array("e" => 0); }
+
+        foreach($units as $unit) {
+          $condition = "";
+
+          $exp = $unit["e"];
+          if ($exp) {
+            $singleUnit = $db->quote($unit["s"]);
+            $condition .= "(measurements_values.unit=$singleUnit AND (";
+          }
+
+          $fieldConditions = array();
+          foreach(SELF::$_editFields as $editField) {
+            if ( ($exp == 0) or ($editField[2] == $exp) ) {
+              if (!$to) {
+                $fieldConditions[] = $editField[0] . "=$from";
+              }
+              else {
+                $fieldConditions[] = "(".
+                                      $editField[0] . " BETWEEN $from AND $to".
+                                      ")";
+              }
+            }
+          }
+          $condition .= implode(" OR ", $fieldConditions);
+          if ($exp) { $condition .= ") )"; }
+          $conditions[] = $condition;
+        }
+        $select->where(implode(" OR ", $conditions));
 
         // echo "<pre>$from-$to\n" . print_r($units,true) . "</pre>";
+        // echo "<pre>" . print_r($select,true) . "</pre>";
         // die();
       }
     }
