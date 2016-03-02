@@ -16,9 +16,9 @@ class ItemNetwork_RecordsController extends ItemNetwork_Controller_Rest
      */
     public function init()
     {
-        $this->_helper->db->setDefaultModelName('ItemNetworkItem');
+        $this->_helper->db->setDefaultModelName('ItemNetworkRecord');
         $this->_exhibits = $this->_helper->db->getTable('ItemNetworkExhibit');
-        $this->_records  = $this->_helper->db->getTable('ItemNetworkItem');
+        $this->_records  = $this->_helper->db->getTable('ItemNetworkRecord');
         parent::init();
     }
 
@@ -53,7 +53,7 @@ class ItemNetwork_RecordsController extends ItemNetwork_Controller_Rest
     {
 
         // Create record.
-        $record = new ItemNetworkItem();
+        $record = new ItemNetworkRecord();
         $post = Zend_Json::decode($this->_request->getRawBody());
         $record->saveForm($post);
 

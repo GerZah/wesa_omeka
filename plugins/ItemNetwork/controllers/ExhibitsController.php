@@ -100,6 +100,7 @@ class ItemNetwork_ExhibitsController extends ItemNetwork_Controller_Rest
         $this->view->form = $form;
 
 
+
     }
 
 
@@ -119,9 +120,8 @@ class ItemNetwork_ExhibitsController extends ItemNetwork_Controller_Rest
         }
 
         // Push exhibit and form to view.
-        $this->view->network_exhibit = $exhibit;
+        $this->view->neatline_exhibit = $exhibit;
         $this->view->form = $form;
-
 
     }
 
@@ -166,6 +166,19 @@ class ItemNetwork_ExhibitsController extends ItemNetwork_Controller_Rest
     }
 
 
+    /**
+     * Edit exhibit.
+     */
+    public function editorAction()
+    {
+
+        // Assign exhibit to view.
+        $exhibit = $this->_helper->db->findById();
+        $this->view->neatline_exhibit = $exhibit;
+
+    }
+
+
     // Public views:
     // ------------------------------------------------------------------------
 
@@ -183,8 +196,13 @@ class ItemNetwork_ExhibitsController extends ItemNetwork_Controller_Rest
         if (!$exhibit) throw new Omeka_Controller_Exception_404;
 
         // Assign exhibit to view.
-        $this->view->network_exhibit = $exhibit;
-      }
+        $this->view->neatline_exhibit = $exhibit;
+
+        // Try to render exhibit-specific template.
+        try { $this->render("themes/$exhibit->slug/show"); }
+        catch (Exception $e) { $this->render('show'); }
+
+    }
 
 
     /**
@@ -198,7 +216,7 @@ class ItemNetwork_ExhibitsController extends ItemNetwork_Controller_Rest
         if (!$exhibit) throw new Omeka_Controller_Exception_404;
 
         // Assign exhibit to view.
-        $this->view->network_exhibit = $exhibit;
+        $this->view->neatline_exhibit = $exhibit;
 
 
     }
@@ -217,6 +235,17 @@ class ItemNetwork_ExhibitsController extends ItemNetwork_Controller_Rest
     {
         if (is_admin_theme()) return (int) get_option('per_page_admin');
         else return (int) get_option('per_page_public');
+    }
+
+
+    /**
+     * Construct the details form.
+     *
+     * @param NeatlineExhibit $exhibit
+     */
+    protected function _getExhibitForm($exhibit)
+    {
+        return new ItemNetwork_Form_Exhibit(array('exhibit' => $exhibit));
     }
 
 

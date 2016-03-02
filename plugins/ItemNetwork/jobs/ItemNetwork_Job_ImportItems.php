@@ -2,7 +2,7 @@
 
 /**
  * @package     omeka
- * @subpackage  Item Network
+ * @subpackage  ItemNetwork
  * @copyright   2014 Rector and Board of Visitors, University of Virginia
  * @license     http://www.apache.org/licenses/LICENSE-2.0.html
  */
@@ -18,7 +18,7 @@ class ItemNetwork_Job_ImportItems extends Omeka_Job_AbstractJob
     public function perform()
     {
 
-        $_records  = $this->_db->getTable('ItemNetworkItem');
+        $_records  = $this->_db->getTable('ItemNetworkRecord');
         $_exhibits = $this->_db->getTable('ItemNetworkExhibit');
         $_items    = $this->_db->getTable('Item');
 
@@ -37,7 +37,7 @@ class ItemNetwork_Job_ImportItems extends Omeka_Job_AbstractJob
 
                 // Otherwise, create one.
                 if (!$record) {
-                    $record = new ItemNetworkItem($exhibit, $item);
+                    $record = new ItemNetworkRecord($exhibit, $item);
                     $record->added = $item->added;
                 }
 

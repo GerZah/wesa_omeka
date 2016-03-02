@@ -1,131 +1,145 @@
 <?php
-/**
- * ItemNetwork
- *
- * @copyright Copyright 2008-2012 Roy Rosenzweig Center for History and New Media
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GNU GPLv3
- */
 
 /**
- * The ItemNetwork record class.
- *
- * @package ItemNetwork
+ * @package     omeka
+ * @subpackage  itemnetwork
+ * @copyright   2014 Rector and Board of Visitors, University of Virginia
+ * @license     http://www.apache.org/licenses/LICENSE-2.0.html
  */
-class ItemNetworkExhibit extends Omeka_Record_AbstractRecord implements Zend_Acl_Resource_Interface
+
+class ItemNetworkExhibit extends ItemNetwork_Row_Expandable
+    implements Zend_Acl_Resource_Interface
 {
-    public $modified_by_user_id;
-    public $created_by_user_id;
-    public $is_published = 0;
+
+
+    public $owner_id = 0;
+    public $added;
+    public $modified;
+    public $published;
+    public $item_query;
     public $title;
     public $slug;
-    public $text = null;
-    public $updated;
-    public $inserted;
-
-    protected function _initializeMixins()
-    {
-        $this->_mixins[] = new Mixin_Search($this);
-        $this->_mixins[] = new Mixin_Timestamp($this, 'inserted', 'updated');
-    }
+    public $public = 0;
 
     /**
-     * Get the modified by user object.
+     * If the exhibit is being published to the public site for the first
+     * time, set the `published` timestamp.
      *
-     * @return User
+     * @param array $values The POST/PUT data.
      */
-    public function getModifiedByUser()
+    public function saveForm($values)
     {
-        return $this->getTable('User')->find($this->modified_by_user_id);
+
+        // Assign the values.
+        $this->setArray($values);
+
+        // If the exhibit is being set "public" for the first time, set the
+        // `published` timestamp to the current date.
+
+        if (is_null($this->published) && $this->public == 1) {
+            $this->published = date(self::DATE_FORMAT);
+        }
+
+        $this->save();
+
     }
 
+
     /**
-     * Get the created by user object.
+     * Get the number of active records in the exhibit.
      *
-     * @return User
+     * @return integer The record count.
      */
-    public function getCreatedByUser()
+    public function getNumberOfRecords()
     {
-        return $this->getTable('User')->find($this->created_by_user_id);
+        return $this->getTable('ItemNetworkRecord')->count(array(
+            'exhibit_id' => $this->id
+        ));
     }
+
 
     /**
-     * Validate the form data.
-     */
-    protected function _validate()
-    {
-        if (empty($this->title)) {
-            $this->addError('title', __('The page must be given a title.'));
-        }
-
-        if (255 < strlen($this->title)) {
-            $this->addError('title', __('The title for your page must be 255 characters or less.'));
-        }
-
-        if (!$this->fieldIsUnique('title')) {
-            $this->addError('title', __('The title is already in use by another page. Please choose another.'));
-        }
-
-        if (trim($this->slug) == '') {
-            $this->addError('slug', __('The page must be given a valid slug.'));
-        }
-
-        if (preg_match('/^\/+$/', $this->slug)) {
-            $this->addError('slug', __('The slug for your page must not be a forward slash.'));
-        }
-
-        if (255 < strlen($this->slug)) {
-            $this->addError('slug', __('The slug for your page must be 255 characters or less.'));
-        }
-
-        if (!$this->fieldIsUnique('slug')) {
-            $this->addError('slug', __('The slug is already in use by another page. Please choose another.'));
-        }
-
-        if (!is_numeric($this->order) || (!(strpos((string)$this->order, '.') === false)) || intval($this->order) < 0) {
-            $this->addError('order', __('The order must be an integer greater than or equal to 0.'));
-        }
-    }
-
-    /**
-     * Prepare special variables before saving the form.
-     */
-    protected function beforeSave($args)
-    {
-        $this->title = trim($this->title);
-        // Generate the page slug.
-        $this->slug = $this->_generateSlug($this->slug);
-        // If the resulting slug is empty, generate it from the page title.
-        if (empty($this->slug)) {
-            $this->slug = $this->_generateSlug($this->title);
-        }
-
-        $this->modified_by_user_id = current_user()->id;
-    }
-
-    protected function afterSave($args)
-    {
-        if (!$this->is_published) {
-            $this->setSearchTextPrivate();
-        }
-        $this->setSearchTextTitle($this->title);
-        $this->addSearchText($this->title);
-        $this->addSearchText($this->text);
-    }
-
-    /**
-     * Generate a slug given a seed string.
+     * Get the routing parameters or the URL string for the exhibit.
      *
-     * @param string
-     * @return string
+     * @param string $action The controller action.
      */
-    private function _generateSlug($seed)
+    public function getRecordUrl($action = 'show')
     {
-        $seed = trim($seed);
-        $seed = strtolower($seed);
-        // Replace spaces with dashes.
-        $seed = str_replace(' ', '-', $seed);
-        // Remove all but alphanumeric characters, underscores, and dashes.
-        return preg_replace('/[^\w\/-]/i', '', $seed);
+        $urlHelper = new Omeka_View_Helper_Url;
+        $params = array('action' => $action, 'id' => $this->id);
+        return $urlHelper->url($params, 'itemnetworkActionId');
     }
 
-  }
+
+    /**
+     * Check whether a widget is enabled.
+     *
+     * @param string $widget The id of the widget.
+     * @return boolean True if the widget is enabled.
+     */
+    public function hasWidget($id)
+    {
+        return in_array($id, nl_explode($this->widgets));
+    }
+
+    /**
+     * Delete all records that belong to the exhibit.
+     */
+    public function deleteChildRecords()
+    {
+
+        // Get records table and name.
+        $recordsTable = $this->getTable('ItemNetworkRecord');
+        $rName = $recordsTable->getTableName();
+
+        // Gather record expansion tables.
+        foreach (nl_getRecordExpansions() as $expansion) {
+
+            $eName = $expansion->getTableName();
+
+            // Delete expansion rows on child records.
+            $this->_db->query("DELETE $eName FROM $eName
+                INNER JOIN $rName ON $eName.parent_id = $rName.id
+                WHERE $rName.exhibit_id = $this->id
+            ");
+
+        }
+
+        // Delete child records.
+        $recordsTable->delete(
+            $rName, array('exhibit_id=?' => $this->id)
+        );
+
+    }
+
+
+    /**
+     * Measure the image layer when the exhibit is * saved.
+     */
+    protected function beforeSave()
+    {
+        $this->compileImageSize();
+    }
+
+
+    /**
+     * Delete all child records when the exhibit is deleted.
+     */
+    protected function beforeDelete()
+    {
+        $this->deleteChildRecords();
+    }
+
+
+    /**
+     * Associate the model with an ACL resource id.
+     *
+     * @return string The resource id.
+     */
+    public function getResourceId()
+    {
+        return 'ItemNetwork_Exhibits';
+    }
+
+
+}
