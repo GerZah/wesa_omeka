@@ -186,7 +186,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $fields = array();
     foreach(SELF::$_editFields as $editField) {
       $key = $editField[0];
-      $fields[] = "`$key` varchar(20) default NULL,";
+      $fields[] = "`$key` int(10) unsigned default NULL,";
     }
     $fields = implode("\n", $fields);
 

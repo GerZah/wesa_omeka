@@ -43,21 +43,21 @@ msgstr ""
 msgid "[n/a]"
 msgstr ""
 
-#: MeasurementsPlugin.php:345 measurements-form.php:157
+#: MeasurementsPlugin.php:355 measurements-form.php:157
 #: measurements-form.php:182
 msgid "Clear"
 msgstr ""
 
-#: MeasurementsPlugin.php:369 measurements-form.php:17
+#: MeasurementsPlugin.php:379 measurements-form.php:17
 msgid "Entered Data"
 msgstr ""
 
-#: MeasurementsPlugin.php:372 measurements-form.php:18
+#: MeasurementsPlugin.php:382 measurements-form.php:18
 #: measurements-form.php:106
 msgid "Derived Data"
 msgstr ""
 
-#: MeasurementsPlugin.php:539
+#: MeasurementsPlugin.php:559
 msgid "Measurements Debug Output"
 msgstr ""
 
@@ -153,4 +153,16 @@ msgstr ""
 
 #: measurements-form.php:166
 msgid "Triple Unit Data"
+msgstr ""
+
+#: views/shared/common/measurements-advanced-search.php:3
+msgid "Measurements Search"
+msgstr ""
+
+#: views/shared/common/measurements-advanced-search.php:8
+msgid ""
+"You may enter a number or a number range consisting of two numbers, "
+"separated by a hypen (\"-\"); for example, you may enter \"42\" or "
+"\"40-45\". You may also select one or more units that you defined to limit "
+"the search to."
 msgstr ""

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Measurements/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-03-01 17:08+0100\n"
+"PO-Revision-Date: 2016-03-02 10:24+0100\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -35,19 +35,19 @@ msgstr "Volumen"
 msgid "[n/a]"
 msgstr "[n.v.]"
 
-#: MeasurementsPlugin.php:345 measurements-form.php:157 measurements-form.php:182
+#: MeasurementsPlugin.php:355 measurements-form.php:157 measurements-form.php:182
 msgid "Clear"
 msgstr "Löschen"
 
-#: MeasurementsPlugin.php:369 measurements-form.php:17
+#: MeasurementsPlugin.php:379 measurements-form.php:17
 msgid "Entered Data"
 msgstr "Eingegebene Daten"
 
-#: MeasurementsPlugin.php:372 measurements-form.php:18 measurements-form.php:106
+#: MeasurementsPlugin.php:382 measurements-form.php:18 measurements-form.php:106
 msgid "Derived Data"
 msgstr "Abgeleitete Daten"
 
-#: MeasurementsPlugin.php:539
+#: MeasurementsPlugin.php:559
 msgid "Measurements Debug Output"
 msgstr "Maße Debug-Ausgabe"
 
@@ -130,3 +130,11 @@ msgstr "Anwenden"
 #: measurements-form.php:166
 msgid "Triple Unit Data"
 msgstr "Einheiten-Tripel Eingabe"
+
+#: views/shared/common/measurements-advanced-search.php:3
+msgid "Measurements Search"
+msgstr "Maße-Suche"
+
+#: views/shared/common/measurements-advanced-search.php:8
+msgid "You may enter a number or a number range consisting of two numbers, separated by a hypen (\"-\"); for example, you may enter \"42\" or \"40-45\". You may also select one or more units that you defined to limit the search to."
+msgstr "Sie können eine Zahl oder einen Zahlenbereich eingeben, letzterer bestehend aus zwei Zahlen, getrennt durch einen Bindestrich(\"-\"); beispielsweise können Sie \"42\" oder \"40-45\" eingeben. Darüber hinaus können Sie eine oder mehrere von Ihnen konfigurierte Einheiten auswählen, um die Suche zu begrenzen."
