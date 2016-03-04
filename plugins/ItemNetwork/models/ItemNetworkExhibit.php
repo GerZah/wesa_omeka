@@ -3,9 +3,7 @@
 /**
  * @package     omeka
  * @subpackage  itemnetwork
- * @copyright   2014 Rector and Board of Visitors, University of Virginia
- * @license     http://www.apache.org/licenses/LICENSE-2.0.html
- */
+  */
 
 class ItemNetworkExhibit extends ItemNetwork_Row_Expandable
     implements Zend_Acl_Resource_Interface
@@ -71,17 +69,6 @@ class ItemNetworkExhibit extends ItemNetwork_Row_Expandable
 
 
     /**
-     * Check whether a widget is enabled.
-     *
-     * @param string $widget The id of the widget.
-     * @return boolean True if the widget is enabled.
-     */
-    public function hasWidget($id)
-    {
-        return in_array($id, nl_explode($this->widgets));
-    }
-
-    /**
      * Delete all records that belong to the exhibit.
      */
     public function deleteChildRecords()
@@ -111,14 +98,6 @@ class ItemNetworkExhibit extends ItemNetwork_Row_Expandable
 
     }
 
-
-    /**
-     * Measure the image layer when the exhibit is * saved.
-     */
-    protected function beforeSave()
-    {
-        $this->compileImageSize();
-    }
 
 
     /**

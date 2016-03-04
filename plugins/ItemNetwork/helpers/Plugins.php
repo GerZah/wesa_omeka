@@ -15,7 +15,7 @@
  */
 function in_getExhibitExpansions()
 {
-    return apply_filters('itemnetwork_exhibit_expansions', array());
+    return apply_filters('item_network_exhibit_expansions', array());
 }
 
 
@@ -26,5 +26,5 @@ function in_getExhibitExpansions()
  */
 function in_getRecordExpansions()
 {
-    return apply_filters('itemnetwork_record_expansions', array());
+    return apply_filters('item_network_record_expansions', array());
 }

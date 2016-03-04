@@ -3,8 +3,6 @@
 /**
  * @package     omeka
  * @subpackage  ItemNetwork
- * @copyright   2014 Rector and Board of Visitors, University of Virginia
- * @license     http://www.apache.org/licenses/LICENSE-2.0.html
  */
 
 class ItemNetworkRecordTable extends ItemNetwork_Table_Expandable
@@ -182,7 +180,7 @@ class ItemNetworkRecordTable extends ItemNetwork_Table_Expandable
      */
     protected function filterPlugins()
     {
-        $this->select = apply_filters('itemnetwork_query_records',
+        $this->select = apply_filters('item_network_query_records',
             $this->select, array('params' => $this->params)
         );
     }

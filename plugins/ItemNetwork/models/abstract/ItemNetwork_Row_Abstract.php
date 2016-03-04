@@ -1,10 +1,7 @@
 <?php
-
 /**
  * @package     omeka
  * @subpackage  Neatline
- * @copyright   2014 Rector and Board of Visitors, University of Virginia
- * @license     http://www.apache.org/licenses/LICENSE-2.0.html
  */
 
 abstract class ItemNetwork_Row_Abstract extends Omeka_Record_AbstractRecord

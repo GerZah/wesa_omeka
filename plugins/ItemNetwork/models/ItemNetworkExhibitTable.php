@@ -3,8 +3,6 @@
 /**
  * @package     omeka
  * @subpackage  ItemNetwork
- * @copyright   2014 Rector and Board of Visitors, University of Virginia
- * @license     http://www.apache.org/licenses/LICENSE-2.0.html
  */
 
 class ItemNetworkExhibitTable extends ItemNetwork_Table_Expandable
@@ -65,8 +63,8 @@ class ItemNetworkExhibitTable extends ItemNetwork_Table_Expandable
     public function _getColumnPairs()
     {
         return array(
-            'itemnetwork_exhibits.id',
-            'itemnetwork_exhibits.title'
+            'item_network_exhibits.id',
+            'item_network_exhibits.title'
         );
     }
 
