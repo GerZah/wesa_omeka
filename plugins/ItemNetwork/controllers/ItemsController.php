@@ -39,7 +39,7 @@ class ItemNetwork_ItemsController extends ItemNetwork_Controller_Rest
         }
 
         // Output the item metadata
-        echo nl_getItemMarkup($item, $record);
+        echo in_getItemMarkup($item, $record);
 
     }
 

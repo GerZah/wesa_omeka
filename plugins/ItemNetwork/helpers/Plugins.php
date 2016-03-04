@@ -13,7 +13,7 @@
  *
  * @return array An array of `Neatline_Table_Expansion`.
  */
-function nl_getExhibitExpansions()
+function in_getExhibitExpansions()
 {
     return apply_filters('itemnetwork_exhibit_expansions', array());
 }
@@ -24,7 +24,7 @@ function nl_getExhibitExpansions()
  *
  * @return array An array of `Neatline_Table_Expansion`.
  */
-function nl_getRecordExpansions()
+function in_getRecordExpansions()
 {
     return apply_filters('itemnetwork_record_expansions', array());
 }

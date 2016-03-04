@@ -112,7 +112,7 @@ class ItemNetworkPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookDefineAcl($args)
     {
-        nl_defineAcl($args['acl']);
+        in_defineAcl($args['acl']);
     }
 
 
@@ -133,7 +133,7 @@ class ItemNetworkPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookDefineRoutes($args)
     {
         $args['router']->addConfig(new Zend_Config_Ini(
-            NL_DIR.'/routes.ini'
+            IN_DIR.'/routes.ini'
         ));
     }
 

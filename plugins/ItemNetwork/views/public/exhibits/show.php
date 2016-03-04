@@ -10,12 +10,12 @@
 ?>
 
 <?php echo head(array(
-  'title' => nl_getExhibitField('title'),
+  'title' => in_getExhibitField('title'),
   'bodyclass' => 'itemnetwork show'
 )); ?>
 
 <!-- Exhibit title: -->
-<h1><?php echo nl_getExhibitField('title'); ?></h1>
+<h1><?php echo in_getExhibitField('title'); ?></h1>
 
 
 <?php echo foot(); ?>

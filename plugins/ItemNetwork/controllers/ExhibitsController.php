@@ -51,10 +51,7 @@ class ItemNetwork_ExhibitsController extends ItemNetwork_Controller_Rest
             Zend_Registry::get('fileIn')), true
         ));
 
-        // Propagate CSS.
-        $exhibit->pushStyles();
-
-        // Respond with exhibit data.
+          // Respond with exhibit data.
         echo Zend_Json::encode($exhibit->toArray());
 
     }
@@ -98,9 +95,6 @@ class ItemNetwork_ExhibitsController extends ItemNetwork_Controller_Rest
 
         // Push form to view.
         $this->view->form = $form;
-
-
-
     }
 
 
@@ -203,24 +197,6 @@ class ItemNetwork_ExhibitsController extends ItemNetwork_Controller_Rest
         catch (Exception $e) { $this->render('show'); }
 
     }
-
-
-    /**
-     * Show fullscreen exhibit.
-     */
-    public function fullscreenAction()
-    {
-
-        // Try to find an exhibit with the requested slug.
-        $exhibit = $this->_exhibits->findBySlug($this->_request->slug);
-        if (!$exhibit) throw new Omeka_Controller_Exception_404;
-
-        // Assign exhibit to view.
-        $this->view->neatline_exhibit = $exhibit;
-
-
-    }
-
 
     // Helpers:
     // ------------------------------------------------------------------------

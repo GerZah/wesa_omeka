@@ -18,7 +18,7 @@ class ItemNetworkRecordTable extends ItemNetwork_Table_Expandable
      */
     public function getExpansionTables()
     {
-        return nl_getRecordExpansions();
+        return in_getRecordExpansions();
     }
 
 

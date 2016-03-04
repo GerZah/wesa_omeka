@@ -93,7 +93,7 @@ class ItemNetworkExhibit extends ItemNetwork_Row_Expandable
         $rName = $recordsTable->getTableName();
 
         // Gather record expansion tables.
-        foreach (nl_getRecordExpansions() as $expansion) {
+        foreach (in_getRecordExpansions() as $expansion) {
 
             $eName = $expansion->getTableName();
 

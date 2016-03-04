@@ -15,7 +15,7 @@
  * @param NeatlineRecord|null $record The record.
  * @return string The item metadata.
  */
-function nl_getItemMarkup($item, $record=null)
+function in_getItemMarkup($item, $record=null)
 {
 
     // Set the item on the view.
@@ -62,13 +62,13 @@ function nl_getItemMarkup($item, $record=null)
  * @param array $props Array of properties for the element.
  * @return string The HTML link.
  */
-function nl_getExhibitLink(
+function in_getExhibitLink(
     $exhibit, $action, $text, $props=array(), $public=true)
 {
 
     // Get exhibit and link text.
-    $exhibit = $exhibit ? $exhibit : nl_getExhibit();
-    $text = $text ? $text : nl_getExhibitField('title');
+    $exhibit = $exhibit ? $exhibit : in_getExhibit();
+    $text = $text ? $text : in_getExhibitField('title');
 
 
     // Construct the exhibit route.
@@ -87,9 +87,9 @@ function nl_getExhibitLink(
  * @param string $action The action for the link.
  * @return string The URL.
  */
-function nl_getExhibitUrl($exhibit, $action, $public=true)
+function in_getExhibitUrl($exhibit, $action, $public=true)
 {
-    $exhibit = $exhibit ? $exhibit : nl_getExhibit();
+    $exhibit = $exhibit ? $exhibit : in_getExhibit();
 
     $route = 'itemnetwork/'.$action.'/'.$identifier;
     $href  = $public ? public_url($route) : url($route);
@@ -103,9 +103,9 @@ function nl_getExhibitUrl($exhibit, $action, $public=true)
  * @param NeatlineExhibit $exhibit The exhibit record.
  * @return integer The number of records.
  */
-function nl_getExhibitRecordCount($exhibit=null)
+function in_getExhibitRecordCount($exhibit=null)
 {
-    $exhibit = $exhibit ? $exhibit : nl_getExhibit();
+    $exhibit = $exhibit ? $exhibit : in_getExhibit();
     return (int) $exhibit->getNumberOfRecords();
 }
 
@@ -117,9 +117,9 @@ function nl_getExhibitRecordCount($exhibit=null)
  * @param NeatlineExhibit $exhibit The exhibit.
  * @return string The field value.
  */
-function nl_getExhibitField($fieldname, $exhibit=null)
+function in_getExhibitField($fieldname, $exhibit=null)
 {
-    $exhibit = $exhibit ? $exhibit : nl_getExhibit();
+    $exhibit = $exhibit ? $exhibit : in_getExhibit();
     return $exhibit->$fieldname;
 }
 
@@ -131,9 +131,9 @@ function nl_getExhibitField($fieldname, $exhibit=null)
  * @param NeatlineExhibit $exhibit The exhibit.
  * @return string The space-delimited attribute value.
  */
-function nl_getExhibitWidgetClasses($exhibit=null)
+function in_getExhibitWidgetClasses($exhibit=null)
 {
-    $exhibit = $exhibit ? $exhibit : nl_getExhibit();
+    $exhibit = $exhibit ? $exhibit : in_getExhibit();
     return implode(' ', nl_explode($exhibit->widgets));
 }
 
@@ -143,7 +143,7 @@ function nl_getExhibitWidgetClasses($exhibit=null)
  *
  * @return boolean
  */
-function nl_exhibitsHaveBeenCreated()
+function in_exhibitsHaveBeenCreated()
 {
     return count(get_view()->neatline_exhibits);
 }
@@ -154,7 +154,7 @@ function nl_exhibitsHaveBeenCreated()
  *
  * @return NeatlineExhibit|null
  */
-function nl_getExhibit()
+function in_getExhibit()
 {
     return get_view()->neatline_exhibit;
 }

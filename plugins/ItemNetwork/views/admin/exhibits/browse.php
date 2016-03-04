@@ -18,7 +18,7 @@
 
 <div id="primary">
 
-  <?php if(nl_exhibitsHaveBeenCreated()): ?>
+  <?php if(in_exhibitsHaveBeenCreated()): ?>
 
   <a class="add small green button"
     href="<?php echo url('itemnetwork/add'); ?>">
@@ -50,12 +50,12 @@
 
             <!-- Title. -->
             <?php if (is_allowed($e, 'editor')) {
-                echo nl_getExhibitLink(
+                echo in_getExhibitLink(
                   $e, 'editor', null,
                   array('class' => 'editor'), false
                 );
               } else {
-                echo nl_getExhibitField('title');
+                echo in_getExhibitField('title');
               }
             ?>
 
@@ -63,7 +63,7 @@
 
               <!-- Public View. -->
               <li>
-                <?php echo nl_getExhibitLink(
+                <?php echo in_getExhibitLink(
                   $e, 'show', __('Public View'),
                   array('class' => 'public'), true
                 ); ?>
@@ -72,7 +72,7 @@
               <!-- Exhibit Settings. -->
               <?php if (is_allowed($e, 'edit')): ?>
                 <li>
-                  <?php echo nl_getExhibitLink(
+                  <?php echo in_getExhibitLink(
                     $e, 'edit', __('Exhibit Settings'),
                     array('class' => 'edit'), false
                   ); ?>
@@ -82,7 +82,7 @@
               <!-- Import Omeka Items. -->
               <?php if (is_allowed($e, 'import')): ?>
                 <li>
-                  <?php echo nl_getExhibitLink(
+                  <?php echo in_getExhibitLink(
                     $e, 'import', __('Import Items'),
                     array('class' => 'import'), false
                   ); ?>
@@ -92,7 +92,7 @@
               <!-- Delete. -->
               <?php if (is_allowed($e, 'delete')): ?>
                 <li>
-                  <?php echo nl_getExhibitLink(
+                  <?php echo in_getExhibitLink(
                     $e, 'delete-confirm', __('Delete'),
                     array('class' => 'delete-confirm'), false
                   );?>
@@ -104,17 +104,17 @@
 
           <!-- Created. -->
           <td>
-            <?php echo format_date(nl_getExhibitField('added')); ?>
+            <?php echo format_date(in_getExhibitField('added')); ?>
           </td>
 
           <!-- # Items. -->
           <td>
-            <?php echo nl_getExhibitRecordCount(); ?>
+            <?php echo in_getExhibitRecordCount(); ?>
           </td>
 
           <!-- Public. -->
           <td>
-            <?php echo nl_getExhibitField('public') ?
+            <?php echo in_getExhibitField('public') ?
               __('Yes') : __('No'); ?>
           </td>
 

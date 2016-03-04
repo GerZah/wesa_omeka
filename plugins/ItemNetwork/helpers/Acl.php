@@ -20,7 +20,7 @@
  *
  * @param Zend_Acl $acl
  */
-function nl_defineAcl($acl)
+function in_defineAcl($acl)
 {
 
 

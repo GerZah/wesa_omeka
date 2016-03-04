@@ -11,7 +11,7 @@
 
 <?php
   echo head(array(
-    'title' => __('Item Network | Edit "%s"', nl_getExhibitField('title')),
+    'title' => __('Item Network | Edit "%s"', in_getExhibitField('title')),
   ));
 ?>
 

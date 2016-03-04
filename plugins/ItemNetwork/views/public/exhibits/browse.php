@@ -19,14 +19,14 @@
   <?php echo flash(); ?>
   <h1><?php echo __('Item Network | Browse Exhibits'); ?></h1>
 
-  <?php if (nl_exhibitsHaveBeenCreated()): ?>
+  <?php if (in_exhibitsHaveBeenCreated()): ?>
 
     <div class="pagination"><?php echo pagination_links(); ?></div>
 
       <?php foreach (loop('ItemNetworkExhibit') as $e): ?>
         <h2>
-          <?php echo nl_getExhibitLink(
-            $e, 'show', nl_getExhibitField('title'),
+          <?php echo in_getExhibitLink(
+            $e, 'show', in_getExhibitField('title'),
             array('class' => 'itemnetwork'), true
           );?>
         </h2>

@@ -18,7 +18,7 @@ class ItemNetworkExhibitTable extends ItemNetwork_Table_Expandable
      */
     public function getExpansionTables()
     {
-        return nl_getExhibitExpansions();
+        return in_getExhibitExpansions();
     }
 
 

@@ -8,29 +8,30 @@
  */
 
 
-if (!defined('NL_DIR')) define('NL_DIR', dirname(__FILE__));
+if (!defined('IN_DIR')) define('IN_DIR', dirname(__FILE__));
 
 // Plugin:
-require_once NL_DIR.'/ItemNetworkPlugin.php';
+
+require_once IN_DIR.'/ItemNetworkPlugin.php';
 
 // Models:
-require_once NL_DIR.'/models/abstract/ItemNetwork_Row_Abstract.php';
-require_once NL_DIR.'/models/abstract/ItemNetwork_Row_Expandable.php';
-require_once NL_DIR.'/models/abstract/ItemNetwork_Row_Expansion.php';
-require_once NL_DIR.'/models/abstract/ItemNetwork_Table_Expandable.php';
-require_once NL_DIR.'/models/abstract/ItemNetwork_Table_Expansion.php';
+require_once IN_DIR.'/models/abstract/ItemNetwork_Row_Abstract.php';
+require_once IN_DIR.'/models/abstract/ItemNetwork_Row_Expandable.php';
+require_once IN_DIR.'/models/abstract/ItemNetwork_Row_Expansion.php';
+require_once IN_DIR.'/models/abstract/ItemNetwork_Table_Expandable.php';
+require_once IN_DIR.'/models/abstract/ItemNetwork_Table_Expansion.php';
 
 
 // Helper classes:
-require_once NL_DIR.'/jobs/ItemNetwork_Job_ImportItems.php';
-require_once NL_DIR.'/controllers/abstract/ItemNetwork_Controller_Rest.php';
-require_once NL_DIR.'/assertions/ItemNetwork_Acl_Assert_RecordOwnership.php';
-require_once NL_DIR.'/forms/ItemNetwork_Form_Exhibit.php';
+require_once IN_DIR.'/jobs/ItemNetwork_Job_ImportItems.php';
+require_once IN_DIR.'/controllers/abstract/ItemNetwork_Controller_Rest.php';
+require_once IN_DIR.'/assertions/ItemNetwork_Acl_Assert_RecordOwnership.php';
+require_once IN_DIR.'/forms/ItemNetwork_Form_Exhibit.php';
 
 // Helper functions:
-require_once NL_DIR.'/helpers/Acl.php';
-require_once NL_DIR.'/helpers/Plugins.php';
-require_once NL_DIR.'/helpers/Views.php';
+require_once IN_DIR.'/helpers/Acl.php';
+require_once IN_DIR.'/helpers/Plugins.php';
+require_once IN_DIR.'/helpers/Views.php';
 
 
 // Set the PUT source.
