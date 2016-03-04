@@ -11,7 +11,6 @@ class ItemNetworkExhibit extends ItemNetwork_Row_Expandable
     implements Zend_Acl_Resource_Interface
 {
 
-
     public $owner_id = 0;
     public $added;
     public $modified;
@@ -67,7 +66,7 @@ class ItemNetworkExhibit extends ItemNetwork_Row_Expandable
     {
         $urlHelper = new Omeka_View_Helper_Url;
         $params = array('action' => $action, 'id' => $this->id);
-        return $urlHelper->url($params, 'itemnetworkActionId');
+        return $urlHelper->url($params, 'itemNetworkActionId');
     }
 
 

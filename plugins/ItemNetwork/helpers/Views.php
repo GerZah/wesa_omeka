@@ -111,7 +111,7 @@ function in_getExhibitRecordCount($exhibit=null)
 
 
 /**
- * Return specific field for a neatline record.
+ * Return specific field for a item network record.
  *
  * @param string $fieldname The model attribute.
  * @param NeatlineExhibit $exhibit The exhibit.

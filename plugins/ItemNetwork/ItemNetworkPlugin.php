@@ -15,7 +15,6 @@ class ItemNetworkPlugin extends Omeka_Plugin_AbstractPlugin
     protected $_hooks = array(
         'install',
         'uninstall',
-        'define_acl',
         'initialize',
         'define_routes',
         'after_save_item'
@@ -73,7 +72,7 @@ class ItemNetworkPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookInitialize()
     {
-        add_translation_source(dirname(__FILE__).'/languages');
+
     }
 
 

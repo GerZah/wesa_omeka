@@ -25,13 +25,13 @@ function in_defineAcl($acl)
 
 
     // Exhibits resource.
-    if (!$acl->has('ItemNetwork_Exhibits')) {
-        $acl->addResource('ItemNetwork_Exhibits');
+    if (!$acl->has('ItemNetwork_Exhibit')) {
+        $acl->addResource('ItemNetwork_Exhibit');
     }
 
     // Records resource.
-    if (!$acl->has('ItemNetwork_Records')) {
-        $acl->addResource('ItemNetwork_Records');
+    if (!$acl->has('ItemNetwork_Record')) {
+        $acl->addResource('ItemNetwork_Record');
     }
 
 
@@ -42,7 +42,7 @@ function in_defineAcl($acl)
     $acl->allow(null, 'Items', array('get'));
 
     // Anyone can view exhibits.
-    $acl->allow(null, 'ItemNetwork_Exhibits', array(
+    $acl->allow(null, 'ItemNetwork_Exhibit', array(
         'index',
         'show',
         'browse',
@@ -50,7 +50,7 @@ function in_defineAcl($acl)
     ));
 
     // Anyone can view records.
-    $acl->allow(null, 'ItemNetwork_Records', array(
+    $acl->allow(null, 'ItemNetwork_Record', array(
         'index',
         'list',
         'get'
@@ -61,13 +61,13 @@ function in_defineAcl($acl)
     // ------------------------------------------------------------------------
 
     // Contributors can add and delete-confirm exhibits.
-    $acl->allow('contributor', 'ItemNetwork_Exhibits', array(
+    $acl->allow('contributor', 'ItemNetwork_Exhibit', array(
         'add',
         'delete-confirm'
     ));
 
     // Contributors can edit their own exhibits.
-    $acl->allow('contributor', 'ItemNetwork_Exhibits', array(
+    $acl->allow('contributor', 'ItemNetwork_Exhibit', array(
         'showNotPublic',
         'editSelf',
         'editorSelf',
@@ -75,7 +75,7 @@ function in_defineAcl($acl)
         'importSelf',
         'deleteSelf'
     ));
-    $acl->allow('contributor', 'ItemNetwork_Exhibits', array(
+    $acl->allow('contributor', 'ItemNetwork_Exhibit', array(
         'edit',
         'editor',
         'put',
@@ -84,14 +84,14 @@ function in_defineAcl($acl)
     ), new Omeka_Acl_Assert_Ownership);
 
     // Contributors can create their own records.
-    $acl->allow('contributor', 'ItemNetwork_Records', 'post');
+    $acl->allow('contributor', 'ItemNetwork_Record', 'post');
 
     // Contributors can edit/elete their own records.
-    $acl->allow('contributor', 'ItemNetwork_Records', array(
+    $acl->allow('contributor', 'ItemNetwork_Record', array(
         'putSelf',
         'deleteSelf'
     ));
-    $acl->allow('contributor', 'ItemNetwork_Records', array(
+    $acl->allow('contributor', 'ItemNetwork_Record', array(
         'put',
         'delete'
     ), new ItemNetwork_Acl_Assert_RecordOwnership);
@@ -101,8 +101,8 @@ function in_defineAcl($acl)
     // ------------------------------------------------------------------------
 
     // Supers and admins can do everything.
-    $acl->allow(array('super', 'admin'), 'ItemNetwork_Exhibits');
-    $acl->allow(array('super', 'admin'), 'ItemNetwork_Records');
+    $acl->allow(array('super', 'admin'), 'ItemNetwork_Exhibit');
+    $acl->allow(array('super', 'admin'), 'ItemNetwork_Record');
 
 
 }

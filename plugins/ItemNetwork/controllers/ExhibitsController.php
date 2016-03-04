@@ -114,7 +114,7 @@ class ItemNetwork_ExhibitsController extends ItemNetwork_Controller_Rest
         }
 
         // Push exhibit and form to view.
-        $this->view->neatline_exhibit = $exhibit;
+        $this->view->item_network_exhibit = $exhibit;
         $this->view->form = $form;
 
     }
@@ -168,7 +168,7 @@ class ItemNetwork_ExhibitsController extends ItemNetwork_Controller_Rest
 
         // Assign exhibit to view.
         $exhibit = $this->_helper->db->findById();
-        $this->view->neatline_exhibit = $exhibit;
+        $this->view->item_network_exhibit = $exhibit;
 
     }
 
@@ -190,7 +190,7 @@ class ItemNetwork_ExhibitsController extends ItemNetwork_Controller_Rest
         if (!$exhibit) throw new Omeka_Controller_Exception_404;
 
         // Assign exhibit to view.
-        $this->view->neatline_exhibit = $exhibit;
+        $this->view->item_network_exhibit = $exhibit;
 
         // Try to render exhibit-specific template.
         try { $this->render("themes/$exhibit->slug/show"); }
