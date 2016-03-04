@@ -145,16 +145,16 @@ function in_getExhibitWidgetClasses($exhibit=null)
  */
 function in_exhibitsHaveBeenCreated()
 {
-    return count(get_view()->neatline_exhibits);
+    return count(get_view()->item_network_exhibits);
 }
 
 
 /**
  * Returns the current exhibit.
  *
- * @return NeatlineExhibit|null
+ * @return ItemNetworkExhibit|null
  */
 function in_getExhibit()
 {
-    return get_view()->neatline_exhibit;
+    return get_view()->item_network_exhibits;
 }

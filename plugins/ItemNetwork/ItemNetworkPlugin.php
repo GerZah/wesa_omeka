@@ -37,54 +37,7 @@ class ItemNetworkPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookInstall()
     {
-
-          // Create the table.
-          $db_exhibit = $this->_db;
-          $sql_exhibit = "
-          CREATE TABLE IF NOT EXISTS `$db_exhibit->ItemNetworkExhibit` (
-
-                  id                      INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                  owner_id                INT(10) UNSIGNED NOT NULL,
-                  added                   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                  modified                TIMESTAMP NULL,
-                  published               TIMESTAMP NULL,
-                  item_query              TEXT NULL,
-                  title                   TEXT NULL,
-                  slug                    VARCHAR(100) NOT NULL,
-                  public                  TINYINT(1) NOT NULL,
-                  PRIMARY KEY             (id)
-
-            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-          $db_exhibit->query($sql_exhibit);
-
-          $db_item = $this->_db;
-          $sql_item = "
-          CREATE TABLE IF NOT EXISTS `$db_item->ItemNetworkRecord` (
-
-                id                      INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                owner_id                INT(10) UNSIGNED NOT NULL,
-                item_id                 INT(10) UNSIGNED NULL,
-                exhibit_id              INT(10) UNSIGNED NULL,
-                added                   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                modified                TIMESTAMP NULL,
-                slug                    VARCHAR(100) NULL,
-                title                   MEDIUMTEXT NULL,
-                item_title              MEDIUMTEXT NULL,
-                body                    MEDIUMTEXT NULL,
-                coverage                GEOMETRY NOT NULL,
-                tags                    TEXT NULL,
-                widgets                 TEXT NULL,
-                presenter               VARCHAR(100) NULL,
-                start_date              VARCHAR(100) NULL,
-                end_date                VARCHAR(100) NULL,
-                after_date              VARCHAR(100) NULL,
-                before_date             VARCHAR(100) NULL,
-                PRIMARY KEY             (id)
-            ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-          $db_item->query($sql_item);
-
-          $this->_installOptions();
-
+        in_schema();
     }
 
 
@@ -93,22 +46,21 @@ class ItemNetworkPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookUninstall()
     {
+
       // Drop the table.
       $db_exhibit = $this->_db;
-      $sql_exhibit = "DROP TABLE IF EXISTS `$db->ItemNetworkExhibit`";
+      $sql_exhibit = "DROP TABLE IF EXISTS `$db_exhibit->ItemNetworkExhibit`";
       $db_exhibit->query($sql_exhibit);
 
-      $db_item = $this->_db;
-      $sql_item = "DROP TABLE IF EXISTS `$db->ItemNetworkRecord`";
-      $db_item->query($sql_item);
+      $db_record = $this->_db;
+      $sql_record = "DROP TABLE IF EXISTS `$db_record->ItemNetworkRecord`";
+      $db_record->query($sql_record);
 
-      $this->_uninstallOptions();
     }
 
     /**
      * Define the ACL.
      *
-     * @param array $args Contains: `acl` (Zend_Acl).
      */
     public function hookDefineAcl($args)
     {

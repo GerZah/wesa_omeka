@@ -31,6 +31,7 @@ require_once IN_DIR.'/forms/ItemNetwork_Form_Exhibit.php';
 // Helper functions:
 require_once IN_DIR.'/helpers/Acl.php';
 require_once IN_DIR.'/helpers/Plugins.php';
+require_once IN_DIR.'/helpers/Schemas.php';
 require_once IN_DIR.'/helpers/Views.php';
 
 
