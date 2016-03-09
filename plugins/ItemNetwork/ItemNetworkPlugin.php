@@ -23,7 +23,8 @@ class ItemNetworkPlugin extends Omeka_Plugin_AbstractPlugin
 
     protected $_filters = array(
         'public_navigation_main',
-        'admin_navigation_main'
+        'admin_navigation_main',
+        'itemnetwork_globals'
     );
 
 
@@ -98,6 +99,19 @@ class ItemNetworkPlugin extends Omeka_Plugin_AbstractPlugin
     {
         $records = $this->_db->getTable('ItemNetworkRecord');
         $records->syncItem($args['record']);
+    }
+
+
+    /**
+     * Register properties on `ItemNetwork.g`.
+     *
+     * @param array $globals The array of global properties.
+     * @param array $args Contains: `exhibit` (ItemNetworkExhibit).
+     * @return array The modified array.
+     */
+    public function filterItemNetworkGlobals($globals, $args)
+    {
+        return array_merge($globals, in_globals($args['exhibit']));
     }
 
     // FILTERS

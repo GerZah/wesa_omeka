@@ -64,7 +64,7 @@ class ItemNetworkExhibit extends ItemNetwork_Row_Expandable
     {
         $urlHelper = new Omeka_View_Helper_Url;
         $params = array('action' => $action, 'id' => $this->id);
-        return $urlHelper->url($params, 'itemNetworkActionId');
+        return $urlHelper->url($params, 'itemnetworkActionId');
     }
 
 
@@ -116,7 +116,7 @@ class ItemNetworkExhibit extends ItemNetwork_Row_Expandable
      */
     public function getResourceId()
     {
-        return 'ItemNetwork_Exhibits';
+        return 'Item_Network_Exhibits';
     }
 
 
