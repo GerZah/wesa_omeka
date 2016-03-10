@@ -80,7 +80,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
   */
   protected function _retrieveReferenceElements() {
     $referenceElementsJson=get_option('item_references_select');
-    if (!$referenceElementsJson) { $referenceElementsJson="null"; }
+    if (!$referenceElementsJson) { $referenceElementsJson="[]"; }
     $referenceElements = json_decode($referenceElementsJson,true);
     return $referenceElements;
   }
@@ -145,8 +145,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     if ($itemId) {
       $item = get_record_by_id('Item', $itemId);
 
-      $itemReferencesSelect = get_option('item_references_select');
-      $itemReferencesSelect = ( $itemReferencesSelect ? json_decode($itemReferencesSelect) : array() );
+      $itemReferencesSelect = SELF::_retrieveReferenceElements();
 
       if ($itemReferencesSelect) {
         $elementIds = implode(",", $itemReferencesSelect);
