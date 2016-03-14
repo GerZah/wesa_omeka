@@ -145,33 +145,4 @@ class NetworkPlugin extends Omeka_Plugin_AbstractPlugin
         return array_merge($globals, in_globals($args['exhibit']));
     }
 
-
-    /**
-     * Register record presenters.
-     *
-     * @param array $presenters Presenters, <NAME> => <ID>.
-     * @return array The array, with None and StaticBubble.
-     */
-    public function filterNetworkPresenters($presenters)
-    {
-        return array_merge($presenters, array(
-            'None'              => 'None',
-            'Static Bubble'     => 'StaticBubble'
-        ));
-    }
-
-    /**
-     * Register the exhibit layout for Nealtine.
-     *
-     * @return void
-     * @author Eric Rochester <erochest@virginia.edu>
-     **/
-    public function filterExhibitLayouts($layouts)
-    {
-        $layouts['network'] = array(
-            'name'        => __('Network'),
-            'description' => __('Embed a Network exhibit.')
-        );
-        return $layouts;
-    }
 }
