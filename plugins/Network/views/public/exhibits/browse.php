@@ -21,14 +21,13 @@
 
   <?php if (in_exhibitsHaveBeenCreated()): ?>
 
+
     <div class="pagination"><?php echo pagination_links(); ?></div>
 
       <?php foreach (loop('NetworkExhibit') as $e): ?>
         <h2>
-          <?php echo in_getExhibitLink(
-            $e, 'show', in_getExhibitField('title'),
-            array('class' => 'network'), true
-          );?>
+          <?php echo in_getExhibitLink($e, 'show', in_getExhibitField('title'), array('class' => 'network'), true);?>
+
         </h2>
       <?php endforeach; ?>
 
