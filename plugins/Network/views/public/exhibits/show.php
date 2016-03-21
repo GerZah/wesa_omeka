@@ -2,7 +2,7 @@
 queue_js_file('cytoscape.min');
 queue_js_file('jquery-2.0.3.min');
 queue_js_file('network');
-queue_css_file('network');
+queue_css_file('network'); //works
 /**
  * @package     omeka
  * @subpackage  network
@@ -20,9 +20,11 @@ queue_css_file('network');
 <!-- Exhibit title: -->
 <h1><?php echo in_getExhibitField('title'); ?></h1>
 
+<div id="cy"></div>
+
 <!-- Exhibit and description : -->
 <?php echo in_getExhibitMarkup(); ?>
 
-<div id="cy"></div>
+
 
 <?php echo foot(); ?>
