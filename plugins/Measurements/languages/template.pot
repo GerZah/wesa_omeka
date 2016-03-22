@@ -1,0 +1,168 @@
+# Translation for the Measurements plugin for Omeka.
+# Copyright (C) 2016 Gero Zahn
+# This file is distributed under the same license as the Omeka package.
+# Gero Zahn <gero.zahn@upb.de>, 2016.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Measurements\n"
+"Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Measurements/issues\n"
+"POT-Creation-Date: 2012-01-09 21:49-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Gero Zahn<gero.zahn@upb.de>\n"
+"Language-Team: English (https://www.transifex.com/upb/wesa-omeka/)\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: MeasurementsPlugin.php:82 MeasurementsPlugin.php:83
+#: MeasurementsPlugin.php:84 MeasurementsPlugin.php:89
+#: MeasurementsPlugin.php:90 MeasurementsPlugin.php:91 measurements-form.php:14
+#: measurements-form.php:61 measurements-form.php:66 measurements-form.php:115
+#: measurements-form.php:174
+msgid "Length"
+msgstr ""
+
+#: MeasurementsPlugin.php:85 MeasurementsPlugin.php:86
+#: MeasurementsPlugin.php:87 MeasurementsPlugin.php:92
+#: MeasurementsPlugin.php:93 MeasurementsPlugin.php:94 measurements-form.php:15
+#: measurements-form.php:77 measurements-form.php:82 measurements-form.php:126
+#: measurements-form.php:131
+msgid "Face"
+msgstr ""
+
+#: MeasurementsPlugin.php:88 MeasurementsPlugin.php:95 measurements-form.php:16
+#: measurements-form.php:93 measurements-form.php:97 measurements-form.php:142
+#: measurements-form.php:146
+msgid "Volume"
+msgstr ""
+
+#: MeasurementsPlugin.php:154
+msgid "[n/a]"
+msgstr ""
+
+#: MeasurementsPlugin.php:355 measurements-form.php:157
+#: measurements-form.php:182
+msgid "Clear"
+msgstr ""
+
+#: MeasurementsPlugin.php:379 measurements-form.php:17
+msgid "Entered Data"
+msgstr ""
+
+#: MeasurementsPlugin.php:382 measurements-form.php:18
+#: measurements-form.php:106
+msgid "Derived Data"
+msgstr ""
+
+#: MeasurementsPlugin.php:559
+msgid "Measurements Debug Output"
+msgstr ""
+
+#: config_form.php:4
+msgid "Measurements Units"
+msgstr ""
+
+#: config_form.php:8
+msgid ""
+"Please enter all triple units that you would like to support, one per line."
+msgstr ""
+
+#: config_form.php:10
+msgid ""
+"Please use the form <em>\"abc-def-ghi (1-100-10)\"</em> with the numbers "
+"being the conversion rates."
+msgstr ""
+
+#: config_form.php:11
+msgid ""
+"You may also group multiple triple units by adding a group name like this: "
+"<em>\"[groupname] abc-def-ghi (1-100-10)\"</em>."
+msgstr ""
+
+#: config_form.php:16
+msgid "Valid units that have been entered correctly:"
+msgstr ""
+
+#: config_form.php:30
+msgid "Measurement Elements"
+msgstr ""
+
+#: config_form.php:33
+msgid ""
+"Select elements to transform into measurements, i.e. that should store "
+"measurements."
+msgstr ""
+
+#: config_form.php:46
+msgid "Trigger Re-indexing of Existing Content"
+msgstr ""
+
+#: config_form.php:51
+msgid ""
+"<strong>Please note:</strong> Checking this box will re-generate the index "
+"<em>now</em> and exactly <em>once</em>. This action will be carried out as "
+"soon as you click on \"Save Changes\"."
+msgstr ""
+
+#: config_form.php:58
+msgid ""
+"<em>Explanation:</em> Measurements relies on a search index that is being "
+"created during content maintenance in the background. However, existing "
+"content will not be re-indexed automatically. So if you have existing "
+"content or modify your settings, you should re-generate the search index."
+msgstr ""
+
+#: config_form.php:80
+msgid "Debug Output"
+msgstr ""
+
+#: measurements-form.php:11
+msgid "Please start by selecting a triple unit."
+msgstr ""
+
+#: measurements-form.php:12
+msgid "Please enter numerical values into all fields (or leave them empty)."
+msgstr ""
+
+#: measurements-form.php:13
+msgid "Unit"
+msgstr ""
+
+#: measurements-form.php:48
+msgid "Measurements"
+msgstr ""
+
+#: measurements-form.php:52
+msgid "Triple Unit"
+msgstr ""
+
+#: measurements-form.php:57
+msgid "Data Entry"
+msgstr ""
+
+#: measurements-form.php:110
+msgid "Length 1/2/3"
+msgstr ""
+
+#: measurements-form.php:156 measurements-form.php:181
+msgid "Apply"
+msgstr ""
+
+#: measurements-form.php:166
+msgid "Triple Unit Data"
+msgstr ""
+
+#: views/shared/common/measurements-advanced-search.php:3
+msgid "Measurements Search"
+msgstr ""
+
+#: views/shared/common/measurements-advanced-search.php:8
+msgid ""
+"You may enter a number or a number range consisting of two numbers, "
+"separated by a hypen (\"-\"); for example, you may enter \"42\" or "
+"\"40-45\". You may also select one or more units that you defined to limit "
+"the search to."
+msgstr ""
