@@ -1,25 +1,3 @@
-# WeSa Omeka
-
-Hierbei handelt es sich um die Entwicklungsversion von [Omeka](https://github.com/omeka/Omeka) 2.3
-für das interdisziplinäre WeSa – Wesersandstein-Projekt der Universität Paderborn.
-
-Allerdings ist dies kein Fork mit dem Ziel, Updates via Pull-Request liefern zu können, sondern
-eine lokale Kopie, auf der die Projektteilnehmer arbeiten.
-
-***Für weitere Fragen kontaktieren Sie bitte <gero.zahn@upb.de>.***
-
-----
-
-This is the developer version of [Omeka](https://github.com/omeka/Omeka) 2.3 for the
-interdisciplinary WeSa — Wesersandstein project (sandstone from the Weser river area)
-at the University of Paderborn / Germany.
-
-However, this is not a fork with the goal to deliver updates via pull requests. Instead, it's
-a local copy which is worked on by the project participants.
-
-***Please direct all additional questions to <gero.zahn@upb.de>.***
-
-<!--
 # Welcome to Omeka
 
 © 2008-2015 [Roy Rosenzweig Center for History and New Media](http://chnm.gmu.edu/)
@@ -50,4 +28,3 @@ licenses.
 
 Release notes for Omeka are available at
 [http://omeka.org/codex/Release_Notes](http://omeka.org/codex/Release_Notes).
--->
