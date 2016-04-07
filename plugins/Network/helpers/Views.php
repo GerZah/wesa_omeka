@@ -113,18 +113,6 @@ function in_getExhibitRecordCount($exhibit=null)
     return (int) $exhibit->getNumberOfRecords();
 }
 
-
-/**
- * Render and return the exhibit partial.
- *
- * @return string The exhibit markup.
- */
-function in_getExhibitMarkup()
-{
-    return get_view()->partial('exhibits/partials/exhibit.php');
-}
-
-
 /**
  * Return specific field for a network record.
  *
