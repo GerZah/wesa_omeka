@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Measurements/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-03-02 10:24+0100\n"
+"PO-Revision-Date: 2016-04-12 18:19+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -19,9 +19,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.7\n"
 
-#: MeasurementsPlugin.php:82 MeasurementsPlugin.php:83 MeasurementsPlugin.php:84 MeasurementsPlugin.php:89 MeasurementsPlugin.php:90 MeasurementsPlugin.php:91 measurements-form.php:14 measurements-form.php:61 measurements-form.php:66 measurements-form.php:115 measurements-form.php:174
-msgid "Length"
-msgstr "Länge"
+#: MeasurementsPlugin.php:82 MeasurementsPlugin.php:83 MeasurementsPlugin.php:84 MeasurementsPlugin.php:89 MeasurementsPlugin.php:90 MeasurementsPlugin.php:91 measurements-form.php:14 measurements-form.php:61 measurements-form.php:66 measurements-form.php:110 measurements-form.php:115 measurements-form.php:174
+msgid "Dimension"
+msgstr "Dimension"
 
 #: MeasurementsPlugin.php:85 MeasurementsPlugin.php:86 MeasurementsPlugin.php:87 MeasurementsPlugin.php:92 MeasurementsPlugin.php:93 MeasurementsPlugin.php:94 measurements-form.php:15 measurements-form.php:77 measurements-form.php:82 measurements-form.php:126 measurements-form.php:131
 msgid "Face"
@@ -35,19 +35,31 @@ msgstr "Volumen"
 msgid "[n/a]"
 msgstr "[n.v.]"
 
-#: MeasurementsPlugin.php:355 measurements-form.php:157 measurements-form.php:182
+#: MeasurementsPlugin.php:243
+msgid "Item Type"
+msgstr "Objekttyp"
+
+#: MeasurementsPlugin.php:312
+msgid "Select Below"
+msgstr "Unten auswählen"
+
+#: MeasurementsPlugin.php:352
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: MeasurementsPlugin.php:353 measurements-form.php:157 measurements-form.php:182
 msgid "Clear"
 msgstr "Löschen"
 
-#: MeasurementsPlugin.php:379 measurements-form.php:17
+#: MeasurementsPlugin.php:377 measurements-form.php:17
 msgid "Entered Data"
 msgstr "Eingegebene Daten"
 
-#: MeasurementsPlugin.php:382 measurements-form.php:18 measurements-form.php:106
+#: MeasurementsPlugin.php:380 measurements-form.php:18 measurements-form.php:106
 msgid "Derived Data"
 msgstr "Abgeleitete Daten"
 
-#: MeasurementsPlugin.php:559
+#: MeasurementsPlugin.php:651
 msgid "Measurements Debug Output"
 msgstr "Maße Debug-Ausgabe"
 
@@ -119,13 +131,13 @@ msgstr "Einheiten-Tripel"
 msgid "Data Entry"
 msgstr "Dateneingabe"
 
-#: measurements-form.php:110
-msgid "Length 1/2/3"
-msgstr "Länge 1/2/3"
-
 #: measurements-form.php:156 measurements-form.php:181
 msgid "Apply"
 msgstr "Anwenden"
+
+#: measurements-form.php:158 measurements-form.php:183
+msgid "Cancel"
+msgstr "Abbrechen"
 
 #: measurements-form.php:166
 msgid "Triple Unit Data"

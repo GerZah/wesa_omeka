@@ -79,16 +79,16 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
   protected function _initEditFields() {
     SELF::$_editFields = array(
-      array("l1",  __("Length") . " 1", 1),
-      array("l2",  __("Length") . " 2", 1),
-      array("l3",  __("Length") . " 3", 1),
+      array("l1",  __("Dimension") . " 1", 1),
+      array("l2",  __("Dimension") . " 2", 1),
+      array("l3",  __("Dimension") . " 3", 1),
       array("f1",  __("Face")   . " 1", 2),
       array("f2",  __("Face")   . " 2", 2),
       array("f3",  __("Face")   . " 3", 2),
       array("v",   __("Volume"), 3),
-      array("l1d", __("Length") . " 1", 1),
-      array("l2d", __("Length") . " 2", 1),
-      array("l3d", __("Length") . " 3", 1),
+      array("l1d", __("Dimension") . " 1", 1),
+      array("l2d", __("Dimension") . " 2", 1),
+      array("l3d", __("Dimension") . " 3", 1),
       array("f1d", __("Face")   . " 1", 2),
       array("f2d", __("Face")   . " 2", 2),
       array("f3d", __("Face")   . " 3", 2),
@@ -240,9 +240,9 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $elements = array();
     foreach ($records as $record) {
       $optGroup = $record['item_type_name']
-                ? __('Item Type') . ': ' . __($record['item_type_name'])
-                : __($record['element_set_name']);
-      $value = __($record['element_name']);
+                ? __('Item Type') . ': ' . $record['item_type_name']
+                : $record['element_set_name'];
+      $value = $record['element_name'];
       $elements[$optGroup][$record['element_id']] = $value;
     }
 

@@ -11,7 +11,7 @@
     "selectTriple" => __("Please start by selecting a triple unit."),
     "enterNumerical" => __("Please enter numerical values into all fields (or leave them empty)."),
     "unitVerb" => __("Unit"),
-    "lengthVerb" => __("Length"),
+    "lengthVerb" => __("Dimension"),
     "faceVerb" => __("Face"),
     "volumeVerb" => __("Volume"),
     "enteredData" => __("Entered Data"),
@@ -58,12 +58,12 @@
 
   <p>
     <?php
-      echo "<strong>" . __("Length") . " 1/2/3" . ":</strong> ";
+      echo "<strong>" . __("Dimension") . " 1/2/3" . ":</strong> ";
       for($i=1; $i<=3; $i++) {
         echo editField(array(
           "view" => $view,
           "id" => "measurementLength$i",
-          "title" => __("Length")." $i",
+          "title" => __("Dimension")." $i",
           "class" => "measurementsTextField",
           "readonly" => true,
           "exp" => 1,
@@ -107,12 +107,12 @@
 
   <p>
     <?php
-      echo "<strong>" . __("Length 1/2/3") . ":</strong> ";
+      echo "<strong>" . __("Dimension") . " 1/2/3" . ":</strong> ";
       for($i=1; $i<=3; $i++) {
         echo editField(array(
           "view" => $view,
           "id" => "measurementLength$i"."Derived",
-          "title" => __("Length")." $i",
+          "title" => __("Dimension")." $i",
           "class" => "measurementsTextFieldDerived",
           "readonly" => true,
           "exp" => 1,
@@ -171,7 +171,7 @@
         echo editField(array(
           "view" => $view,
           "id" => "measurementValue$i",
-          "title" => __("Length")." $i",
+          "title" => __("Dimension")." $i",
           "span" => "measurementValue measurementsLenghtUnit".$i,
         ));
       }
