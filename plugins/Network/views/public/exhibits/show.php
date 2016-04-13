@@ -19,7 +19,10 @@ queue_css_file('network');
 
 <!-- Exhibit title: -->
 <h1><?php echo in_getExhibitField('title'); ?></h1>
+<hr>
 
 <div id="cy"></div>
 
 <?php echo foot(); ?>
+
+<script
