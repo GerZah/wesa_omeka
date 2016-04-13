@@ -123,6 +123,25 @@ class Network_ExhibitsController extends Network_Controller_Rest
 
     }
 
+    /**
+     * View Items in Exhibit.
+     */
+    public function viewAction()
+    {
+
+        $exhibit = $this->_helper->db->findById();
+
+        // Process form submission.
+        if ($this->_request->isPost() && $form->isValid($_POST)) {
+            $exhibit->saveForm($form->getValues());
+            $this->_helper->redirector('browse');
+        }
+
+        // Push exhibit and form to view.
+        $this->view->network_exhibit = $exhibit;
+      
+    }
+
 
     /**
      * Import items from Omeka.
@@ -146,6 +165,7 @@ class Network_ExhibitsController extends Network_Controller_Rest
                     'query'         => $post
                 )
             );
+
 
             // Flash success.
             $this->_helper->flashMessenger(
@@ -228,7 +248,6 @@ class Network_ExhibitsController extends Network_Controller_Rest
     {
         return new Network_Form_Exhibit(array('exhibit' => $exhibit));
     }
-
 
     /**
      * Set the delete success message.

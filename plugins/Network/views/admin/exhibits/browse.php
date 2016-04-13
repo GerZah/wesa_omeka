@@ -84,8 +84,8 @@
               <?php if (is_allowed($e, 'view')): ?>
                 <li>
                   <?php echo in_getExhibitLink(
-                    $e, 'view-items', __('View Items'),
-                    array('class' => 'view-items'), false
+                    $e, 'view', __('View Items'),
+                    array('class' => 'view'), false
                   );?>
                 </li>
               <?php endif; ?>
