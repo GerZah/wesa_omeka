@@ -100,17 +100,7 @@ class NetworkExhibit extends Network_Row_Expandable
 
     }
 
-
-    /**
-     * Measure the image layer when the exhibit is * saved.
-     */
-    protected function beforeSave()
-    {
-
-    }
-
-
-    /**
+  /**
      * Delete all child records when the exhibit is deleted.
      */
     protected function beforeDelete()

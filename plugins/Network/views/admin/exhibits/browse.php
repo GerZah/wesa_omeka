@@ -69,7 +69,7 @@
                 ); ?>
               </li>
 
-            
+
               <!-- Exhibit Settings. -->
               <?php if (is_allowed($e, 'edit')): ?>
                 <li>
@@ -77,6 +77,16 @@
                     $e, 'edit', __('Exhibit Settings'),
                     array('class' => 'edit'), false
                   ); ?>
+                </li>
+              <?php endif; ?>
+
+              <!-- View. -->
+              <?php if (is_allowed($e, 'view')): ?>
+                <li>
+                  <?php echo in_getExhibitLink(
+                    $e, 'view-items', __('View Items'),
+                    array('class' => 'view-items'), false
+                  );?>
                 </li>
               <?php endif; ?>
 
