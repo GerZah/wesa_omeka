@@ -400,12 +400,12 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
         if ( (!$allZero) and (!$cacheHit) ) {
           $result .= $currentField[1] . " = ";
-          $result .= $values[0] . " " . $singleUnits[3] . SELF::$_indices[$currentField[2]];
+          $result .= number_format($values[0], 0, ",", ".") . " " . $singleUnits[3] . SELF::$_indices[$currentField[2]];
 
           $result .= " (";
           $valueText = array();
           for($j=1; $j<=3; $j++) {
-            $valueText[] = $values[$j] . " " . $singleUnits[$j] . SELF::$_indices[$currentField[2]];
+            $valueText[] = number_format($values[$j], 0, ",", ".") . " " . $singleUnits[$j] . SELF::$_indices[$currentField[2]];
           }
           $result .= implode(" / ", $valueText);
           $result .= ")\n";

@@ -200,13 +200,13 @@ jQuery(document).bind("omeka:elementformload", function() {
       }
 
       if ((!allZero) && (!cacheHit)) {
-        result += currentField[2] + " = " + values[0] + " " + curSingleUnit3;
+        result += currentField[2] + " = " + myNumberFormat(values[0]) + " " + curSingleUnit3;
         result += indices[currentField[3]];
         result += " (";
         var valueText = new Array();
         for(j=1; j<=3; j++) {
           valueText.push(
-            values[j] + " " +
+            myNumberFormat(values[j]) + " " +
             measurementsUnits[curTripleUnit]["units"][j-1] +
             indices[currentField[3]]
           );
@@ -327,7 +327,7 @@ jQuery(document).bind("omeka:elementformload", function() {
     var exp = parseInt($("#"+editId).data("exp"));
     if (typeof values !== "undefined") {
       var newval = (values[1] * Math.pow(curConv2,exp) + values[2]) * Math.pow(curConv3,exp) + values[3];
-      $("#"+editId).val(newval);
+      $("#"+editId).val(newval); // myNumberFormat
     }
   }
 
@@ -342,7 +342,7 @@ jQuery(document).bind("omeka:elementformload", function() {
       var curVal = parseInt($("#"+editFields[i][1]).val());
       if (isNaN(curVal)) { curVal=0; }
       origData[editFields[i][0]] = curVal;
-      $("#"+editFields[i][1]+"Derived").val( curVal )
+      $("#"+editFields[i][1]+"Derived").val( curVal ) // myNumberFormat
         .removeClass("measurementsCalculated measurementsDeriveError");
       $("#"+editFields[i][1]+"Derived").data("values", $("#"+editFields[i][1]).data("values"));
     }
@@ -383,7 +383,7 @@ jQuery(document).bind("omeka:elementformload", function() {
       var key = editFields[i][0];
       if (typeof derivedData[key] !== "undefined") {
         var field = "#"+editFields[i][1]+"Derived";
-        $(field).val(derivedData[key]).addClass("measurementsCalculated");
+        $(field).val(derivedData[key]).addClass("measurementsCalculated"); // myNumberFormat
         if (origData[key] && origData[key]!=derivedData[key]) { $(field).addClass("measurementsDeriveError"); }
         $(field).data("values", reUnitValue(i));
       }
@@ -411,6 +411,39 @@ jQuery(document).bind("omeka:elementformload", function() {
 
     // console.log("exp: "+exp+" - "+conv2+"/"+conv3+" = "+result);
     return result;
+  }
+
+  // ---------------------------------------------------------------------------
+
+  function myNumberFormat(x) { return number_format(x, 0, ",", "."); }
+
+  /* http://phpjs.org/functions/number_format/ */
+  function number_format (number, decimals, dec_point, thousands_sep) {
+    number = (number + '')
+      .replace(/[^0-9+\-Ee.]/g, '')
+    var n = !isFinite(+number) ? 0 : +number,
+      prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+      sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+      dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+      s = '',
+      toFixedFix = function (n, prec) {
+        var k = Math.pow(10, prec)
+        return '' + (Math.round(n * k) / k)
+          .toFixed(prec)
+      }
+    // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+    s = (prec ? toFixedFix(n, prec) : '' + Math.round(n))
+      .split('.')
+    if (s[0].length > 3) {
+      s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep)
+    }
+    if ((s[1] || '')
+      .length < prec) {
+      s[1] = s[1] || ''
+      s[1] += new Array(prec - s[1].length + 1)
+        .join('0')
+    }
+    return s.join(dec)
   }
 
   // ---------------------------------------------------------------------------
