@@ -33,7 +33,9 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 	);
 
   // One potential unit -- e.g. "[Group] abc-def-ghi (1-10-10)" or "abc-def-ghi (1-10-10)"
-  protected static $_saniUnitRegex = "^\W*(?:\[(\S+)\]\W+)?(\S+)-(\S+)-(\S+)\W+\(1-(\d+)-(\d+)\)\W*$";
+  // protected static $_saniUnitRegex = "^\W*(?:\[(\S+)\]\W+)?(\S+)-(\S+)-(\S+)\W+\(1-(\d+)-(\d+)\)\W*$";
+  // New version: "[G] a-b-c (1-2-3) [12.34]" or "[G] a-b-c (1-2-3) [12,34]"
+  protected static $_saniUnitRegex = "^\W*(?:\[(\S+)\]\W+)?(\S+)-(\S+)-(\S+)\W+\(1-(\d+)-(\d+)\)(?:\W+\[(\d+)(?:(?:\.|,)(\d+))?])?\W*$";
 
   protected static $_indices = array( "", "", "²", "³" );
   protected static $_editFields; // see _initEditFields()
@@ -140,6 +142,14 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         );
         $saniUnit["verb"] = $saniUnit["units"][0]."-".$saniUnit["units"][1]."-".$saniUnit["units"][2]." ".
                             "(1-".$saniUnit["convs"][1]."-".$saniUnit["convs"][2].")";
+        $saniUnit["mmconv"] = (
+          $matches[4] == "mm"
+          ? "1"
+          : ( isset($matches[7])
+            ? $matches[7] . (isset($matches[8]) ? ".".$matches[8] : ""  )
+            : false
+            )
+        );
         // echo "<pre>" . print_r($matches,true) . "</pre>";
         // echo "<pre>" . print_r($saniUnit,true) . "</pre>";
         if (!is_array(@$saniUnits[$group])) { $saniUnits[$group] = array(); }

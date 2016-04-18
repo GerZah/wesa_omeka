@@ -17,59 +17,59 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: MeasurementsPlugin.php:82 MeasurementsPlugin.php:83
-#: MeasurementsPlugin.php:84 MeasurementsPlugin.php:89
-#: MeasurementsPlugin.php:90 MeasurementsPlugin.php:91 measurements-form.php:14
+#: MeasurementsPlugin.php:84 MeasurementsPlugin.php:85
+#: MeasurementsPlugin.php:86 MeasurementsPlugin.php:91
+#: MeasurementsPlugin.php:92 MeasurementsPlugin.php:93 measurements-form.php:14
 #: measurements-form.php:61 measurements-form.php:66 measurements-form.php:110
 #: measurements-form.php:115 measurements-form.php:174
 msgid "Dimension"
 msgstr ""
 
-#: MeasurementsPlugin.php:85 MeasurementsPlugin.php:86
-#: MeasurementsPlugin.php:87 MeasurementsPlugin.php:92
-#: MeasurementsPlugin.php:93 MeasurementsPlugin.php:94 measurements-form.php:15
+#: MeasurementsPlugin.php:87 MeasurementsPlugin.php:88
+#: MeasurementsPlugin.php:89 MeasurementsPlugin.php:94
+#: MeasurementsPlugin.php:95 MeasurementsPlugin.php:96 measurements-form.php:15
 #: measurements-form.php:77 measurements-form.php:82 measurements-form.php:126
 #: measurements-form.php:131
 msgid "Face"
 msgstr ""
 
-#: MeasurementsPlugin.php:88 MeasurementsPlugin.php:95 measurements-form.php:16
+#: MeasurementsPlugin.php:90 MeasurementsPlugin.php:97 measurements-form.php:16
 #: measurements-form.php:93 measurements-form.php:97 measurements-form.php:142
 #: measurements-form.php:146
 msgid "Volume"
 msgstr ""
 
-#: MeasurementsPlugin.php:154
+#: MeasurementsPlugin.php:164
 msgid "[n/a]"
 msgstr ""
 
-#: MeasurementsPlugin.php:243
+#: MeasurementsPlugin.php:253
 msgid "Item Type"
 msgstr ""
 
-#: MeasurementsPlugin.php:312
+#: MeasurementsPlugin.php:322
 msgid "Select Below"
 msgstr ""
 
-#: MeasurementsPlugin.php:352
+#: MeasurementsPlugin.php:362
 msgid "Edit"
 msgstr ""
 
-#: MeasurementsPlugin.php:353 measurements-form.php:157
+#: MeasurementsPlugin.php:363 measurements-form.php:157
 #: measurements-form.php:182
 msgid "Clear"
 msgstr ""
 
-#: MeasurementsPlugin.php:377 measurements-form.php:17
+#: MeasurementsPlugin.php:387 measurements-form.php:17
 msgid "Entered Data"
 msgstr ""
 
-#: MeasurementsPlugin.php:380 measurements-form.php:18
+#: MeasurementsPlugin.php:390 measurements-form.php:18
 #: measurements-form.php:106
 msgid "Derived Data"
 msgstr ""
 
-#: MeasurementsPlugin.php:651
+#: MeasurementsPlugin.php:661
 msgid "Measurements Debug Output"
 msgstr ""
 
@@ -94,32 +94,38 @@ msgid ""
 "<em>\"[groupname] abc-def-ghi (1-100-10)\"</em>."
 msgstr ""
 
-#: config_form.php:16
+#: config_form.php:12
+msgid ""
+"You may also add a conversion rate from your lowest unit e.g. \"in\" to \"mm"
+"\", like this: <em>\"[Group] yd-ft-in (1-3-12) [25.4]\"</em>"
+msgstr ""
+
+#: config_form.php:17
 msgid "Valid units that have been entered correctly:"
 msgstr ""
 
-#: config_form.php:30
+#: config_form.php:37
 msgid "Measurement Elements"
 msgstr ""
 
-#: config_form.php:33
+#: config_form.php:40
 msgid ""
 "Select elements to transform into measurements, i.e. that should store "
 "measurements."
 msgstr ""
 
-#: config_form.php:46
+#: config_form.php:53
 msgid "Trigger Re-indexing of Existing Content"
 msgstr ""
 
-#: config_form.php:51
+#: config_form.php:58
 msgid ""
 "<strong>Please note:</strong> Checking this box will re-generate the index "
 "<em>now</em> and exactly <em>once</em>. This action will be carried out as "
 "soon as you click on \"Save Changes\"."
 msgstr ""
 
-#: config_form.php:58
+#: config_form.php:65
 msgid ""
 "<em>Explanation:</em> Measurements relies on a search index that is being "
 "created during content maintenance in the background. However, existing "
@@ -127,7 +133,7 @@ msgid ""
 "content or modify your settings, you should re-generate the search index."
 msgstr ""
 
-#: config_form.php:80
+#: config_form.php:87
 msgid "Debug Output"
 msgstr ""
 
