@@ -17,10 +17,21 @@
 
 <div id="primary">
 
-  <?php echo flash(); ?>
+  <?php echo flash();
+
+  $range = $collection = $type = $tags = null;
+  if (isset($_GET['range'])) { $range = $_GET['range']; }
+  if (isset($_GET['collection'])) { $collection = $_GET['collection']; }
+  if (isset($_GET['type'])) { $type = intval($_GET['type']); }
+  if (isset($_GET['tags'])) { $tags = $_GET['tags']; }
+   ?>
 
   <form method="POST" action="#" class="import">
 
+    <?php
+    $previewURL = $this->url('network/confirm', array('range' => $range , 'collection' => $collection , 'type' =>$type , 'tags' => $tags));
+    ?>
+  <section class="seven columns alpha">
     <div id="search-range" class="field">
       <div class="two columns alpha">
         <?php
@@ -96,19 +107,14 @@
       ?>
       </div>
     </div>
-
-    <div>
-    <input
-      type="submit"
-      id="submit_search_advanced"
-      class="submit big green button"
-      name="submit_search"
-      value="<?php echo __('Import Items'); ?>" />
-    </div>
-
-
+  </section>
+    <section class="three columns omega">
+      <div id="save" class="panel">
+          <a href="<?php echo $previewURL; ?>" class="big green button"><?php echo __('Preview and Import Items'); ?></a>
+          <input type="submit" id="submit_search_advanced" class="submit big green button"  name="submit_search" value="<?php echo __('Import Items'); ?>" />
+      </div>
+    </section>
   </form>
-
 </div>
 
 <?php echo foot(); ?>

@@ -139,7 +139,7 @@ class Network_ExhibitsController extends Network_Controller_Rest
 
         // Push exhibit and form to view.
         $this->view->network_exhibit = $exhibit;
-      
+
     }
 
 
@@ -185,15 +185,14 @@ class Network_ExhibitsController extends Network_Controller_Rest
 
 
     /**
-     * Edit exhibit.
+     * Confirm exhibit.
      */
-    public function editorAction()
+    public function confirmAction()
     {
 
-        // Assign exhibit to view.
-        $exhibit = $this->_helper->db->findById();
-        $this->view->network_exhibit = $exhibit;
+        // get POST values, fetchAll from items table and display
 
+          echo "<pre>" . print_r($_POST) . "</pre>"; die();
     }
 
 
