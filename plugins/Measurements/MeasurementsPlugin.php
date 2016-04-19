@@ -1,6 +1,7 @@
 <?php
 
 define('MEASUREMENT_UNIT_LEN', 200);
+define('MEASUREMENT_TABLE_LEN', 20);
 
 /**
 * Measurements plugin.
@@ -699,6 +700,14 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 	}
 
   # ----------------------------------------------------------------------------
+
+  public function unitsForAnalytics() {
+    return array( # +#+#+# TEST DATA
+      -1 => __("Select Below"),
+      0 => "mm",
+      1 => "in"
+    );
+  }
 
 }
 

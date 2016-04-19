@@ -15,7 +15,7 @@ class Measurements_IndexController extends Omeka_Controller_AbstractActionContro
   * Front admin page.
   */
   public function indexAction() {
-    // $this->view->files = ReassignFilesPlugin::reassignFiles_getFileNames();
+    $this->view->measurementUnits = MeasurementsPlugin::unitsForAnalytics();
   }
 
 }

@@ -1,0 +1,11 @@
+div.measurementCenter {
+  padding: 0.5em 0;
+  text-align: center;
+}
+
+span.oneEm { display: inline-block; width: 1em; }
+
+#measurementPaginate a { text-decoration: none; margin: 0 0.2em; }
+#measurementPaginate a:hover { text-decoration: underline; }
+
+#measurementsTable td { height: 1em !important; padding: 0em 0.625em; }
