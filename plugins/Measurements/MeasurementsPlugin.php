@@ -26,6 +26,15 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
   # ----------------------------------------------------------------------------
 
+  protected $_filters = array('admin_navigation_main');
+
+  public function filterAdminNavigationMain($nav) {
+    $nav[] = array('label' => __('Measurements Analysis'), 'uri' => url('measurements'));
+    return $nav;
+  }
+
+  # ----------------------------------------------------------------------------
+
   protected $_options = array(
     'measurements_units' => '[]',
     'measurements_select' => '[]',
