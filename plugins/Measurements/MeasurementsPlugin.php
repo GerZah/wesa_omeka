@@ -330,18 +330,23 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
   protected function _getTripleUnits() {
     $tripleSelect = array( -1 => __("Select Below") );
+    $leastSelect = array( -1 => __("Select Below") );
     $saniUnits = SELF::$_saniUnits;
     $ungroupedSaniUnits = array();
     foreach(SELF::$_saniUnits as $groupName => $saniUnitsGroup) {
       $tripleSelect[$groupName] = array();
+      $leastSelect[$groupName] = array();
       foreach($saniUnitsGroup as $idx => $saniUnit) {
         $tripleSelect[$groupName][$idx] = $saniUnit["verb"];
+        $leastSelect[$groupName][$idx] = $saniUnit["units"][2] .
+          ( $saniUnit["units"][2] == "mm" ? "" : " (= ".$saniUnit["mmconv"]." mm)" );
         $ungroupedSaniUnits[$idx] = $saniUnit;
       }
     }
     ksort($ungroupedSaniUnits);
     return array(
       "tripleSelect" => $tripleSelect,
+      "leastSelect" => $leastSelect,
       "ungroupedSaniUnits" => $ungroupedSaniUnits
     );
   }
@@ -702,11 +707,9 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
   # ----------------------------------------------------------------------------
 
   public function unitsForAnalytics() {
-    return array( # +#+#+# TEST DATA
-      -1 => __("Select Below"),
-      0 => "mm",
-      1 => "in"
-    );
+    $tripleUnits = SELF::_getTripleUnits();
+    $result = $tripleUnits["leastSelect"];
+    return $result;
   }
 
 }
