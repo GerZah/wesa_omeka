@@ -1,9 +1,6 @@
-div.measurementCenter {
-  padding: 0.5em 0;
-  text-align: center;
-}
-
+div.measurementCenter { padding: 0.5em 0; text-align: center; }
 span.oneEm { display: inline-block; width: 1em; }
+span.pageCount { display: inline-block; width: 3em; text-align: center; }
 
 #measurementPaginate a { text-decoration: none; margin: 0 0.2em; }
 #measurementPaginate a:hover { text-decoration: underline; }

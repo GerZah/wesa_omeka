@@ -45,24 +45,19 @@
     <?php
       for($i=0; $i<MEASUREMENT_TABLE_LEN; $i++) {
         echo "<tr id='measurementsRow$i'>".
-              "<td class='measurementCell0'></td>".
-              "<td class='measurementCell1'></td>".
-              "<td class='measurementCell2'></td>".
+              "<td class='measurementsCell0'></td>".
+              "<td class='measurementsCell1'></td>".
+              "<td class='measurementsCell2'></td>".
               "</tr>";
       }
     ?>
   </tbody>
 </table>
 
-<?php
-  $maxpages = 20;
-  $curpage = 7;
-?>
-
 <div id="measurementPaginate" class="measurementCenter">
 <a href="#" data-pagstep="m2" id="paginateFirst">|«</a>
 <a href="#" data-pagstep="m1" id="paginatePrev">«</a>
-…
+<span id="curPage" class="pageCount"></span> / <span id="numPages" class="pageCount"></span>
 <a href="#" data-pagstep="p1" id="paginateNext">»</a>
 <a href="#" data-pagstep="p2" id="paginateLast">»|</a>
 </div>

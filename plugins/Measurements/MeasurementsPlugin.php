@@ -351,6 +351,11 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     );
   }
 
+  public function getSaniUnits() {
+    $units = SELF::_getTripleUnits();
+    return $units["ungroupedSaniUnits"];
+  }
+
   # ----------------------------------------------------------------------------
 
   /**
