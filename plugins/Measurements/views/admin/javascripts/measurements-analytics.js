@@ -57,7 +57,7 @@ jQuery(document).ready(function () {
       for(i=0; i<numRows; i++) {
         var rowId = "measurementsRow"+i;
         var itemTitle = "&nbsp;";
-        if (i<numData) { itemTitle = "foo"+data.data[i].itemTitle; }
+        if (i<numData) { itemTitle = data.data[i].itemTitle; }
         $("#measurementsTable #"+rowId+" .measurementsCell0").empty().append(itemTitle);
       }
     }

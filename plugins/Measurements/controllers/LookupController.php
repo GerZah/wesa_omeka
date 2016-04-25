@@ -68,43 +68,19 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
           }
         }
 
+        // First convert ohnly the "virtual" ["x"] value for all measurements
+        // (to reduce calculation complexity)
         foreach(array_keys($measurements) as $idx) {
-          foreach(array("l1", "l2", "l3", "f1", "f2", "f3", "v", "x") as $x) { // Sanity
-            $measurements[$idx][$x."c"] = $measurements[$idx][$x];
-          }
-          $sourceUnit = $measurements[$idx]["unit"];
-          if ( ($sourceUnit != $targetUnit) and isset($unitsInv[$sourceUnit]) ) {
-
-            $factor = (
-              $sourceUnit=="mm"
-              ? 1 / $unitsInv[$targetUnit]["mmConv"]
-              : $unitsInv[$sourceUnit]["mmConv"]
-            );
-
-            $factor = array( $factor, pow($factor, 2), pow($factor, 3) );
-            foreach(array("l1", "l2", "l3") as $x) { // lengthes
-              $measurements[$idx][$x."c"] = round($measurements[$idx][$x] * $factor[0], 3);
-            }
-            foreach(array("f1", "f2", "f3") as $x) { // faces
-              $measurements[$idx][$x."c"] = round($measurements[$idx][$x] * $factor[1], 3);
-            }
-            $measurements[$idx]["vc"] = round($measurements[$idx]["v"] * $factor[2], 3); // volume
-            $measurements[$idx]["xc"] = $measurements[$idx]["x"] * $factor[$area]; // don't round xc for better sortability
-
-          }
+          SELF::_convertMeasurement($measurements[$idx], $targetUnit, $unitsInv, $area);
         }
 
+        // Sort ascending by the converted ["xc] value
         usort($measurements, function($x,$y) {
           $a = $x["xc"];
           $b = $y["xc"];
           if ($a == $b) { return 0; }
           return ($a < $b ? -1 : 1);
         });
-
-        foreach(array_keys($measurements) as $idx) {
-          unset($measurements[$idx]["x"]);
-          unset($measurements[$idx]["xc"]);
-        }
 
       }
 
@@ -117,6 +93,17 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
     // crop current page's entries into significantly smaller array
     $from = $page * MEASUREMENT_TABLE_LEN;
     $slice = array_slice($measurements, $from , MEASUREMENT_TABLE_LEN);
+
+    // Remove the now obsolete ["x"] / ["xc"] values from the remaining measurements
+    foreach(array_keys($measurements) as $idx) {
+      unset($measurements[$idx]["x"]);
+      unset($measurements[$idx]["xc"]);
+    }
+
+    // Now convert all values -- but only for the remaining slice
+    foreach(array_keys($measurements) as $idx) {
+      SELF::_convertMeasurement($measurements[$idx], $targetUnit, $unitsInv, $area, true);
+    }
 
     // collect page's item's IDs to retrieve their titles
     $itemIds = array();
@@ -158,6 +145,41 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
       // if ($measurement["unit"]=="in") {
       // }
       $measurements[] = $measurement;
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+
+  private function _convertMeasurement(&$measurement, $targetUnit, &$unitsInv, $area,  $allValues=false) {
+    // Sanity values
+    foreach(array("l1", "l2", "l3", "f1", "f2", "f3", "v", "x") as $x) {
+      if (isset($measurement[$x])) {
+        $measurement[$x."c"] = $measurement[$x];
+      }
+    }
+
+    $sourceUnit = $measurement["unit"]; // This measurement's source unit
+    if ( ($sourceUnit != $targetUnit) and isset($unitsInv[$sourceUnit]) ) {
+      $factor = (
+        $sourceUnit=="mm"
+        ? 1 / $unitsInv[$targetUnit]["mmConv"]
+        : $unitsInv[$sourceUnit]["mmConv"]
+      );
+      $factor = array( $factor, pow($factor, 2), pow($factor, 3) );
+
+      if (isset($measurement["x"])) { // Always convert ["x"] -- if (still) present
+        $measurement["xc"] = $measurement["x"] * $factor[$area]; // don't round xc for better sortability
+      }
+
+      if ($allValues) {
+        foreach(array("l1", "l2", "l3") as $x) { // lengthes
+          $measurement[$x."c"] = round($measurement[$x] * $factor[0], 3);
+        }
+        foreach(array("f1", "f2", "f3") as $x) { // faces
+          $measurement[$x."c"] = round($measurement[$x] * $factor[1], 3);
+        }
+        $measurement["vc"] = round($measurement["v"] * $factor[2], 3); // volume
+      }
     }
   }
 
