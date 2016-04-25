@@ -5,6 +5,7 @@ jQuery(document).ready(function () {
 
   var curPage = -1;
   var numPages = 0;
+  var curUnit = -1;
   updateData(); // Init
 
   // ---------------------------------------------------------------------------
@@ -23,7 +24,7 @@ jQuery(document).ready(function () {
 
   function updateData() { // Clear / re-fill table
     var curArea = parseInt($("#measurementsArea").val());
-    var curUnit = parseInt($("#measurementsUnit").val());
+    curUnit = parseInt($("#measurementsUnit").val());
     // console.log("updateData – area = " + curArea + " / unit = " + curUnit);
 
     if ( (curArea>=0) && (curUnit>=0) ) {
@@ -76,6 +77,21 @@ jQuery(document).ready(function () {
             : "&nbsp;"
           )
         );
+        if (i<numData) {
+          var suffixes = [ "", "c" ];
+          suffixes.forEach(function(suffix) {
+            var keys = [ ["l1", "l2", "l3"], ["f1", "f2", "f3"], ["v"]];
+            for(dim=0; dim<=2; dim++) {
+              var unit = (suffix == "" ? data.data[i].unit : unitsSimple[curUnit] );
+              unit += ( dim == 0 ? "" : (dim == 1 ? "²" : "³") );
+              keys[dim].forEach(function(key) {
+                $("#measurementsTable #"+rowId+" .meas"+key+suffix)
+                .empty()
+                .append(myNumberFormat(data.data[i][key+suffix]) + "<br>" + unit);
+              });
+            }
+          });
+        }
       }
     }
   }
@@ -100,7 +116,12 @@ jQuery(document).ready(function () {
 
   // ---------------------------------------------------------------------------
 
-  function myNumberFormat(x) { return number_format(x, 0, ",", "."); }
+  function myNumberFormat(x) {
+    var result = number_format(x, 3, ",", ".");
+    var len = result.length;
+    if (result.substring(len-4) == ",000") { result = result.substring(0, len-4); }
+    return result;
+  }
 
   /* http://phpjs.org/functions/number_format/ */
   function number_format (number, decimals, dec_point, thousands_sep) {

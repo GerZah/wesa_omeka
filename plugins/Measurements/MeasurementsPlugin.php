@@ -331,6 +331,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
   protected function _getTripleUnits() {
     $tripleSelect = array( -1 => __("Select Below") );
     $leastSelect = array( -1 => __("Select Below") );
+    $leastSimple = array();
     $saniUnits = SELF::$_saniUnits;
     $ungroupedSaniUnits = array();
     foreach(SELF::$_saniUnits as $groupName => $saniUnitsGroup) {
@@ -340,13 +341,16 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         $tripleSelect[$groupName][$idx] = $saniUnit["verb"];
         $leastSelect[$groupName][$idx] = $saniUnit["units"][2] .
           ( $saniUnit["units"][2] == "mm" ? "" : " (= ".$saniUnit["mmconv"]." mm)" );
+        $leastSimple[$idx] = $saniUnit["units"][2];
         $ungroupedSaniUnits[$idx] = $saniUnit;
       }
     }
     ksort($ungroupedSaniUnits);
+    ksort($leastSimple);
     return array(
       "tripleSelect" => $tripleSelect,
       "leastSelect" => $leastSelect,
+      "leastSimple" => $leastSimple,
       "ungroupedSaniUnits" => $ungroupedSaniUnits
     );
   }
@@ -713,9 +717,14 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
   public function unitsForAnalytics() {
     $tripleUnits = SELF::_getTripleUnits();
-    $result = $tripleUnits["leastSelect"];
+    $result = array(
+      "select" => $tripleUnits["leastSelect"],
+      "simple" => $tripleUnits["leastSimple"]
+    );
     return $result;
   }
+
+  # ----------------------------------------------------------------------------
 
 }
 

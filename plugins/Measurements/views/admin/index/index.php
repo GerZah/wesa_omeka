@@ -10,6 +10,7 @@
   $html[] = 'var measurementsJsonUrl = ' . json_encode(url('measurements/lookup/')) . ';';
   $html[] = 'var measurementsTableLen = ' . MEASUREMENT_TABLE_LEN . ';';
   $html[] = 'var measurementsBaseUrl = ' . json_encode(CURRENT_BASE_URL) . ';';
+  $html[] = 'var unitsSimple = ' . json_encode($measurementUnits["simple"]) . ';';
   $html[] = '</script>';
   $html[] = js_tag('measurements-analytics');
 
@@ -30,30 +31,9 @@
   echo "<span class='oneEm'></span>";
 
   echo $view->formLabel('measurementsUnit', __('Measurement Analytical Unit')) . ": ".
-        $view->formSelect('measurementsUnit', array(), array(), $measurementUnits);
+        $view->formSelect('measurementsUnit', array(), array(), $measurementUnits["select"]);
 ?>
 </div>
-
-<table id="measurementsTable">
-  <thead>
-    <tr>
-      <th><?php echo __("Title"); ?></th>
-      <th><?php echo __("Original Value"); ?></th>
-      <th><?php echo __("Converted Value"); ?></th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php
-      for($i=0; $i<MEASUREMENT_TABLE_LEN; $i++) {
-        echo "<tr id='measurementsRow$i'>".
-              "<td class='measurementsCell0'></td>".
-              "<td class='measurementsCell1'></td>".
-              "<td class='measurementsCell2'></td>".
-              "</tr>";
-      }
-    ?>
-  </tbody>
-</table>
 
 <div id="measurementPaginate" class="measurementCenter">
 <a href="#" data-pagstep="m2" id="paginateFirst">|«</a>
@@ -62,5 +42,39 @@
 <a href="#" data-pagstep="p1" id="paginateNext">»</a>
 <a href="#" data-pagstep="p2" id="paginateLast">»|</a>
 </div>
+
+<table id="measurementsTable">
+  <thead>
+    <tr>
+      <th><?php echo __("Title"); ?></th>
+      <th colspan="7"><?php echo __("Original Value"); ?></th>
+      <th colspan="7"><?php echo __("Converted Value"); ?></th>
+    </tr>
+    <tr>
+      <th></th>
+      <?php
+        for($i=1; ($i<=2); $i++) {
+          foreach(array("l1", "l2", "l3", "f1", "f2", "f3", "v") as $key) {
+            echo "<th>".__($key)."</th>";
+          }
+        }
+      ?>
+    </tr>
+  </thead>
+  <tbody>
+    <?php
+      for($i=0; $i<MEASUREMENT_TABLE_LEN; $i++) {
+        echo "<tr id='measurementsRow$i'>";
+        echo "<td class='measurementsCell0'></td>";
+        foreach(array("", "c") as $suffix) {
+          foreach(array("l1", "l2", "l3", "f1", "f2", "f3", "v") as $key) {
+            echo "<td class='measurementValue meas".$key.$suffix."'></td>";
+          }
+        }
+        echo "</tr>";
+      }
+    ?>
+  </tbody>
+</table>
 
 <?php echo foot(); ?>

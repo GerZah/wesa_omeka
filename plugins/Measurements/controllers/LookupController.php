@@ -95,14 +95,14 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
     $slice = array_slice($measurements, $from , MEASUREMENT_TABLE_LEN);
 
     // Remove the now obsolete ["x"] / ["xc"] values from the remaining measurements
-    foreach(array_keys($measurements) as $idx) {
-      unset($measurements[$idx]["x"]);
-      unset($measurements[$idx]["xc"]);
+    foreach(array_keys($slice) as $idx) {
+      unset($slice[$idx]["x"]);
+      unset($slice[$idx]["xc"]);
     }
 
     // Now convert all values -- but only for the remaining slice
-    foreach(array_keys($measurements) as $idx) {
-      SELF::_convertMeasurement($measurements[$idx], $targetUnit, $unitsInv, $area, true);
+    foreach(array_keys($slice) as $idx) {
+      SELF::_convertMeasurement($slice[$idx], $targetUnit, $unitsInv, $area, true);
     }
 
     // collect page's item's IDs to retrieve their titles
