@@ -9,6 +9,7 @@
   $html[] = '<script type="text/javascript">';
   $html[] = 'var measurementsJsonUrl = ' . json_encode(url('measurements/lookup/')) . ';';
   $html[] = 'var measurementsTableLen = ' . MEASUREMENT_TABLE_LEN . ';';
+  $html[] = 'var measurementsBaseUrl = ' . json_encode(CURRENT_BASE_URL) . ';';
   $html[] = '</script>';
   $html[] = js_tag('measurements-analytics');
 

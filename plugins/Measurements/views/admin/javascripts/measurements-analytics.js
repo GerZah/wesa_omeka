@@ -7,13 +7,19 @@ jQuery(document).ready(function () {
   var numPages = 0;
   updateData(); // Init
 
+  // ---------------------------------------------------------------------------
+
   $("#measurementsArea").change(function(e) { // Change Area Callback
     updateData();
   });
 
+  // -------------
+
   $("#measurementsUnit").change(function(e) { // Change Unit Callback
     updateData();
   });
+
+  // ---------------------------------------------------------------------------
 
   function updateData() { // Clear / re-fill table
     var curArea = parseInt($("#measurementsArea").val());
@@ -33,11 +39,15 @@ jQuery(document).ready(function () {
     }
   }
 
+  // -------------
+
   function clearTable() {
     $("#measurementsTable td").empty().append("&nbsp;");
     $("#curPage").empty();
     $("#numPages").empty();
   }
+
+  // -------------
 
   function ajaxSuccess(data) { // AJAX callback
     // console.log(data);
@@ -56,12 +66,21 @@ jQuery(document).ready(function () {
       // console.log(numData + " vs. " + numRows);
       for(i=0; i<numRows; i++) {
         var rowId = "measurementsRow"+i;
-        var itemTitle = "&nbsp;";
-        if (i<numData) { itemTitle = data.data[i].itemTitle; }
-        $("#measurementsTable #"+rowId+" .measurementsCell0").empty().append(itemTitle);
+        var itemUrl = false;
+        if (i<numData) {
+          itemUrl = measurementsBaseUrl + "/items/show/" + data.data[i].itemId;
+        }
+        $("#measurementsTable #"+rowId+" .measurementsCell0").empty().append(
+          ( itemUrl
+            ? "<a href='" + itemUrl + "' target='_blank'>" + data.data[i].itemTitle + "</a>"
+            : "&nbsp;"
+          )
+        );
       }
     }
   }
+
+  // ---------------------------------------------------------------------------
 
   $("#measurementPaginate a").click(function(e) { // .unbind("click")
     e.preventDefault();
@@ -78,5 +97,38 @@ jQuery(document).ready(function () {
       case "m2": curPage = 0; updateData(); break;
     }
   });
+
+  // ---------------------------------------------------------------------------
+
+  function myNumberFormat(x) { return number_format(x, 0, ",", "."); }
+
+  /* http://phpjs.org/functions/number_format/ */
+  function number_format (number, decimals, dec_point, thousands_sep) {
+    number = (number + '')
+      .replace(/[^0-9+\-Ee.]/g, '')
+    var n = !isFinite(+number) ? 0 : +number,
+      prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+      sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+      dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+      s = '',
+      toFixedFix = function (n, prec) {
+        var k = Math.pow(10, prec)
+        return '' + (Math.round(n * k) / k)
+          .toFixed(prec)
+      }
+    // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+    s = (prec ? toFixedFix(n, prec) : '' + Math.round(n))
+      .split('.')
+    if (s[0].length > 3) {
+      s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep)
+    }
+    if ((s[1] || '')
+      .length < prec) {
+      s[1] = s[1] || ''
+      s[1] += new Array(prec - s[1].length + 1)
+        .join('0')
+    }
+    return s.join(dec)
+  }
 
 });
