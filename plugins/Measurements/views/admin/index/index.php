@@ -37,7 +37,7 @@
 
 <div class="measurementCenter">
   <?php
-    echo __('Filter item ID (e.g. "42-500"): ');
+    echo __('Filter item ID (e.g. "42-500")') . ": ";
     echo $view->formInput("measurementsIdFilter",
                             null,
                             array("type" => "text",
@@ -47,7 +47,7 @@
 
     echo "<span class='oneEm'></span>";
 
-    echo __('Filter Title Text: ');
+    echo __('Filter Title Text') . ": ";
     echo $view->formInput("measurementsTitleFilter",
                             null,
                             array("type" => "text",
@@ -69,14 +69,23 @@
   <thead>
     <tr>
       <th><?php echo __("Title"); ?></th>
-      <th colspan="7"><?php echo __("Original Value"); ?></th>
-      <th colspan="7"><?php echo __("Converted Value"); ?></th>
+      <th colspan="7"><?php echo __("Original Values"); ?></th>
+      <th colspan="7"><?php echo __("Converted Values"); ?></th>
     </tr>
     <tr>
       <th></th>
       <?php
+        $keys = array(
+          __("dim1"),
+          __("dim2"),
+          __("dim3"),
+          __("face1"),
+          __("face2"),
+          __("face3"),
+          __("vol"),
+        );
         for($i=1; ($i<=2); $i++) {
-          foreach(array("l1", "l2", "l3", "f1", "f2", "f3", "v") as $key) {
+          foreach($keys as $key) {
             echo "<th>".__($key)."</th>";
           }
         }

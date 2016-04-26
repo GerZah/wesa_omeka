@@ -17,59 +17,66 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: MeasurementsPlugin.php:84 MeasurementsPlugin.php:85
-#: MeasurementsPlugin.php:86 MeasurementsPlugin.php:91
-#: MeasurementsPlugin.php:92 MeasurementsPlugin.php:93 measurements-form.php:14
-#: measurements-form.php:61 measurements-form.php:66 measurements-form.php:110
-#: measurements-form.php:115 measurements-form.php:174
+#: MeasurementsPlugin.php:33 views/admin/index/index.php:2
+msgid "Measurements Analysis"
+msgstr ""
+
+#: MeasurementsPlugin.php:94 MeasurementsPlugin.php:95
+#: MeasurementsPlugin.php:96 MeasurementsPlugin.php:101
+#: MeasurementsPlugin.php:102 MeasurementsPlugin.php:103
+#: measurements-form.php:14 measurements-form.php:61 measurements-form.php:66
+#: measurements-form.php:110 measurements-form.php:115
+#: measurements-form.php:174
 msgid "Dimension"
 msgstr ""
 
-#: MeasurementsPlugin.php:87 MeasurementsPlugin.php:88
-#: MeasurementsPlugin.php:89 MeasurementsPlugin.php:94
-#: MeasurementsPlugin.php:95 MeasurementsPlugin.php:96 measurements-form.php:15
-#: measurements-form.php:77 measurements-form.php:82 measurements-form.php:126
-#: measurements-form.php:131
+#: MeasurementsPlugin.php:97 MeasurementsPlugin.php:98
+#: MeasurementsPlugin.php:99 MeasurementsPlugin.php:104
+#: MeasurementsPlugin.php:105 MeasurementsPlugin.php:106
+#: measurements-form.php:15 measurements-form.php:77 measurements-form.php:82
+#: measurements-form.php:126 measurements-form.php:131
 msgid "Face"
 msgstr ""
 
-#: MeasurementsPlugin.php:90 MeasurementsPlugin.php:97 measurements-form.php:16
-#: measurements-form.php:93 measurements-form.php:97 measurements-form.php:142
-#: measurements-form.php:146
+#: MeasurementsPlugin.php:100 MeasurementsPlugin.php:107
+#: measurements-form.php:16 measurements-form.php:93 measurements-form.php:97
+#: measurements-form.php:142 measurements-form.php:146
+#: views/admin/index/index.php:26
 msgid "Volume"
 msgstr ""
 
-#: MeasurementsPlugin.php:164
+#: MeasurementsPlugin.php:174
 msgid "[n/a]"
 msgstr ""
 
-#: MeasurementsPlugin.php:253
+#: MeasurementsPlugin.php:263
 msgid "Item Type"
 msgstr ""
 
-#: MeasurementsPlugin.php:322
+#: MeasurementsPlugin.php:332 MeasurementsPlugin.php:333
+#: views/admin/index/index.php:23
 msgid "Select Below"
 msgstr ""
 
-#: MeasurementsPlugin.php:362
+#: MeasurementsPlugin.php:386
 msgid "Edit"
 msgstr ""
 
-#: MeasurementsPlugin.php:363 measurements-form.php:157
+#: MeasurementsPlugin.php:387 measurements-form.php:157
 #: measurements-form.php:182
 msgid "Clear"
 msgstr ""
 
-#: MeasurementsPlugin.php:387 measurements-form.php:17
+#: MeasurementsPlugin.php:411 measurements-form.php:17
 msgid "Entered Data"
 msgstr ""
 
-#: MeasurementsPlugin.php:390 measurements-form.php:18
+#: MeasurementsPlugin.php:414 measurements-form.php:18
 #: measurements-form.php:106
 msgid "Derived Data"
 msgstr ""
 
-#: MeasurementsPlugin.php:661
+#: MeasurementsPlugin.php:685
 msgid "Measurements Debug Output"
 msgstr ""
 
@@ -171,6 +178,70 @@ msgstr ""
 
 #: measurements-form.php:166
 msgid "Triple Unit Data"
+msgstr ""
+
+#: views/admin/index/index.php:24
+msgid "Dimensions"
+msgstr ""
+
+#: views/admin/index/index.php:25
+msgid "Surfaces"
+msgstr ""
+
+#: views/admin/index/index.php:28
+msgid "Measurement Analytical Area"
+msgstr ""
+
+#: views/admin/index/index.php:33
+msgid "Measurement Analytical Unit"
+msgstr ""
+
+#: views/admin/index/index.php:40
+msgid "Filter item ID (e.g. \"42-500\")"
+msgstr ""
+
+#: views/admin/index/index.php:50
+msgid "Filter Title Text"
+msgstr ""
+
+#: views/admin/index/index.php:71
+msgid "Title"
+msgstr ""
+
+#: views/admin/index/index.php:72
+msgid "Original Values"
+msgstr ""
+
+#: views/admin/index/index.php:73
+msgid "Converted Values"
+msgstr ""
+
+#: views/admin/index/index.php:79
+msgid "dim1"
+msgstr ""
+
+#: views/admin/index/index.php:80
+msgid "dim2"
+msgstr ""
+
+#: views/admin/index/index.php:81
+msgid "dim3"
+msgstr ""
+
+#: views/admin/index/index.php:82
+msgid "face1"
+msgstr ""
+
+#: views/admin/index/index.php:83
+msgid "face2"
+msgstr ""
+
+#: views/admin/index/index.php:84
+msgid "face3"
+msgstr ""
+
+#: views/admin/index/index.php:85
+msgid "vol"
 msgstr ""
 
 #: views/shared/common/measurements-advanced-search.php:3
