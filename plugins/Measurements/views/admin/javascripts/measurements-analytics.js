@@ -178,7 +178,11 @@ jQuery(document).ready(function () {
   function myNumberFormat(x) {
     var result = number_format(x, 3, ",", ".");
     var len = result.length;
-    if (result.substring(len-4) == ",000") { result = result.substring(0, len-4); }
+    while (result.substring(len-1) == "0") {
+      result = result.substring(0, len-1);
+      len -= 1;
+    }
+    if (result.substring(len-1) == ",") { result = result.substring(0, len-1); }
     return result;
   }
 
