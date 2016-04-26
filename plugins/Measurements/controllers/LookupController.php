@@ -13,10 +13,15 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
     $result = array();
     $result["data"] = null; # Sanity
 
-    $area = $unit = $page = -1;
+    $area = $unit = $page = $from = $to = -1;
+    $title = "";
+
     if ($this->_hasParam("area")) { $area = intval($this->_getParam('area')); }
     if ($this->_hasParam("unit")) { $unit = intval($this->_getParam('unit')); }
     if ($this->_hasParam("page")) { $page = intval($this->_getParam('page')); }
+    if ($this->_hasParam("from")) { $from = intval($this->_getParam('from')); }
+    if ($this->_hasParam("to")) { $to = intval($this->_getParam('to')); }
+    if ($this->_hasParam("title")) { $title = $this->_getParam('title'); }
 
     $units = MeasurementsPlugin::getSaniUnits();
     if (isset($units[$unit])) {
@@ -42,10 +47,49 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
         $result["unit"] = $unit;
 
         $db = get_db();
+
+        $where = array();
+        $where[] = "1";
+        if ( ($from>0) and ($to>0) and ($from<=$to) ) {
+          $where[] = "item_id >= $from AND item_id<=$to";
+        }
+
+        $titleAnd = "1";
+        if ($title) {
+          $titleInfix = mysql_real_escape_string($title);
+          $idAnd = "";
+          if ( ($from>0) and ($to>0) and ($from<=$to) ) {
+            $idAnd = "AND record_id >= $from AND record_id<=$to";
+          }
+          $qu = "
+            SELECT record_id
+            FROM `$db->ElementTexts`
+            WHERE element_id=50 AND text LIKE '%$titleInfix%'
+            $idAnd
+          ";
+          $ids = $db->fetchAll($qu);
+          if (!$ids) {
+            $titleAnd = "0";
+          }
+          else {
+            $recordIds = array();
+            foreach($ids as $id) {
+              $recordIds[] = $id["record_id"];
+            }
+            $recordIds = implode(", ", $recordIds);
+            $titleAnd = "item_id in ($recordIds)";
+            // echo "<pre>$titleAnd\n" . print_r($recordIds,true) . "</pre>"; die();
+          }
+
+        }
+        $where[] = $titleAnd;
+
+        $where = implode(" AND ", $where);
+
         $qu = "
           SELECT item_id as itemId, l1d as l1, l2d as l2, l3d as l3, f1d as f1, f2d as f2, f3d as f3, vd as v, unit
           FROM `$db->MeasurementsValues`
-          WHERE 1
+          WHERE $where
         ";
         $singleMeasurements = $db->fetchAll($qu); // Eeeevil! :-(
 

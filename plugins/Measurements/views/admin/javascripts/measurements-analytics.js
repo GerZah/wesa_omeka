@@ -22,16 +22,75 @@ jQuery(document).ready(function () {
 
   // ---------------------------------------------------------------------------
 
+  var idFilterTimer = null;
+  var curFrom = -1;
+  var curTo = -1;
+
+  $("#measurementsIdFilter").keyup(function(e) {
+    if (idFilterTimer != null) {
+      clearTimeout(idFilterTimer);
+      idFilterTimer = null;
+    }
+
+    var rangeRegEx = /\s*(\d+)-(\d+)\s*/;
+
+    idFilterTimer = setTimeout(function() {
+      var curVal = $("#measurementsIdFilter").val();
+      var result = curVal.match(rangeRegEx);
+      if (result == null) {
+        curFrom = -1;
+        curTo = -1;
+      }
+      else {
+        curFrom = parseInt(result[1]);
+        curTo = parseInt(result[2]);
+        if (curFrom>curTo) {
+          var help = curFrom;
+          curFrom = curTo;
+          curTo = help;
+        }
+      }
+      idFilterTimer = null;
+      updateData();
+    }, 1000);
+  });
+
+  // ---------------------------------------------------------------------------
+
+  var titleFilterTimer = null;
+  var curTitleFilter = "";
+
+  $("#measurementsTitleFilter").keyup(function(e) {
+    if (titleFilterTimer != null) {
+      clearTimeout(titleFilterTimer);
+      titleFilterTimer = null;
+    }
+
+    titleFilterTimer = setTimeout(function() {
+      curTitleFilter = $("#measurementsTitleFilter").val().trim();
+      titleFilterTimer = null;
+      updateData();
+    }, 1000);
+  });
+
+  // ---------------------------------------------------------------------------
+
   function updateData() { // Clear / re-fill table
     var curArea = parseInt($("#measurementsArea").val());
     curUnit = parseInt($("#measurementsUnit").val());
-    // console.log("updateData – area = " + curArea + " / unit = " + curUnit);
 
     if ( (curArea>=0) && (curUnit>=0) ) {
       $.ajax({
         url: measurementsJsonUrl,
         dataType: 'json',
-        data: { area: curArea, unit: curUnit, page: curPage },
+        data: {
+          area: curArea,
+          unit: curUnit,
+          page: curPage,
+          from: curFrom,
+          to: curTo,
+          title: curTitleFilter
+        },
         success: function(data) { ajaxSuccess(data) }
       });
     }

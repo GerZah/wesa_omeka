@@ -35,6 +35,28 @@
 ?>
 </div>
 
+<div class="measurementCenter">
+  <?php
+    echo __('Filter item ID (e.g. "42-500"): ');
+    echo $view->formInput("measurementsIdFilter",
+                            null,
+                            array("type" => "text",
+                                  "size" => 10,
+                                )
+                            );
+
+    echo "<span class='oneEm'></span>";
+
+    echo __('Filter Title Text: ');
+    echo $view->formInput("measurementsTitleFilter",
+                            null,
+                            array("type" => "text",
+                                  "size" => 20,
+                                )
+                            );
+  ?>
+</div>
+
 <div id="measurementPaginate" class="measurementCenter">
 <a href="#" data-pagstep="m2" id="paginateFirst">|«</a>
 <a href="#" data-pagstep="m1" id="paginatePrev">«</a>
