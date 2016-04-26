@@ -33,7 +33,7 @@
 
 	$csv=array();
 
-	$file = fopen('ProsopographieWeSa2.csv', 'r');
+	$file = fopen('ProsopographieWeSa3.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
