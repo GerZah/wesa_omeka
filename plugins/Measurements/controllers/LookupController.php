@@ -188,8 +188,7 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
     if ($singleMeasurement[$x]) {
       $measurement = $singleMeasurement;
       $measurement["x"] = $singleMeasurement[$x];
-      // if ($measurement["unit"]=="in") {
-      // }
+      $measurement["hl"] = $x;
       $measurements[] = $measurement;
     }
   }

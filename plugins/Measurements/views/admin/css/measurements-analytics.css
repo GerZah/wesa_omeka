@@ -13,3 +13,5 @@ span.pageCount { display: inline-block; width: 3em; text-align: center; }
 #content { margin:1em; width:95%; width:calc(100% + -3em); }
 
 .measurementValue { font-size: 80%; text-align: right;}
+
+td.hlCell { background-color : #ffffb2; }

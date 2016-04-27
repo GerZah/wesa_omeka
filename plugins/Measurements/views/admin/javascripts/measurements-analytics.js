@@ -102,7 +102,7 @@ jQuery(document).ready(function () {
   // -------------
 
   function clearTable() {
-    $("#measurementsTable td").empty().append("&nbsp;");
+    $("#measurementsTable td").empty().append("&nbsp;").removeClass("hlCell");
     $("#curPage").empty();
     $("#numPages").empty();
   }
@@ -147,6 +147,9 @@ jQuery(document).ready(function () {
                 $("#measurementsTable #"+rowId+" .meas"+key+suffix)
                 .empty()
                 .append(myNumberFormat(data.data[i][key+suffix]) + "<br>" + unit);
+                if ( (suffix == "c") && (key == data.data[i]["hl"]) ) {
+                  $("#measurementsTable #"+rowId+" .meas"+key+suffix).addClass("hlCell");
+                }
               });
             }
           });
