@@ -525,9 +525,9 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         $dataTuple = array();
         if ($data) {
           $dataTuple[] = $itemId;
-          // $dataTuple["u"] = $db->quote($data["u"]); // full triple unit
           preg_match("/".SELF::$_saniUnitRegex."/", $data["u"], $matches);
-          $dataTuple["u"] = $db->quote($matches[4]); // just lowest significant single unit
+          // full "ab-cd-de" triple unit to avoid confusion
+          $dataTuple["u"] = $db->quote($matches[2]."-".$matches[3]."-".$matches[4]);
           foreach(SELF::$_editFields AS $editField) {
             $dataTuple[$editField[0]] = intval($data[$editField[0]][0]);
           }
@@ -620,12 +620,17 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
               if (!$exp) { $exp=1; }
               $tripleUnit = @$ungroupedSaniUnits[$unit];
               if ($tripleUnit) {
-                $singleUnit = $tripleUnit["units"][2];
-                $units[] = array("u" => $unit, "e" => $exp, "s" => $singleUnit);
+                $units[] = array(
+                  "u" => $unit,
+                  "e" => $exp,
+                  "t" => implode("-", $tripleUnit["units"]),
+                );
               }
             }
           }
         }
+
+        // echo "<pre>" . print_r($units,true) . "</pre>"; die();
 
   			$select
   					->join(
@@ -643,8 +648,8 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
           $exp = $unit["e"];
           if ($exp) {
-            $singleUnit = $db->quote($unit["s"]);
-            $condition .= "(measurements_values.unit=$singleUnit AND (";
+            $tripleUnit = $db->quote($unit["t"]);
+            $condition .= "(measurements_values.unit=$tripleUnit AND (";
           }
 
           $fieldConditions = array();
@@ -667,6 +672,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         $select->where(implode(" OR ", $conditions));
 
         // echo "<pre>$from-$to\n" . print_r($units,true) . "</pre>";
+        // echo "<pre>\n" . print_r($conditions,true) . "</pre>";
         // echo "<pre>" . print_r($select,true) . "</pre>";
         // die();
       }
