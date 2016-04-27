@@ -28,17 +28,32 @@
       <tbody>
         <?php
         $db = get_db();
-        $select = "SELECT item_id, item_title FROM $db->NetworkRecord";
+        $select = "SELECT nr.item_id as recordItemId, nr.item_title as itemName,it.id as itemId, it.item_type_id as itemTypeId, ty.id as typeId, ty.name as typeName
+        FROM {$db->NetworkRecord} nr
+        LEFT JOIN {$db->Item} it
+        ON nr.item_id = it.id
+        LEFT JOIN {$db->Item_Types} ty
+        ON it.item_type_id = ty.id
+        WHERE it.id IS NOT NULL
+        OR ty.id IS NOT NULL
+        GROUP BY nr.item_id";
+
         #echo "<pre>" . print_r($select) . "</pre>"; die();
         $elements = $db->fetchAll($select);
         $data = array();
         foreach($elements as $element) {
-          $data['item_id'] =  $element['item_title'];
+          $data['recordItemId'] =  $element['recordItemId'];
+          $data['itemName'] =  $element['itemName'];
+          $data['typeName'] =  $element['typeName'];
        if($elements)
        {
          ?>
            <tr>
-          <td><?php echo $data['item_id'] ?>
+          <td><?php echo $data['recordItemId'] ?>
+          </td>
+          <td><?php echo $data['itemName'] ?>
+          </td>
+          <td><?php echo $data['typeName'] ?>
           </td>
           <td>
             <a class="confirm" href="" ><?php echo __('Delete'); ?></a>
