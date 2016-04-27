@@ -29,21 +29,16 @@
         <?php
         $db = get_db();
         $select = "SELECT item_id, item_title FROM $db->NetworkRecord";
+        #echo "<pre>" . print_r($select) . "</pre>"; die();
         $elements = $db->fetchAll($select);
         $data = array();
         foreach($elements as $element) {
-        $data[0] = $element['item_id'];
-        $data[1] =  $element['item_title'];
-       }
-       echo "<pre>" . print_r($data) . "</pre>"; die();
-       if($elements){
+          $data['item_id'] =  $element['item_title'];
+       if($elements)
+       {
          ?>
            <tr>
-          <td><?php echo $data[0]; ?>
-          </td>
-          <td><?php echo $data[1]; ?>
-          </td>
-          <td><?php echo $data[1]; ?>
+          <td><?php echo $data['item_id'] ?>
           </td>
           <td>
             <a class="confirm" href="" ><?php echo __('Delete'); ?></a>
@@ -61,7 +56,7 @@
       <td><?php echo __("[n/a]"); ?></td>
     </tr>
     <?php
-
+}
  }; ?>
       </tbody>
 

@@ -25,8 +25,7 @@ class Network_Job_ImportItems extends Omeka_Job_AbstractJob
         // Load the exhibit, alias the query.
         $exhibit = $_exhibits->find($this->_options['exhibit_id']);
         $query = $this->_options['query'];
-
-    
+  
         $i = 0;
         while ($items = $_items->findBy($query, 10, $i)) {
             foreach ($items as $item) {

@@ -18,7 +18,6 @@
 <div id="primary">
 
 <?php echo flash();
-
 if (isset($_POST['range'])) { $range = $_POST['range']; }
 if (isset($_POST['collection'])) { $collection = $_POST['collection']; }
 if (isset($_POST['type'])) { $type = intval($_POST['type']); }
@@ -27,17 +26,6 @@ if (isset($_POST['tags'])) { $tags = $_POST['tags']; }
 
 <table>
 <?php
-
-    foreach ($_POST as $key => $value) {
-        echo "<tr>";
-        echo "<td>";
-        echo $key;
-        echo "</td>";
-        echo "<td>";
-        echo $value;
-        echo "</td>";
-        echo "</tr>";
-    }
 
 
 ?>

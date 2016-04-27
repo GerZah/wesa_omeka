@@ -26,6 +26,26 @@ class NetworkRecord extends Network_Row_Expandable
     public $after_date;
     public $before_date;
 
+
+
+        /**
+        * Set exhibit and item references.
+         *
+         * @param NetworkExhibit $exhibit The exhibit record.
+         * @param Item $item The item record.
+         */
+        public function __construct($exhibit=null, $item=null)
+        {
+
+            parent::__construct();
+
+            // Set exhibit and item foreign keys.
+            if (!is_null($exhibit)) $this->exhibit_id = $exhibit->id;
+            if (!is_null($item)) $this->item_id = $item->id;
+
+
+        }
+
     /**
      * Get the parent exhibit record.
      *

@@ -18,7 +18,6 @@
 <div id="primary">
 
   <?php echo flash();
-
   $range = $collection = $type = $tags = null;
   if (isset($_GET['range'])) { $range = $_GET['range']; }
   if (isset($_GET['collection'])) { $collection = $_GET['collection']; }
@@ -111,8 +110,13 @@
     <section class="three columns omega">
       <div id="save" class="panel">
           <a href="<?php echo $previewURL; ?>" class="big green button"><?php echo __('Preview and Import Items'); ?></a>
-          <input type="submit" id="submit_search_advanced" class="submit big green button"  name="submit_search" value="<?php echo __('Import Items'); ?>" />
-      </div>
+          <input
+            type="submit"
+            id="submit_search_advanced"
+            class="submit big green button"
+            name="submit_search"
+            value="<?php echo __('Import Items'); ?>" />
+       </div>
     </section>
   </form>
 </div>
