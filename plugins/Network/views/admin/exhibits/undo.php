@@ -1,5 +1,5 @@
 <?php
-$pageTitle = __('Re-add deleted item to Exhibit');
+$pageTitle = __('Re-add deleted item to Exhibit "%s"', in_getExhibitField('title'));
 echo head(array('title'=>$pageTitle));
 echo flash();
 ?>

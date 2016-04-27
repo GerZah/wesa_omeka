@@ -148,7 +148,6 @@ public function viewAction()
 public function removeAction()
 {
 
-  $exhibit = $this->_helper->db->findById();
 
 }
 /**
@@ -157,7 +156,7 @@ public function removeAction()
 public function undoAction()
 {
 
-  $exhibit = $this->_helper->db->findById();
+
 
 }
 

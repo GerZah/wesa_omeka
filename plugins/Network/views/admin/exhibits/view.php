@@ -16,7 +16,7 @@
 ?>
 <div id="primary">
   <?php echo flash(); ?>
-  <table>
+<table>
     <thead>
       <tr>
         <th><?php echo __('Item Id'); ?></th>
@@ -55,7 +55,7 @@
           <td><?php echo $data['typeName'] ?>
           </td>
           <td>
-            <a class="confirm" href="<?php echo $this->url('network/remove', array('record_id' => $record_id)); ?>" ><?php echo __('Remove'); ?></a>
+                <a class="confirm" href="<?php echo $this->url('network/remove/', array('record_id' => $record_id)); ?>" ><?php echo __('Remove'); ?></a>
           </td>
         </tr>
         <?php
@@ -73,7 +73,6 @@
 }
  }; ?>
       </tbody>
-
   </table>
   <script>
   jQuery(document).ready(function()
