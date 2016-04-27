@@ -22,56 +22,47 @@ jQuery(document).ready(function () {
 
   // ---------------------------------------------------------------------------
 
-  var idFilterTimer = null;
   var curFrom = -1;
   var curTo = -1;
+  var curTitleFilter = "";
 
-  $("#measurementsIdFilter").keyup(function(e) {
-    if (idFilterTimer != null) {
-      clearTimeout(idFilterTimer);
-      idFilterTimer = null;
+  var editTimer = null;
+
+  $("#measurementsIdFilter").keyup(editUpdate).blur(editUpdate);
+  $("#measurementsTitleFilter").keyup(editUpdate).blur(editUpdate);
+
+  function editUpdate() {
+    if (editTimer != null) {
+      clearTimeout(editTimer);
+      editTimer = null;
     }
+    editTimer = setTimeout(editEnd, 1000);
+  }
+
+  function editEnd() {
+    editTimer = null;
+    curTitleFilter = $("#measurementsTitleFilter").val().trim();
 
     var rangeRegEx = /\s*(\d+)-(\d+)\s*/;
 
-    idFilterTimer = setTimeout(function() {
-      var curVal = $("#measurementsIdFilter").val();
-      var result = curVal.match(rangeRegEx);
-      if (result == null) {
-        curFrom = -1;
-        curTo = -1;
+    var curVal = $("#measurementsIdFilter").val();
+    var result = curVal.match(rangeRegEx);
+    if (result == null) {
+      curFrom = -1;
+      curTo = -1;
+    }
+    else {
+      curFrom = parseInt(result[1]);
+      curTo = parseInt(result[2]);
+      if (curFrom>curTo) {
+        var help = curFrom;
+        curFrom = curTo;
+        curTo = help;
       }
-      else {
-        curFrom = parseInt(result[1]);
-        curTo = parseInt(result[2]);
-        if (curFrom>curTo) {
-          var help = curFrom;
-          curFrom = curTo;
-          curTo = help;
-        }
-      }
-      idFilterTimer = null;
-      updateData();
-    }, 1000);
-  });
-
-  // ---------------------------------------------------------------------------
-
-  var titleFilterTimer = null;
-  var curTitleFilter = "";
-
-  $("#measurementsTitleFilter").keyup(function(e) {
-    if (titleFilterTimer != null) {
-      clearTimeout(titleFilterTimer);
-      titleFilterTimer = null;
     }
 
-    titleFilterTimer = setTimeout(function() {
-      curTitleFilter = $("#measurementsTitleFilter").val().trim();
-      titleFilterTimer = null;
-      updateData();
-    }, 1000);
-  });
+    updateData();
+  }
 
   // ---------------------------------------------------------------------------
 
