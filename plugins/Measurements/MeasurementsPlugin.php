@@ -339,8 +339,8 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
       $leastSelect[$groupName] = array();
       foreach($saniUnitsGroup as $idx => $saniUnit) {
         $tripleSelect[$groupName][$idx] = $saniUnit["verb"];
-        $leastSelect[$groupName][$idx] = $saniUnit["units"][2] .
-          ( $saniUnit["units"][2] == "mm" ? "" : " (= ".$saniUnit["mmconv"]." mm)" );
+        $leastSelect[$groupName][$idx] = implode("-", $saniUnit["units"]) .
+          ( $saniUnit["units"][2] == "mm" ? "" : " (1 ".$saniUnit["units"][2]." = ".$saniUnit["mmconv"]." mm)" );
         $leastSimple[$idx] = $saniUnit["units"][2];
         $ungroupedSaniUnits[$idx] = $saniUnit;
       }

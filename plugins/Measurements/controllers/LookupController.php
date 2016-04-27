@@ -27,14 +27,16 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
     if (isset($units[$unit])) {
       $unitsInv = array();
       foreach(array_keys($units) as $unitIdx) {
-        $unitsInv[ $units[$unitIdx]["units"][2] ] = array(
+        $unitIndex = implode("-", $units[$unitIdx]["units"]);
+        $unitsInv[$unitIndex] = array(
           "idx" => $unitIdx,
           "mmConv" => doubleval($units[$unitIdx]["mmconv"])
         );
       }
+      // echo print_r($unitsInv,true) . "\n";
 
       $curUnit = $units[$unit];
-      $targetUnit = $curUnit["units"][2];
+      $targetUnit = implode("-",$curUnit["units"]);
       $mmconv = $curUnit["mmconv"];
       settype($mmconv, "double");
       $result["targetUnit"] = $targetUnit;
@@ -204,12 +206,9 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
 
     $sourceUnit = $measurement["unit"]; // This measurement's source unit
     if ( ($sourceUnit != $targetUnit) and isset($unitsInv[$sourceUnit]) ) {
-      $factor = (
-        $sourceUnit=="mm"
-        ? 1 / $unitsInv[$targetUnit]["mmConv"]
-        : $unitsInv[$sourceUnit]["mmConv"]
-      );
+      $factor = $unitsInv[$sourceUnit]["mmConv"] / $unitsInv[$targetUnit]["mmConv"];
       $factor = array( $factor, pow($factor, 2), pow($factor, 3) );
+      // echo print_r($factor,true) . "\n";
 
       if (isset($measurement["x"])) { // Always convert ["x"] -- if (still) present
         $measurement["xc"] = $measurement["x"] * $factor[$area]; // don't round xc for better sortability
