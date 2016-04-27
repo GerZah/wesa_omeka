@@ -14,7 +14,6 @@
     'title' => __('Network | View Items in "%s"', in_getExhibitField('title')),
   ));
 ?>
-
 <div id="primary">
   <?php echo flash(); ?>
   <table>
@@ -28,7 +27,7 @@
       <tbody>
         <?php
         $db = get_db();
-        $select = "SELECT nr.item_id as recordItemId, nr.item_title as itemName,it.id as itemId, it.item_type_id as itemTypeId, ty.id as typeId, ty.name as typeName
+        $select = "SELECT nr.item_id as recordItemId, nr.id as recordId, nr.item_title as itemName,it.id as itemId, it.item_type_id as itemTypeId, ty.id as typeId, ty.name as typeName
         FROM {$db->NetworkRecord} nr
         LEFT JOIN {$db->Item} it
         ON nr.item_id = it.id
@@ -38,13 +37,13 @@
         OR ty.id IS NOT NULL
         GROUP BY nr.item_id";
 
-        #echo "<pre>" . print_r($select) . "</pre>"; die();
         $elements = $db->fetchAll($select);
         $data = array();
         foreach($elements as $element) {
           $data['recordItemId'] =  $element['recordItemId'];
           $data['itemName'] =  $element['itemName'];
           $data['typeName'] =  $element['typeName'];
+          $record_id =  $element['recordId'];
        if($elements)
        {
          ?>
@@ -56,7 +55,7 @@
           <td><?php echo $data['typeName'] ?>
           </td>
           <td>
-            <a class="confirm" href="" ><?php echo __('Delete'); ?></a>
+            <a class="confirm" href="<?php echo $this->url('network/remove', array('record_id' => $record_id)); ?>" ><?php echo __('Remove'); ?></a>
           </td>
         </tr>
         <?php

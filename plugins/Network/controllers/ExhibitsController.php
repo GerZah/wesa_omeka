@@ -1,286 +1,304 @@
 <?php
 
 /**
- * @package     omeka
- * @subpackage  network
- * @copyright   2014 Rector and Board of Visitors, University of Virginia
- * @license     http://www.apache.org/licenses/LICENSE-2.0.html
- */
+* @package     omeka
+* @subpackage  network
+* @copyright   2014 Rector and Board of Visitors, University of Virginia
+* @license     http://www.apache.org/licenses/LICENSE-2.0.html
+*/
 
 class Network_ExhibitsController extends Network_Controller_Rest
 {
 
 
-    /**
-     * Set the default model, get tables.
-     */
-    public function init()
-    {
-        $this->_helper->db->setDefaultModelName('NetworkExhibit');
-        $this->_exhibits = $this->_helper->db->getTable('NetworkExhibit');
-    }
+  /**
+  * Set the default model, get tables.
+  */
+  public function init()
+  {
+    $this->_helper->db->setDefaultModelName('NetworkExhibit');
+    $this->_exhibits = $this->_helper->db->getTable('NetworkExhibit');
+  }
 
 
-    // REST API:
-    // ------------------------------------------------------------------------
+  // REST API:
+  // ------------------------------------------------------------------------
 
 
-    /**
-     * Fetch exhibit via GET.
-     * @REST
-     */
-    public function getAction()
-    {
-        $this->_helper->viewRenderer->setNoRender(true);
-        echo Zend_Json::encode($this->_helper->db->findById()->toArray());
-    }
+  /**
+  * Fetch exhibit via GET.
+  * @REST
+  */
+  public function getAction()
+  {
+    $this->_helper->viewRenderer->setNoRender(true);
+    echo Zend_Json::encode($this->_helper->db->findById()->toArray());
+  }
 
 
-    /**
-     * Update exhibit via PUT.
-     * @REST
-     */
-    public function putAction()
-    {
+  /**
+  * Update exhibit via PUT.
+  * @REST
+  */
+  public function putAction()
+  {
 
-        $this->_helper->viewRenderer->setNoRender(true);
+    $this->_helper->viewRenderer->setNoRender(true);
 
-        // Update the exhibit.
-        $exhibit = $this->_helper->db->findById();
-        $exhibit->saveForm(Zend_Json::decode(file_get_contents(
-            Zend_Registry::get('fileIn')), true
-        ));
+    // Update the exhibit.
+    $exhibit = $this->_helper->db->findById();
+    $exhibit->saveForm(Zend_Json::decode(file_get_contents(
+    Zend_Registry::get('fileIn')), true
+  ));
 
-        // Propagate CSS.
-        $exhibit->pushStyles();
+  // Propagate CSS.
+  $exhibit->pushStyles();
 
-        // Respond with exhibit data.
-        echo Zend_Json::encode($exhibit->toArray());
+  // Respond with exhibit data.
+  echo Zend_Json::encode($exhibit->toArray());
 
-    }
+}
 
 
-    // Admin CRUD actions:
-    // ------------------------------------------------------------------------
+// Admin CRUD actions:
+// ------------------------------------------------------------------------
 
 
-    /**
-     * Browse exhibits.
-     */
-    public function browseAction()
-    {
+/**
+* Browse exhibits.
+*/
+public function browseAction()
+{
 
-        // By default, sort by added date.
-        if (!$this->_getParam('sort_field')) {
-            $this->_setParam('sort_field', 'added');
-            $this->_setParam('sort_dir', 'd');
-        }
+  // By default, sort by added date.
+  if (!$this->_getParam('sort_field')) {
+    $this->_setParam('sort_field', 'added');
+    $this->_setParam('sort_dir', 'd');
+  }
 
-        parent::browseAction();
+  parent::browseAction();
 
-    }
+}
 
 
-    /**
-     * Create a new exhibit.
-     */
-    public function addAction()
-    {
+/**
+* Create a new exhibit.
+*/
+public function addAction()
+{
 
-        $exhibit = new NetworkExhibit;
-        $form = $this->_getExhibitForm($exhibit);
+  $exhibit = new NetworkExhibit;
+  $form = $this->_getExhibitForm($exhibit);
 
-        // Process form submission.
-        if ($this->_request->isPost() && $form->isValid($_POST)) {
-            $exhibit->saveForm($form->getValues());
-            $this->_helper->redirector('browse');
-        }
+  // Process form submission.
+  if ($this->_request->isPost() && $form->isValid($_POST)) {
+    $exhibit->saveForm($form->getValues());
+    $this->_helper->redirector('browse');
+  }
 
-        // Push form to view.
-        $this->view->form = $form;
+  // Push form to view.
+  $this->view->form = $form;
 
-      }
+}
 
 
-    /**
-     * Edit exhibit settings.
-     */
-    public function editAction()
-    {
+/**
+* Edit exhibit settings.
+*/
+public function editAction()
+{
 
-        $exhibit = $this->_helper->db->findById();
-        $form = $this->_getExhibitForm($exhibit);
+  $exhibit = $this->_helper->db->findById();
+  $form = $this->_getExhibitForm($exhibit);
 
-        // Process form submission.
-        if ($this->_request->isPost() && $form->isValid($_POST)) {
-            $exhibit->saveForm($form->getValues());
-            $this->_helper->redirector('browse');
-        }
+  // Process form submission.
+  if ($this->_request->isPost() && $form->isValid($_POST)) {
+    $exhibit->saveForm($form->getValues());
+    $this->_helper->redirector('browse');
+  }
 
-        // Push exhibit and form to view.
-        $this->view->network_exhibit = $exhibit;
-        $this->view->form = $form;
+  // Push exhibit and form to view.
+  $this->view->network_exhibit = $exhibit;
+  $this->view->form = $form;
 
-    }
+}
 
-    /**
-     * View Items in Exhibit.
-     */
-    public function viewAction()
-    {
+/**
+* View Items in Exhibit.
+*/
+public function viewAction()
+{
 
-        $exhibit = $this->_helper->db->findById();
+  $exhibit = $this->_helper->db->findById();
 
-        // Process form submission.
-        if ($this->_request->isPost() && $form->isValid($_POST)) {
-            $exhibit->saveForm($form->getValues());
-            $this->_helper->redirector('browse');
-        }
+  // Process form submission.
+  if ($this->_request->isPost() && $form->isValid($_POST)) {
+    $exhibit->saveForm($form->getValues());
+    $this->_helper->redirector('browse');
+  }
 
-        // Push exhibit and form to view.
-        $this->view->network_exhibit = $exhibit;
+  // Push exhibit and form to view.
+  $this->view->network_exhibit = $exhibit;
 
-    }
+}
 
+/**
+* Remove Items in Exhibit.
+*/
+public function removeAction()
+{
 
-    /**
-     * Import items from Omeka.
-     */
-    public function importAction()
-    {
+  $exhibit = $this->_helper->db->findById();
 
-        $exhibit = $this->_helper->db->findById();
+}
+/**
+* Readd Items in Exhibit.
+*/
+public function undoAction()
+{
 
-        if ($this->_request->isPost()) {
+  $exhibit = $this->_helper->db->findById();
 
-            // Save the query.
-            $post = $this->_request->getPost();
-            $exhibit->item_query = serialize($post);
-            $exhibit->save();
+}
 
-            // Import items.
-            Zend_Registry::get('job_dispatcher')->sendLongRunning(
-                'Network_Job_ImportItems', array(
-                    'exhibit_id'    => $exhibit->id,
-                    'query'         => $post
-                )
-            );
+/**
+* Import items from Omeka.
+*/
+public function importAction()
+{
 
+  $exhibit = $this->_helper->db->findById();
 
-            // Flash success.
-            $this->_helper->flashMessenger(
-                $this->_getImportStartedMessage(), 'success'
-            );
+  if ($this->_request->isPost()) {
 
-            // Redirect to browse.
-            $this->_helper->redirector('browse');
+    // Save the query.
+    $post = $this->_request->getPost();
+    $exhibit->item_query = serialize($post);
+    $exhibit->save();
 
-        }
+    // Import items.
+    Zend_Registry::get('job_dispatcher')->sendLongRunning(
+    'Network_Job_ImportItems', array(
+      'exhibit_id'    => $exhibit->id,
+      'query'         => $post
+    )
+  );
 
-        // Populate query.
-        $query = unserialize($exhibit->item_query);
-        $_REQUEST = $query; $_GET = $query;
 
-    }
+  // Flash success.
+  $this->_helper->flashMessenger(
+  $this->_getImportStartedMessage(), 'success'
+);
 
+// Redirect to browse.
+$this->_helper->redirector('browse');
 
-    /**
-     * Confirm exhibit.
-     */
-    public function confirmAction()
-    {
+}
 
-        // get POST values, fetchAll from items table and display
+// Populate query.
+$query = unserialize($exhibit->item_query);
+$_REQUEST = $query; $_GET = $query;
 
-          echo "<pre>" . print_r($_POST) . "</pre>"; die();
-    }
+}
 
 
-    // Public views:
-    // ------------------------------------------------------------------------
+/**
+* Confirm exhibit.
+*/
+public function confirmAction()
+{
 
+  // get POST values, fetchAll from items table and display
 
-    /**
-     * Show exhibit.
-     */
-    public function showAction()
-    {
+  echo "<pre>" . print_r($_POST) . "</pre>"; die();
+}
 
-        $this->_helper->viewRenderer->setNoRender(true);
 
-        // Try to find an exhibit with the requested slug.
-        $exhibit = $this->_exhibits->findBySlug($this->_request->slug);
-        if (!$exhibit) throw new Omeka_Controller_Exception_404;
+// Public views:
+// ------------------------------------------------------------------------
 
-        // Assign exhibit to view.
-        $this->view->network_exhibit = $exhibit;
 
-        // Try to render exhibit-specific template.
-        try { $this->render("themes/$exhibit->slug/show"); }
-        catch (Exception $e) { $this->render('show'); }
+/**
+* Show exhibit.
+*/
+public function showAction()
+{
 
-    }
+  $this->_helper->viewRenderer->setNoRender(true);
 
+  // Try to find an exhibit with the requested slug.
+  $exhibit = $this->_exhibits->findBySlug($this->_request->slug);
+  if (!$exhibit) throw new Omeka_Controller_Exception_404;
 
-    // Helpers:
-    // ------------------------------------------------------------------------
+  // Assign exhibit to view.
+  $this->view->network_exhibit = $exhibit;
 
+  // Try to render exhibit-specific template.
+  try { $this->render("themes/$exhibit->slug/show"); }
+  catch (Exception $e) { $this->render('show'); }
 
-    /**
-     * Return the pagination page length.
-     *
-     * Currently, $pluralName is ignored.
-     */
-    protected function _getBrowseRecordsPerPage($pluralName=null)
-    {
-        if (is_admin_theme()) return (int) get_option('per_page_admin');
-        else return (int) get_option('per_page_public');
-    }
+}
 
 
-    /**
-     * Construct the details form.
-     *
-     * @param NetworkExhibit $exhibit
-     */
-    protected function _getExhibitForm($exhibit)
-    {
-        return new Network_Form_Exhibit(array('exhibit' => $exhibit));
-    }
+// Helpers:
+// ------------------------------------------------------------------------
 
-    /**
-     * Set the delete success message.
-     *
-     * @param NetworkExhibit $exhibit
-     */
-    protected function _getDeleteSuccessMessage($exhibit)
-    {
-        return __('The exhibit "%s" was successfully deleted!',
-            $exhibit->title
-        );
-    }
 
+/**
+* Return the pagination page length.
+*
+* Currently, $pluralName is ignored.
+*/
+protected function _getBrowseRecordsPerPage($pluralName=null)
+{
+  if (is_admin_theme()) return (int) get_option('per_page_admin');
+  else return (int) get_option('per_page_public');
+}
 
-    /**
-     * Set the delete confirm message.
-     *
-     * @param NetworkExhibit $exhibit
-     */
-    protected function _getDeleteConfirmMessage($exhibit)
-    {
-        return __('This will delete "%s" and its associated metadata.',
-            $exhibit->title
-        );
-    }
 
+/**
+* Construct the details form.
+*
+* @param NetworkExhibit $exhibit
+*/
+protected function _getExhibitForm($exhibit)
+{
+  return new Network_Form_Exhibit(array('exhibit' => $exhibit));
+}
 
-    /**
-     * Set the import started message.
-     */
-    protected function _getImportStartedMessage()
-    {
-        return __('The item import was successfully started!');
-    }
+/**
+* Set the delete success message.
+*
+* @param NetworkExhibit $exhibit
+*/
+protected function _getDeleteSuccessMessage($exhibit)
+{
+  return __('The exhibit "%s" was successfully deleted!',
+  $exhibit->title
+);
+}
+
+
+/**
+* Set the delete confirm message.
+*
+* @param NetworkExhibit $exhibit
+*/
+protected function _getDeleteConfirmMessage($exhibit)
+{
+  return __('This will delete "%s" and its associated metadata.',
+  $exhibit->title
+);
+}
+
+
+/**
+* Set the import started message.
+*/
+protected function _getImportStartedMessage()
+{
+  return __('The item import was successfully started!');
+}
 
 
 }
