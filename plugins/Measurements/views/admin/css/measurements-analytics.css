@@ -6,6 +6,13 @@ span.pageCount { display: inline-block; width: 3em; text-align: center; }
 #measurementPaginate a:hover { text-decoration: underline; }
 
 #measurementsTable td { height: 1em !important; padding: 0em 0.625em; }
+#measurementsTable td.hlCell { background-color : #ffffb2; }
+
+#measurementsTable td span {
+  display: inline-block;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  width: 90%; height: 1em;
+}
 
 /* DIRTY: Leave only "Dashboard" button in nav bar and have content on full width */
 #content-nav { position: relative; top:0em; }
@@ -13,5 +20,3 @@ span.pageCount { display: inline-block; width: 3em; text-align: center; }
 #content { margin:1em; width:95%; width:calc(100% + -3em); }
 
 .measurementValue { font-size: 80%; text-align: right;}
-
-td.hlCell { background-color : #ffffb2; }

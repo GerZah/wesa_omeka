@@ -142,11 +142,15 @@ jQuery(document).ready(function () {
             var keys = [ ["l1", "l2", "l3"], ["f1", "f2", "f3"], ["v"]];
             for(dim=0; dim<=2; dim++) {
               var unit = (suffix == "" ? data.data[i].unit : unitsSimple[curUnit] );
-              unit += ( dim == 0 ? "" : (dim == 1 ? "²" : "³") );
+              var unitSuffix = ( dim == 0 ? "" : (dim == 1 ? "²" : "³") );
               keys[dim].forEach(function(key) {
                 $("#measurementsTable #"+rowId+" .meas"+key+suffix)
                 .empty()
-                .append(myNumberFormat(data.data[i][key+suffix]) + "<br>" + unit);
+                .append(
+                  myNumberFormat(data.data[i][key+suffix])
+                  + "<br>"
+                  + "<span>" + unit + "</span>" + unitSuffix
+                );
                 if ( (suffix == "c") && (key == data.data[i]["hl"]) ) {
                   $("#measurementsTable #"+rowId+" .meas"+key+suffix).addClass("hlCell");
                 }
