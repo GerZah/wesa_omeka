@@ -13,14 +13,16 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
     $result = array();
     $result["data"] = null; # Sanity
 
-    $area = $unit = $page = $from = $to = -1;
+    $area = $unit = $page = $fromId = $toId = -1;
     $title = "";
 
     if ($this->_hasParam("area")) { $area = intval($this->_getParam('area')); }
     if ($this->_hasParam("unit")) { $unit = intval($this->_getParam('unit')); }
     if ($this->_hasParam("page")) { $page = intval($this->_getParam('page')); }
-    if ($this->_hasParam("from")) { $from = intval($this->_getParam('from')); }
-    if ($this->_hasParam("to")) { $to = intval($this->_getParam('to')); }
+    if ($this->_hasParam("fromId")) { $fromId = intval($this->_getParam('fromId')); }
+    if ($this->_hasParam("toId")) { $toId = intval($this->_getParam('toId')); }
+    if ($this->_hasParam("fromRange")) { $fromRange = doubleval($this->_getParam('fromRange')); }
+    if ($this->_hasParam("toRange")) { $toRange = doubleval($this->_getParam('toRange')); }
     if ($this->_hasParam("title")) { $title = $this->_getParam('title'); }
 
     $units = MeasurementsPlugin::getSaniUnits();
@@ -52,16 +54,16 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
 
         $where = array();
         $where[] = "1";
-        if ( ($from>0) and ($to>0) and ($from<=$to) ) {
-          $where[] = "item_id >= $from AND item_id<=$to";
+        if ( ($fromId>0) and ($toId>0) and ($fromId<=$toId) ) {
+          $where[] = "item_id >= $fromId AND item_id<=$toId";
         }
 
         $titleAnd = "1";
         if ($title) {
           $titleInfix = mysql_real_escape_string($title);
           $idAnd = "";
-          if ( ($from>0) and ($to>0) and ($from<=$to) ) {
-            $idAnd = "AND record_id >= $from AND record_id<=$to";
+          if ( ($fromId>0) and ($toId>0) and ($fromId<=$toId) ) {
+            $idAnd = "AND record_id >= $fromId AND record_id<=$toId";
           }
           $qu = "
             SELECT record_id
@@ -130,6 +132,15 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
 
       }
 
+    }
+
+    // now limit the sorted array based on the entered range
+    if ( ($fromRange>0) and ($toRange>0) and ($fromRange<=$toRange) ) {
+      foreach(array_keys($measurements) as $idx) {
+        if ( ($measurements[$idx]["xc"]<$fromRange) or ($measurements[$idx]["xc"]>$toRange) ) {
+          unset($measurements[$idx]);
+        }
+      }
     }
 
     // Calculate full number of pages and calculate current page (if not within range)

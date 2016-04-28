@@ -41,7 +41,19 @@
     echo $view->formInput("measurementsIdFilter",
                             null,
                             array("type" => "text",
+                                  "size" => 8,
+                                  // "maxlength" => 16,
+                                )
+                            );
+
+    echo "<span class='oneEm'></span>";
+
+    echo __('Filter target range (e.g. "20.5-50")') . ": ";
+    echo $view->formInput("measurementsRangeFilter",
+                            null,
+                            array("type" => "text",
                                   "size" => 10,
+                                  // "maxlength" => 20,
                                 )
                             );
 
@@ -51,7 +63,8 @@
     echo $view->formInput("measurementsTitleFilter",
                             null,
                             array("type" => "text",
-                                  "size" => 20,
+                                  "size" => 10,
+                                  // "maxlength" => 30,
                                 )
                             );
   ?>

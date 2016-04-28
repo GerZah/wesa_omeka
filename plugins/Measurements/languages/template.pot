@@ -76,7 +76,7 @@ msgstr ""
 msgid "Derived Data"
 msgstr ""
 
-#: MeasurementsPlugin.php:685
+#: MeasurementsPlugin.php:691
 msgid "Measurements Debug Output"
 msgstr ""
 
@@ -200,47 +200,51 @@ msgstr ""
 msgid "Filter item ID (e.g. \"42-500\")"
 msgstr ""
 
-#: views/admin/index/index.php:50
+#: views/admin/index/index.php:51
+msgid "Filter target range (e.g. \"20.5-50\")"
+msgstr ""
+
+#: views/admin/index/index.php:62
 msgid "Filter Title Text"
 msgstr ""
 
-#: views/admin/index/index.php:71
+#: views/admin/index/index.php:84
 msgid "Title"
 msgstr ""
 
-#: views/admin/index/index.php:72
+#: views/admin/index/index.php:85
 msgid "Original Values"
 msgstr ""
 
-#: views/admin/index/index.php:73
+#: views/admin/index/index.php:86
 msgid "Converted Values"
 msgstr ""
 
-#: views/admin/index/index.php:79
+#: views/admin/index/index.php:92
 msgid "dim1"
 msgstr ""
 
-#: views/admin/index/index.php:80
+#: views/admin/index/index.php:93
 msgid "dim2"
 msgstr ""
 
-#: views/admin/index/index.php:81
+#: views/admin/index/index.php:94
 msgid "dim3"
 msgstr ""
 
-#: views/admin/index/index.php:82
+#: views/admin/index/index.php:95
 msgid "face1"
 msgstr ""
 
-#: views/admin/index/index.php:83
+#: views/admin/index/index.php:96
 msgid "face2"
 msgstr ""
 
-#: views/admin/index/index.php:84
+#: views/admin/index/index.php:97
 msgid "face3"
 msgstr ""
 
-#: views/admin/index/index.php:85
+#: views/admin/index/index.php:98
 msgid "vol"
 msgstr ""
 

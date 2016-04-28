@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Measurements/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-04-26 19:01+0200\n"
+"PO-Revision-Date: 2016-04-28 11:09+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -63,7 +63,7 @@ msgstr "Eingegebene Daten"
 msgid "Derived Data"
 msgstr "Abgeleitete Daten"
 
-#: MeasurementsPlugin.php:685
+#: MeasurementsPlugin.php:691
 msgid "Measurements Debug Output"
 msgstr "Maße Debug-Ausgabe"
 
@@ -171,47 +171,51 @@ msgstr "Maß-Analyse Einheit"
 msgid "Filter item ID (e.g. \"42-500\")"
 msgstr "Objekt-ID-Filtern (z.B. \"42-500\")"
 
-#: views/admin/index/index.php:50
+#: views/admin/index/index.php:51
+msgid "Filter target range (e.g. \"20.5-50\")"
+msgstr "Zielbereich filtern (z.B. \"20,5-50\")"
+
+#: views/admin/index/index.php:62
 msgid "Filter Title Text"
 msgstr "Titel-Text filtern"
 
-#: views/admin/index/index.php:71
+#: views/admin/index/index.php:84
 msgid "Title"
 msgstr "Titel"
 
-#: views/admin/index/index.php:72
+#: views/admin/index/index.php:85
 msgid "Original Values"
 msgstr "Original-Werte"
 
-#: views/admin/index/index.php:73
+#: views/admin/index/index.php:86
 msgid "Converted Values"
 msgstr "Konvertierte Werte"
 
-#: views/admin/index/index.php:79
+#: views/admin/index/index.php:92
 msgid "dim1"
 msgstr "Dim1"
 
-#: views/admin/index/index.php:80
+#: views/admin/index/index.php:93
 msgid "dim2"
 msgstr "Dim2"
 
-#: views/admin/index/index.php:81
+#: views/admin/index/index.php:94
 msgid "dim3"
 msgstr "Dim3"
 
-#: views/admin/index/index.php:82
+#: views/admin/index/index.php:95
 msgid "face1"
 msgstr "Obfl1"
 
-#: views/admin/index/index.php:83
+#: views/admin/index/index.php:96
 msgid "face2"
 msgstr "Obfl2"
 
-#: views/admin/index/index.php:84
+#: views/admin/index/index.php:97
 msgid "face3"
 msgstr "Obfl3"
 
-#: views/admin/index/index.php:85
+#: views/admin/index/index.php:98
 msgid "vol"
 msgstr "Vol"
 

@@ -22,42 +22,65 @@ jQuery(document).ready(function () {
 
   // ---------------------------------------------------------------------------
 
-  var curFrom = -1;
-  var curTo = -1;
+  var curFromId = -1;
+  var curToId = -1;
+  var curFromRange = -1;
+  var curToRange = -1;
   var curTitleFilter = "";
 
   var editTimer = null;
 
-  $("#measurementsIdFilter").keyup(editUpdate).blur(editUpdate);
-  $("#measurementsTitleFilter").keyup(editUpdate).blur(editUpdate);
+  $("#measurementsIdFilter").keyup(editUpdate).blur(editEnd);
+  $("#measurementsRangeFilter").keyup(editUpdate).blur(editEnd);
+  $("#measurementsTitleFilter").keyup(editUpdate).blur(editEnd);
 
   function editUpdate() {
-    if (editTimer != null) {
-      clearTimeout(editTimer);
-      editTimer = null;
-    }
+    if (editTimer != null) { clearTimeout(editTimer); }
     editTimer = setTimeout(editEnd, 1000);
   }
 
   function editEnd() {
+    if (editTimer != null) { clearTimeout(editTimer); }
     editTimer = null;
     curTitleFilter = $("#measurementsTitleFilter").val().trim();
 
-    var rangeRegEx = /\s*(\d+)-(\d+)\s*/;
+    var idRegEx = /\s*(\d+)-(\d+)\s*/;
 
     var curVal = $("#measurementsIdFilter").val();
-    var result = curVal.match(rangeRegEx);
-    if (result == null) {
-      curFrom = -1;
-      curTo = -1;
+    var matches = curVal.match(idRegEx);
+    if (matches == null) {
+      curFromId = -1;
+      curToId = -1;
     }
     else {
-      curFrom = parseInt(result[1]);
-      curTo = parseInt(result[2]);
-      if (curFrom>curTo) {
-        var help = curFrom;
-        curFrom = curTo;
-        curTo = help;
+      curFromId = parseInt(matches[1]);
+      curToId = parseInt(matches[2]);
+      if (curFromId > curToId) {
+        var help = curFromId;
+        curFromId = curToId;
+        curToId = help;
+      }
+    }
+
+    var rangeRegEx = /\s*(\d+)(?:[\.|,](\d+))?-(\d+)(?:[\.|,](\d+))?\s*/;
+
+    var curVal = $("#measurementsRangeFilter").val();
+    var matches = curVal.match(rangeRegEx);
+    if (matches == null) {
+      curFromRange = -1;
+      curToRange = -1;
+    }
+    else {
+      curFromRange = "" + matches[1];
+      if (typeof matches[2] !== 'undefined') { curFromRange += "." + matches[2]; }
+      curFromRage = parseFloat(curFromRange);
+      curToRange = "" + matches[3];
+      if (typeof matches[4] !== 'undefined') { curToRange += "." + matches[4]; }
+      curToRage = parseFloat(curToRange);
+      if (curFromRage > curToRage) {
+        var help = curFromRage;
+        curFromRage = curToRage;
+        curToRage = help;
       }
     }
 
@@ -70,18 +93,23 @@ jQuery(document).ready(function () {
     var curArea = parseInt($("#measurementsArea").val());
     curUnit = parseInt($("#measurementsUnit").val());
 
+    var ajaxData = {
+      area: curArea,
+      unit: curUnit,
+      page: curPage,
+      fromId: curFromId,
+      toId: curToId,
+      fromRange: curFromRange,
+      toRange: curToRange,
+      title: curTitleFilter
+    };
+    // console.log(ajaxData);
+
     if ( (curArea>=0) && (curUnit>=0) ) {
       $.ajax({
         url: measurementsJsonUrl,
         dataType: 'json',
-        data: {
-          area: curArea,
-          unit: curUnit,
-          page: curPage,
-          from: curFrom,
-          to: curTo,
-          title: curTitleFilter
-        },
+        data: ajaxData,
         success: function(data) { ajaxSuccess(data) }
       });
     }
