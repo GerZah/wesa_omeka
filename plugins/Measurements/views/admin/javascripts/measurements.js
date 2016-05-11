@@ -69,6 +69,7 @@ jQuery(document).bind("omeka:elementformload", function() {
     var sourceData = null;
     try { sourceData = JSON.parse(json); } catch (err) { }
 
+    var unitId = -1;
     if (sourceData !== null) {
       // Populate with (possibly empty) editable values
       for(var i=0; i<editFields.length; i++) {
@@ -76,7 +77,6 @@ jQuery(document).bind("omeka:elementformload", function() {
         $("#"+editFields[i][1]).val(x[0]).data("values", x);
       }
 
-      var unitId = -1;
       var unitVerb = sourceData["u"];
       for(var i=0; (i<measurementsUnits.length); i++) {
         if (measurementsUnits[i]["verb"] == unitVerb) {
