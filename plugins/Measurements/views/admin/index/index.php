@@ -82,24 +82,25 @@
   <thead>
     <tr>
       <th><?php echo __("Title"); ?></th>
-      <th colspan="7"><?php echo __("Original Values"); ?></th>
-      <th colspan="7"><?php echo __("Converted Values"); ?></th>
+      <th colspan="7" class="measOrig"><?php echo __("Original Values"); ?></th>
+      <th colspan="7" class="measCalc"><?php echo __("Converted Values"); ?></th>
     </tr>
     <tr>
       <th></th>
       <?php
         $keys = array(
-          __("dim1"),
-          __("dim2"),
-          __("dim3"),
-          __("face1"),
-          __("face2"),
-          __("face3"),
-          __("vol"),
+          "measl1" => __("dim1"),
+          "measl2" => __("dim2"),
+          "measl3" => __("dim3"),
+          "measf1" => __("face1"),
+          "measf2" => __("face2"),
+          "measf3" => __("face3"),
+          "measv" => __("vol"),
         );
         for($i=1; ($i<=2); $i++) {
-          foreach($keys as $key) {
-            echo "<th>".__($key)."</th>";
+          foreach($keys as $class => $key) {
+            $cl = $class . ($i == 2 ? "c" : "");
+            echo "<th class='$cl'>".__($key)."</th>";
           }
         }
       ?>

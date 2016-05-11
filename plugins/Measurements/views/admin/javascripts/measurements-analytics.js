@@ -115,6 +115,11 @@ jQuery(document).ready(function () {
     }
     else {
       clearTable();
+      $(
+        ".measl1, .measl2, .measl3, .measf1, .measf2, .measf3, .measv, "+
+        ".measl1c, .measl2c, .measl3c, .measf1c, .measf2c, .measf3c, .measvc"
+      ).show();
+      $("th.measOrig, th.measCalc").attr("colSpan", "7");
     }
   }
 
@@ -135,6 +140,26 @@ jQuery(document).ready(function () {
       // console.log("null data");
     }
     else {
+      var curArea = parseInt($("#measurementsArea").val());
+      $(
+        ".measl1, .measl2, .measl3, .measf1, .measf2, .measf3, .measv, "+
+        ".measl1c, .measl2c, .measl3c, .measf1c, .measf2c, .measf3c, .measvc"
+      ).hide();
+      switch (curArea) {
+        case 0: {
+          $(".measl1, .measl2, .measl3, .measl1c, .measl2c, .measl3c").show();
+          $("th.measOrig, th.measCalc").attr("colSpan", "3");
+        } break;
+        case 1: {
+          $(".measf1, .measf2, .measf3, .measf1c, .measf2c, .measf3c").show();
+          $("th.measOrig, th.measCalc").attr("colSpan", "3");
+        } break;
+        case 2: {
+          $(".measv, .measvc").show();
+          $("th.measOrig, th.measCalc").attr("colSpan", "1");
+        } break;
+      }
+
       // console.log("non-null data");
       curPage = parseInt(data.page);
       numPages = parseInt(data.numPages);
