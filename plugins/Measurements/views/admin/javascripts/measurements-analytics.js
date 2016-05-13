@@ -1,6 +1,8 @@
 jQuery(document).ready(function () {
   var $ = jQuery; // use noConflict version of jQuery as the short $ within this block
 
+  var lightbox = lity(); // https://www.npmjs.com/package/lity
+
   // console.log("measurementsJsonUrl = "+measurementsJsonUrl);
 
   var curPage = -1;
@@ -176,7 +178,13 @@ jQuery(document).ready(function () {
         }
         $("#measurementsTable #"+rowId+" .measurementsCell0").empty().append(
           ( itemUrl
-            ? "<a href='" + itemUrl + "' target='_blank'>" + data.data[i].itemTitle + "</a>"
+            // ? "<a href='" + itemUrl + "' target='_blank'>" + data.data[i].itemTitle + "</a>"
+            ? "<a href='#' class='measRowDetails' "
+              + "data-row='" + i + "'"
+              + "data-url='" + itemUrl + "'"
+              + ">"
+              + data.data[i].itemTitle
+              + "</a>"
             : "&nbsp;"
           )
         );
@@ -203,6 +211,18 @@ jQuery(document).ready(function () {
           });
         }
       }
+
+      $(".measRowDetails").unbind().click(function(e) {
+        e.preventDefault();
+        var rowId = $(this).data('row');
+        var itemUrl = $(this).data('url');
+        // $("#measurementsTable #measurementsRow"+rowId).hide("slow").show("slow");
+        console.log("measRowDetails " + rowId);
+        console.log(itemUrl);
+        lightbox("#measurementsAnalysisPopup");
+        // lightbox.open();
+      });
+
     }
   }
 

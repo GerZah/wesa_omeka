@@ -1,4 +1,10 @@
 <?php
+  if (!defined("LITYLOADED")) {
+    queue_css_file("lity.min");
+    queue_js_file('lity.min');
+    DEFINE("LITYLOADED", 1);
+  }
+
   echo head(array('title' => __('Measurements Analysis'), 'bodyclass' => 'measurementsfoo'));
   echo flash();
   $view = get_view();
@@ -121,5 +127,20 @@
     ?>
   </tbody>
 </table>
+
+<div id="measurementsAnalysisPopup" style="overflow: auto; padding: 0 20px; border-radius: 6px; background: #fff" class="lity-hide">
+  <table>
+    <?php
+      # +#+#+# Here: real key names (from $keys up here)
+      foreach(array("", "c") as $suffix) {
+        foreach(array("l1", "l2", "l3", "f1", "f2", "f3", "v") as $key) {
+          echo "<tr>";
+          echo "<th>$key$suffix</th><td></td>";
+          echo "</tr>";
+        }
+      }
+    ?>
+  </table>
+</div>
 
 <?php echo foot(); ?>
