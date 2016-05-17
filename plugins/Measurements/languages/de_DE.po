@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Measurements/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-04-28 11:09+0200\n"
+"PO-Revision-Date: 2016-05-17 19:13+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -19,19 +19,31 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.7\n"
 
-#: MeasurementsPlugin.php:33 views/admin/index/index.php:2
+#: MeasurementsPlugin.php:33 views/admin/index/index.php:8
 msgid "Measurements Analysis"
 msgstr "Maß-Analyse"
 
-#: MeasurementsPlugin.php:94 MeasurementsPlugin.php:95 MeasurementsPlugin.php:96 MeasurementsPlugin.php:101 MeasurementsPlugin.php:102 MeasurementsPlugin.php:103 measurements-form.php:14 measurements-form.php:61 measurements-form.php:66 measurements-form.php:110 measurements-form.php:115 measurements-form.php:174
+#: MeasurementsPlugin.php:94 MeasurementsPlugin.php:95
+#: MeasurementsPlugin.php:96 MeasurementsPlugin.php:101
+#: MeasurementsPlugin.php:102 MeasurementsPlugin.php:103
+#: measurements-form.php:14 measurements-form.php:61 measurements-form.php:66
+#: measurements-form.php:110 measurements-form.php:115
+#: measurements-form.php:174
 msgid "Dimension"
 msgstr "Dimension"
 
-#: MeasurementsPlugin.php:97 MeasurementsPlugin.php:98 MeasurementsPlugin.php:99 MeasurementsPlugin.php:104 MeasurementsPlugin.php:105 MeasurementsPlugin.php:106 measurements-form.php:15 measurements-form.php:77 measurements-form.php:82 measurements-form.php:126 measurements-form.php:131
+#: MeasurementsPlugin.php:97 MeasurementsPlugin.php:98
+#: MeasurementsPlugin.php:99 MeasurementsPlugin.php:104
+#: MeasurementsPlugin.php:105 MeasurementsPlugin.php:106
+#: measurements-form.php:15 measurements-form.php:77 measurements-form.php:82
+#: measurements-form.php:126 measurements-form.php:131
 msgid "Face"
 msgstr "Fläche"
 
-#: MeasurementsPlugin.php:100 MeasurementsPlugin.php:107 measurements-form.php:16 measurements-form.php:93 measurements-form.php:97 measurements-form.php:142 measurements-form.php:146 views/admin/index/index.php:26
+#: MeasurementsPlugin.php:100 MeasurementsPlugin.php:107
+#: measurements-form.php:16 measurements-form.php:93 measurements-form.php:97
+#: measurements-form.php:142 measurements-form.php:146
+#: views/admin/index/index.php:45
 msgid "Volume"
 msgstr "Volumen"
 
@@ -43,7 +55,8 @@ msgstr "[n.v.]"
 msgid "Item Type"
 msgstr "Objekttyp"
 
-#: MeasurementsPlugin.php:332 MeasurementsPlugin.php:333 views/admin/index/index.php:23
+#: MeasurementsPlugin.php:332 MeasurementsPlugin.php:333
+#: views/admin/index/index.php:42
 msgid "Select Below"
 msgstr "Unten auswählen"
 
@@ -51,7 +64,8 @@ msgstr "Unten auswählen"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: MeasurementsPlugin.php:387 measurements-form.php:157 measurements-form.php:182
+#: MeasurementsPlugin.php:387 measurements-form.php:157
+#: measurements-form.php:182
 msgid "Clear"
 msgstr "Löschen"
 
@@ -59,7 +73,8 @@ msgstr "Löschen"
 msgid "Entered Data"
 msgstr "Eingegebene Daten"
 
-#: MeasurementsPlugin.php:414 measurements-form.php:18 measurements-form.php:106
+#: MeasurementsPlugin.php:414 measurements-form.php:18
+#: measurements-form.php:106
 msgid "Derived Data"
 msgstr "Abgeleitete Daten"
 
@@ -151,73 +166,81 @@ msgstr "Abbrechen"
 msgid "Triple Unit Data"
 msgstr "Einheiten-Tripel Eingabe"
 
-#: views/admin/index/index.php:24
-msgid "Dimensions"
-msgstr "Dimensionen"
-
-#: views/admin/index/index.php:25
-msgid "Surfaces"
-msgstr "Oberflächen"
-
 #: views/admin/index/index.php:28
-msgid "Measurement Analytical Area"
-msgstr "Maß-Analyse Bereich"
-
-#: views/admin/index/index.php:33
-msgid "Measurement Analytical Unit"
-msgstr "Maß-Analyse Einheit"
-
-#: views/admin/index/index.php:40
-msgid "Filter item ID (e.g. \"42-500\")"
-msgstr "Objekt-ID-Filtern (z.B. \"42-500\")"
-
-#: views/admin/index/index.php:51
-msgid "Filter target range (e.g. \"20.5-50\")"
-msgstr "Zielbereich filtern (z.B. \"20,5-50\")"
-
-#: views/admin/index/index.php:62
-msgid "Filter Title Text"
-msgstr "Titel-Text filtern"
-
-#: views/admin/index/index.php:84
-msgid "Title"
-msgstr "Titel"
-
-#: views/admin/index/index.php:85
-msgid "Original Values"
-msgstr "Original-Werte"
-
-#: views/admin/index/index.php:86
-msgid "Converted Values"
-msgstr "Konvertierte Werte"
-
-#: views/admin/index/index.php:92
 msgid "dim1"
 msgstr "Dim1"
 
-#: views/admin/index/index.php:93
+#: views/admin/index/index.php:29
 msgid "dim2"
 msgstr "Dim2"
 
-#: views/admin/index/index.php:94
+#: views/admin/index/index.php:30
 msgid "dim3"
 msgstr "Dim3"
 
-#: views/admin/index/index.php:95
+#: views/admin/index/index.php:31
 msgid "face1"
 msgstr "Obfl1"
 
-#: views/admin/index/index.php:96
+#: views/admin/index/index.php:32
 msgid "face2"
 msgstr "Obfl2"
 
-#: views/admin/index/index.php:97
+#: views/admin/index/index.php:33
 msgid "face3"
 msgstr "Obfl3"
 
-#: views/admin/index/index.php:98
+#: views/admin/index/index.php:34
 msgid "vol"
 msgstr "Vol"
+
+#: views/admin/index/index.php:43
+msgid "Dimensions"
+msgstr "Dimensionen"
+
+#: views/admin/index/index.php:44
+msgid "Surfaces"
+msgstr "Oberflächen"
+
+#: views/admin/index/index.php:47
+msgid "Measurement Analytical Area"
+msgstr "Maß-Analyse Bereich"
+
+#: views/admin/index/index.php:52
+msgid "Measurement Analytical Unit"
+msgstr "Maß-Analyse Einheit"
+
+#: views/admin/index/index.php:59
+msgid "Filter item ID (e.g. \"42-500\")"
+msgstr "Objekt-ID-Filtern (z.B. \"42-500\")"
+
+#: views/admin/index/index.php:70
+msgid "Filter target range (e.g. \"20.5-50\")"
+msgstr "Zielbereich filtern (z.B. \"20,5-50\")"
+
+#: views/admin/index/index.php:81
+msgid "Filter Title Text"
+msgstr "Titel-Text filtern"
+
+#: views/admin/index/index.php:103
+msgid "Title"
+msgstr "Titel"
+
+#: views/admin/index/index.php:104 views/admin/index/index.php:142
+msgid "Original Values"
+msgstr "Original-Werte"
+
+#: views/admin/index/index.php:105 views/admin/index/index.php:142
+msgid "Converted Values"
+msgstr "Konvertierte Werte"
+
+#: views/admin/index/index.php:159
+msgid "Open Item"
+msgstr "Objekt öffnen"
+
+#: views/admin/index/index.php:160
+msgid "Open Item in New Window"
+msgstr "Objekt in neuem Fenster öffnen"
 
 #: views/shared/common/measurements-advanced-search.php:3
 msgid "Measurements Search"

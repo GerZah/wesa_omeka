@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: MeasurementsPlugin.php:33 views/admin/index/index.php:2
+#: MeasurementsPlugin.php:33 views/admin/index/index.php:8
 msgid "Measurements Analysis"
 msgstr ""
 
@@ -41,7 +41,7 @@ msgstr ""
 #: MeasurementsPlugin.php:100 MeasurementsPlugin.php:107
 #: measurements-form.php:16 measurements-form.php:93 measurements-form.php:97
 #: measurements-form.php:142 measurements-form.php:146
-#: views/admin/index/index.php:26
+#: views/admin/index/index.php:45
 msgid "Volume"
 msgstr ""
 
@@ -54,7 +54,7 @@ msgid "Item Type"
 msgstr ""
 
 #: MeasurementsPlugin.php:332 MeasurementsPlugin.php:333
-#: views/admin/index/index.php:23
+#: views/admin/index/index.php:42
 msgid "Select Below"
 msgstr ""
 
@@ -180,72 +180,80 @@ msgstr ""
 msgid "Triple Unit Data"
 msgstr ""
 
-#: views/admin/index/index.php:24
-msgid "Dimensions"
-msgstr ""
-
-#: views/admin/index/index.php:25
-msgid "Surfaces"
-msgstr ""
-
 #: views/admin/index/index.php:28
-msgid "Measurement Analytical Area"
-msgstr ""
-
-#: views/admin/index/index.php:33
-msgid "Measurement Analytical Unit"
-msgstr ""
-
-#: views/admin/index/index.php:40
-msgid "Filter item ID (e.g. \"42-500\")"
-msgstr ""
-
-#: views/admin/index/index.php:51
-msgid "Filter target range (e.g. \"20.5-50\")"
-msgstr ""
-
-#: views/admin/index/index.php:62
-msgid "Filter Title Text"
-msgstr ""
-
-#: views/admin/index/index.php:84
-msgid "Title"
-msgstr ""
-
-#: views/admin/index/index.php:85
-msgid "Original Values"
-msgstr ""
-
-#: views/admin/index/index.php:86
-msgid "Converted Values"
-msgstr ""
-
-#: views/admin/index/index.php:92
 msgid "dim1"
 msgstr ""
 
-#: views/admin/index/index.php:93
+#: views/admin/index/index.php:29
 msgid "dim2"
 msgstr ""
 
-#: views/admin/index/index.php:94
+#: views/admin/index/index.php:30
 msgid "dim3"
 msgstr ""
 
-#: views/admin/index/index.php:95
+#: views/admin/index/index.php:31
 msgid "face1"
 msgstr ""
 
-#: views/admin/index/index.php:96
+#: views/admin/index/index.php:32
 msgid "face2"
 msgstr ""
 
-#: views/admin/index/index.php:97
+#: views/admin/index/index.php:33
 msgid "face3"
 msgstr ""
 
-#: views/admin/index/index.php:98
+#: views/admin/index/index.php:34
 msgid "vol"
+msgstr ""
+
+#: views/admin/index/index.php:43
+msgid "Dimensions"
+msgstr ""
+
+#: views/admin/index/index.php:44
+msgid "Surfaces"
+msgstr ""
+
+#: views/admin/index/index.php:47
+msgid "Measurement Analytical Area"
+msgstr ""
+
+#: views/admin/index/index.php:52
+msgid "Measurement Analytical Unit"
+msgstr ""
+
+#: views/admin/index/index.php:59
+msgid "Filter item ID (e.g. \"42-500\")"
+msgstr ""
+
+#: views/admin/index/index.php:70
+msgid "Filter target range (e.g. \"20.5-50\")"
+msgstr ""
+
+#: views/admin/index/index.php:81
+msgid "Filter Title Text"
+msgstr ""
+
+#: views/admin/index/index.php:103
+msgid "Title"
+msgstr ""
+
+#: views/admin/index/index.php:104 views/admin/index/index.php:142
+msgid "Original Values"
+msgstr ""
+
+#: views/admin/index/index.php:105 views/admin/index/index.php:142
+msgid "Converted Values"
+msgstr ""
+
+#: views/admin/index/index.php:159
+msgid "Open Item"
+msgstr ""
+
+#: views/admin/index/index.php:160
+msgid "Open Item in New Window"
 msgstr ""
 
 #: views/shared/common/measurements-advanced-search.php:3

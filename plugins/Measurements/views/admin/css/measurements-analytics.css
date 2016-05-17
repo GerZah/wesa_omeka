@@ -1,4 +1,4 @@
-div.measurementCenter { padding: 0.5em 0; text-align: center; }
+.measurementCenter { padding: 0.5em 0; text-align: center; }
 span.oneEm { display: inline-block; width: 1em; }
 span.pageCount { display: inline-block; width: 3em; text-align: center; }
 
@@ -6,6 +6,7 @@ span.pageCount { display: inline-block; width: 3em; text-align: center; }
 #measurementPaginate a:hover { text-decoration: underline; }
 
 #measurementsTable td { height: 1em !important; padding: 0em 0.625em; }
+#detailsTable td.hlCell,
 #measurementsTable td.hlCell { background-color : #ffffb2; }
 
 #measurementsTable td span {
@@ -13,6 +14,8 @@ span.pageCount { display: inline-block; width: 3em; text-align: center; }
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   width: 90%; height: 1em;
 }
+
+#detailsTable td { text-align:right; }
 
 /* DIRTY: Leave only "Dashboard" button in nav bar and have content on full width */
 #content-nav { position: relative; top:0em; }

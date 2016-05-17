@@ -21,6 +21,19 @@
   $html[] = js_tag('measurements-analytics');
 
   echo implode("\n", $html);
+
+  // ---------------------------------
+
+  $titleKeys = array( # Keys for table columns titles / item measurements detail page
+    "l1" => __("dim1"),
+    "l2" => __("dim2"),
+    "l3" => __("dim3"),
+    "f1" => __("face1"),
+    "f2" => __("face2"),
+    "f3" => __("face3"),
+    "v"  => __("vol"),
+  );
+
 ?>
 
 <div class="measurementCenter">
@@ -94,18 +107,9 @@
     <tr>
       <th></th>
       <?php
-        $keys = array(
-          "measl1" => __("dim1"),
-          "measl2" => __("dim2"),
-          "measl3" => __("dim3"),
-          "measf1" => __("face1"),
-          "measf2" => __("face2"),
-          "measf3" => __("face3"),
-          "measv" => __("vol"),
-        );
         for($i=1; ($i<=2); $i++) {
-          foreach($keys as $class => $key) {
-            $cl = $class . ($i == 2 ? "c" : "");
+          foreach($titleKeys as $id => $key) {
+            $cl = "meas$id" . ($i == 2 ? "c" : "");
             echo "<th class='$cl'>".__($key)."</th>";
           }
         }
@@ -118,7 +122,7 @@
         echo "<tr id='measurementsRow$i'>";
         echo "<td class='measurementsCell0'></td>";
         foreach(array("", "c") as $suffix) {
-          foreach(array("l1", "l2", "l3", "f1", "f2", "f3", "v") as $key) {
+          foreach(array_keys($titleKeys) as $key) {
             echo "<td class='measurementValue meas".$key.$suffix."'></td>";
           }
         }
@@ -129,18 +133,32 @@
 </table>
 
 <div id="measurementsAnalysisPopup" style="overflow: auto; padding: 0 20px; border-radius: 6px; background: #fff" class="lity-hide">
-  <table>
-    <?php
-      # +#+#+# Here: real key names (from $keys up here)
-      foreach(array("", "c") as $suffix) {
-        foreach(array("l1", "l2", "l3", "f1", "f2", "f3", "v") as $key) {
-          echo "<tr>";
-          echo "<th>$key$suffix</th><td></td>";
-          echo "</tr>";
+  <h3 id="detailsTitle"></h3>
+  <table id="detailsTable">
+    <tr>
+      <th></th>
+      <?php
+        foreach(array("", "c") as $suffix) {
+          $valuesTitle = ( $suffix == "" ? __("Original Values") : __("Converted Values") );
+          echo "<th>$valuesTitle</th>\n";
         }
+      ?>
+    </tr>
+    <?php
+      foreach($titleKeys as $id => $key) {
+        echo "<tr><th>$key</th>";
+        foreach(array("", "c") as $suffix) {
+          $cellId = "details$id$suffix";
+          echo "<td id='$cellId'></td>";
+        }
+        echo "</tr>\n";
       }
     ?>
   </table>
+  <p class="measurementCenter">
+    <a href="#" class="green button detailsItemLink"><?php echo __("Open Item"); ?></a>
+    <a href="#" class="green button detailsItemLink" target="_blank"><?php echo __("Open Item in New Window"); ?></a>
+  </p>
 </div>
 
 <?php echo foot(); ?>

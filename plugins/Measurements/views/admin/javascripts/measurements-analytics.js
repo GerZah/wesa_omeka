@@ -128,7 +128,7 @@ jQuery(document).ready(function () {
   // -------------
 
   function clearTable() {
-    $("#measurementsTable td").empty().append("&nbsp;").removeClass("hlCell");
+    $("#measurementsTable td").html("&nbsp;").removeClass("hlCell");
     $("#curPage").empty();
     $("#numPages").empty();
   }
@@ -176,7 +176,7 @@ jQuery(document).ready(function () {
         if (i<numData) {
           itemUrl = measurementsBaseUrl + "/items/show/" + data.data[i].itemId;
         }
-        $("#measurementsTable #"+rowId+" .measurementsCell0").empty().append(
+        $("#measurementsTable #"+rowId+" .measurementsCell0").html(
           ( itemUrl
             // ? "<a href='" + itemUrl + "' target='_blank'>" + data.data[i].itemTitle + "</a>"
             ? "<a href='#' class='measRowDetails' "
@@ -197,8 +197,7 @@ jQuery(document).ready(function () {
               var unitSuffix = ( dim == 0 ? "" : (dim == 1 ? "²" : "³") );
               keys[dim].forEach(function(key) {
                 $("#measurementsTable #"+rowId+" .meas"+key+suffix)
-                .empty()
-                .append(
+                .html(
                   myNumberFormat(data.data[i][key+suffix])
                   + "<br>"
                   + "<span>" + unit + "</span>" + unitSuffix
@@ -214,11 +213,29 @@ jQuery(document).ready(function () {
 
       $(".measRowDetails").unbind().click(function(e) {
         e.preventDefault();
-        var rowId = $(this).data('row');
         var itemUrl = $(this).data('url');
-        // $("#measurementsTable #measurementsRow"+rowId).hide("slow").show("slow");
-        console.log("measRowDetails " + rowId);
-        console.log(itemUrl);
+        $(".detailsItemLink").attr("href", itemUrl);
+
+        var rowId = $(this).data('row');
+        var row = "measurementsRow"+rowId;
+
+        var titleCell = "#"+row + " td.measurementsCell0";
+        $("#detailsTitle").html( $(titleCell).text() );
+
+        var suffixes = [ "", "c" ];
+        var keys = [ "l1", "l2", "l3", "f1", "f2", "f3", "v" ];
+
+        suffixes.forEach(function(suffix) {
+          keys.forEach(function(key) {
+            var id = key+suffix;
+            var tableCell = "#"+row + " td.meas"+id;
+            var detailCell = "#details" + id;
+            var cellContent = $(tableCell).html().replace("<br>", " ");
+            $(detailCell).html(cellContent).removeClass("hlCell");
+            if ($(tableCell).hasClass("hlCell")) { $(detailCell).addClass("hlCell"); }
+          });
+        });
+
         lightbox("#measurementsAnalysisPopup");
         // lightbox.open();
       });
