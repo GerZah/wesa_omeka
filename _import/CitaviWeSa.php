@@ -25,12 +25,12 @@
 	if (!$importItemTypeID) { die("Item type '".importItemType."' not found."); }
 
 	// -----------------------------------------------
-	
+
 	#$csv = @array_map('str_getcsv', @file('CitaviWeSa_edited.csv'));
 
 	$csv=array();
 
-	$file = fopen('CitaviWeSa.csv', 'r');
+	$file = fopen('CitaviWeSa_2-1.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
@@ -39,7 +39,7 @@
 	#if (!$csv) { die("CSV file error."); }
 
 	// -----------------------------------------------
-	
+
 	$headers=array(); // Sanity state
 
 	$firstline=true;
