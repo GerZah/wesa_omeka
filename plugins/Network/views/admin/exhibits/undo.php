@@ -21,11 +21,8 @@ if (isset($_POST['before_date'])) { $before_date = !empty($_POST['before_date'])
     <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
     <?php
     $db = get_db();
-      if ($item_id) {
       $db->query("INSERT INTO `$db->NetworkRecord` (`id`, `owner_id`, `item_id`, `exhibit_id`, `added`, `modified`,`slug`,`title`,`item_title`,`body`,`start_date`,`end_date`,`after_date`,`before_date`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       array($id, $owner_id, $item_id,$exhibit_id,$added,$modified,$slug,$title,$item_title,$body,$start_date,$end_date,$after_date,$before_date));
-     #echo "<pre>" . print_r($insert) . "</pre>"; die();
-      }
     ?>
     <div class="field">
         <h2><?php echo __("You have successfully readded the item to exhibit."); ?></h2>
@@ -35,7 +32,7 @@ if (isset($_POST['before_date'])) { $before_date = !empty($_POST['before_date'])
   </section>
   <section class="three columns omega">
     <div id="save" class="panel">
-     <a href="<?php echo html_escape(url('network/view')); ?>" class="add big green button"><?php echo __('Back'); ?></a>
-   </div>
+      <a href="<?php echo html_escape(url('network/view/'.$exhibit_id)); ?>" class="add big green button"><?php echo __('Back'); ?></a>
+    </div>
   </section>
 <?php echo foot(); ?>

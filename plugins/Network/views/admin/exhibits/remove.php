@@ -34,6 +34,7 @@
                     $fields['end_date'] =  $itemField['end_date'];
                     $fields['after_date'] =  $itemField['after_date'];
                     $fields['before_date'] =  $itemField['before_date'];
+                    $exhibitId = $itemField['exhibit_id'];
                   }
                    echo $this->formHidden('id', $fields['id']);
                    echo $this->formHidden('owner_id', $fields['owner_id']);
@@ -63,7 +64,7 @@
   <section class="three columns omega">
     <div id="save" class="panel">
       <input type="submit" class="add big green button" name="submit" value="<?php echo __('Undo'); ?>">
-     <a href="<?php echo html_escape(url('network/view')); ?>" class="add big green button"><?php echo __('Back'); ?></a>
+     <a href="<?php echo html_escape(url('network/view/'.$exhibitId)); ?>" class="add big green button"><?php echo __('Back'); ?></a>
    </div>
   </section>
 </form>
