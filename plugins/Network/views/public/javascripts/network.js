@@ -37,7 +37,7 @@ $(function(){
 
 elements: {
   nodes: [
-    { data: { id: 'j', name: 'Jerry' } },
+    { data: { id: 'j', name: 'Githa' } },
     { data: { id: 'e', name: 'Elaine' } },
     { data: { id: 'k', name: 'Kramer' } },
     { data: { id: 'g', name: 'George' } }

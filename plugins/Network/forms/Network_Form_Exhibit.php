@@ -104,6 +104,16 @@ class Network_Form_Exhibit extends Omeka_Form
             'description'   => __('By default, exhibits are visible only to site administrators. Check here to publish the exhibit to the public site.'),
             'value'         => $this->exhibit->public
         ));
+        //select item relations
+
+        $this->addElement('multiselect', 'item_relations', array(
+            'label' => __('Item Relations'),
+            'description' => __("By default, all the item relations are selected. Please select the required item relations."),
+            'multiOptions' => get_table_options('ItemRelationsProperty'),
+            'size' => 20,
+            'style' => 'width: 500px;',
+            'required' => true
+        ));
 
         // Submit:
         $this->addElement('submit', 'submit', array(
@@ -113,7 +123,8 @@ class Network_Form_Exhibit extends Omeka_Form
         $this->addDisplayGroup(array(
             'title',
             'slug',
-            'public'
+            'public',
+            'item_relations'
         ), 'fields');
 
         $this->addDisplayGroup(array(

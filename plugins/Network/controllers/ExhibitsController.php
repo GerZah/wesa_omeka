@@ -69,7 +69,6 @@ class Network_ExhibitsController extends Network_Controller_Rest
 */
 public function browseAction()
 {
-
   // By default, sort by added date.
   if (!$this->_getParam('sort_field')) {
     $this->_setParam('sort_field', 'added');
