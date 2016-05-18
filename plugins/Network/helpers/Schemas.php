@@ -23,6 +23,7 @@ function in_schema()
         title                   TEXT NULL,
         slug                    VARCHAR(100) NOT NULL,
         public                  TINYINT(1) NOT NULL,
+        selected_relations      TEXT NOT NULL,
 
         PRIMARY KEY             (id)
 
