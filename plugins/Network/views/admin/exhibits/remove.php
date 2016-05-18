@@ -51,8 +51,7 @@
                    echo $this->formHidden('before_date', $fields['before_date']);
           			}
               if ($record_id) {
-                  $delete = "DELETE FROM `$db->NetworkRecord` where id = '$record_id'";
-                 #echo "<pre>" . print_r($delete)."</pre>"; die();
+                $delete = "DELETE FROM `$db->NetworkRecord` where id = '$record_id'";
                  $db->query($delete);
                 }
             }
