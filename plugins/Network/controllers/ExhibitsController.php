@@ -155,10 +155,6 @@ public function removeAction()
 */
 public function undoAction()
 {
-  echo "<pre>" . print_r($_GET) . "</pre>"; die();
-  if ($this->_request->isPost()) {
-
-}
 
 }
 

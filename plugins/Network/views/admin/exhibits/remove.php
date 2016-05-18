@@ -11,12 +11,7 @@
       <div class="field">
           <form method="post" action="<?php echo url('network/undo'); ?>">
             <?php
-
-            $id = 0;
-            if (isset($_POST['id'])) { $id = intval($_POST['id']); }
-            else if (isset($_GET['id'])) { $id = intval($_GET['id']); }
-
-            $db = get_db();
+              $db = get_db();
               if ($record_id) {
             			#echo "<div class='panel'><h4>".__("Item Record Undo Operation")."</h4>\n";
           				$db = get_db();
@@ -58,7 +53,7 @@
               if ($record_id) {
                   $delete = "DELETE FROM `$db->NetworkRecord` where id = '$record_id'";
                  #echo "<pre>" . print_r($delete)."</pre>"; die();
-                 #$db->query($delete);
+                 $db->query($delete);
                 }
             }
         ?>
@@ -68,7 +63,7 @@
   </section>
   <section class="three columns omega">
     <div id="save" class="panel">
-     <a href="<?php echo html_escape(url('network/undo')); ?>" class="add big green button"><?php echo __('Undo'); ?></a>
+      <input type="submit" class="add big green button" name="submit" value="<?php echo __('Undo'); ?>">
      <a href="<?php echo html_escape(url('network/view')); ?>" class="add big green button"><?php echo __('Back'); ?></a>
    </div>
   </section>
