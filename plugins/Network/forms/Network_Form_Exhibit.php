@@ -106,14 +106,18 @@ class Network_Form_Exhibit extends Omeka_Form
         ));
         //select item relations
 
-        $this->addElement('multiselect', 'item_relations', array(
+        $itemRelationValues = array();
+        $itemRelationValues = get_table_options('ItemRelationsProperty');
+        unset($itemRelationValues[""]); // remove "Select below"
+      
+        $this->addElement('multiselect', 'selected_relations', array(
             'label' => __('Item Relations'),
             'description' => __("By default, all the item relations are selected. Please select the required item relations."),
-            'multiOptions' => get_table_options('ItemRelationsProperty'),
+            'value'  => $this->exhibit->selected_relations,
+            'multiOptions' => $itemRelationValues,
             'size' => 20,
-            'style' => 'width: 500px;',
-            'required' => true
-        ));
+              'style' => 'width: 500px;'
+          ));
 
         // Submit:
         $this->addElement('submit', 'submit', array(
@@ -124,7 +128,7 @@ class Network_Form_Exhibit extends Omeka_Form
             'title',
             'slug',
             'public',
-            'item_relations'
+            'selected_relations'
         ), 'fields');
 
         $this->addDisplayGroup(array(

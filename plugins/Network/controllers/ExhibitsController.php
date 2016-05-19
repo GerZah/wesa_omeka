@@ -91,8 +91,8 @@ public function addAction()
 
   // Process form submission.
   if ($this->_request->isPost() && $form->isValid($_POST)) {
-    $exhibit->saveForm($form->getValues());
-    $this->_helper->redirector('browse');
+  $exhibit->saveForm($form->getValues());
+  $this->_helper->redirector('browse');
   }
 
   // Push form to view.
