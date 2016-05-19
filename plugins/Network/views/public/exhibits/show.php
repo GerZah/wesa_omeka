@@ -20,7 +20,18 @@ queue_css_file('network');
 <!-- Exhibit title: -->
 <h1><?php echo in_getExhibitField('title'); ?></h1>
 <hr>
+<?php
+$db = get_db();
+$selectItems = "SELECT item_id FROM `$db->NetworkRecord` where exhibit_id == $exhibit_id";
+$selectRelations = "SELECT selected_relations FROM `$db->NetworkExhibit` where exhibit_id == $exhibit_id";
+$select = " SELECT * FROM {$db->ItemRelationsRelations} where subject_item_id in $selectItems and property_id in $selectRelations
+ORDER BY id";
+echo "<pre>" . print_r($select) . "</pre>"; die();
+$elements = $db->fetchAll($select);
+foreach ($elements as $element) {
+}
 
+?>
 <div id="cy"></div>
 
 <?php echo foot(); ?>
