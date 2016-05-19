@@ -236,23 +236,27 @@ msgstr ""
 msgid "Filter Title Text"
 msgstr ""
 
-#: views/admin/index/index.php:103
+#: views/admin/index/index.php:95
+msgid "Add Relation"
+msgstr ""
+
+#: views/admin/index/index.php:108
 msgid "Title"
 msgstr ""
 
-#: views/admin/index/index.php:104 views/admin/index/index.php:142
+#: views/admin/index/index.php:109 views/admin/index/index.php:147
 msgid "Original Values"
 msgstr ""
 
-#: views/admin/index/index.php:105 views/admin/index/index.php:142
+#: views/admin/index/index.php:110 views/admin/index/index.php:147
 msgid "Converted Values"
 msgstr ""
 
-#: views/admin/index/index.php:159
+#: views/admin/index/index.php:164
 msgid "Open Item"
 msgstr ""
 
-#: views/admin/index/index.php:160
+#: views/admin/index/index.php:165
 msgid "Open Item in New Window"
 msgstr ""
 

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Measurements/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-05-17 19:13+0200\n"
+"PO-Revision-Date: 2016-05-19 17:07+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -23,27 +23,15 @@ msgstr ""
 msgid "Measurements Analysis"
 msgstr "Maß-Analyse"
 
-#: MeasurementsPlugin.php:94 MeasurementsPlugin.php:95
-#: MeasurementsPlugin.php:96 MeasurementsPlugin.php:101
-#: MeasurementsPlugin.php:102 MeasurementsPlugin.php:103
-#: measurements-form.php:14 measurements-form.php:61 measurements-form.php:66
-#: measurements-form.php:110 measurements-form.php:115
-#: measurements-form.php:174
+#: MeasurementsPlugin.php:94 MeasurementsPlugin.php:95 MeasurementsPlugin.php:96 MeasurementsPlugin.php:101 MeasurementsPlugin.php:102 MeasurementsPlugin.php:103 measurements-form.php:14 measurements-form.php:61 measurements-form.php:66 measurements-form.php:110 measurements-form.php:115 measurements-form.php:174
 msgid "Dimension"
 msgstr "Dimension"
 
-#: MeasurementsPlugin.php:97 MeasurementsPlugin.php:98
-#: MeasurementsPlugin.php:99 MeasurementsPlugin.php:104
-#: MeasurementsPlugin.php:105 MeasurementsPlugin.php:106
-#: measurements-form.php:15 measurements-form.php:77 measurements-form.php:82
-#: measurements-form.php:126 measurements-form.php:131
+#: MeasurementsPlugin.php:97 MeasurementsPlugin.php:98 MeasurementsPlugin.php:99 MeasurementsPlugin.php:104 MeasurementsPlugin.php:105 MeasurementsPlugin.php:106 measurements-form.php:15 measurements-form.php:77 measurements-form.php:82 measurements-form.php:126 measurements-form.php:131
 msgid "Face"
 msgstr "Fläche"
 
-#: MeasurementsPlugin.php:100 MeasurementsPlugin.php:107
-#: measurements-form.php:16 measurements-form.php:93 measurements-form.php:97
-#: measurements-form.php:142 measurements-form.php:146
-#: views/admin/index/index.php:45
+#: MeasurementsPlugin.php:100 MeasurementsPlugin.php:107 measurements-form.php:16 measurements-form.php:93 measurements-form.php:97 measurements-form.php:142 measurements-form.php:146 views/admin/index/index.php:45
 msgid "Volume"
 msgstr "Volumen"
 
@@ -55,8 +43,7 @@ msgstr "[n.v.]"
 msgid "Item Type"
 msgstr "Objekttyp"
 
-#: MeasurementsPlugin.php:332 MeasurementsPlugin.php:333
-#: views/admin/index/index.php:42
+#: MeasurementsPlugin.php:332 MeasurementsPlugin.php:333 views/admin/index/index.php:42
 msgid "Select Below"
 msgstr "Unten auswählen"
 
@@ -64,8 +51,7 @@ msgstr "Unten auswählen"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: MeasurementsPlugin.php:387 measurements-form.php:157
-#: measurements-form.php:182
+#: MeasurementsPlugin.php:387 measurements-form.php:157 measurements-form.php:182
 msgid "Clear"
 msgstr "Löschen"
 
@@ -73,8 +59,7 @@ msgstr "Löschen"
 msgid "Entered Data"
 msgstr "Eingegebene Daten"
 
-#: MeasurementsPlugin.php:414 measurements-form.php:18
-#: measurements-form.php:106
+#: MeasurementsPlugin.php:414 measurements-form.php:18 measurements-form.php:106
 msgid "Derived Data"
 msgstr "Abgeleitete Daten"
 
@@ -222,23 +207,27 @@ msgstr "Zielbereich filtern (z.B. \"20,5-50\")"
 msgid "Filter Title Text"
 msgstr "Titel-Text filtern"
 
-#: views/admin/index/index.php:103
+#: views/admin/index/index.php:95
+msgid "Add Relation"
+msgstr "Beziehung hinzufügen"
+
+#: views/admin/index/index.php:108
 msgid "Title"
 msgstr "Titel"
 
-#: views/admin/index/index.php:104 views/admin/index/index.php:142
+#: views/admin/index/index.php:109 views/admin/index/index.php:147
 msgid "Original Values"
 msgstr "Original-Werte"
 
-#: views/admin/index/index.php:105 views/admin/index/index.php:142
+#: views/admin/index/index.php:110 views/admin/index/index.php:147
 msgid "Converted Values"
 msgstr "Konvertierte Werte"
 
-#: views/admin/index/index.php:159
+#: views/admin/index/index.php:164
 msgid "Open Item"
 msgstr "Objekt öffnen"
 
-#: views/admin/index/index.php:160
+#: views/admin/index/index.php:165
 msgid "Open Item in New Window"
 msgstr "Objekt in neuem Fenster öffnen"
 

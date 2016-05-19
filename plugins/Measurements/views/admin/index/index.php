@@ -90,11 +90,16 @@
 </div>
 
 <div id="measurementPaginate" class="measurementCenter">
-<a href="#" data-pagstep="m2" id="paginateFirst">|«</a>
-<a href="#" data-pagstep="m1" id="paginatePrev">«</a>
-<span id="curPage" class="pageCount"></span> / <span id="numPages" class="pageCount"></span>
-<a href="#" data-pagstep="p1" id="paginateNext">»</a>
-<a href="#" data-pagstep="p2" id="paginateLast">»|</a>
+  <div class="addRelDiv">
+    <button type="button" id="addRelBtn" class="green button">
+      <?php echo __("Add Relation"); ?>
+    </button>
+  </div>
+  <a href="#" data-pagstep="m2" id="paginateFirst">|«</a>
+  <a href="#" data-pagstep="m1" id="paginatePrev">«</a>
+  <span id="curPage" class="pageCount"></span> / <span id="numPages" class="pageCount"></span>
+  <a href="#" data-pagstep="p1" id="paginateNext">»</a>
+  <a href="#" data-pagstep="p2" id="paginateLast">»|</a>
 </div>
 
 <table id="measurementsTable">

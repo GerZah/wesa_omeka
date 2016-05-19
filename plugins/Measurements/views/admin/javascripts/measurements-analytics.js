@@ -129,8 +129,14 @@ jQuery(document).ready(function () {
 
   function clearTable() {
     $("#measurementsTable td").html("&nbsp;").removeClass("hlCell");
+    $("#measurementsTable tr")
+    .data("row", false)
+    .data("id", false)
+    .removeClass("hlRow")
+    .removeClass("lastHl");
     $("#curPage").empty();
     $("#numPages").empty();
+    $(".addRelDiv").css("display", "none");
   }
 
   // -------------
@@ -175,6 +181,8 @@ jQuery(document).ready(function () {
         var itemUrl = false;
         if (i<numData) {
           itemUrl = measurementsBaseUrl + "/items/show/" + data.data[i].itemId;
+          $("#"+rowId).data("row", i);
+          $("#"+rowId).data("id", data.data[i].itemId);
         }
         $("#measurementsTable #"+rowId+" .measurementsCell0").html(
           ( itemUrl
@@ -213,6 +221,7 @@ jQuery(document).ready(function () {
 
       $(".measRowDetails").unbind().click(function(e) {
         e.preventDefault();
+        $(this).closest("tr").click();
         var itemUrl = $(this).data('url');
         $(".detailsItemLink").attr("href", itemUrl);
 
@@ -245,7 +254,7 @@ jQuery(document).ready(function () {
 
   // ---------------------------------------------------------------------------
 
-  $("#measurementPaginate a").click(function(e) { // .unbind("click")
+  $("#measurementPaginate a").click(function(e) {
     e.preventDefault();
 
     var clickedId = $(this).attr('id');
@@ -259,6 +268,44 @@ jQuery(document).ready(function () {
       case "m1": curPage -= 1; updateData(); break;
       case "m2": curPage = 0; updateData(); break;
     }
+  });
+
+  // ---------------------------------------------------------------------------
+
+  $("#measurementsTable tr").click(function(e) {
+    var row = $(this).data('row');
+    var id = $(this).data('id');
+
+    if (row!==false) {
+      var rowId = "measurementsRow"+row;
+      var isActive = $("#"+rowId).hasClass("hlRow");
+      var isLastHl = $("#"+rowId).hasClass("lastHl");
+      if (isActive) {
+        $("#"+rowId).removeClass("hlRow").removeClass("lastHl");
+        if (isLastHl) {
+          $(".hlRow").first().addClass("lastHl");
+        }
+      }
+      else {
+        $(".lastHl").removeClass("lastHl");
+        $("#"+rowId).addClass("hlRow").addClass("lastHl");
+      }
+
+      $(".addRelDiv").css("display", ( $(".hlRow").length>1 ? "block" : "none" ) );
+
+    }
+
+  });
+
+  // -------------
+
+  $("#addRelBtn").click(function(e){
+    e.preventDefault();
+
+    console.log("Add Relation +#+#+#");
+    console.log($(".hlRow"));
+    console.log($(".lastHl"));
+    alert("Add Relation - not yet implemented")
   });
 
   // ---------------------------------------------------------------------------
@@ -302,5 +349,7 @@ jQuery(document).ready(function () {
     }
     return s.join(dec)
   }
+
+  // ---------------------------------------------------------------------------
 
 });

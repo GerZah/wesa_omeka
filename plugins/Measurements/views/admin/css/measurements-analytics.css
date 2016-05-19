@@ -6,8 +6,12 @@ span.pageCount { display: inline-block; width: 3em; text-align: center; }
 #measurementPaginate a:hover { text-decoration: underline; }
 
 #measurementsTable td { height: 1em !important; padding: 0em 0.625em; }
+
 #detailsTable td.hlCell,
 #measurementsTable td.hlCell { background-color : #ffffb2; }
+#measurementsTable tr.hlRow td { background-color : #ffffd4; }
+#measurementsTable tr.lastHl td { background-color : #ffeee5; }
+#measurementsTable tr.hlRow td.hlCell { background-color : #ffff90; }
 
 #measurementsTable td span {
   display: inline-block;
@@ -23,3 +27,12 @@ span.pageCount { display: inline-block; width: 3em; text-align: center; }
 #content { margin:1em; width:95%; width:calc(100% + -3em); }
 
 .measurementValue { font-size: 80%; text-align: right;}
+
+#measurementPaginate { position: relative; }
+
+.addRelDiv {
+  display: none;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
