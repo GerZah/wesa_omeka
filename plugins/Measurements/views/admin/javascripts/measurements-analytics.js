@@ -109,7 +109,7 @@ jQuery(document).ready(function () {
 
     if ( (curArea>=0) && (curUnit>=0) ) {
       $.ajax({
-        url: measurementsJsonUrl,
+        url: measurementsJsonUrl + "lookup/",
         dataType: 'json',
         data: ajaxData,
         success: function(data) { ajaxSuccess(data) }
@@ -329,8 +329,20 @@ jQuery(document).ready(function () {
     $("#addRelObjectItems").html(objectTitles);
 
     $("#measurementsRelations").val("");
+    $("#relationComment").val("");
+    $("#doAddRelBtn").disable(true);
+    $("#addRelRegularForm").show();
+    $("#addRelResult").hide();
 
     lightbox("#measurementsAnalysisAddRel");
+  });
+
+  // -------------
+
+  $("#measurementsRelations").change(function(){
+    var selectedRelation = $("#measurementsRelations option:selected").val();
+    var cantSubmit = (selectedRelation=="");
+    $("#doAddRelBtn").disable(cantSubmit);
   });
 
   // -------------
@@ -342,11 +354,29 @@ jQuery(document).ready(function () {
       $("#measurementsRelations").focus();
     }
     else {
-      console.log("doAddRelBtn");
-      console.log("subjectItemId: " +  subjectItemId);
-      console.log("objectItemIds: " +  objectItemIds);
-      console.log("selectedRelation: " +  selectedRelation);
-      alert("Add Relation - not yet implemented"); // +#+#+#
+      var ajaxData = {
+        subjectItemId: subjectItemId,
+        objectItemIds: objectItemIds,
+        selectedRelation: selectedRelation,
+        relationComment: $("#relationComment").val()
+      };
+      // console.log(ajaxData);
+
+      $("#doAddRelBtn").disable(true);
+      $.ajax({
+        url: measurementsJsonUrl + "addrelation/",
+        dataType: 'json',
+        data: ajaxData,
+        success: function(data) {
+          // console.log("AJAX success:", data);
+          $("#addRelRegularForm").hide();
+          $("#addRelResult").show();
+          $("#addRelResultSuccess, #addRelResultFail").hide();
+          if (data.success) { $("#addRelResultSuccess").show(); }
+          else { $("#addRelResultFail").show(); }
+        }
+      });
+
     }
   });
 
@@ -391,6 +421,17 @@ jQuery(document).ready(function () {
     }
     return s.join(dec)
   }
+
+  // ---------------------------------------------------------------------------
+
+  /* http://stackoverflow.com/a/16788240 */
+  jQuery.fn.extend({
+      disable: function(state) {
+          return this.each(function() {
+              this.disabled = state;
+          });
+      }
+  });
 
   // ---------------------------------------------------------------------------
 

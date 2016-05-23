@@ -13,7 +13,7 @@
 
   $html[] = '<link href="' . css_src('measurements-analytics') . '" rel="stylesheet">';
   $html[] = '<script type="text/javascript">';
-  $html[] = 'var measurementsJsonUrl = ' . json_encode(url('measurements/lookup/')) . ';';
+  $html[] = 'var measurementsJsonUrl = ' . json_encode(url('measurements/')) . ';'; // "lookup/" / "addrelation/"
   $html[] = 'var measurementsTableLen = ' . MEASUREMENT_TABLE_LEN . ';';
   $html[] = 'var measurementsBaseUrl = ' . json_encode(CURRENT_BASE_URL) . ';';
   $html[] = 'var unitsSimple = ' . json_encode($measurementUnits["simple"]) . ';';
@@ -169,30 +169,48 @@
 
 <div id="measurementsAnalysisAddRel" style="overflow: auto; width: 90%; margin: auto; padding: 0 20px; border-radius: 6px; background: #fff" class="lity-hide">
   <h3><?php echo __("Add Relationship"); ?></h3>
-  <p>
+  <div id="addRelRegularForm">
+    <p>
+      <?php
+        echo __("
+          The relationship that you selected last (which highlighted in a slightly different color)
+          will be the subject of the newly added relationship, while the one or more other highlighted
+          item(s) will become object(s) of that relationship.
+        ");
+      ?>
+    </p>
+    <p><strong><?php echo __("Subject Item"); ?>:</strong> <span id="addRelSubjectItem"></span></p>
+    <h5><?php echo __("Object Item(s)"); ?></h5>
+    <p id="addRelObjectItems"></p>
     <?php
-      echo __("
-        The relationship that you selected last (which highlighted in a slightly different color)
-        will be the subject of the newly added relationship, while the one or more other highlighted
-        item(s) will become object(s) of that relationship.
-      ");
+      $measurementsRelations = get_table_options('ItemRelationsProperty');
+      // echo "<pre>" . print_r($itemRelationValues, true) . "</pre>";
+      echo "<strong>" .
+            $view->formLabel('measurementsRelations', __('Measurement Relations')) .
+            ":</strong> " .
+            $view->formSelect('measurementsRelations', array(), array(), $measurementsRelations);
     ?>
-  </p>
-  <p><strong><?php echo __("Subject Item"); ?>:</strong> <span id="addRelSubjectItem"></span></p>
-  <h5><?php echo __("Object Item(s)"); ?></h5>
-  <p id="addRelObjectItems"></p>
-  <?php
-    $measurementsRelations = get_table_options('ItemRelationsProperty');
-    // echo "<pre>" . print_r($itemRelationValues, true) . "</pre>";
-    echo "<strong>" .
-          $view->formLabel('measurementsRelations', __('Measurement Relations')) .
-          ":</strong> " .
-          $view->formSelect('measurementsRelations', array(), array(), $measurementsRelations);
-  ?>
-  <p class="measurementCenter">
-    <button type="button" class="green button" id="doAddRelBtn"><?php echo __("Add Relationship"); ?></button>
-    <button type="button" class="green button measurementsCancelBtn"><?php echo __("Cancel"); ?></button>
-  </p>
+    <?php
+      $provideRelationComments = !!get_option('item_relations_provide_relation_comments');
+      if ($provideRelationComments) {
+        echo "<p><strong>" . __("Relationship comment") . ":</strong> ".
+              $this->formText('relationComment', null, array("size" => 60, "maxlength" => 60)).
+              "</p>\n";
+
+      }
+    ?>
+    <p class="measurementCenter">
+      <button type="button" class="green button" id="doAddRelBtn"><?php echo __("Add Relationship"); ?></button>
+      <button type="button" class="green button measurementsCancelBtn"><?php echo __("Cancel"); ?></button>
+    </p>
+  </div>
+  <div id="addRelResult">
+    <p id="addRelResultSuccess"><?php echo __("Relation(s) created successfully."); ?></p>
+    <p id="addRelResultFail"><?php echo __("Error while creating relation(s)."); ?></p>
+    <p class="measurementCenter">
+      <button type="button" class="green button measurementsCancelBtn"><?php echo __("Close"); ?></button>
+    </p>
+  </div>
 </div>
 
 <?php echo foot(); ?>
