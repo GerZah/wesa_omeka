@@ -223,15 +223,17 @@ public function showAction()
   $this->_helper->viewRenderer->setNoRender(true);
 
   // Try to find an exhibit with the requested slug.
-  $exhibit = $this->_exhibits->findBySlug($this->_request->slug);
+  $exhibit = $this->_exhibits->findByExhibitId($this->_request->id);
   if (!$exhibit) throw new Omeka_Controller_Exception_404;
 
   // Assign exhibit to view.
   $this->view->network_exhibit = $exhibit;
+  $this->view->exhibit_id = $exhibit->id;
 
   // Try to render exhibit-specific template.
-  try { $this->render("themes/$exhibit->slug/show"); }
+  try { $this->render("themes/$exhibit->id/show"); }
   catch (Exception $e) { $this->render('show'); }
+
 
 }
 

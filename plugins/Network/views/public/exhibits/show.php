@@ -20,20 +20,20 @@ queue_css_file('network');
 <!-- Exhibit title: -->
 <h1><?php echo in_getExhibitField('title'); ?></h1>
 <hr>
+
+<div id="cy"></div>
 <?php
+echo "<pre>" . print_r($_POST) . "</pre>"; die();
 $db = get_db();
-$selectItems = "SELECT item_id FROM `$db->NetworkRecord` where exhibit_id == $exhibit_id";
-$selectRelations = "SELECT selected_relations FROM `$db->NetworkExhibit` where exhibit_id == $exhibit_id";
-$select = " SELECT * FROM {$db->ItemRelationsRelations} where subject_item_id in $selectItems and property_id in $selectRelations
-ORDER BY id";
-echo "<pre>" . print_r($select) . "</pre>"; die();
-$elements = $db->fetchAll($select);
+$selectItems = "SELECT item_id FROM `$db->NetworkRecord` WHERE exhibit_id == $exhibit_id";
+$selectRelations = "SELECT selected_relations FROM `$db->NetworkExhibit` WHERE exhibit_id == $exhibit_id";
+$select = "SELECT * FROM `$db->ItemRelationsRelations` WHERE subject_item_id IN ($selectItems) AND property_id IN($selectRelations) ORDER BY subject_item_id";
+$elements = $db->fetchAll($selectItems);
+
 foreach ($elements as $element) {
 }
 
 ?>
-<div id="cy"></div>
-
 <?php echo foot(); ?>
 
 <script

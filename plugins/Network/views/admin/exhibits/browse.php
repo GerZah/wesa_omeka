@@ -51,8 +51,8 @@
             <!-- Title. -->
             <?php if (is_allowed($e, 'editor')) {
                 echo in_getExhibitLink(
-                  $e, 'editor', null,
-                  array('class' => 'editor'), false
+                  $e, 'show', null,
+                  array('class' => 'public'), true
                 );
               } else {
                 echo in_getExhibitField('title');

@@ -57,6 +57,17 @@ class NetworkExhibitTable extends Network_Table_Expandable
     }
 
     /**
+     * Find exhibit by Id.
+     *
+     * @param string $slug The slug.
+     * @return Omeka_record The exhibit.
+     */
+    public function findByExhibitId($id)
+    {
+        return $this->findBySql('id=?', array($id), true);
+    }
+
+    /**
      * Return the columns to be used for creating an HTML select of Networks.
      *
      * @return array
