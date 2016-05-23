@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Measurements/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-05-19 17:07+0200\n"
+"PO-Revision-Date: 2016-05-23 18:51+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -143,7 +143,7 @@ msgstr "Dateneingabe"
 msgid "Apply"
 msgstr "Anwenden"
 
-#: measurements-form.php:158 measurements-form.php:183
+#: measurements-form.php:158 measurements-form.php:183 views/admin/index/index.php:166 views/admin/index/index.php:202
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -151,6 +151,7 @@ msgstr "Abbrechen"
 msgid "Triple Unit Data"
 msgstr "Einheiten-Tripel Eingabe"
 
+#. / item measurements detail page
 #: views/admin/index/index.php:28
 msgid "dim1"
 msgstr "Dim1"
@@ -230,6 +231,42 @@ msgstr "Objekt öffnen"
 #: views/admin/index/index.php:165
 msgid "Open Item in New Window"
 msgstr "Objekt in neuem Fenster öffnen"
+
+#: views/admin/index/index.php:171 views/admin/index/index.php:201
+msgid "Add Relationship"
+msgstr "Beziehung hinzufügen"
+
+#: views/admin/index/index.php:175
+msgid "The item that you selected last (which highlighted in a slightly different color) will be the subject of the newly added relationship, while the one or more other highlighted item(s) will become object(s) of that relationship."
+msgstr "Das Objekt, das Sie als letztes selektiert haben (das in einer etwas anderen Farbe hervorgehoben ist), wird die Subjekt-Ressource der neu erstellten Beziehung darstellen, während das bzw. die weiteren hervorgehobenen Objekt(e) die Objekt-Ressource(n) darstellen."
+
+#: views/admin/index/index.php:180
+msgid "Subject Item"
+msgstr "Subjekt-Ressource"
+
+#: views/admin/index/index.php:181
+msgid "Object Item(s)"
+msgstr "Objekt-Ressource(n)"
+
+#: views/admin/index/index.php:187
+msgid "Item Relations"
+msgstr "Objekt-Beziehungen"
+
+#: views/admin/index/index.php:194
+msgid "Relationship Comment"
+msgstr "Beziehungs-Kommentar"
+
+#: views/admin/index/index.php:206
+msgid "Relation(s) created successfully."
+msgstr "Beziehung(en) erfolgreich angelegt."
+
+#: views/admin/index/index.php:207
+msgid "Error while creating relation(s)."
+msgstr "Fehler beim Anlegen der Beziehung(en)"
+
+#: views/admin/index/index.php:209
+msgid "Close"
+msgstr "Schließen"
 
 #: views/shared/common/measurements-advanced-search.php:3
 msgid "Measurements Search"

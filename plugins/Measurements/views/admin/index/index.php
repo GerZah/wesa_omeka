@@ -172,11 +172,9 @@
   <div id="addRelRegularForm">
     <p>
       <?php
-        echo __("
-          The relationship that you selected last (which highlighted in a slightly different color)
-          will be the subject of the newly added relationship, while the one or more other highlighted
-          item(s) will become object(s) of that relationship.
-        ");
+        echo __("The item that you selected last (which highlighted in a slightly different color) ".
+                "will be the subject of the newly added relationship, while the one or more other highlighted ".
+                "item(s) will become object(s) of that relationship.");
       ?>
     </p>
     <p><strong><?php echo __("Subject Item"); ?>:</strong> <span id="addRelSubjectItem"></span></p>
@@ -186,14 +184,14 @@
       $measurementsRelations = get_table_options('ItemRelationsProperty');
       // echo "<pre>" . print_r($itemRelationValues, true) . "</pre>";
       echo "<strong>" .
-            $view->formLabel('measurementsRelations', __('Measurement Relations')) .
+            $view->formLabel('measurementsRelations', __('Item Relations')) .
             ":</strong> " .
             $view->formSelect('measurementsRelations', array(), array(), $measurementsRelations);
     ?>
     <?php
       $provideRelationComments = !!get_option('item_relations_provide_relation_comments');
       if ($provideRelationComments) {
-        echo "<p><strong>" . __("Relationship comment") . ":</strong> ".
+        echo "<p><strong>" . __("Relationship Comment") . ":</strong> ".
               $this->formText('relationComment', null, array("size" => 60, "maxlength" => 60)).
               "</p>\n";
 

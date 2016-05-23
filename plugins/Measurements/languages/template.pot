@@ -173,6 +173,7 @@ msgid "Apply"
 msgstr ""
 
 #: measurements-form.php:158 measurements-form.php:183
+#: views/admin/index/index.php:166 views/admin/index/index.php:202
 msgid "Cancel"
 msgstr ""
 
@@ -180,6 +181,7 @@ msgstr ""
 msgid "Triple Unit Data"
 msgstr ""
 
+#. / item measurements detail page
 #: views/admin/index/index.php:28
 msgid "dim1"
 msgstr ""
@@ -258,6 +260,45 @@ msgstr ""
 
 #: views/admin/index/index.php:165
 msgid "Open Item in New Window"
+msgstr ""
+
+#: views/admin/index/index.php:171 views/admin/index/index.php:201
+msgid "Add Relationship"
+msgstr ""
+
+#: views/admin/index/index.php:175
+msgid ""
+"The item that you selected last (which highlighted in a slightly different "
+"color) will be the subject of the newly added relationship, while the one or "
+"more other highlighted item(s) will become object(s) of that relationship."
+msgstr ""
+
+#: views/admin/index/index.php:180
+msgid "Subject Item"
+msgstr ""
+
+#: views/admin/index/index.php:181
+msgid "Object Item(s)"
+msgstr ""
+
+#: views/admin/index/index.php:187
+msgid "Item Relations"
+msgstr ""
+
+#: views/admin/index/index.php:194
+msgid "Relationship Comment"
+msgstr ""
+
+#: views/admin/index/index.php:206
+msgid "Relation(s) created successfully."
+msgstr ""
+
+#: views/admin/index/index.php:207
+msgid "Error while creating relation(s)."
+msgstr ""
+
+#: views/admin/index/index.php:209
+msgid "Close"
 msgstr ""
 
 #: views/shared/common/measurements-advanced-search.php:3
