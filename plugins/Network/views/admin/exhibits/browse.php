@@ -52,7 +52,7 @@
             <?php if (is_allowed($e, 'editor')) {
                 echo in_getExhibitLink(
                   $e, 'show', null,
-                  array('class' => 'public'), true
+                  array('class' => 'editor'), true
                 );
               } else {
                 echo in_getExhibitField('title');
