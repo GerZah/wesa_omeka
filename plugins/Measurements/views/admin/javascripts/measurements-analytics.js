@@ -136,7 +136,7 @@ jQuery(document).ready(function () {
     .removeClass("lastHl");
     $("#curPage").empty();
     $("#numPages").empty();
-    $(".addRelDiv").css("display", "none");
+    $("#addRelBtn").prop("disabled", true);
   }
 
   // -------------
@@ -295,7 +295,7 @@ jQuery(document).ready(function () {
         $("#"+rowId).addClass("hlRow").addClass("lastHl");
       }
 
-      $(".addRelDiv").css("display", ( $(".hlRow").length>1 ? "block" : "none" ) );
+      $("#addRelBtn").prop("disabled", $(".hlRow").length<=1 );
 
     }
 
@@ -330,7 +330,7 @@ jQuery(document).ready(function () {
 
     $("#measurementsRelations").val("");
     $("#relationComment").val("");
-    $("#doAddRelBtn").disable(true);
+    $("#doAddRelBtn").prop("disabled", true);
     $("#addRelRegularForm").show();
     $("#addRelResult").hide();
 
@@ -342,7 +342,7 @@ jQuery(document).ready(function () {
   $("#measurementsRelations").change(function(){
     var selectedRelation = $("#measurementsRelations option:selected").val();
     var cantSubmit = (selectedRelation=="");
-    $("#doAddRelBtn").disable(cantSubmit);
+    $("#doAddRelBtn").prop("disabled", cantSubmit);
   });
 
   // -------------
@@ -362,7 +362,7 @@ jQuery(document).ready(function () {
       };
       // console.log(ajaxData);
 
-      $("#doAddRelBtn").disable(true);
+      $("#doAddRelBtn").prop("disabled", true);
       $.ajax({
         url: measurementsJsonUrl + "addrelation/",
         dataType: 'json',
@@ -421,17 +421,6 @@ jQuery(document).ready(function () {
     }
     return s.join(dec)
   }
-
-  // ---------------------------------------------------------------------------
-
-  /* http://stackoverflow.com/a/16788240 */
-  jQuery.fn.extend({
-      disable: function(state) {
-          return this.each(function() {
-              this.disabled = state;
-          });
-      }
-  });
 
   // ---------------------------------------------------------------------------
 

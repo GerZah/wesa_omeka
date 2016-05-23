@@ -31,7 +31,6 @@ span.pageCount { display: inline-block; width: 3em; text-align: center; }
 #measurementPaginate { position: relative; }
 
 .addRelDiv {
-  display: none;
   position: absolute;
   top: 0px;
   right: 0px;
