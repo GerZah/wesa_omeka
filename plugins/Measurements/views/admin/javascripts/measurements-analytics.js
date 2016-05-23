@@ -252,6 +252,10 @@ jQuery(document).ready(function () {
     }
   }
 
+  // -------------
+
+  $(".measurementsCancelBtn").click(function(e){ lightbox.close(); });
+
   // ---------------------------------------------------------------------------
 
   $("#measurementPaginate a").click(function(e) {
@@ -299,13 +303,51 @@ jQuery(document).ready(function () {
 
   // -------------
 
+  var subjectItemId = -1;
+  var objectItemIds = [];
+
   $("#addRelBtn").click(function(e){
     e.preventDefault();
 
-    console.log("Add Relation +#+#+#");
-    console.log($(".hlRow"));
-    console.log($(".lastHl"));
-    alert("Add Relation - not yet implemented")
+    var subjectRowId = $(".lastHl").attr("id");
+    var subjectTitleCell = "#"+subjectRowId + " td.measurementsCell0";
+    $("#addRelSubjectItem").html( $(subjectTitleCell).text() );
+    subjectItemId = $("#"+subjectRowId).data("id");
+
+    objectItemIds = [];
+    var objectTitles = "<ul>";
+    $(".hlRow").each(function(index){
+      var objectRowId = $(this).attr("id");
+      if (objectRowId != subjectRowId) {
+        var objectTitleCell = "#"+objectRowId + " td.measurementsCell0";
+        objectTitles += "<li>" + $(objectTitleCell).text() + "</li>";
+        var objectItemId = $("#"+objectRowId).data("id");
+        objectItemIds.push(objectItemId);
+      }
+    });
+    objectTitles += "</ul>";
+    $("#addRelObjectItems").html(objectTitles);
+
+    $("#measurementsRelations").val("");
+
+    lightbox("#measurementsAnalysisAddRel");
+  });
+
+  // -------------
+
+  $("#doAddRelBtn").click(function(e){
+    var selectedRelation = $("#measurementsRelations option:selected").val();
+    // console.log(selectedRelation);
+    if (selectedRelation == "") {
+      $("#measurementsRelations").focus();
+    }
+    else {
+      console.log("doAddRelBtn");
+      console.log("subjectItemId: " +  subjectItemId);
+      console.log("objectItemIds: " +  objectItemIds);
+      console.log("selectedRelation: " +  selectedRelation);
+      alert("Add Relation - not yet implemented"); // +#+#+#
+    }
   });
 
   // ---------------------------------------------------------------------------

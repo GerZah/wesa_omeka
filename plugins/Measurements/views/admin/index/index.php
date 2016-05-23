@@ -163,6 +163,35 @@
   <p class="measurementCenter">
     <a href="#" class="green button detailsItemLink"><?php echo __("Open Item"); ?></a>
     <a href="#" class="green button detailsItemLink" target="_blank"><?php echo __("Open Item in New Window"); ?></a>
+    <button type="button" class="green button measurementsCancelBtn"><?php echo __("Cancel"); ?></button>
+  </p>
+</div>
+
+<div id="measurementsAnalysisAddRel" style="overflow: auto; width: 90%; margin: auto; padding: 0 20px; border-radius: 6px; background: #fff" class="lity-hide">
+  <h3><?php echo __("Add Relationship"); ?></h3>
+  <p>
+    <?php
+      echo __("
+        The relationship that you selected last (which highlighted in a slightly different color)
+        will be the subject of the newly added relationship, while the one or more other highlighted
+        item(s) will become object(s) of that relationship.
+      ");
+    ?>
+  </p>
+  <p><strong><?php echo __("Subject Item"); ?>:</strong> <span id="addRelSubjectItem"></span></p>
+  <h5><?php echo __("Object Item(s)"); ?></h5>
+  <p id="addRelObjectItems"></p>
+  <?php
+    $measurementsRelations = get_table_options('ItemRelationsProperty');
+    // echo "<pre>" . print_r($itemRelationValues, true) . "</pre>";
+    echo "<strong>" .
+          $view->formLabel('measurementsRelations', __('Measurement Relations')) .
+          ":</strong> " .
+          $view->formSelect('measurementsRelations', array(), array(), $measurementsRelations);
+  ?>
+  <p class="measurementCenter">
+    <button type="button" class="green button" id="doAddRelBtn"><?php echo __("Add Relationship"); ?></button>
+    <button type="button" class="green button measurementsCancelBtn"><?php echo __("Cancel"); ?></button>
   </p>
 </div>
 
