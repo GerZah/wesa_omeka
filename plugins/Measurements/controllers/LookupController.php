@@ -99,6 +99,7 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
 
         $measurements = array();
         foreach($singleMeasurements as $singleMeasurement) {
+          SELF::_sortDimensions($singleMeasurement);
           switch ($area) {
             case 0: { // Dimension
               SELF::_addMeasurement($measurements, $singleMeasurement, "l1");
@@ -116,7 +117,7 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
           }
         }
 
-        // First convert ohnly the "virtual" ["x"] value for all measurements
+        // First convert only the "virtual" ["x"] value for all measurements
         // (to reduce calculation complexity)
         foreach(array_keys($measurements) as $idx) {
           SELF::_convertMeasurement($measurements[$idx], $targetUnit, $unitsInv, $area);
@@ -124,10 +125,19 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
 
         // Sort ascending by the converted ["xc] value
         usort($measurements, function($x,$y) {
-          $a = $x["xc"];
-          $b = $y["xc"];
-          if ($a == $b) { return 0; }
-          return ($a < $b ? -1 : 1);
+          if ($x["xc"] == $y["xc"]) {
+            if ($x["l1"] == $y["l1"]) {
+              if ($x["l2"] == $y["l2"]) {
+                if ($x["l2"] == $y["l2"]) {
+                  return 0;
+                }
+                return ($x["l3"] < $y["l3"] ? -1 : 1);
+              }
+              return ($x["l2"] < $y["l2"] ? -1 : 1);
+            }
+            return ($x["l1"] < $y["l1"] ? -1 : 1);
+          }
+          return ($x["xc"] < $y["xc"] ? -1 : 1);
         });
 
       }
@@ -235,5 +245,31 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
       }
     }
   }
+
+  // ---------------------------------------------------------------------------
+
+  private function _sortDimensions(&$measurement) {
+    SELF::_swapDimension($measurement, "l1", "l2");
+    SELF::_swapDimension($measurement, "l2", "l3");
+    SELF::_swapDimension($measurement, "l1", "l2");
+
+    SELF::_swapDimension($measurement, "f1", "f2");
+    SELF::_swapDimension($measurement, "f2", "f3");
+    SELF::_swapDimension($measurement, "f1", "f2");
+  }
+
+  private function _swapDimension(&$measurement, $a, $b) {
+    if ($measurement[$a] < $measurement[$b]) {
+      SELF::_swap($measurement[$a], $measurement[$b]);
+    }
+  }
+
+  private function _swap(&$x,&$y) {
+    $tmp=$x;
+    $x=$y;
+    $y=$tmp;
+  }
+
+  // ---------------------------------------------------------------------------
 
 }
