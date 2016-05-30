@@ -4,24 +4,24 @@ jQuery(document).ready(function () {
     // http://jsbin.com/gist/621d51ea7de19608127e?js,output
     var cy = null;
 
-    var nodeData = [
-      { data: { id: 'j', name: 'Jerry' } },
-      { data: { id: 'e', name: 'Elaine' } },
-      { data: { id: 'k', name: 'Kramer' } },
-      { data: { id: 'g', name: 'George' } }
-    ];
-
-    var edgeData = [
-      { data: { source: 'j', target: 'e' } },
-      { data: { source: 'j', target: 'k' } },
-      { data: { source: 'j', target: 'g' } },
-      { data: { source: 'e', target: 'j' } },
-      { data: { source: 'e', target: 'k' } },
-      { data: { source: 'k', target: 'j' } },
-      { data: { source: 'k', target: 'e' } },
-      { data: { source: 'k', target: 'g' } },
-      { data: { source: 'g', target: 'j' } }
-    ];
+    // var nodeData = [
+    //   { data: { id: 'j', name: 'Jerry' } },
+    //   { data: { id: 'e', name: 'Elaine' } },
+    //   { data: { id: 'k', name: 'Kramer' } },
+    //   { data: { id: 'g', name: 'George' } }
+    // ];
+    //
+    // var edgeData = [
+    //   { data: { source: 'j', target: 'e' } },
+    //   { data: { source: 'j', target: 'k' } },
+    //   { data: { source: 'j', target: 'g' } },
+    //   { data: { source: 'e', target: 'j' } },
+    //   { data: { source: 'e', target: 'k' } },
+    //   { data: { source: 'k', target: 'j' } },
+    //   { data: { source: 'k', target: 'e' } },
+    //   { data: { source: 'k', target: 'g' } },
+    //   { data: { source: 'g', target: 'j' } }
+    // ];
 
     initGraph();
 
