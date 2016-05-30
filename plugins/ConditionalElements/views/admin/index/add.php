@@ -17,8 +17,6 @@ if (isset($_GET['dependent'])) { $def_dependent_id = intval($_GET['dependent']);
       </div>
       <table>
         <tbody>
-
-
         <tr><th><?php echo __("Dependent"); ?>:</th>
         <td>
           <?php
