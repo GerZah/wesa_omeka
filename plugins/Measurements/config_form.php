@@ -1,44 +1,51 @@
 <?php $view = get_view(); ?>
 <div class="field">
-    <div class="two columns alpha">
-        <?php echo get_view()->formLabel('measurements_units', __('Measurements Units')); ?>
-    </div>
-    <div class="inputs five columns omega">
-        <p class="explanation">
-            <?php echo __('Please enter all triple units that you would like to support, one per line.'); ?>
-            <br>
-            <?php echo __('Please use the form <em>"abc-def-ghi (1-100-10)"</em> with the numbers being the conversion rates.'); ?><br>
-            <?php echo __('You may also group multiple triple units by adding a group name like this: <em>"[groupname] abc-def-ghi (1-100-10)"</em>.'); ?>
-        </p>
-        <?php
-				echo $view->formTextarea('measurements_units', $measurementUnits, array( "rows" => 8 ) );
-				?>
-        <strong><?php echo __("Valid units that have been entered correctly:"); ?></strong>
-        <ul>
-          <?php
-            foreach($saniUnits as $groupName => $saniUnitsGroup) {
-              echo "<li>$groupName<ul>";
-              foreach($saniUnitsGroup as $saniUnit) {
-                echo "<li>" . $saniUnit["verb"] . "</li>\n";
-              }
-              echo "</ul></li>\n";
-            }
-          ?>
-        </ul>
-    </div>
-    <div class="two columns alpha">
-      <?php echo $view->formLabel('measurements_elements', __('Measurement Elements')); ?>
-    </div>
-    <div class="inputs five columns omega">
-      <p class="explanation"><?php echo __('Select elements to transform into measurements, i.e. that should store measurements.'); ?></p>
+  <div class="two columns alpha">
+      <?php echo get_view()->formLabel('measurements_units', __('Measurements Units')); ?>
+  </div>
+  <div class="inputs five columns omega">
+    <p class="explanation">
+        <?php echo __('Please enter all triple units that you would like to support, one per line.'); ?>
+        <br>
+        <?php echo __('Please use the form <em>"abc-def-ghi (1-100-10)"</em> with the numbers being the conversion rates.'); ?><br>
+        <?php echo __('You may also group multiple triple units by adding a group name like this: <em>"[groupname] abc-def-ghi (1-100-10)"</em>.'); ?><br>
+        <?php echo __('You may also add a conversion rate from your lowest unit e.g. "in" to "mm", like this: <em>"[Group] yd-ft-in (1-3-12) [25.4]"</em>'); ?>
+    </p>
+    <?php
+		echo $view->formTextarea('measurements_units', $measurementUnits, array( "rows" => 8 ) );
+		?>
+    <strong><?php echo __("Valid units that have been entered correctly:"); ?></strong>
+    <ul>
       <?php
-        echo $view->formSelect('measurements_elements',
-          $measurementElements,
-          array('multiple' => true, 'size' => 10),
-          $elements
-        );
+        foreach($saniUnits as $groupName => $saniUnitsGroup) {
+          echo "<li>$groupName<ul>";
+          foreach($saniUnitsGroup as $saniUnit) {
+            echo "<li>".
+                  $saniUnit["verb"].
+                  ( ( ($saniUnit["mmconv"]) and ($saniUnit["units"][2]!="mm") )
+                  ? "; 1 ".$saniUnit["units"][2]." == ".$saniUnit["mmconv"]." mm"
+                  : ""
+                  ).
+                  "</li>\n";
+          }
+          echo "</ul></li>\n";
+        }
       ?>
-    </div>
+    </ul>
+  </div>
+  <div class="two columns alpha">
+    <?php echo $view->formLabel('measurements_elements', __('Measurement Elements')); ?>
+  </div>
+  <div class="inputs five columns omega">
+    <p class="explanation"><?php echo __('Select elements to transform into measurements, i.e. that should store measurements.'); ?></p>
+    <?php
+      echo $view->formSelect('measurements_elements',
+        $measurementElements,
+        array('multiple' => true, 'size' => 10),
+        $elements
+      );
+    ?>
+  </div>
 </div>
 
 <div class="field">

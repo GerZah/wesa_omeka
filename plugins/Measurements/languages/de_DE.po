@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Measurements/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-04-12 18:19+0200\n"
+"PO-Revision-Date: 2016-05-23 18:51+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -19,47 +19,51 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.7\n"
 
-#: MeasurementsPlugin.php:82 MeasurementsPlugin.php:83 MeasurementsPlugin.php:84 MeasurementsPlugin.php:89 MeasurementsPlugin.php:90 MeasurementsPlugin.php:91 measurements-form.php:14 measurements-form.php:61 measurements-form.php:66 measurements-form.php:110 measurements-form.php:115 measurements-form.php:174
+#: MeasurementsPlugin.php:33 views/admin/index/index.php:8
+msgid "Measurements Analysis"
+msgstr "Maß-Analyse"
+
+#: MeasurementsPlugin.php:94 MeasurementsPlugin.php:95 MeasurementsPlugin.php:96 MeasurementsPlugin.php:101 MeasurementsPlugin.php:102 MeasurementsPlugin.php:103 measurements-form.php:14 measurements-form.php:61 measurements-form.php:66 measurements-form.php:110 measurements-form.php:115 measurements-form.php:174
 msgid "Dimension"
 msgstr "Dimension"
 
-#: MeasurementsPlugin.php:85 MeasurementsPlugin.php:86 MeasurementsPlugin.php:87 MeasurementsPlugin.php:92 MeasurementsPlugin.php:93 MeasurementsPlugin.php:94 measurements-form.php:15 measurements-form.php:77 measurements-form.php:82 measurements-form.php:126 measurements-form.php:131
+#: MeasurementsPlugin.php:97 MeasurementsPlugin.php:98 MeasurementsPlugin.php:99 MeasurementsPlugin.php:104 MeasurementsPlugin.php:105 MeasurementsPlugin.php:106 measurements-form.php:15 measurements-form.php:77 measurements-form.php:82 measurements-form.php:126 measurements-form.php:131
 msgid "Face"
 msgstr "Fläche"
 
-#: MeasurementsPlugin.php:88 MeasurementsPlugin.php:95 measurements-form.php:16 measurements-form.php:93 measurements-form.php:97 measurements-form.php:142 measurements-form.php:146
+#: MeasurementsPlugin.php:100 MeasurementsPlugin.php:107 measurements-form.php:16 measurements-form.php:93 measurements-form.php:97 measurements-form.php:142 measurements-form.php:146 views/admin/index/index.php:45
 msgid "Volume"
 msgstr "Volumen"
 
-#: MeasurementsPlugin.php:154
+#: MeasurementsPlugin.php:174
 msgid "[n/a]"
 msgstr "[n.v.]"
 
-#: MeasurementsPlugin.php:243
+#: MeasurementsPlugin.php:263
 msgid "Item Type"
 msgstr "Objekttyp"
 
-#: MeasurementsPlugin.php:312
+#: MeasurementsPlugin.php:332 MeasurementsPlugin.php:333 views/admin/index/index.php:42
 msgid "Select Below"
 msgstr "Unten auswählen"
 
-#: MeasurementsPlugin.php:352
+#: MeasurementsPlugin.php:386
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: MeasurementsPlugin.php:353 measurements-form.php:157 measurements-form.php:182
+#: MeasurementsPlugin.php:387 measurements-form.php:157 measurements-form.php:182
 msgid "Clear"
 msgstr "Löschen"
 
-#: MeasurementsPlugin.php:377 measurements-form.php:17
+#: MeasurementsPlugin.php:411 measurements-form.php:17
 msgid "Entered Data"
 msgstr "Eingegebene Daten"
 
-#: MeasurementsPlugin.php:380 measurements-form.php:18 measurements-form.php:106
+#: MeasurementsPlugin.php:414 measurements-form.php:18 measurements-form.php:106
 msgid "Derived Data"
 msgstr "Abgeleitete Daten"
 
-#: MeasurementsPlugin.php:651
+#: MeasurementsPlugin.php:691
 msgid "Measurements Debug Output"
 msgstr "Maße Debug-Ausgabe"
 
@@ -79,31 +83,35 @@ msgstr "Bitte verwenden Sie die Form <em>„abc-def-ghi (1-100-10)“</em>, wobe
 msgid "You may also group multiple triple units by adding a group name like this: <em>\"[groupname] abc-def-ghi (1-100-10)\"</em>."
 msgstr "Auf Wunsch können Sie mehrere Tripel-Einheiten gruppieren, indem Sie wie folgt einen Gruppennamen hinzufügen: <em>\"[Gruppenname] abc-def-ghi (1-100-10)\"</em>"
 
-#: config_form.php:16
+#: config_form.php:12
+msgid "You may also add a conversion rate from your lowest unit e.g. \"in\" to \"mm\", like this: <em>\"[Group] yd-ft-in (1-3-12) [25.4]\"</em>"
+msgstr "Weiterhin können Sie einen Umrechnungs-Faktor von Ihrer niedrigsten Einheit wie etwa \"in\" in \"mm\" angeben: <em>\"[Gruppe] yd-ft-in (1-3-12) [25.4]\"</em>"
+
+#: config_form.php:17
 msgid "Valid units that have been entered correctly:"
 msgstr "Gültige, korrekt definierte Einheiten:"
 
-#: config_form.php:30
+#: config_form.php:37
 msgid "Measurement Elements"
 msgstr "Maß-Elemente"
 
-#: config_form.php:33
+#: config_form.php:40
 msgid "Select elements to transform into measurements, i.e. that should store measurements."
 msgstr "Bitte wählen Sie diejenigen Elemente aus, in denen Sie Maße speichern wollen."
 
-#: config_form.php:46
+#: config_form.php:53
 msgid "Trigger Re-indexing of Existing Content"
 msgstr "Re-Indexierung von bestehendem Inhalt auslösen"
 
-#: config_form.php:51
+#: config_form.php:58
 msgid "<strong>Please note:</strong> Checking this box will re-generate the index <em>now</em> and exactly <em>once</em>. This action will be carried out as soon as you click on \"Save Changes\"."
 msgstr "<strong>Bitte beachten:</strong> Wenn Sie diese Option auswählen, wird der Index <em>jetzt</em> und genau <em>einmal</em>neu generiert. Diese Aktion wird durchgeführt, sobald Sie auf „Änderungen speichern“ klicken."
 
-#: config_form.php:58
+#: config_form.php:65
 msgid "<em>Explanation:</em> Measurements relies on a search index that is being created during content maintenance in the background. However, existing content will not be re-indexed automatically. So if you have existing content or modify your settings, you should re-generate the search index."
 msgstr "<em>Erläuterung:</em> Maße stützt sich auf einen Suchindex, der während der Inhaltspflege im Hintergrund erstellt wird. Jedoch werden vorhandene Inhalte nicht automatisch erneut indexiert. Sofern Ihre Datenbank also über bestehende Inhalte verfügt, oder wenn Sie Ihre Einstellungen ändern, sollten Sie den Suchindex neu generieren."
 
-#: config_form.php:80
+#: config_form.php:87
 msgid "Debug Output"
 msgstr "Debug-Ausgabe"
 
@@ -135,13 +143,130 @@ msgstr "Dateneingabe"
 msgid "Apply"
 msgstr "Anwenden"
 
-#: measurements-form.php:158 measurements-form.php:183
+#: measurements-form.php:158 measurements-form.php:183 views/admin/index/index.php:166 views/admin/index/index.php:202
 msgid "Cancel"
 msgstr "Abbrechen"
 
 #: measurements-form.php:166
 msgid "Triple Unit Data"
 msgstr "Einheiten-Tripel Eingabe"
+
+#. / item measurements detail page
+#: views/admin/index/index.php:28
+msgid "dim1"
+msgstr "Dim1"
+
+#: views/admin/index/index.php:29
+msgid "dim2"
+msgstr "Dim2"
+
+#: views/admin/index/index.php:30
+msgid "dim3"
+msgstr "Dim3"
+
+#: views/admin/index/index.php:31
+msgid "face1"
+msgstr "Obfl1"
+
+#: views/admin/index/index.php:32
+msgid "face2"
+msgstr "Obfl2"
+
+#: views/admin/index/index.php:33
+msgid "face3"
+msgstr "Obfl3"
+
+#: views/admin/index/index.php:34
+msgid "vol"
+msgstr "Vol"
+
+#: views/admin/index/index.php:43
+msgid "Dimensions"
+msgstr "Dimensionen"
+
+#: views/admin/index/index.php:44
+msgid "Surfaces"
+msgstr "Oberflächen"
+
+#: views/admin/index/index.php:47
+msgid "Measurement Analytical Area"
+msgstr "Maß-Analyse Bereich"
+
+#: views/admin/index/index.php:52
+msgid "Measurement Analytical Unit"
+msgstr "Maß-Analyse Einheit"
+
+#: views/admin/index/index.php:59
+msgid "Filter item ID (e.g. \"42-500\")"
+msgstr "Objekt-ID-Filtern (z.B. \"42-500\")"
+
+#: views/admin/index/index.php:70
+msgid "Filter target range (e.g. \"20.5-50\")"
+msgstr "Zielbereich filtern (z.B. \"20,5-50\")"
+
+#: views/admin/index/index.php:81
+msgid "Filter Title Text"
+msgstr "Titel-Text filtern"
+
+#: views/admin/index/index.php:95
+msgid "Add Relation"
+msgstr "Beziehung hinzufügen"
+
+#: views/admin/index/index.php:108
+msgid "Title"
+msgstr "Titel"
+
+#: views/admin/index/index.php:109 views/admin/index/index.php:147
+msgid "Original Values"
+msgstr "Original-Werte"
+
+#: views/admin/index/index.php:110 views/admin/index/index.php:147
+msgid "Converted Values"
+msgstr "Konvertierte Werte"
+
+#: views/admin/index/index.php:164
+msgid "Open Item"
+msgstr "Objekt öffnen"
+
+#: views/admin/index/index.php:165
+msgid "Open Item in New Window"
+msgstr "Objekt in neuem Fenster öffnen"
+
+#: views/admin/index/index.php:171 views/admin/index/index.php:201
+msgid "Add Relationship"
+msgstr "Beziehung hinzufügen"
+
+#: views/admin/index/index.php:175
+msgid "The item that you selected last (which highlighted in a slightly different color) will be the subject of the newly added relationship, while the one or more other highlighted item(s) will become object(s) of that relationship."
+msgstr "Das Objekt, das Sie als letztes selektiert haben (das in einer etwas anderen Farbe hervorgehoben ist), wird die Subjekt-Ressource der neu erstellten Beziehung darstellen, während das bzw. die weiteren hervorgehobenen Objekt(e) die Objekt-Ressource(n) darstellen."
+
+#: views/admin/index/index.php:180
+msgid "Subject Item"
+msgstr "Subjekt-Ressource"
+
+#: views/admin/index/index.php:181
+msgid "Object Item(s)"
+msgstr "Objekt-Ressource(n)"
+
+#: views/admin/index/index.php:187
+msgid "Item Relations"
+msgstr "Objekt-Beziehungen"
+
+#: views/admin/index/index.php:194
+msgid "Relationship Comment"
+msgstr "Beziehungs-Kommentar"
+
+#: views/admin/index/index.php:206
+msgid "Relation(s) created successfully."
+msgstr "Beziehung(en) erfolgreich angelegt."
+
+#: views/admin/index/index.php:207
+msgid "Error while creating relation(s)."
+msgstr "Fehler beim Anlegen der Beziehung(en)"
+
+#: views/admin/index/index.php:209
+msgid "Close"
+msgstr "Schließen"
 
 #: views/shared/common/measurements-advanced-search.php:3
 msgid "Measurements Search"

@@ -1,6 +1,7 @@
 <?php
 
 define('MEASUREMENT_UNIT_LEN', 200);
+define('MEASUREMENT_TABLE_LEN', 20);
 
 /**
 * Measurements plugin.
@@ -26,6 +27,15 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
   # ----------------------------------------------------------------------------
 
+  protected $_filters = array('admin_navigation_main');
+
+  public function filterAdminNavigationMain($nav) {
+    $nav[] = array('label' => __('Measurements Analysis'), 'uri' => url('measurements'));
+    return $nav;
+  }
+
+  # ----------------------------------------------------------------------------
+
   protected $_options = array(
     'measurements_units' => '[]',
     'measurements_select' => '[]',
@@ -33,7 +43,9 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 	);
 
   // One potential unit -- e.g. "[Group] abc-def-ghi (1-10-10)" or "abc-def-ghi (1-10-10)"
-  protected static $_saniUnitRegex = "^\W*(?:\[(\S+)\]\W+)?(\S+)-(\S+)-(\S+)\W+\(1-(\d+)-(\d+)\)\W*$";
+  // protected static $_saniUnitRegex = "^\W*(?:\[(\S+)\]\W+)?(\S+)-(\S+)-(\S+)\W+\(1-(\d+)-(\d+)\)\W*$";
+  // New version: "[G] a-b-c (1-2-3) [12.34]" or "[G] a-b-c (1-2-3) [12,34]"
+  protected static $_saniUnitRegex = "^\W*(?:\[(\S+)\]\W+)?(\S+)-(\S+)-(\S+)\W+\(1-(\d+)-(\d+)\)(?:\W+\[(\d+)(?:(?:\.|,)(\d+))?])?\W*$";
 
   protected static $_indices = array( "", "", "²", "³" );
   protected static $_editFields; // see _initEditFields()
@@ -140,6 +152,14 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         );
         $saniUnit["verb"] = $saniUnit["units"][0]."-".$saniUnit["units"][1]."-".$saniUnit["units"][2]." ".
                             "(1-".$saniUnit["convs"][1]."-".$saniUnit["convs"][2].")";
+        $saniUnit["mmconv"] = (
+          $matches[4] == "mm"
+          ? "1"
+          : ( isset($matches[7])
+            ? $matches[7] . (isset($matches[8]) ? ".".$matches[8] : ""  )
+            : false
+            )
+        );
         // echo "<pre>" . print_r($matches,true) . "</pre>";
         // echo "<pre>" . print_r($saniUnit,true) . "</pre>";
         if (!is_array(@$saniUnits[$group])) { $saniUnits[$group] = array(); }
@@ -310,20 +330,34 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
   protected function _getTripleUnits() {
     $tripleSelect = array( -1 => __("Select Below") );
+    $leastSelect = array( -1 => __("Select Below") );
+    $leastSimple = array();
     $saniUnits = SELF::$_saniUnits;
     $ungroupedSaniUnits = array();
     foreach(SELF::$_saniUnits as $groupName => $saniUnitsGroup) {
       $tripleSelect[$groupName] = array();
+      $leastSelect[$groupName] = array();
       foreach($saniUnitsGroup as $idx => $saniUnit) {
         $tripleSelect[$groupName][$idx] = $saniUnit["verb"];
+        $leastSelect[$groupName][$idx] = implode("-", $saniUnit["units"]) .
+          ( $saniUnit["units"][2] == "mm" ? "" : " (1 ".$saniUnit["units"][2]." = ".$saniUnit["mmconv"]." mm)" );
+        $leastSimple[$idx] = $saniUnit["units"][2];
         $ungroupedSaniUnits[$idx] = $saniUnit;
       }
     }
     ksort($ungroupedSaniUnits);
+    ksort($leastSimple);
     return array(
       "tripleSelect" => $tripleSelect,
+      "leastSelect" => $leastSelect,
+      "leastSimple" => $leastSimple,
       "ungroupedSaniUnits" => $ungroupedSaniUnits
     );
+  }
+
+  public function getSaniUnits() {
+    $units = SELF::_getTripleUnits();
+    return $units["ungroupedSaniUnits"];
   }
 
   # ----------------------------------------------------------------------------
@@ -491,9 +525,9 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         $dataTuple = array();
         if ($data) {
           $dataTuple[] = $itemId;
-          // $dataTuple["u"] = $db->quote($data["u"]); // full triple unit
           preg_match("/".SELF::$_saniUnitRegex."/", $data["u"], $matches);
-          $dataTuple["u"] = $db->quote($matches[4]); // just lowest significant single unit
+          // full "ab-cd-de" triple unit to avoid confusion
+          $dataTuple["u"] = $db->quote($matches[2]."-".$matches[3]."-".$matches[4]);
           foreach(SELF::$_editFields AS $editField) {
             $dataTuple[$editField[0]] = intval($data[$editField[0]][0]);
           }
@@ -586,12 +620,17 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
               if (!$exp) { $exp=1; }
               $tripleUnit = @$ungroupedSaniUnits[$unit];
               if ($tripleUnit) {
-                $singleUnit = $tripleUnit["units"][2];
-                $units[] = array("u" => $unit, "e" => $exp, "s" => $singleUnit);
+                $units[] = array(
+                  "u" => $unit,
+                  "e" => $exp,
+                  "t" => implode("-", $tripleUnit["units"]),
+                );
               }
             }
           }
         }
+
+        // echo "<pre>" . print_r($units,true) . "</pre>"; die();
 
   			$select
   					->join(
@@ -609,8 +648,8 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
           $exp = $unit["e"];
           if ($exp) {
-            $singleUnit = $db->quote($unit["s"]);
-            $condition .= "(measurements_values.unit=$singleUnit AND (";
+            $tripleUnit = $db->quote($unit["t"]);
+            $condition .= "(measurements_values.unit=$tripleUnit AND (";
           }
 
           $fieldConditions = array();
@@ -633,6 +672,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         $select->where(implode(" OR ", $conditions));
 
         // echo "<pre>$from-$to\n" . print_r($units,true) . "</pre>";
+        // echo "<pre>\n" . print_r($conditions,true) . "</pre>";
         // echo "<pre>" . print_r($select,true) . "</pre>";
         // die();
       }
@@ -678,6 +718,17 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 			}
 		}
 	}
+
+  # ----------------------------------------------------------------------------
+
+  public function unitsForAnalytics() {
+    $tripleUnits = SELF::_getTripleUnits();
+    $result = array(
+      "select" => $tripleUnits["leastSelect"],
+      "simple" => $tripleUnits["leastSimple"]
+    );
+    return $result;
+  }
 
   # ----------------------------------------------------------------------------
 
