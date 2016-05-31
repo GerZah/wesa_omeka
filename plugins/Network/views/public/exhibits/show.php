@@ -68,7 +68,7 @@ queue_css_file('network');
       $propertyId = $edge["property_id"];
       $propertyIds[$propertyId] = $propertyId;
     }
-    $propertyIdsVerb = implode(",", $propertyIds);
+    $propertyIdsVerb = ( $propertyIds ? implode(",", $propertyIds) : "-1" );
 
     // ----- Retrieve relevant property texts
 
@@ -119,7 +119,7 @@ queue_css_file('network');
       $nodeData[] = array (
         "data" => array(
           "id" => $item["item_id"],
-          "name" => $item["item_title"]
+          "name" => @$item["item_title"]
         )
       );
     }
@@ -130,7 +130,7 @@ queue_css_file('network');
         "data" => array(
           "source" => $edge["subject_item_id"],
           "target" => $edge["object_item_id"],
-          "label" => $propertyLabels[$edge["property_id"]],
+          "label" => @$propertyLabels[$edge["property_id"]],
         )
       );
     }
