@@ -34,21 +34,15 @@ queue_css_file('network');
     ";
 
     $relations = $db->fetchOne($selectRelations);
-    // echo "<pre>selectRelations: $relations</pre>";
-
-    $relationIds = array();
-    if ($relations) {
-      $relationIds = json_decode($relations);
-    }
+    echo "<pre>selectRelations: $relations</pre>";
 
     // ----- Get required relations
 
-    $relationList = ( $relationIds ? implode(",", $relationIds) : "" );
-
-    $relationInfix = ($relationList
-      ? "AND property_id IN ($relationList)"
+    $relationInfix = ($relations
+      ? "AND property_id IN ($relations)"
       : ""
     );
+    echo "<pre>$relationInfix</pre>";
 
     // Item subclause
 
@@ -68,7 +62,7 @@ queue_css_file('network');
     ";
 
     $edges = $db->fetchAll($selectEdges);
-    // echo "<pre>$selectEdges</pre>";
+    echo "<pre>$selectEdges</pre>";
     // echo "<pre>" . print_r($edges,true) . "</pre>";
 
     // ----- Generate item list that contains only those that are actually related
