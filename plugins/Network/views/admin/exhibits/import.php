@@ -109,7 +109,7 @@
   </section>
     <section class="three columns omega">
       <div id="save" class="panel">
-          <a href="<?php echo $previewURL; ?>" class="big green button"><?php echo __('Preview and Import Items'); ?></a>
+          <!-- <a href="<?php echo $previewURL; ?>" class="big green button"><?php echo __('Preview and Import Items'); ?></a> -->
           <input
             type="submit"
             id="submit_search_advanced"
