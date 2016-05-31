@@ -20,7 +20,7 @@ if (isset($_POST['before_date'])) { $before_date = !empty($_POST['before_date'])
     <fieldset class="bulk-metadata-editor-fieldset" id='bulk-metadata-editor-items-set' style="border: 1px solid black; padding:15px; margin:10px;">
     <?php
     $db = get_db();
-      $db->query("INSERT INTO `$db->NetworkRecord` (`id`, `owner_id`, `item_id`, `exhibit_id`, `added`, `modified`,`title`,`item_title`,`body`,`start_date`,`end_date`,`after_date`,`before_date`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      $db->query("INSERT INTO `$db->NetworkRecord` (`id`, `owner_id`, `item_id`, `exhibit_id`, `added`, `modified`,`title`,`item_title`,`body`,`start_date`,`end_date`,`after_date`,`before_date`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       array($id, $owner_id, $item_id,$exhibit_id,$added,$modified,$title,$item_title,$body,$start_date,$end_date,$after_date,$before_date));
     ?>
     <div class="field">
