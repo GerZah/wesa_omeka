@@ -87,7 +87,6 @@ class NetworkRecordTable extends Network_Table_Expandable
     public function beforeQuery()
     {
         $this->filterExhibit();
-        $this->filterHasSlug();
         $this->filterHasDate();
         $this->filterPlugins();
         $this->filterTags();
@@ -147,22 +146,9 @@ class NetworkRecordTable extends Network_Table_Expandable
         if (isset($this->params['query'])) {
 
             $this->select->where(
-                "MATCH (item_title, title, body, slug) AGAINST (?)",
+                "MATCH (item_title, title, body) AGAINST (?)",
                 $this->params['query']
             );
-
-        }
-    }
-
-
-    /**
-     * Match records with slugs.
-     */
-    protected function filterHasSlug()
-    {
-        if (isset($this->params['hasSlug'])) {
-
-            $this->select->where('slug IS NOT NULL');
 
         }
     }

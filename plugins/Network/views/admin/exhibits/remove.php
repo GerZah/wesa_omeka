@@ -26,7 +26,6 @@
                     $fields['exhibit_id'] =  $itemField['exhibit_id'];
                     $fields['added'] =  $itemField['added'];
                     $fields['modified'] =  $itemField['modified'];
-                    $fields['slug'] =  $itemField['slug'];
                     $fields['title'] =  $itemField['title'];
                     $fields['item_title'] =  $itemField['item_title'];
                     $fields['body'] =  $itemField['body'];
@@ -42,7 +41,6 @@
                    echo $this->formHidden('exhibit_id', $fields['exhibit_id']);
                    echo $this->formHidden('added', $fields['added']);
                    echo $this->formHidden('modified', $fields['modified']);
-                   echo $this->formHidden('slug', $fields['slug']);
                    echo $this->formHidden('title', $fields['title']);
                    echo $this->formHidden('item_title', $fields['item_title']);
                    echo $this->formHidden('body', $fields['body']);

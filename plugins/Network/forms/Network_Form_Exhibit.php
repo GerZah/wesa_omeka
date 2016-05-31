@@ -59,45 +59,6 @@ class Network_Form_Exhibit extends Omeka_Form
             )
         ));
 
-        // Slug:
-        $this->addElement('text', 'slug', array(
-            'label'         => __('URL Slug'),
-            'description'   => __('A unique string used to form the public-facing URL for the exhibit. Can contain letters, numbers, and hyphens.'),
-            'value'         => $this->exhibit->slug,
-            'required'      => true,
-            'size'          => 40,
-            'filters'       => array('StringTrim'),
-            'validators'    => array(
-                array('validator' => 'NotEmpty', 'breakChainOnFailure' => true, 'options' =>
-                    array(
-                        'messages' => array(
-                            Zend_Validate_NotEmpty::IS_EMPTY => __('Enter a slug.')
-                        )
-                    )
-                ),
-                array('validator' => 'Regex', 'breakChainOnFailure' => true, 'options' =>
-                    array(
-                        'pattern' => '/^[0-9a-z\-]+$/',
-                        'messages' => array(
-                            Zend_Validate_Regex::NOT_MATCH => __('The slug can only contain letters, numbers, and hyphens.')
-                        )
-                    )
-                ),
-                array('validator' => 'Db_NoRecordExists', 'options' =>
-                    array(
-                        'table'     => $this->exhibit->getTable()->getTableName(),
-                        'adapter'   => $this->exhibit->getDb()->getAdapter(),
-                        'field'     => 'slug',
-                        'exclude'   => array('field' => 'id', 'value' => (int)$this->exhibit->id),
-                        'messages'  => array(
-                            'recordFound' => __('The slug is already in use.')
-                        )
-                    )
-                )
-            )
-        ));
-
-
         // Public:
         $this->addElement('checkbox', 'public', array(
             'label'         => __('Public'),
@@ -109,7 +70,7 @@ class Network_Form_Exhibit extends Omeka_Form
         $itemRelationValues = array();
         $itemRelationValues = get_table_options('ItemRelationsProperty');
         unset($itemRelationValues[""]); // remove "Select below"
-      
+
         $this->addElement('multiselect', 'selected_relations', array(
             'label' => __('Item Relations'),
             'description' => __("By default, all the item relations are selected. Please select the required item relations."),
@@ -126,7 +87,6 @@ class Network_Form_Exhibit extends Omeka_Form
 
         $this->addDisplayGroup(array(
             'title',
-            'slug',
             'public',
             'selected_relations'
         ), 'fields');

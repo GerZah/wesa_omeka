@@ -222,7 +222,7 @@ public function showAction()
 
   $this->_helper->viewRenderer->setNoRender(true);
 
-  // Try to find an exhibit with the requested slug.
+  // Try to find an exhibit with the requested id.
   $exhibit = $this->_exhibits->findByExhibitId($this->_request->id);
   if (!$exhibit) throw new Omeka_Controller_Exception_404;
 

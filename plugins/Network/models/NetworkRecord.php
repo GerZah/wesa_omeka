@@ -17,7 +17,6 @@ class NetworkRecord extends Network_Row_Expandable
     public $exhibit_id;
     public $added;
     public $modified;
-    public $slug;
     public $title;
     public $item_title;
     public $body;

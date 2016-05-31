@@ -23,15 +23,14 @@ function in_getItemMarkup($item, $record=null)
 
     if (!is_null($record)) {
 
-        // Get exhibit slug and tags.
-        $slug = $record->getExhibit()->slug;
+        // Get exhibit tags.
         $tags = in_explode($record->tags);
 
         // First, try to render an exhibit-specific `item-[tag].php` template.
 
         foreach ($tags as $tag) { try {
             return get_view()->render(
-                'exhibits/themes/'.$slug.'/item-'.$tag.'.php'
+                'exhibits/themes/item-'.$tag.'.php'
             );
         } catch (Exception $e) {}}
 
@@ -39,7 +38,7 @@ function in_getItemMarkup($item, $record=null)
 
         try {
             return get_view()->render(
-                'exhibits/themes/'.$slug.'/item.php'
+                'exhibits/themes/item.php'
             );
         } catch (Exception $e) {}
 

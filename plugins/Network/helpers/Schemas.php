@@ -21,7 +21,6 @@ function in_schema()
         published               TIMESTAMP NULL,
         item_query              TEXT NULL,
         title                   TEXT NULL,
-        slug                    VARCHAR(100) NOT NULL,
         public                  TINYINT(1) NOT NULL,
         selected_relations      TEXT NULL,
 
@@ -41,7 +40,6 @@ SQL
         exhibit_id              INT(10) UNSIGNED NULL,
         added                   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         modified                TIMESTAMP NULL,
-        slug                    VARCHAR(100) NULL,
         title                   MEDIUMTEXT NULL,
         item_title              MEDIUMTEXT NULL,
         body                    MEDIUMTEXT NULL,
@@ -53,7 +51,7 @@ SQL
         PRIMARY KEY             (id),
         INDEX                   (added),
         INDEX                   (exhibit_id, item_id),
-        FULLTEXT INDEX          (item_title, title, body, slug)
+        FULLTEXT INDEX          (item_title, title, body)
 
     ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

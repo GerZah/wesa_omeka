@@ -18,7 +18,6 @@ class NetworkExhibit extends Network_Row_Expandable
     public $published;
     public $item_query;
     public $title;
-    public $slug;
     public $selected_relations;
     public $public = 0;
 
@@ -40,7 +39,7 @@ class NetworkExhibit extends Network_Row_Expandable
         if (is_null($this->published) && $this->public == 1) {
             $this->published = date(self::DATE_FORMAT);
         }
-        
+
         $this->save();
 
     }
