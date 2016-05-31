@@ -45,7 +45,7 @@ queue_css_file('network');
     );
 
     // Item subquery -- actually fetches all items that were imported into this exhibt
-    $selectItems = "
+    $selectItemIds = "
       SELECT item_id
       FROM `$db->NetworkRecord`
       WHERE exhibit_id = $exhibit_id
@@ -55,29 +55,61 @@ queue_css_file('network');
     $selectEdges = "
       SELECT subject_item_id, object_item_id, property_id
       FROM `$db->ItemRelationsRelations`
-      WHERE subject_item_id IN ($selectItems)
-      AND object_item_id IN ($selectItems)
+      WHERE subject_item_id IN ($selectItemIds)
+      AND object_item_id IN ($selectItemIds)
       $relationInfix
       ORDER BY subject_item_id
     ";
     $edges = $db->fetchAll($selectEdges);
 
+    // ----- Collect relevant property IDs
+    $propertyIds = array();
+    foreach($edges as $edge) {
+      $propertyId = $edge["property_id"];
+      $propertyIds[$propertyId] = $propertyId;
+    }
+    $propertyIdsVerb = implode(",", $propertyIds);
+
+    // ----- Retrieve relevant property texts
+
+    $selectPropertyLabels = "
+      SELECT id, label
+      FROM `$db->ItemRelationsProperty`
+      WHERE id IN ($propertyIdsVerb)
+    ";
+    $propertyLabelSets = $db->fetchAll($selectPropertyLabels);
+
+    $propertyLabels = array();
+    foreach($propertyLabelSets as $propertyLabelSet) {
+      $propertyLabels[$propertyLabelSet["id"]] = $propertyLabelSet["label"];
+    }
+
     // ----- Generate item list that contains only those that are actually related
 
     $items = array();
+    $itemIds = array();
     foreach($edges as $edge) { // might add items multiple times, but won't create duplicates
-      $idx = $edge["subject_item_id"];
-      $items[$idx] = array( "item_id" => $idx );
-      $idx = $edge["object_item_id"];
-      $items[$idx] = array( "item_id" => $idx );
+      $idxs = array($edge["subject_item_id"], $edge["object_item_id"]);
+      foreach($idxs as $idx) {
+        $items[$idx] = array( "item_id" => $idx );
+        $itemIds[$idx] = $idx;
+      }
     }
 
     // ----- Fetch items' titles
 
-    foreach(array_keys($items) as $idx) {
-      $items[$idx]["item_title"] = metadata(
-        get_record_by_id('Item', $items[$idx]["item_id"]), array('Dublin Core', 'Title')
-      );
+    if ($items) {
+      $itemIds = implode(",", array_keys($itemIds));
+      $selectItemTitles = "
+        SELECT item_id, item_title
+        FROM `$db->NetworkRecord`
+        WHERE exhibit_id = $exhibit_id
+        AND item_id IN ($itemIds)
+      ";
+      $itemTitles = $db->fetchAll($selectItemTitles);
+      foreach($itemTitles as $itemTitle) {
+        $items[$itemTitle["item_id"]]["item_title"] = $itemTitle["item_title"];
+      }
     }
 
     // ------------------------------------ Create arrays for JSON transfer
@@ -97,7 +129,8 @@ queue_css_file('network');
       $edgeData[] = array(
         "data" => array(
           "source" => $edge["subject_item_id"],
-          "target" => $edge["object_item_id"]
+          "target" => $edge["object_item_id"],
+          "label" => $propertyLabels[$edge["property_id"]],
         )
       );
     }

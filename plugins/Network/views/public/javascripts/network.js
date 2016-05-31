@@ -44,7 +44,10 @@ jQuery(document).ready(function () {
           .selector('edge')
             .css({
               'curve-style': 'bezier',
-              'target-arrow-shape': 'triangle'
+              'target-arrow-shape': 'triangle',
+              'label': 'data(label)',
+              'edge-text-rotation': 'autorotate',
+              'text-opacity': 0.25
             })
           .selector(':selected')
             .css({
