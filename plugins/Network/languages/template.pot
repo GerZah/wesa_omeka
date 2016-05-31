@@ -17,6 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: NetworkPlugin.php:118 NetworkPlugin.php:131 views/admin/exhibits/add.php:14
+#: views/admin/exhibits/browse.php:14 views/admin/exhibits/confirm.php:14
+#: views/admin/exhibits/edit.php:14 views/admin/exhibits/import.php:14
+#: views/admin/exhibits/remove.php:3 views/admin/exhibits/view.php:14
+#: views/public/exhibits/browse.php:13 views/public/exhibits/browse.php:20
+msgid "Network"
+msgstr ""
+
 #: controllers/ExhibitsController.php:274
 #, php-format
 msgid "The exhibit \"%s\" was successfully deleted!"
@@ -69,17 +77,14 @@ msgstr ""
 msgid "Save Exhibit"
 msgstr ""
 
-#: views/admin/exhibits/add.php:14
-msgid "Network | Create an Exhibit"
+#: views/admin/exhibits/add.php:14 views/admin/exhibits/browse.php:25
+#: views/admin/exhibits/browse.php:149
+msgid "Create an Exhibit"
 msgstr ""
 
 #: views/admin/exhibits/browse.php:14 views/public/exhibits/browse.php:13
 #: views/public/exhibits/browse.php:20
-msgid "Network | Browse Exhibits"
-msgstr ""
-
-#: views/admin/exhibits/browse.php:25 views/admin/exhibits/browse.php:149
-msgid "Create an Exhibit"
+msgid "Browse Exhibits"
 msgstr ""
 
 #: views/admin/exhibits/browse.php:33
@@ -107,7 +112,7 @@ msgid "View Items"
 msgstr ""
 
 #: views/admin/exhibits/browse.php:97 views/admin/exhibits/confirm.php:39
-#: views/admin/exhibits/import.php:118
+#: views/admin/exhibits/import.php:14 views/admin/exhibits/import.php:118
 msgid "Import Items"
 msgstr ""
 
@@ -132,16 +137,12 @@ msgid "Get started by creating a new one!"
 msgstr ""
 
 #: views/admin/exhibits/confirm.php:14
-msgid "Network | Confirm Items to Import"
+msgid "Confirm Items to Import"
 msgstr ""
 
 #: views/admin/exhibits/edit.php:14
 #, php-format
-msgid "Network | Edit \"%s\""
-msgstr ""
-
-#: views/admin/exhibits/import.php:14
-msgid "Network | Import Items from Omeka"
+msgid "Edit \"%s\""
 msgstr ""
 
 #: views/admin/exhibits/import.php:38
@@ -165,7 +166,7 @@ msgid "Preview and Import Items"
 msgstr ""
 
 #: views/admin/exhibits/remove.php:3
-msgid "Network | Remove Items from Exhibit"
+msgid "Remove Items from Exhibit"
 msgstr ""
 
 #: views/admin/exhibits/remove.php:58
@@ -190,7 +191,7 @@ msgstr ""
 
 #: views/admin/exhibits/view.php:14
 #, php-format
-msgid "Network | View Items in \"%s\""
+msgid "View Items in \"%s\""
 msgstr ""
 
 #: views/admin/exhibits/view.php:22

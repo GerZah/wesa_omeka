@@ -11,7 +11,7 @@
 
 <?php
   echo head(array(
-    'title' => __('Network | Browse Exhibits')
+    'title' => __('Network') . " | " . __('Browse Exhibits')
   ));
   echo flash();
 ?>

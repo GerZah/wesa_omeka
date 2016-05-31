@@ -115,7 +115,7 @@ class NetworkPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function filterPublicNavigationMain($tabs)
     {
-        $tabs[] = array('label' => 'Network', 'uri' => url('network'));
+        $tabs[] = array('label' => __('Network'), 'uri' => url('network'));
         return $tabs;
     }
 
@@ -128,7 +128,7 @@ class NetworkPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function filterAdminNavigationMain($tabs)
     {
-        $tabs[] = array('label' => 'Network', 'uri' => url('network'));
+        $tabs[] = array('label' => __('Network'), 'uri' => url('network'));
         return $tabs;
     }
 

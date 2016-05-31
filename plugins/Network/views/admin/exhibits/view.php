@@ -11,7 +11,7 @@
 
 <?php
   echo head(array(
-    'title' => __('Network | View Items in "%s"', in_getExhibitField('title')),
+    'title' => __('Network') . " | " . __('View Items in "%s"', in_getExhibitField('title')),
   ));
 ?>
 <div id="primary">

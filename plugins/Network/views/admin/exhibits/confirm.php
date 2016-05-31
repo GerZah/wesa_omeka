@@ -11,7 +11,7 @@
 
 <?php
   echo head(array(
-    'title' => __('Network | Confirm Items to Import')
+    'title' => __('Network') . " | " . __('Confirm Items to Import')
   ));
 ?>
 

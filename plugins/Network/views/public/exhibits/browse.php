@@ -10,14 +10,14 @@
 ?>
 
 <?php echo head(array(
-  'title' => __('Network | Browse Exhibits'),
+  'title' => __('Network') . " | " . __('Browse Exhibits'),
   'content_class' => 'network'
 )); ?>
 
 <div id="primary">
 
   <?php echo flash(); ?>
-  <h1><?php echo __('Network | Browse Exhibits'); ?></h1>
+  <h1><?php echo __('Network') . " | " . __('Browse Exhibits'); ?></h1>
 
   <?php if (in_exhibitsHaveBeenCreated()): ?>
 

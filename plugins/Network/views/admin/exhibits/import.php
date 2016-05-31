@@ -11,7 +11,7 @@
 
 <?php
   echo head(array(
-    'title' => __('Network | Import Items from Omeka')
+    'title' => __('Network') . " | " . __('Import Items')
   ));
 ?>
 

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Network/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-05-31 18:05+0200\n"
+"PO-Revision-Date: 2016-05-31 18:39+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,12 @@ msgstr ""
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.7\n"
+
+#: NetworkPlugin.php:118 NetworkPlugin.php:131 views/admin/exhibits/add.php:14 views/admin/exhibits/browse.php:14 views/admin/exhibits/confirm.php:14
+#: views/admin/exhibits/edit.php:14 views/admin/exhibits/import.php:14 views/admin/exhibits/remove.php:3 views/admin/exhibits/view.php:14
+#: views/public/exhibits/browse.php:13 views/public/exhibits/browse.php:20
+msgid "Network"
+msgstr "Netzwerk"
 
 #: controllers/ExhibitsController.php:274
 #, php-format
@@ -65,17 +71,13 @@ msgstr "Standardmäßig sind alle Beziehungen ausgewählt. Bitte wählen Sie die
 msgid "Save Exhibit"
 msgstr "Ausstellung speichern"
 
-#: views/admin/exhibits/add.php:14
-msgid "Network | Create an Exhibit"
-msgstr "Netzwerk | Ausstellung erstellen"
-
-#: views/admin/exhibits/browse.php:14 views/public/exhibits/browse.php:13 views/public/exhibits/browse.php:20
-msgid "Network | Browse Exhibits"
-msgstr "Netzwerk | Ausstellungen durchsuchen"
-
-#: views/admin/exhibits/browse.php:25 views/admin/exhibits/browse.php:149
+#: views/admin/exhibits/add.php:14 views/admin/exhibits/browse.php:25 views/admin/exhibits/browse.php:149
 msgid "Create an Exhibit"
 msgstr "Ausstellung erstellen"
+
+#: views/admin/exhibits/browse.php:14 views/public/exhibits/browse.php:13 views/public/exhibits/browse.php:20
+msgid "Browse Exhibits"
+msgstr "Ausstellungen durchstöbern"
 
 #: views/admin/exhibits/browse.php:33
 msgid "Exhibit"
@@ -101,7 +103,7 @@ msgstr "Ausstellungs-Einstellungen"
 msgid "View Items"
 msgstr "Objekte anzeigen"
 
-#: views/admin/exhibits/browse.php:97 views/admin/exhibits/confirm.php:39 views/admin/exhibits/import.php:118
+#: views/admin/exhibits/browse.php:97 views/admin/exhibits/confirm.php:39 views/admin/exhibits/import.php:14 views/admin/exhibits/import.php:118
 msgid "Import Items"
 msgstr "Objekte importieren"
 
@@ -126,17 +128,13 @@ msgid "Get started by creating a new one!"
 msgstr "Starten Sie, indem Sie eine neue erstellen!"
 
 #: views/admin/exhibits/confirm.php:14
-msgid "Network | Confirm Items to Import"
-msgstr "Netzwerk | Bestätigen Sie die Objekte zum Import"
+msgid "Confirm Items to Import"
+msgstr "Objekte zum Importieren bestätigen"
 
 #: views/admin/exhibits/edit.php:14
 #, php-format
-msgid "Network | Edit \"%s\""
-msgstr "Netzwerk | Editieren \"%s\""
-
-#: views/admin/exhibits/import.php:14
-msgid "Network | Import Items from Omeka"
-msgstr "Netzwerk | Objekte von Omeka importieren"
+msgid "Edit \"%s\""
+msgstr "\"%s\" editieren"
 
 #: views/admin/exhibits/import.php:38
 msgid "Search by a Range of ID#s (eg: 1-4, 156, 79)"
@@ -159,8 +157,8 @@ msgid "Preview and Import Items"
 msgstr "Voransicht und Objekte importieren"
 
 #: views/admin/exhibits/remove.php:3
-msgid "Network | Remove Items from Exhibit"
-msgstr "Netzwerk | Objekte aus der Ausstellung entfernen"
+msgid "Remove Items from Exhibit"
+msgstr "Objekte aus der Ausstellung entfernen"
 
 #: views/admin/exhibits/remove.php:58
 msgid "You have successfully removed the item from exhibit."
@@ -184,8 +182,8 @@ msgstr "Sie haben das Objekt erfolgreich erneut zur Ausstellung hinzugefügt."
 
 #: views/admin/exhibits/view.php:14
 #, php-format
-msgid "Network | View Items in \"%s\""
-msgstr "Netzwerk | Objekte in \"%s\" anschauen"
+msgid "View Items in \"%s\""
+msgstr "Objekte in \"%s\" anschauen"
 
 #: views/admin/exhibits/view.php:22
 msgid "Item Id"
