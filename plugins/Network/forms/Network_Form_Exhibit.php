@@ -113,7 +113,7 @@ class Network_Form_Exhibit extends Omeka_Form
         $this->addElement('multiselect', 'selected_relations', array(
             'label' => __('Item Relations'),
             'description' => __("By default, all the item relations are selected. Please select the required item relations."),
-            'value'  => $this->exhibit->selected_relations,
+            'value'  => explode(",", $this->exhibit->selected_relations),
             'multiOptions' => $itemRelationValues,
             'size' => 20,
               'style' => 'width: 500px;'

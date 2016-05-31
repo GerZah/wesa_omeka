@@ -25,33 +25,33 @@ queue_css_file('network');
   <?php
     $db = get_db();
 
-    // ----- Get required relation IDs
+    // ------------------------------------ Fetch network exhibit data
+
+    // ----- Get required relation IDs (if set)
 
     $selectRelations = "
       SELECT selected_relations
       FROM `$db->NetworkExhibit`
       WHERE id = $exhibit_id
     ";
-
     $relations = $db->fetchOne($selectRelations);
-    echo "<pre>selectRelations: $relations</pre>";
 
-    // ----- Get required relations
+    // ----- Get actual relations
 
+    // relation filter infix
     $relationInfix = ($relations
       ? "AND property_id IN ($relations)"
       : ""
     );
-    echo "<pre>$relationInfix</pre>";
 
-    // Item subclause
-
+    // Item subquery -- actually fetches all items that were imported into this exhibt
     $selectItems = "
       SELECT item_id
       FROM `$db->NetworkRecord`
       WHERE exhibit_id = $exhibit_id
     ";
 
+    // full query including item subquery / relation infix
     $selectEdges = "
       SELECT subject_item_id, object_item_id, property_id
       FROM `$db->ItemRelationsRelations`
@@ -60,25 +60,21 @@ queue_css_file('network');
       $relationInfix
       ORDER BY subject_item_id
     ";
-
     $edges = $db->fetchAll($selectEdges);
-    echo "<pre>$selectEdges</pre>";
-    // echo "<pre>" . print_r($edges,true) . "</pre>";
 
     // ----- Generate item list that contains only those that are actually related
 
     $items = array();
-    foreach($edges as $edge) {
+    foreach($edges as $edge) { // might add items multiple times, but won't create duplicates
       $idx = $edge["subject_item_id"];
       $items[$idx] = array( "item_id" => $idx );
       $idx = $edge["object_item_id"];
       $items[$idx] = array( "item_id" => $idx );
     }
-    // echo "<pre>" . print_r($items,true) . "</pre>";
 
     // ----- Fetch items' titles
 
-    foreach(array_keys($items) as $idx) { // Get items' titles
+    foreach(array_keys($items) as $idx) {
       $items[$idx]["item_title"] = metadata(
         get_record_by_id('Item', $items[$idx]["item_id"]), array('Dublin Core', 'Title')
       );
@@ -95,8 +91,6 @@ queue_css_file('network');
         )
       );
     }
-    // echo "<pre>nodeData\n" . print_r($nodeData,true) . "</pre>";
-    // echo "<pre>nodeData\n" . json_encode($nodeData) . "</pre>";
 
     $edgeData = array();
     foreach($edges as $edge) {
@@ -107,15 +101,12 @@ queue_css_file('network');
         )
       );
     }
-    // echo "<pre>edgeData\n" . print_r($edgeData,true) . "</pre>";
-    // echo "<pre>edgeData\n" . json_encode($edgeData) . "</pre>";
 
     // ------------------------------------ JSON data into SCRIPT tag
 
     $jsString=
       "var nodeData = ".json_encode($nodeData).";\n".
       "var edgeData = ".json_encode($edgeData).";\n";
-    // echo "<pre>$jsString</pre>";
-    echo "<script type='text/javascript'>$jsString</script>";
+    echo "<script type='text/javascript'>\n$jsString</script>";
   ?>
 <?php echo foot(); ?>
