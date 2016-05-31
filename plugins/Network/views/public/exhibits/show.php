@@ -1,6 +1,6 @@
 <?php
 queue_js_file('cytoscape.min');
-queue_js_file('jquery-2.0.3.min');
+// queue_js_file('jquery-2.0.3.min'); // not necessary, works with Omeka's jQuery (currently 1.12.0)
 queue_js_file('network');
 queue_css_file('network');
 /**
@@ -25,27 +25,7 @@ queue_css_file('network');
   <?php
     $db = get_db();
 
-    // ----- Get items
-
-    $selectItems = "
-      SELECT item_id
-      FROM `$db->NetworkRecord`
-      WHERE exhibit_id = $exhibit_id
-    ";
-
-    $items = $db->fetchAll($selectItems);
-    $itemList = array();
-    foreach(array_keys($items) as $idx) { // Get items' titles
-      $items[$idx]["item_title"] = metadata(
-        get_record_by_id('Item', $items[$idx]["item_id"]), array('Dublin Core', 'Title')
-      );
-      $itemList[] = $items[$idx]["item_id"];
-    }
-    $itemList = ( $itemList ? implode(",", $itemList) : "-1" );
-    // echo "<pre>$selectItems\n" . print_r($items,true) . "\n$itemList\n</pre>";
-
-
-    // ----- Get required relations
+    // ----- Get required relation IDs
 
     $selectRelations = "
       SELECT selected_relations
@@ -70,17 +50,45 @@ queue_css_file('network');
       : ""
     );
 
+    // Item subclause
+
+    $selectItems = "
+      SELECT item_id
+      FROM `$db->NetworkRecord`
+      WHERE exhibit_id = $exhibit_id
+    ";
+
     $selectEdges = "
       SELECT subject_item_id, object_item_id, property_id
       FROM `$db->ItemRelationsRelations`
-      WHERE subject_item_id IN ($itemList)
-      AND object_item_id IN ($itemList)
+      WHERE subject_item_id IN ($selectItems)
+      AND object_item_id IN ($selectItems)
       $relationInfix
       ORDER BY subject_item_id
     ";
 
     $edges = $db->fetchAll($selectEdges);
-    // echo "<pre>$selectEdges\n" . print_r($edges,true) . "</pre>";
+    // echo "<pre>$selectEdges</pre>";
+    // echo "<pre>" . print_r($edges,true) . "</pre>";
+
+    // ----- Generate item list that contains only those that are actually related
+
+    $items = array();
+    foreach($edges as $edge) {
+      $idx = $edge["subject_item_id"];
+      $items[$idx] = array( "item_id" => $idx );
+      $idx = $edge["object_item_id"];
+      $items[$idx] = array( "item_id" => $idx );
+    }
+    // echo "<pre>" . print_r($items,true) . "</pre>";
+
+    // ----- Fetch items' titles
+
+    foreach(array_keys($items) as $idx) { // Get items' titles
+      $items[$idx]["item_title"] = metadata(
+        get_record_by_id('Item', $items[$idx]["item_id"]), array('Dublin Core', 'Title')
+      );
+    }
 
     // ------------------------------------ Create arrays for JSON transfer
 
