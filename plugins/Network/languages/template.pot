@@ -1,212 +1,219 @@
 # Translation for the Network plugin for Omeka.
 # Copyright (C) 2015 Gero Zahn
 # This file is distributed under the same license as the Omeka package.
-#
-# Translators:
-# Gero Zahn <gerozahn@campus.uni-paderborn.de>, 2016
+# Gero Zahn <gero.zahn@upb.de>, 2015.
+# 
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: WeSa Omeka\n"
+"Project-Id-Version: DateSearch\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Network/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-05-31 18:05+0200\n"
-"Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
-"Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Gero Zahn<gero.zahn@upb.de>\n"
+"Language-Team: English (https://www.transifex.com/upb/wesa-omeka/)\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de_DE\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.7\n"
 
 #: controllers/ExhibitsController.php:274
 #, php-format
 msgid "The exhibit \"%s\" was successfully deleted!"
-msgstr "Die Ausstellung \"%s\" wurde erfolgreich gelöscht!"
+msgstr ""
 
 #: controllers/ExhibitsController.php:287
 #, php-format
 msgid "This will delete \"%s\" and its associated metadata."
-msgstr "Hiermit wird \"%s\" sowie alle zugehörigen Metadaten gelöscht."
+msgstr ""
 
 #: controllers/ExhibitsController.php:298
 msgid "The item import was successfully started!"
-msgstr "Der Objekt-Import wurde erfolgreich gestartet."
+msgstr ""
 
 #: forms/Network_Form_Exhibit.php:46
 msgid "Title"
-msgstr "Titel"
+msgstr ""
 
 #: forms/Network_Form_Exhibit.php:47
-msgid "A top-level heading for the exhibit, displayed in the page header in the public view for the exhibit."
-msgstr "Die oberste Überschrift für die Ausstellung, die im Seitenkopf in der öffentlichen Ansicht der Ausstellung angezeigt werden soll."
+msgid ""
+"A top-level heading for the exhibit, displayed in the page header in the "
+"public view for the exhibit."
+msgstr ""
 
 #: forms/Network_Form_Exhibit.php:55
 msgid "Enter a title."
-msgstr "Geben Sie einen Titel ein."
+msgstr ""
 
 #: forms/Network_Form_Exhibit.php:64 views/admin/exhibits/browse.php:36
 msgid "Public"
-msgstr "Öffentlich"
+msgstr ""
 
 #: forms/Network_Form_Exhibit.php:65
-msgid "By default, exhibits are visible only to site administrators. Check here to publish the exhibit to the public site."
-msgstr "Standardmäßig sind Ausstellungen nur für Administratoren sichtbar. Wählen Sie dies aus, um die Ausstellung auf der öffentlichen Seite sichtbar zu machen."
+msgid ""
+"By default, exhibits are visible only to site administrators. Check here to "
+"publish the exhibit to the public site."
+msgstr ""
 
 #: forms/Network_Form_Exhibit.php:75
 msgid "Item Relations"
-msgstr "Objekt-Beziehungen"
+msgstr ""
 
 #: forms/Network_Form_Exhibit.php:76
-msgid "By default, all the item relations are selected. Please select the required item relations."
-msgstr "Standardmäßig sind alle Beziehungen ausgewählt. Bitte wählen Sie die benötigten Objektbeziehungen."
+msgid ""
+"By default, all the item relations are selected. Please select the required "
+"item relations."
+msgstr ""
 
 #: forms/Network_Form_Exhibit.php:85
 msgid "Save Exhibit"
-msgstr "Ausstellung speichern"
+msgstr ""
 
 #: views/admin/exhibits/add.php:14
 msgid "Network | Create an Exhibit"
-msgstr "Netzwerk | Ausstellung erstellen"
+msgstr ""
 
-#: views/admin/exhibits/browse.php:14 views/public/exhibits/browse.php:13 views/public/exhibits/browse.php:20
+#: views/admin/exhibits/browse.php:14 views/public/exhibits/browse.php:13
+#: views/public/exhibits/browse.php:20
 msgid "Network | Browse Exhibits"
-msgstr "Netzwerk | Ausstellungen durchsuchen"
+msgstr ""
 
 #: views/admin/exhibits/browse.php:25 views/admin/exhibits/browse.php:149
 msgid "Create an Exhibit"
-msgstr "Ausstellung erstellen"
+msgstr ""
 
 #: views/admin/exhibits/browse.php:33
 msgid "Exhibit"
-msgstr "Ausstellung"
+msgstr ""
 
 #: views/admin/exhibits/browse.php:34
 msgid "Created"
-msgstr "Erstellt"
+msgstr ""
 
 #: views/admin/exhibits/browse.php:35
 msgid "# Items"
-msgstr "# Objekte"
+msgstr ""
 
 #: views/admin/exhibits/browse.php:67
 msgid "Public View"
-msgstr "Öffentlich"
+msgstr ""
 
 #: views/admin/exhibits/browse.php:77
 msgid "Exhibit Settings"
-msgstr "Ausstellungs-Einstellungen"
+msgstr ""
 
 #: views/admin/exhibits/browse.php:87
 msgid "View Items"
-msgstr "Objekte anzeigen"
+msgstr ""
 
-#: views/admin/exhibits/browse.php:97 views/admin/exhibits/confirm.php:39 views/admin/exhibits/import.php:118
+#: views/admin/exhibits/browse.php:97 views/admin/exhibits/confirm.php:39
+#: views/admin/exhibits/import.php:118
 msgid "Import Items"
-msgstr "Objekte importieren"
+msgstr ""
 
 #: views/admin/exhibits/browse.php:107
 msgid "Delete"
-msgstr "Löschen"
+msgstr ""
 
 #: views/admin/exhibits/browse.php:129
 msgid "Yes"
-msgstr "Ja"
+msgstr ""
 
 #: views/admin/exhibits/browse.php:129
 msgid "No"
-msgstr "Nein"
+msgstr ""
 
 #: views/admin/exhibits/browse.php:144
 msgid "You have no exhibits."
-msgstr "Sie haben keine Ausstellungen."
+msgstr ""
 
 #: views/admin/exhibits/browse.php:145
 msgid "Get started by creating a new one!"
-msgstr "Starten Sie, indem Sie eine neue erstellen!"
+msgstr ""
 
 #: views/admin/exhibits/confirm.php:14
 msgid "Network | Confirm Items to Import"
-msgstr "Netzwerk | Bestätigen Sie die Objekte zum Import"
+msgstr ""
 
 #: views/admin/exhibits/edit.php:14
 #, php-format
 msgid "Network | Edit \"%s\""
-msgstr "Netzwerk | Editieren \"%s\""
+msgstr ""
 
 #: views/admin/exhibits/import.php:14
 msgid "Network | Import Items from Omeka"
-msgstr "Netzwerk | Objekte von Omeka importieren"
+msgstr ""
 
 #: views/admin/exhibits/import.php:38
 msgid "Search by a Range of ID#s (eg: 1-4, 156, 79)"
-msgstr "Suchen nach Objekt-ID-Bereich (z.B. 1-4, 156, 79)"
+msgstr ""
 
 #: views/admin/exhibits/import.php:55
 msgid "Search By Collection"
-msgstr "Suchen nach Kollektion"
+msgstr ""
 
 #: views/admin/exhibits/import.php:75
 msgid "Search By Type"
-msgstr "Suchen nach Objekttyp"
+msgstr ""
 
 #: views/admin/exhibits/import.php:95
 msgid "Search By Tags"
-msgstr "Suchen nach Tags"
+msgstr ""
 
 #: views/admin/exhibits/import.php:112
 msgid "Preview and Import Items"
-msgstr "Voransicht und Objekte importieren"
+msgstr ""
 
 #: views/admin/exhibits/remove.php:3
 msgid "Network | Remove Items from Exhibit"
-msgstr "Netzwerk | Objekte aus der Ausstellung entfernen"
+msgstr ""
 
 #: views/admin/exhibits/remove.php:58
 msgid "You have successfully removed the item from exhibit."
-msgstr "Sie haben erfolgreich ein Objekt aus der Ausstellung entfernt"
+msgstr ""
 
 #: views/admin/exhibits/remove.php:64
 msgid "Undo"
-msgstr "Rückgängig"
+msgstr ""
 
 #: views/admin/exhibits/remove.php:65 views/admin/exhibits/undo.php:34
 msgid "Back"
-msgstr "Zurück"
+msgstr ""
 
 #: views/admin/exhibits/undo.php:2
 msgid "Re-add deleted item to Exhibit"
-msgstr "Gelöschtes Objekt wieder zur Ausstellung hinzufügen"
+msgstr ""
 
 #: views/admin/exhibits/undo.php:27
 msgid "You have successfully readded the item to exhibit."
-msgstr "Sie haben das Objekt erfolgreich erneut zur Ausstellung hinzugefügt."
+msgstr ""
 
 #: views/admin/exhibits/view.php:14
 #, php-format
 msgid "Network | View Items in \"%s\""
-msgstr "Netzwerk | Objekte in \"%s\" anschauen"
+msgstr ""
 
 #: views/admin/exhibits/view.php:22
 msgid "Item Id"
-msgstr "Objekt-ID"
+msgstr ""
 
 #: views/admin/exhibits/view.php:23
 msgid "Item Title"
-msgstr "Objekt-Titel"
+msgstr ""
 
 #: views/admin/exhibits/view.php:24
 msgid "Item Type"
-msgstr "Objekttyp"
+msgstr ""
 
 #: views/admin/exhibits/view.php:25
 msgid "Actions"
-msgstr "Aktionen"
+msgstr ""
 
 #: views/admin/exhibits/view.php:58
 msgid "Remove"
-msgstr "Entfernen"
+msgstr ""
 
-#: views/admin/exhibits/view.php:67 views/admin/exhibits/view.php:68 views/admin/exhibits/view.php:69 views/admin/exhibits/view.php:70
+#: views/admin/exhibits/view.php:67 views/admin/exhibits/view.php:68
+#: views/admin/exhibits/view.php:69 views/admin/exhibits/view.php:70
 msgid "[n/a]"
-msgstr "[n.v.]"
+msgstr ""
