@@ -22,6 +22,7 @@ function in_schema()
         item_query              TEXT NULL,
         title                   TEXT NULL,
         public                  TINYINT(1) NOT NULL,
+        all_relations           TINYINT(1) NOT NULL DEFAULT 1,
         selected_relations      TEXT NULL,
 
         PRIMARY KEY             (id)

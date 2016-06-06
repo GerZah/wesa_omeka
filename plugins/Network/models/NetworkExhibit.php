@@ -18,6 +18,7 @@ class NetworkExhibit extends Network_Row_Expandable
     public $published;
     public $item_query;
     public $title;
+    public $all_relations;
     public $selected_relations;
     public $public = 0;
 

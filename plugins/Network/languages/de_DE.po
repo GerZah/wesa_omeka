@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Network/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-05-31 18:39+0200\n"
+"PO-Revision-Date: 2016-06-06 16:49+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -25,17 +25,17 @@ msgstr ""
 msgid "Network"
 msgstr "Netzwerk"
 
-#: controllers/ExhibitsController.php:274
+#: controllers/ExhibitsController.php:275
 #, php-format
 msgid "The exhibit \"%s\" was successfully deleted!"
 msgstr "Die Ausstellung \"%s\" wurde erfolgreich gelöscht!"
 
-#: controllers/ExhibitsController.php:287
+#: controllers/ExhibitsController.php:288
 #, php-format
 msgid "This will delete \"%s\" and its associated metadata."
 msgstr "Hiermit wird \"%s\" sowie alle zugehörigen Metadaten gelöscht."
 
-#: controllers/ExhibitsController.php:298
+#: controllers/ExhibitsController.php:299
 msgid "The item import was successfully started!"
 msgstr "Der Objekt-Import wurde erfolgreich gestartet."
 
@@ -59,15 +59,23 @@ msgstr "Öffentlich"
 msgid "By default, exhibits are visible only to site administrators. Check here to publish the exhibit to the public site."
 msgstr "Standardmäßig sind Ausstellungen nur für Administratoren sichtbar. Wählen Sie dies aus, um die Ausstellung auf der öffentlichen Seite sichtbar zu machen."
 
-#: forms/Network_Form_Exhibit.php:75
+#: forms/Network_Form_Exhibit.php:71
+msgid "All Item Relations"
+msgstr "Alle Objektbeziehungen"
+
+#: forms/Network_Form_Exhibit.php:72
+msgid "By default, all relations will be displayed. Uncheck this box to limit the displayed relations."
+msgstr "Standardmäßig werden alle Objektbeziehungen dargestellt. Entfernen Sie diese Markierung, um die dargestellten Beziehungen zu begrenzen."
+
+#: forms/Network_Form_Exhibit.php:82
 msgid "Item Relations"
 msgstr "Objekt-Beziehungen"
 
-#: forms/Network_Form_Exhibit.php:76
-msgid "By default, all the item relations are selected. Please select the required item relations."
-msgstr "Standardmäßig sind alle Beziehungen ausgewählt. Bitte wählen Sie die benötigten Objektbeziehungen."
+#: forms/Network_Form_Exhibit.php:83
+msgid "Please select all relations that you would like to display. If you don't want to display any relations, deselect all."
+msgstr "Bitte wählen Sie alle Beziehungen, die Sie darstellen wollen. Wenn Sie keine Beziehungen darstellen wollen, entfernen Sie alle Markierungen."
 
-#: forms/Network_Form_Exhibit.php:85
+#: forms/Network_Form_Exhibit.php:92
 msgid "Save Exhibit"
 msgstr "Ausstellung speichern"
 
@@ -92,20 +100,20 @@ msgid "# Items"
 msgstr "# Objekte"
 
 #: views/admin/exhibits/browse.php:67
-msgid "Public View"
-msgstr "Öffentlich"
+msgid "Display"
+msgstr "Anzeige"
 
 #: views/admin/exhibits/browse.php:77
-msgid "Exhibit Settings"
-msgstr "Ausstellungs-Einstellungen"
+msgid "Settings"
+msgstr "Einstellungen"
 
 #: views/admin/exhibits/browse.php:87
-msgid "View Items"
-msgstr "Objekte anzeigen"
+msgid "Items"
+msgstr "Objekte"
 
-#: views/admin/exhibits/browse.php:97 views/admin/exhibits/confirm.php:39 views/admin/exhibits/import.php:14 views/admin/exhibits/import.php:118
-msgid "Import Items"
-msgstr "Objekte importieren"
+#: views/admin/exhibits/browse.php:97
+msgid "Import"
+msgstr "Importieren"
 
 #: views/admin/exhibits/browse.php:107
 msgid "Delete"
@@ -130,6 +138,10 @@ msgstr "Starten Sie, indem Sie eine neue erstellen!"
 #: views/admin/exhibits/confirm.php:14
 msgid "Confirm Items to Import"
 msgstr "Objekte zum Importieren bestätigen"
+
+#: views/admin/exhibits/confirm.php:39 views/admin/exhibits/import.php:14 views/admin/exhibits/import.php:118
+msgid "Import Items"
+msgstr "Objekte importieren"
 
 #: views/admin/exhibits/edit.php:14
 #, php-format

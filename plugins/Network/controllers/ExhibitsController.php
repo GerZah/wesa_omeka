@@ -87,17 +87,18 @@ public function addAction()
 {
 
   $exhibit = new NetworkExhibit;
+  $exhibit->all_relations = true;
   $form = $this->_getExhibitForm($exhibit);
 
   // Process form submission.
   if ($this->_request->isPost() && $form->isValid($_POST)) {
-  $exhibit->saveForm($form->getValues());
-  $this->_helper->redirector('browse');
+    $exhibit->saveForm($form->getValues());
+    $this->_helper->redirector('browse');
   }
 
   // Push form to view.
   $this->view->form = $form;
-
+  queue_js_file('add-edit-interactivity');
 }
 
 
@@ -119,7 +120,7 @@ public function editAction()
   // Push exhibit and form to view.
   $this->view->network_exhibit = $exhibit;
   $this->view->form = $form;
-
+  queue_js_file('add-edit-interactivity');
 }
 
 /**

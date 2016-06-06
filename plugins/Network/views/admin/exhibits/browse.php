@@ -64,7 +64,7 @@
               <!-- Public View. -->
               <li>
                 <?php echo in_getExhibitLink(
-                  $e, 'show', __('Public View'),
+                  $e, 'show', __('Display'),
                   array('class' => 'public'), true
                 ); ?>
               </li>
@@ -74,7 +74,7 @@
               <?php if (is_allowed($e, 'edit')): ?>
                 <li>
                   <?php echo in_getExhibitLink(
-                    $e, 'edit', __('Exhibit Settings'),
+                    $e, 'edit', __('Settings'),
                     array('class' => 'edit'), false
                   ); ?>
                 </li>
@@ -84,7 +84,7 @@
               <?php if (is_allowed($e, 'view')): ?>
                 <li>
                   <?php echo in_getExhibitLink(
-                    $e, 'view', __('View Items'),
+                    $e, 'view', __('Items'),
                     array('class' => 'view'), false
                   );?>
                 </li>
@@ -94,7 +94,7 @@
               <?php if (is_allowed($e, 'import')): ?>
                 <li>
                   <?php echo in_getExhibitLink(
-                    $e, 'import', __('Import Items'),
+                    $e, 'import', __('Import'),
                     array('class' => 'import'), false
                   ); ?>
                 </li>

@@ -25,17 +25,17 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
-#: controllers/ExhibitsController.php:274
+#: controllers/ExhibitsController.php:275
 #, php-format
 msgid "The exhibit \"%s\" was successfully deleted!"
 msgstr ""
 
-#: controllers/ExhibitsController.php:287
+#: controllers/ExhibitsController.php:288
 #, php-format
 msgid "This will delete \"%s\" and its associated metadata."
 msgstr ""
 
-#: controllers/ExhibitsController.php:298
+#: controllers/ExhibitsController.php:299
 msgid "The item import was successfully started!"
 msgstr ""
 
@@ -63,17 +63,27 @@ msgid ""
 "publish the exhibit to the public site."
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:75
+#: forms/Network_Form_Exhibit.php:71
+msgid "All Item Relations"
+msgstr ""
+
+#: forms/Network_Form_Exhibit.php:72
+msgid ""
+"By default, all relations will be displayed. Uncheck this box to limit the "
+"displayed relations."
+msgstr ""
+
+#: forms/Network_Form_Exhibit.php:82
 msgid "Item Relations"
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:76
+#: forms/Network_Form_Exhibit.php:83
 msgid ""
-"By default, all the item relations are selected. Please select the required "
-"item relations."
+"Please select all relations that you would like to display. If you don't "
+"want to display any relations, deselect all."
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:85
+#: forms/Network_Form_Exhibit.php:92
 msgid "Save Exhibit"
 msgstr ""
 
@@ -100,20 +110,19 @@ msgid "# Items"
 msgstr ""
 
 #: views/admin/exhibits/browse.php:67
-msgid "Public View"
+msgid "Display"
 msgstr ""
 
 #: views/admin/exhibits/browse.php:77
-msgid "Exhibit Settings"
+msgid "Settings"
 msgstr ""
 
 #: views/admin/exhibits/browse.php:87
-msgid "View Items"
+msgid "Items"
 msgstr ""
 
-#: views/admin/exhibits/browse.php:97 views/admin/exhibits/confirm.php:39
-#: views/admin/exhibits/import.php:14 views/admin/exhibits/import.php:118
-msgid "Import Items"
+#: views/admin/exhibits/browse.php:97
+msgid "Import"
 msgstr ""
 
 #: views/admin/exhibits/browse.php:107
@@ -138,6 +147,11 @@ msgstr ""
 
 #: views/admin/exhibits/confirm.php:14
 msgid "Confirm Items to Import"
+msgstr ""
+
+#: views/admin/exhibits/confirm.php:39 views/admin/exhibits/import.php:14
+#: views/admin/exhibits/import.php:118
+msgid "Import Items"
 msgstr ""
 
 #: views/admin/exhibits/edit.php:14

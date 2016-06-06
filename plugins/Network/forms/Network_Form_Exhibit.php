@@ -65,15 +65,22 @@ class Network_Form_Exhibit extends Omeka_Form
             'description'   => __('By default, exhibits are visible only to site administrators. Check here to publish the exhibit to the public site.'),
             'value'         => $this->exhibit->public
         ));
-        //select item relations
 
+        // All Relations
+        $this->addElement('checkbox', 'all_relations', array(
+            'label'         => __('All Item Relations'),
+            'description'   => __('By default, all relations will be displayed. Uncheck this box to limit the displayed relations.'),
+            'value'         => $this->exhibit->all_relations
+        ));
+
+        //select item relations
         $itemRelationValues = array();
         $itemRelationValues = get_table_options('ItemRelationsProperty');
         unset($itemRelationValues[""]); // remove "Select below"
 
         $this->addElement('multiselect', 'selected_relations', array(
             'label' => __('Item Relations'),
-            'description' => __("By default, all the item relations are selected. Please select the required item relations."),
+            'description' => __("Please select all relations that you would like to display. If you don't want to display any relations, deselect all."),
             'value'  => explode(",", $this->exhibit->selected_relations),
             'multiOptions' => $itemRelationValues,
             'size' => 20,
@@ -88,6 +95,7 @@ class Network_Form_Exhibit extends Omeka_Form
         $this->addDisplayGroup(array(
             'title',
             'public',
+            'all_relations',
             'selected_relations'
         ), 'fields');
 

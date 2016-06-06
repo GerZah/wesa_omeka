@@ -27,21 +27,33 @@ queue_css_file('network');
 
     // ------------------------------------ Fetch network exhibit data
 
-    // ----- Get required relation IDs (if set)
-
-    $selectRelations = "
-      SELECT selected_relations
+    // ----- Display all relations (if selected or by default)
+    $selectAllRelations = "
+      SELECT all_relations
       FROM `$db->NetworkExhibit`
       WHERE id = $exhibit_id
     ";
-    $relations = $db->fetchOne($selectRelations);
+    $allRelations = intval(!!$db->fetchOne($selectAllRelations));
+
+    // ----- Get required relation IDs (if set)
+
+    $relations = "";
+
+    if (!$allRelations) {
+      $selectRelations = "
+        SELECT selected_relations
+        FROM `$db->NetworkExhibit`
+        WHERE id = $exhibit_id
+      ";
+      $relations = $db->fetchOne($selectRelations);
+    }
 
     // ----- Get actual relations
 
     // relation filter infix
     $relationInfix = ($relations
       ? "AND property_id IN ($relations)"
-      : ""
+      : "AND ($allRelations)"
     );
 
     // Item subquery -- actually fetches all items that were imported into this exhibt
