@@ -4,25 +4,6 @@ jQuery(document).ready(function () {
     // http://jsbin.com/gist/621d51ea7de19608127e?js,output
     var cy = null;
 
-    // var nodeData = [
-    //   { data: { id: 'j', name: 'Jerry' } },
-    //   { data: { id: 'e', name: 'Elaine' } },
-    //   { data: { id: 'k', name: 'Kramer' } },
-    //   { data: { id: 'g', name: 'George' } }
-    // ];
-    //
-    // var edgeData = [
-    //   { data: { source: 'j', target: 'e' } },
-    //   { data: { source: 'j', target: 'k' } },
-    //   { data: { source: 'j', target: 'g' } },
-    //   { data: { source: 'e', target: 'j' } },
-    //   { data: { source: 'e', target: 'k' } },
-    //   { data: { source: 'k', target: 'j' } },
-    //   { data: { source: 'k', target: 'e' } },
-    //   { data: { source: 'k', target: 'g' } },
-    //   { data: { source: 'g', target: 'j' } }
-    // ];
-
     initGraph();
 
     function initGraph() {
@@ -71,6 +52,26 @@ jQuery(document).ready(function () {
           name: 'grid',
           padding: 10
         }
+      });
+
+      $(nodeData).each(function(){
+        var id = this.data.id;
+        var name = this.data.name;
+        var itemUrl = cytoBaseUrl + "/items/show/" + this.data.id;
+        cy.$("#"+id).qtip({
+          content: "<a href='"+itemUrl+"' target='_blank'>" + name +  "</a>",
+            position: {
+              my: 'top center',
+              at: 'bottom center'
+            },
+            style: {
+              classes: 'qtip-bootstrap',
+              tip: {
+                width: 16,
+                height: 8
+              }
+            }
+        });
       });
 
       cy.on('tap', 'node', function(e){

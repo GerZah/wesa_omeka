@@ -1,17 +1,18 @@
 <?php
-queue_js_file('cytoscape.min');
-// queue_js_file('jquery-2.0.3.min'); // not necessary, works with Omeka's jQuery (currently 1.12.0)
-queue_js_file('network');
-queue_css_file('network');
 /**
  * @package     omeka
  * @subpackage  network
  * @copyright   2014 Rector and Board of Visitors, University of Virginia
  * @license     http://www.apache.org/licenses/LICENSE-2.0.html
  */
- // queue_js_string("
- //   var networkDataUrl = ".json_encode(url('network/exhibits/')).";
- // ");
+  queue_js_file('cytoscape.min');
+  // queue_js_file('jquery-2.0.3.min'); // not necessary, works with Omeka's jQuery (currently 1.12.0)
+  queue_js_file('network');
+  queue_css_file('network');
+  queue_js_string('var cytoBaseUrl = ' . json_encode(CURRENT_BASE_URL) . ';');
+  queue_js_file('jquery.qtip.min');
+  queue_css_file('jquery.qtip.min');
+  queue_js_file('cytoscape-qtip');
 ?>
 
 <?php echo head(array(
