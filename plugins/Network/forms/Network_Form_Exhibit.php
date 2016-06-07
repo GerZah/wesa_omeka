@@ -66,6 +66,13 @@ class Network_Form_Exhibit extends Omeka_Form
             'value'         => $this->exhibit->public
         ));
 
+        // All Items
+        $this->addElement('checkbox', 'all_items', array(
+            'label'         => __('All Items'),
+            'description'   => __('By default, the network will display only those items that have at least one connection to one other item. Check this box to force displaying all items.'),
+            'value'         => $this->exhibit->all_items
+        ));
+
         // All Relations
         $this->addElement('checkbox', 'all_relations', array(
             'label'         => __('All Item Relations'),
@@ -95,6 +102,7 @@ class Network_Form_Exhibit extends Omeka_Form
         $this->addDisplayGroup(array(
             'title',
             'public',
+            'all_items',
             'all_relations',
             'selected_relations'
         ), 'fields');

@@ -28,13 +28,16 @@
 
     // ------------------------------------ Fetch network exhibit data
 
-    // ----- Display all relations (if selected or by default)
-    $selectAllRelations = "
-      SELECT all_relations
+    // ----- Get display configuration switches
+
+    $selectSwitches = "
+      SELECT all_items, all_relations
       FROM `$db->NetworkExhibit`
       WHERE id = $exhibit_id
     ";
-    $allRelations = intval(!!$db->fetchOne($selectAllRelations));
+    $switches = $db->fetchAll($selectSwitches);
+    $allItems = intval(!!$switches[0]["all_items"]); // Display all items, as opposed to limiting to participating ones
+    $allRelations = intval(!!$switches[0]["all_relations"]); // Display all relations (if selected or by default)
 
     // ----- Get required relation IDs (if set)
 
@@ -76,6 +79,7 @@
     $edges = $db->fetchAll($selectEdges);
 
     // ----- Collect relevant property IDs
+
     $propertyIds = array();
     foreach($edges as $edge) {
       $propertyId = $edge["property_id"];
@@ -97,15 +101,26 @@
       $propertyLabels[$propertyLabelSet["id"]] = $propertyLabelSet["label"];
     }
 
-    // ----- Generate item list that contains only those that are actually related
+    // ----- Generate item list
 
     $items = array();
     $itemIds = array();
-    foreach($edges as $edge) { // might add items multiple times, but won't create duplicates
-      $idxs = array($edge["subject_item_id"], $edge["object_item_id"]);
-      foreach($idxs as $idx) {
-        $items[$idx] = array( "item_id" => $idx );
-        $itemIds[$idx] = $idx;
+
+    if ($allItems) { // Force all? Get all item ids
+      $allItems = $db->fetchAll($selectItemIds);
+      foreach($allItems as $oneItem) {
+        $itemId = $oneItem["item_id"];
+        $items[$itemId] = $oneItem;
+        $itemIds[$itemId] = $itemId;
+      }
+    }
+    else { // Limit item list so it contains only those that are actually related
+      foreach($edges as $edge) { // might add items multiple times, but won't create duplicates
+        $idxs = array($edge["subject_item_id"], $edge["object_item_id"]);
+        foreach($idxs as $idx) {
+          $items[$idx] = array( "item_id" => $idx );
+          $itemIds[$idx] = $idx;
+        }
       }
     }
 
