@@ -141,19 +141,27 @@
       }
     }
 
-    // ----- Fetch items' titles
+    // ----- Fetch items' titles and item type IDs and ultimately item colors
 
     if ($items) {
       $itemIds = implode(",", array_keys($itemIds));
       $selectItemTitles = "
-        SELECT item_id, item_title
+        SELECT item_id, item_title, item_type_id
         FROM `$db->NetworkRecord`
         WHERE exhibit_id = $exhibit_id
         AND item_id IN ($itemIds)
       ";
-      $itemTitles = $db->fetchAll($selectItemTitles);
-      foreach($itemTitles as $itemTitle) {
-        $items[$itemTitle["item_id"]]["item_title"] = $itemTitle["item_title"];
+      $itemDetails = $db->fetchAll($selectItemTitles);
+      $itemTypes = array();
+      foreach($itemDetails as $itemDetail) {
+        $items[$itemDetail["item_id"]]["item_title"] = $itemDetail["item_title"]; // store item title
+        $items[$itemDetail["item_id"]]["item_type_id"] = $itemDetail["item_type_id"]; // store full item type ID
+        $itemTypes[$itemDetail["item_type_id"]] = $itemDetail["item_type_id"]; // collect all item type IDs
+      }
+      $itemTypes=array_flip(array_keys($itemTypes)); // keep just 0..n for all used item type IDs
+      foreach(array_keys($items) as $idx) { // now replace the database item type ids with color codes 0..x
+        $items[$idx]["item_color"] = $itemTypes[$items[$idx]["item_type_id"]] % 8; // 0..7
+        unset($items[$idx]["item_type_id"]); // away with the database item type id
       }
     }
 
@@ -165,7 +173,7 @@
         "data" => array(
           "id" => $item["item_id"],
           "name" => @$item["item_title"],
-          "type" => 0
+          "color" => @$item["item_color"]
         )
       );
     }

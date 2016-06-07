@@ -36,7 +36,7 @@ jQuery(document).ready(function () {
               'text-valign': 'center',
               'color': 'white',
               'text-outline-width': 2,
-              'text-outline-color': '#888'
+              'background-color': '#888', 'text-outline-color': '#888',
             })
           .selector('edge')
             .css({
@@ -44,20 +44,25 @@ jQuery(document).ready(function () {
               'target-arrow-shape': 'triangle',
               'label': 'data(label)',
               'edge-text-rotation': 'autorotate',
-              'text-opacity': 0.25
+              'color': "#888",
+              'line-color': "#ccc",
+              'target-arrow-color': "#ccc",
             })
-          .selector(':selected')
-            .css({
-              'background-color': 'black',
-              'line-color': 'black',
-              'target-arrow-color': 'black',
-              'source-arrow-color': 'black'
-            })
-          .selector(".foo")
-            .css({
-              'background-color': 'red',
-              'text-outline-color': 'red',
-            })
+          // .selector(':selected')
+          //   .css({
+          //     'background-color': 'black',
+          //     'line-color': 'black',
+          //     'target-arrow-color': 'black',
+          //     'source-arrow-color': 'black'
+          //   })
+          .selector(".color0").css({ 'background-color': 'black', 'text-outline-color': 'black' })
+          .selector(".color1").css({ 'background-color': 'crimson', 'text-outline-color': 'crimson' })
+          .selector(".color2").css({ 'background-color': 'darkblue', 'text-outline-color': 'darkblue' })
+          .selector(".color3").css({ 'background-color': 'green', 'text-outline-color': 'green' })
+          .selector(".color4").css({ 'background-color': 'gold', 'text-outline-color': 'gold' })
+          .selector(".color5").css({ 'background-color': 'coral', 'text-outline-color': 'coral' })
+          .selector(".color6").css({ 'background-color': 'darkcyan', 'text-outline-color': 'darkcyan' })
+          .selector(".color7").css({ 'background-color': 'maroon', 'text-outline-color': 'maroon' })
           .selector('.faded')
             .css({
               'opacity': 0.25,
@@ -75,7 +80,7 @@ jQuery(document).ready(function () {
       $(nodeData).each(function(){
         var id = this.data.id;
         var name = this.data.name;
-        var type = this.data.type;
+        var color = this.data.color;
         var itemUrl = cytoBaseUrl + "/items/show/" + this.data.id;
         cy.$("#"+id).qtip({
           content: "<a href='"+itemUrl+"' target='_blank'>" + name +  "</a>",
@@ -91,9 +96,7 @@ jQuery(document).ready(function () {
               }
             }
         });
-        if (type>0) {
-          cy.$("#"+id).addClass("foo");
-        }
+        cy.$("#"+id).addClass("color"+color);
       });
 
       cy.on('tap', 'node', function(e){
