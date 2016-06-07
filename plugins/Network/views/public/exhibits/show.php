@@ -173,7 +173,7 @@
         "data" => array(
           "id" => $item["item_id"],
           "name" => @$item["item_title"],
-          "color" => @$item["item_color"]
+          "color" => ( $colorItemTypes ? @$item["item_color"] : 0 )
         )
       );
     }

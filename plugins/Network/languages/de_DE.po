@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Network/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-06-07 13:29+0200\n"
+"PO-Revision-Date: 2016-06-07 18:59+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -24,17 +24,17 @@ msgstr ""
 msgid "Network"
 msgstr "Netzwerk"
 
-#: controllers/ExhibitsController.php:275
+#: controllers/ExhibitsController.php:276
 #, php-format
 msgid "The exhibit \"%s\" was successfully deleted!"
 msgstr "Die Ausstellung \"%s\" wurde erfolgreich gelöscht!"
 
-#: controllers/ExhibitsController.php:288
+#: controllers/ExhibitsController.php:289
 #, php-format
 msgid "This will delete \"%s\" and its associated metadata."
 msgstr "Hiermit wird \"%s\" sowie alle zugehörigen Metadaten gelöscht."
 
-#: controllers/ExhibitsController.php:299
+#: controllers/ExhibitsController.php:300
 msgid "The item import was successfully started!"
 msgstr "Der Objekt-Import wurde erfolgreich gestartet."
 
@@ -75,30 +75,38 @@ msgid "Spread"
 msgstr "Verteilt"
 
 #: forms/Network_Form_Exhibit.php:84
+msgid "Color Item Types"
+msgstr "Objekttypen färben"
+
+#: forms/Network_Form_Exhibit.php:85
+msgid "By default, items from different item types will be displayed in different colors. Uncheck this box if you want all of them to remain black/grey."
+msgstr "Standardmäßig werden Objekte unterschiedlicher Objekttypen in unterschiedlichen Farben eingefärbt. Entfernen Sie diese Markierung, um alle Objekte in derselben Farbe darzustellen."
+
+#: forms/Network_Form_Exhibit.php:93
 msgid "All Items"
 msgstr "Alle Objekte"
 
-#: forms/Network_Form_Exhibit.php:85
+#: forms/Network_Form_Exhibit.php:94
 msgid "By default, the network will display only those items that have at least one connection to one other item. Check this box to force displaying all imported items."
 msgstr "Standardmäßig wird das Netzwerk nur die Objekte enthalten, die mindestens eine Verbindung zu einem anderen Objekt besitzen. Wählen Sie dies aus, um die Darstellung aller importierter Objekte zu erzwingen."
 
-#: forms/Network_Form_Exhibit.php:93
+#: forms/Network_Form_Exhibit.php:102
 msgid "All Item Relations"
 msgstr "Alle Objektbeziehungen"
 
-#: forms/Network_Form_Exhibit.php:94
+#: forms/Network_Form_Exhibit.php:103
 msgid "By default, all relations will be displayed. Uncheck this box to limit the displayed relations."
 msgstr "Standardmäßig werden alle Objektbeziehungen dargestellt. Entfernen Sie diese Markierung, um die dargestellten Beziehungen zu begrenzen."
 
-#: forms/Network_Form_Exhibit.php:105
+#: forms/Network_Form_Exhibit.php:114
 msgid "Item Relations"
 msgstr "Objekt-Beziehungen"
 
-#: forms/Network_Form_Exhibit.php:106
+#: forms/Network_Form_Exhibit.php:115
 msgid "Please select all relations that you would like to display. If you do not want to display any relations, deselect all."
 msgstr "Bitte wählen Sie alle Beziehungen, die Sie darstellen wollen. Wenn Sie keine Beziehungen darstellen wollen, entfernen Sie alle Markierungen."
 
-#: forms/Network_Form_Exhibit.php:116
+#: forms/Network_Form_Exhibit.php:125
 msgid "Save Exhibit"
 msgstr "Ausstellung speichern"
 
@@ -195,15 +203,15 @@ msgstr "Voransicht und Objekte importieren"
 msgid "Remove Items from Exhibit"
 msgstr "Objekte aus der Ausstellung entfernen"
 
-#: views/admin/exhibits/remove.php:58
+#: views/admin/exhibits/remove.php:60
 msgid "You have successfully removed the item from exhibit."
 msgstr "Sie haben erfolgreich ein Objekt aus der Ausstellung entfernt"
 
-#: views/admin/exhibits/remove.php:64
+#: views/admin/exhibits/remove.php:66
 msgid "Undo"
 msgstr "Rückgängig"
 
-#: views/admin/exhibits/remove.php:65 views/admin/exhibits/undo.php:34
+#: views/admin/exhibits/remove.php:67 views/admin/exhibits/undo.php:35
 msgid "Back"
 msgstr "Zurück"
 
@@ -211,7 +219,7 @@ msgstr "Zurück"
 msgid "Re-add deleted item to Exhibit"
 msgstr "Gelöschtes Objekt wieder zur Ausstellung hinzufügen"
 
-#: views/admin/exhibits/undo.php:27
+#: views/admin/exhibits/undo.php:28
 msgid "You have successfully readded the item to exhibit."
 msgstr "Sie haben das Objekt erfolgreich erneut zur Ausstellung hinzugefügt."
 
@@ -236,7 +244,7 @@ msgstr "Objekttyp"
 msgid "Actions"
 msgstr "Aktionen"
 
-#: views/admin/exhibits/view.php:58
+#: views/admin/exhibits/view.php:57
 msgid "Remove"
 msgstr "Entfernen"
 

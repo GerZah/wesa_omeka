@@ -25,17 +25,17 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
-#: controllers/ExhibitsController.php:275
+#: controllers/ExhibitsController.php:276
 #, php-format
 msgid "The exhibit \"%s\" was successfully deleted!"
 msgstr ""
 
-#: controllers/ExhibitsController.php:288
+#: controllers/ExhibitsController.php:289
 #, php-format
 msgid "This will delete \"%s\" and its associated metadata."
 msgstr ""
 
-#: controllers/ExhibitsController.php:299
+#: controllers/ExhibitsController.php:300
 msgid "The item import was successfully started!"
 msgstr ""
 
@@ -84,37 +84,47 @@ msgid "Spread"
 msgstr ""
 
 #: forms/Network_Form_Exhibit.php:84
-msgid "All Items"
+msgid "Color Item Types"
 msgstr ""
 
 #: forms/Network_Form_Exhibit.php:85
+msgid ""
+"By default, items from different item types will be displayed in different "
+"colors. Uncheck this box if you want all of them to remain black/grey."
+msgstr ""
+
+#: forms/Network_Form_Exhibit.php:93
+msgid "All Items"
+msgstr ""
+
+#: forms/Network_Form_Exhibit.php:94
 msgid ""
 "By default, the network will display only those items that have at least one "
 "connection to one other item. Check this box to force displaying all "
 "imported items."
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:93
+#: forms/Network_Form_Exhibit.php:102
 msgid "All Item Relations"
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:94
+#: forms/Network_Form_Exhibit.php:103
 msgid ""
 "By default, all relations will be displayed. Uncheck this box to limit the "
 "displayed relations."
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:105
+#: forms/Network_Form_Exhibit.php:114
 msgid "Item Relations"
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:106
+#: forms/Network_Form_Exhibit.php:115
 msgid ""
 "Please select all relations that you would like to display. If you do not "
 "want to display any relations, deselect all."
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:116
+#: forms/Network_Form_Exhibit.php:125
 msgid "Save Exhibit"
 msgstr ""
 
@@ -214,15 +224,15 @@ msgstr ""
 msgid "Remove Items from Exhibit"
 msgstr ""
 
-#: views/admin/exhibits/remove.php:58
+#: views/admin/exhibits/remove.php:60
 msgid "You have successfully removed the item from exhibit."
 msgstr ""
 
-#: views/admin/exhibits/remove.php:64
+#: views/admin/exhibits/remove.php:66
 msgid "Undo"
 msgstr ""
 
-#: views/admin/exhibits/remove.php:65 views/admin/exhibits/undo.php:34
+#: views/admin/exhibits/remove.php:67 views/admin/exhibits/undo.php:35
 msgid "Back"
 msgstr ""
 
@@ -230,7 +240,7 @@ msgstr ""
 msgid "Re-add deleted item to Exhibit"
 msgstr ""
 
-#: views/admin/exhibits/undo.php:27
+#: views/admin/exhibits/undo.php:28
 msgid "You have successfully readded the item to exhibit."
 msgstr ""
 
@@ -255,7 +265,7 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: views/admin/exhibits/view.php:58
+#: views/admin/exhibits/view.php:57
 msgid "Remove"
 msgstr ""
 
