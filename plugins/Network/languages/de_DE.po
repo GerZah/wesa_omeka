@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Network/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-06-06 16:49+0200\n"
+"PO-Revision-Date: 2016-06-07 13:29+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -19,9 +19,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.7\n"
 
-#: NetworkPlugin.php:118 NetworkPlugin.php:131 views/admin/exhibits/add.php:14 views/admin/exhibits/browse.php:14 views/admin/exhibits/confirm.php:14
-#: views/admin/exhibits/edit.php:14 views/admin/exhibits/import.php:14 views/admin/exhibits/remove.php:3 views/admin/exhibits/view.php:14
-#: views/public/exhibits/browse.php:13 views/public/exhibits/browse.php:20
+#: NetworkPlugin.php:118 NetworkPlugin.php:131 views/admin/exhibits/add.php:14 views/admin/exhibits/browse.php:14 views/admin/exhibits/confirm.php:14 views/admin/exhibits/edit.php:14 views/admin/exhibits/import.php:14 views/admin/exhibits/remove.php:3 views/admin/exhibits/view.php:14 views/public/exhibits/browse.php:13
+#: views/public/exhibits/browse.php:20
 msgid "Network"
 msgstr "Netzwerk"
 
@@ -47,35 +46,59 @@ msgstr "Titel"
 msgid "A top-level heading for the exhibit, displayed in the page header in the public view for the exhibit."
 msgstr "Die oberste Überschrift für die Ausstellung, die im Seitenkopf in der öffentlichen Ansicht der Ausstellung angezeigt werden soll."
 
-#: forms/Network_Form_Exhibit.php:55
+#: forms/Network_Form_Exhibit.php:56
 msgid "Enter a title."
 msgstr "Geben Sie einen Titel ein."
 
-#: forms/Network_Form_Exhibit.php:64 views/admin/exhibits/browse.php:36
+#: forms/Network_Form_Exhibit.php:65 views/admin/exhibits/browse.php:36
 msgid "Public"
 msgstr "Öffentlich"
 
-#: forms/Network_Form_Exhibit.php:65
+#: forms/Network_Form_Exhibit.php:66
 msgid "By default, exhibits are visible only to site administrators. Check here to publish the exhibit to the public site."
 msgstr "Standardmäßig sind Ausstellungen nur für Administratoren sichtbar. Wählen Sie dies aus, um die Ausstellung auf der öffentlichen Seite sichtbar zu machen."
 
-#: forms/Network_Form_Exhibit.php:71
+#: forms/Network_Form_Exhibit.php:73
+msgid "Graph Structure"
+msgstr "Graph-Struktur"
+
+#: forms/Network_Form_Exhibit.php:74
+msgid "The network graph supports multiple graph structuring heuristics: While \"Grid\" is the default, \"Spread\" provides an always different, more organic presentation, which might require significantly more browser resources to initially balance the graph."
+msgstr "Der Netzwerk-Graph unterstützt mehrere Heuristiken zur Graphen-Strukturierung: Während \"Raster\" die Standardeinstellung darstellt, bietet \"Verteilt\" eine bei jedem Aufruf andere, eher organische Repräsentation, obwohl diese möglicherweise deutlich mehr Browser-Ressourcen bei der ursprünglichen Balancierung des Graphen erfordert."
+
+#: forms/Network_Form_Exhibit.php:78
+msgid "Grid"
+msgstr "Raster"
+
+#: forms/Network_Form_Exhibit.php:78
+msgid "Spread"
+msgstr "Verteilt"
+
+#: forms/Network_Form_Exhibit.php:84
+msgid "All Items"
+msgstr "Alle Objekte"
+
+#: forms/Network_Form_Exhibit.php:85
+msgid "By default, the network will display only those items that have at least one connection to one other item. Check this box to force displaying all imported items."
+msgstr "Standardmäßig wird das Netzwerk nur die Objekte enthalten, die mindestens eine Verbindung zu einem anderen Objekt besitzen. Wählen Sie dies aus, um die Darstellung aller importierter Objekte zu erzwingen."
+
+#: forms/Network_Form_Exhibit.php:93
 msgid "All Item Relations"
 msgstr "Alle Objektbeziehungen"
 
-#: forms/Network_Form_Exhibit.php:72
+#: forms/Network_Form_Exhibit.php:94
 msgid "By default, all relations will be displayed. Uncheck this box to limit the displayed relations."
 msgstr "Standardmäßig werden alle Objektbeziehungen dargestellt. Entfernen Sie diese Markierung, um die dargestellten Beziehungen zu begrenzen."
 
-#: forms/Network_Form_Exhibit.php:82
+#: forms/Network_Form_Exhibit.php:105
 msgid "Item Relations"
 msgstr "Objekt-Beziehungen"
 
-#: forms/Network_Form_Exhibit.php:83
-msgid "Please select all relations that you would like to display. If you don't want to display any relations, deselect all."
+#: forms/Network_Form_Exhibit.php:106
+msgid "Please select all relations that you would like to display. If you do not want to display any relations, deselect all."
 msgstr "Bitte wählen Sie alle Beziehungen, die Sie darstellen wollen. Wenn Sie keine Beziehungen darstellen wollen, entfernen Sie alle Markierungen."
 
-#: forms/Network_Form_Exhibit.php:92
+#: forms/Network_Form_Exhibit.php:116
 msgid "Save Exhibit"
 msgstr "Ausstellung speichern"
 

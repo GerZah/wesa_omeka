@@ -22,6 +22,7 @@ function in_schema()
         item_query              TEXT NULL,
         title                   TEXT NULL,
         public                  TINYINT(1) NOT NULL,
+        graph_structure         TINYINT(1) NOT NULL,
         all_items               TINYINT(1) NOT NULL,
         all_relations           TINYINT(1) NOT NULL,
         selected_relations      TEXT NULL,

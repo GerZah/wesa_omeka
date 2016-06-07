@@ -44,7 +44,8 @@ class Network_Form_Exhibit extends Omeka_Form
         // Title:
         $this->addElement('text', 'title', array(
             'label'         => __('Title'),
-            'description'   => __('A top-level heading for the exhibit, displayed in the page header in the public view for the exhibit.'),
+            'description'   => __('A top-level heading for the exhibit, displayed in the '.
+                                  'page header in the public view for the exhibit.'),
             'value'         => $this->exhibit->title,
             'required'      => true,
             'size'          => 40,
@@ -62,21 +63,36 @@ class Network_Form_Exhibit extends Omeka_Form
         // Public:
         $this->addElement('checkbox', 'public', array(
             'label'         => __('Public'),
-            'description'   => __('By default, exhibits are visible only to site administrators. Check here to publish the exhibit to the public site.'),
+            'description'   => __('By default, exhibits are visible only to site administrators. '.
+                                  'Check here to publish the exhibit to the public site.'),
             'value'         => $this->exhibit->public
         ));
 
-        // All Items
+        // Graph Structure:
+        $this->addElement('select', 'graph_structure', array(
+            'label'         => __('Graph Structure'),
+            'description'   => __('The network graph supports multiple graph structuring heuristics: '.
+                                  'While "Grid" is the default, "Spread" provides an always different, '.
+                                  'more organic presentation, which might require significantly more '.
+                                  'browser resources to initially balance the graph.'),
+            'multiOptions'  => array( 0 => __("Grid"), 1 => __("Spread" )),
+            'value'         => $this->exhibit->graph_structure
+        ));
+
+        // All Items:
         $this->addElement('checkbox', 'all_items', array(
             'label'         => __('All Items'),
-            'description'   => __('By default, the network will display only those items that have at least one connection to one other item. Check this box to force displaying all items.'),
+            'description'   => __('By default, the network will display only those items that have '.
+                                  'at least one connection to one other item. Check this box to '.
+                                  'force displaying all imported items.'),
             'value'         => $this->exhibit->all_items
         ));
 
         // All Relations
         $this->addElement('checkbox', 'all_relations', array(
             'label'         => __('All Item Relations'),
-            'description'   => __('By default, all relations will be displayed. Uncheck this box to limit the displayed relations.'),
+            'description'   => __('By default, all relations will be displayed. '.
+                                  'Uncheck this box to limit the displayed relations.'),
             'value'         => $this->exhibit->all_relations
         ));
 
@@ -87,7 +103,8 @@ class Network_Form_Exhibit extends Omeka_Form
 
         $this->addElement('multiselect', 'selected_relations', array(
             'label' => __('Item Relations'),
-            'description' => __("Please select all relations that you would like to display. If you don't want to display any relations, deselect all."),
+            'description' => __('Please select all relations that you would like to display. '.
+                                'If you do not want to display any relations, deselect all.'),
             'value'  => explode(",", $this->exhibit->selected_relations),
             'multiOptions' => $itemRelationValues,
             'size' => 20,
@@ -101,6 +118,7 @@ class Network_Form_Exhibit extends Omeka_Form
 
         $this->addDisplayGroup(array(
             'title',
+            'graph_structure',
             'public',
             'all_items',
             'all_relations',

@@ -49,41 +49,72 @@ msgid ""
 "public view for the exhibit."
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:55
+#: forms/Network_Form_Exhibit.php:56
 msgid "Enter a title."
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:64 views/admin/exhibits/browse.php:36
+#: forms/Network_Form_Exhibit.php:65 views/admin/exhibits/browse.php:36
 msgid "Public"
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:65
+#: forms/Network_Form_Exhibit.php:66
 msgid ""
 "By default, exhibits are visible only to site administrators. Check here to "
 "publish the exhibit to the public site."
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:71
+#: forms/Network_Form_Exhibit.php:73
+msgid "Graph Structure"
+msgstr ""
+
+#: forms/Network_Form_Exhibit.php:74
+msgid ""
+"The network graph supports multiple graph structuring heuristics: While "
+"\"Grid\" is the default, \"Spread\" provides an always different, more "
+"organic presentation, which might require significantly more browser "
+"resources to initially balance the graph."
+msgstr ""
+
+#: forms/Network_Form_Exhibit.php:78
+msgid "Grid"
+msgstr ""
+
+#: forms/Network_Form_Exhibit.php:78
+msgid "Spread"
+msgstr ""
+
+#: forms/Network_Form_Exhibit.php:84
+msgid "All Items"
+msgstr ""
+
+#: forms/Network_Form_Exhibit.php:85
+msgid ""
+"By default, the network will display only those items that have at least one "
+"connection to one other item. Check this box to force displaying all "
+"imported items."
+msgstr ""
+
+#: forms/Network_Form_Exhibit.php:93
 msgid "All Item Relations"
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:72
+#: forms/Network_Form_Exhibit.php:94
 msgid ""
 "By default, all relations will be displayed. Uncheck this box to limit the "
 "displayed relations."
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:82
+#: forms/Network_Form_Exhibit.php:105
 msgid "Item Relations"
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:83
+#: forms/Network_Form_Exhibit.php:106
 msgid ""
-"Please select all relations that you would like to display. If you don't "
+"Please select all relations that you would like to display. If you do not "
 "want to display any relations, deselect all."
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:92
+#: forms/Network_Form_Exhibit.php:116
 msgid "Save Exhibit"
 msgstr ""
 

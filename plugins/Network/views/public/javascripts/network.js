@@ -7,6 +7,22 @@ jQuery(document).ready(function () {
     initGraph();
 
     function initGraph() {
+
+      var cytoLayout = {};
+      switch (cytoGraphStructure) {
+        case 1:
+            cytoLayout = {
+              name: 'spread',
+              minDist: 200
+            };
+          break;
+        default:
+          cytoLayout = {
+            name: 'grid',
+            padding: 10
+          };
+      }
+
       cy = cytoscape({
         container: document.querySelector('#cy'),
 
@@ -48,10 +64,7 @@ jQuery(document).ready(function () {
           edges: edgeData
         },
 
-        layout: {
-          name: 'grid',
-          padding: 10
-        }
+        layout: cytoLayout
       });
 
       $(nodeData).each(function(){

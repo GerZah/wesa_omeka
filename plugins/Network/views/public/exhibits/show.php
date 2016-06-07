@@ -7,37 +7,53 @@
  */
   queue_js_file('cytoscape.min');
   // queue_js_file('jquery-2.0.3.min'); // not necessary, works with Omeka's jQuery (currently 1.12.0)
+
   queue_js_file('network');
   queue_css_file('network');
-  queue_js_string('var cytoBaseUrl = ' . json_encode(CURRENT_BASE_URL) . ';');
+
   queue_js_file('jquery.qtip.min');
   queue_css_file('jquery.qtip.min');
   queue_js_file('cytoscape-qtip');
-?>
 
-<?php echo head(array(
-  'title' => in_getExhibitField('title'),
-  'bodyclass' => 'network show'
-)); ?>
+  $db = get_db();
+
+  // ----- Get display configuration switches
+
+  $selectSwitches = "
+    SELECT graph_structure, all_items, all_relations
+    FROM `$db->NetworkExhibit`
+    WHERE id = $exhibit_id
+  ";
+  $switches = $db->fetchAll($selectSwitches);
+  $graphStructure = intval($switches[0]["graph_structure"]); // Which graph balancing method
+  $allItems = intval(!!$switches[0]["all_items"]); // Display all items, as opposed to limiting to participating ones
+  $allRelations = intval(!!$switches[0]["all_relations"]); // Display all relations (if selected or by default)
+
+  if ($graphStructure==1) {
+    queue_js_file('cytoscape-spread');
+  }
+
+  // ----- Inject necessary JavaScript variables into code
+
+  queue_js_string(
+    'var cytoBaseUrl = ' . json_encode(CURRENT_BASE_URL) . "; " .
+    'var cytoGraphStructure = ' . $graphStructure . ";"
+  );
+
+
+  echo head(
+    array(
+      'title' => in_getExhibitField('title'),
+      'bodyclass' => 'network show'
+    )
+  );
+?>
 <!-- Exhibit title: -->
 <h1><?php echo in_getExhibitField('title'); ?></h1>
 <hr>
 <div id="cy"></div>
   <?php
-    $db = get_db();
-
     // ------------------------------------ Fetch network exhibit data
-
-    // ----- Get display configuration switches
-
-    $selectSwitches = "
-      SELECT all_items, all_relations
-      FROM `$db->NetworkExhibit`
-      WHERE id = $exhibit_id
-    ";
-    $switches = $db->fetchAll($selectSwitches);
-    $allItems = intval(!!$switches[0]["all_items"]); // Display all items, as opposed to limiting to participating ones
-    $allRelations = intval(!!$switches[0]["all_relations"]); // Display all relations (if selected or by default)
 
     // ----- Get required relation IDs (if set)
 
