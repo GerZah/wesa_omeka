@@ -65,7 +65,7 @@
               <li>
                 <?php echo in_getExhibitLink(
                   $e, 'show', __('Display'),
-                  array('class' => 'public'), true
+                  array('class' => 'public', 'target' => '_blank'), true
                 ); ?>
               </li>
 
