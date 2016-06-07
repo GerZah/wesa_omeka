@@ -20,12 +20,13 @@
   // ----- Get display configuration switches
 
   $selectSwitches = "
-    SELECT graph_structure, all_items, all_relations
+    SELECT graph_structure, all_items, all_relations, color_item_types
     FROM `$db->NetworkExhibit`
     WHERE id = $exhibit_id
   ";
   $switches = $db->fetchAll($selectSwitches);
   $graphStructure = intval($switches[0]["graph_structure"]); // Which graph balancing method
+  $colorItemTypes = intval(!!$switches[0]["color_item_types"]); // Display different item types in different colors
   $allItems = intval(!!$switches[0]["all_items"]); // Display all items, as opposed to limiting to participating ones
   $allRelations = intval(!!$switches[0]["all_relations"]); // Display all relations (if selected or by default)
 
@@ -163,7 +164,8 @@
       $nodeData[] = array (
         "data" => array(
           "id" => $item["item_id"],
-          "name" => @$item["item_title"]
+          "name" => @$item["item_title"],
+          "type" => 0
         )
       );
     }

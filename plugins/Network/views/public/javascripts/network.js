@@ -53,6 +53,11 @@ jQuery(document).ready(function () {
               'target-arrow-color': 'black',
               'source-arrow-color': 'black'
             })
+          .selector(".foo")
+            .css({
+              'background-color': 'red',
+              'text-outline-color': 'red',
+            })
           .selector('.faded')
             .css({
               'opacity': 0.25,
@@ -70,6 +75,7 @@ jQuery(document).ready(function () {
       $(nodeData).each(function(){
         var id = this.data.id;
         var name = this.data.name;
+        var type = this.data.type;
         var itemUrl = cytoBaseUrl + "/items/show/" + this.data.id;
         cy.$("#"+id).qtip({
           content: "<a href='"+itemUrl+"' target='_blank'>" + name +  "</a>",
@@ -85,6 +91,9 @@ jQuery(document).ready(function () {
               }
             }
         });
+        if (type>0) {
+          cy.$("#"+id).addClass("foo");
+        }
       });
 
       cy.on('tap', 'node', function(e){

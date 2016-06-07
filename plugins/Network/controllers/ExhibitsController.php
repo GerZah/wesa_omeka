@@ -88,6 +88,7 @@ public function addAction()
 
   $exhibit = new NetworkExhibit;
   $exhibit->all_relations = true;
+  $exhibit->color_item_types = true;
   $form = $this->_getExhibitForm($exhibit);
 
   // Process form submission.

@@ -79,6 +79,15 @@ class Network_Form_Exhibit extends Omeka_Form
             'value'         => $this->exhibit->graph_structure
         ));
 
+        // Color item types:
+        $this->addElement('checkbox', 'color_item_types', array(
+            'label'         => __('Color Item Types'),
+            'description'   => __('By default, items from different item types will be displayed '.
+                                  'in different colors. Uncheck this box if you want all of them '.
+                                  'to remain black/grey.'),
+            'value'         => $this->exhibit->color_item_types
+        ));
+
         // All Items:
         $this->addElement('checkbox', 'all_items', array(
             'label'         => __('All Items'),
@@ -119,6 +128,7 @@ class Network_Form_Exhibit extends Omeka_Form
         $this->addDisplayGroup(array(
             'title',
             'graph_structure',
+            'color_item_types',
             'public',
             'all_items',
             'all_relations',
