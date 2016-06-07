@@ -14,6 +14,7 @@ class NetworkRecord extends Network_Row_Expandable
 
     public $owner_id = 0;
     public $item_id;
+    public $item_type_id;
     public $exhibit_id;
     public $added;
     public $modified;
@@ -41,6 +42,7 @@ class NetworkRecord extends Network_Row_Expandable
             // Set exhibit and item foreign keys.
             if (!is_null($exhibit)) $this->exhibit_id = $exhibit->id;
             if (!is_null($item)) $this->item_id = $item->id;
+            if (!is_null($item)) $this->item_type_id = $item->item_type_id;
 
 
         }

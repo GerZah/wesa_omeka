@@ -23,6 +23,7 @@
                     $fields['id'] =  $itemField['id'];
                     $fields['owner_id'] =  $itemField['owner_id'];
                     $fields['item_id'] =  $itemField['item_id'];
+                    $fields['item_type_id'] =  $itemField['item_type_id'];
                     $fields['exhibit_id'] =  $itemField['exhibit_id'];
                     $fields['added'] =  $itemField['added'];
                     $fields['modified'] =  $itemField['modified'];
@@ -38,6 +39,7 @@
                    echo $this->formHidden('id', $fields['id']);
                    echo $this->formHidden('owner_id', $fields['owner_id']);
                    echo $this->formHidden('item_id', $fields['item_id'] );
+                   echo $this->formHidden('item_type_id', $fields['item_type_id'] );
                    echo $this->formHidden('exhibit_id', $fields['exhibit_id']);
                    echo $this->formHidden('added', $fields['added']);
                    echo $this->formHidden('modified', $fields['modified']);

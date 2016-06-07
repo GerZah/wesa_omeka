@@ -41,6 +41,7 @@ SQL
         id                      INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
         owner_id                INT(10) UNSIGNED NOT NULL,
         item_id                 INT(10) UNSIGNED NULL,
+        item_type_id            INT(10) UNSIGNED NULL,
         exhibit_id              INT(10) UNSIGNED NULL,
         added                   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         modified                TIMESTAMP NULL,

@@ -27,15 +27,16 @@
       <tbody>
         <?php
         $db = get_db();
-        $select = "SELECT nr.item_id as recordItemId, nr.id as recordId, nr.item_title as itemName,it.id as itemId, it.item_type_id as itemTypeId, ty.id as typeId, ty.name as typeName
+        $select = "
+        SELECT
+          nr.item_id as recordItemId,
+          nr.item_title as itemName,
+          ty.name as typeName,
+          nr.id as recordId
         FROM {$db->NetworkRecord} nr
-        LEFT JOIN {$db->Item} it
-        ON nr.item_id = it.id
-        LEFT JOIN {$db->Item_Types} ty
-        ON it.item_type_id = ty.id
-        WHERE it.id IS NOT NULL
-        OR ty.id IS NOT NULL
-        GROUP BY nr.item_id";
+        LEFT JOIN {$db->Item_Types} ty ON nr.item_type_id = ty.id
+        WHERE 1
+        ";
 
         $elements = $db->fetchAll($select);
         $data = array();
@@ -44,34 +45,33 @@
           $data['itemName'] =  $element['itemName'];
           $data['typeName'] =  $element['typeName'];
           $record_id =  $element['recordId'];
-       if($elements)
-       {
-         ?>
-           <tr>
-          <td><?php echo $data['recordItemId'] ?>
-          </td>
-          <td><?php echo $data['itemName'] ?>
-          </td>
-          <td><?php echo $data['typeName'] ?>
-          </td>
-          <td>
-                <a class="confirm" href="<?php echo $this->url('network/remove/', array('record_id' => $record_id)); ?>" ><?php echo __('Remove'); ?></a>
-          </td>
-        </tr>
-        <?php
-      }
-  else {
-    $elements ="null";
-    ?>
-    <tr>
-      <td><?php echo __("[n/a]"); ?></td>
-      <td><?php echo __("[n/a]"); ?></td>
-      <td><?php echo __("[n/a]"); ?></td>
-      <td><?php echo __("[n/a]"); ?></td>
-    </tr>
-    <?php
-}
- }; ?>
+          if($elements) {
+            ?>
+            <tr>
+              <td><?php echo $data['recordItemId'] ?></td>
+              <td><?php echo $data['itemName'] ?></td>
+              <td><?php echo $data['typeName'] ?></td>
+              <td>
+                <a class="confirm"
+                  href="<?php echo $this->url('network/remove/', array('record_id' => $record_id)); ?>">
+                  <?php echo __('Remove'); ?>
+                </a>
+              </td>
+            </tr>
+          <?php
+          }
+          else {
+            $elements ="null";
+            ?>
+            <tr>
+              <td><?php echo __("[n/a]"); ?></td>
+              <td><?php echo __("[n/a]"); ?></td>
+              <td><?php echo __("[n/a]"); ?></td>
+              <td><?php echo __("[n/a]"); ?></td>
+            </tr>
+            <?php
+          }
+        }; ?>
       </tbody>
   </table>
   <script>
