@@ -117,7 +117,11 @@ class Network_Form_Exhibit extends Omeka_Form
             'value'  => explode(",", $this->exhibit->selected_relations),
             'multiOptions' => $itemRelationValues,
             'size' => 10
-          ));
+        ));
+        $this->addElement('button', 'unselect_relations', array(
+            'label' => __('Unselect'),
+            'class' => "red button"
+        ));
 
         // select item references
         $hasReferences = NetworkPlugin::itemReferencesActive();
@@ -129,24 +133,18 @@ class Network_Form_Exhibit extends Omeka_Form
           $referenceElementsJson=get_option('item_references_select');
           if (!$referenceElementsJson) { $referenceElementsJson="[]"; }
           $referenceElements = json_decode($referenceElementsJson,true);
-
-          // see ItemReferences:hookConfigForm()
-          $db = get_db();
-          $ids = implode(",", $referenceElements);
-          $sql = "SELECT id, name FROM `$db->Elements` WHERE id in ($ids)";
-          $itemReferencesArr = $db->fetchALl($sql);
-
-          $itemReferences = array();
-          foreach($itemReferencesArr as $itemReference) {
-            $itemReferences[$itemReference["id"]] = $itemReference["name"];
-          }
+          $referenceElementTitles = NetworkPlugin::referenceElementTitles($referenceElements);
 
           $this->addElement('multiselect', 'item_references', array(
               'label'         => __('Item References'),
               'description'   => __('As the Item References plugin is installed, you may choose which reference elements types should be displayed as item connections in your network graph. Deselect all to omit item references at all.'),
-              'multiOptions'  => $itemReferences,
+              'multiOptions'  => $referenceElementTitles,
               'value'         => explode(",", $this->exhibit->item_references),
               'size' => 10
+          ));
+          $this->addElement('button', 'unselect_references', array(
+              'label' => __('Unselect'),
+              'class' => "red button"
           ));
         }
 
@@ -163,7 +161,9 @@ class Network_Form_Exhibit extends Omeka_Form
             'all_items',
             'all_relations',
             'selected_relations',
+            'unselect_relations',
             'item_references',
+            'unselect_references',
         ), 'fields');
 
         $this->addDisplayGroup(array(

@@ -15,4 +15,7 @@ jQuery(document).ready(function() {
     first = false;
   }
 
+  $("#unselect_relations").click(function() { $("#selected_relations option:selected").prop("selected", false); });
+  $("#unselect_references").click(function() { $("#item_references option:selected").prop("selected", false); });
+
 });

@@ -156,4 +156,21 @@ class NetworkPlugin extends Omeka_Plugin_AbstractPlugin
       ));
     }
 
+    /**
+     * Retrieve titles for item references
+     */
+    public function referenceElementTitles($referenceElements) {
+      // see ItemReferences:hookConfigForm()
+      $db = get_db();
+      $ids = implode(",", $referenceElements);
+      $sql = "SELECT id, name FROM `$db->Elements` WHERE id in ($ids)";
+      $itemReferencesArr = $db->fetchALl($sql);
+
+      $referenceElementTitles = array();
+      foreach($itemReferencesArr as $itemReference) {
+        $referenceElementTitles[$itemReference["id"]] = $itemReference["name"];
+      }
+      return $referenceElementTitles;
+    }
+
 }
