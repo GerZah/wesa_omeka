@@ -20,7 +20,7 @@
   // ----- Get display configuration switches
 
   $selectSwitches = "
-    SELECT graph_structure, all_items, all_relations, color_item_types
+    SELECT graph_structure, all_items, all_relations, all_references, color_item_types
     FROM `$db->NetworkExhibit`
     WHERE id = $exhibit_id
   ";
@@ -29,6 +29,7 @@
   $colorItemTypes = intval(!!$switches[0]["color_item_types"]); // Display different item types in different colors
   $allItems = intval(!!$switches[0]["all_items"]); // Display all items, as opposed to limiting to participating ones
   $allRelations = intval(!!$switches[0]["all_relations"]); // Display all relations (if selected or by default)
+  $allReferences = intval(!!$switches[0]["all_references"]); // Display all references (if selected or by default)
 
   if ($graphStructure==1) {
     queue_js_file('cytoscape-spread');

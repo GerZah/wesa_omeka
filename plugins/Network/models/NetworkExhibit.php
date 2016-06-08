@@ -23,6 +23,7 @@ class NetworkExhibit extends Network_Row_Expandable
     public $all_items;
     public $all_relations;
     public $selected_relations;
+    public $all_references;
     public $selected_references;
     public $public = 0;
 

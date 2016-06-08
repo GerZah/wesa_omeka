@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Network/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-06-07 18:59+0200\n"
+"PO-Revision-Date: 2016-06-08 17:14+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -24,17 +24,17 @@ msgstr ""
 msgid "Network"
 msgstr "Netzwerk"
 
-#: controllers/ExhibitsController.php:276
+#: controllers/ExhibitsController.php:277
 #, php-format
 msgid "The exhibit \"%s\" was successfully deleted!"
 msgstr "Die Ausstellung \"%s\" wurde erfolgreich gelöscht!"
 
-#: controllers/ExhibitsController.php:289
+#: controllers/ExhibitsController.php:290
 #, php-format
 msgid "This will delete \"%s\" and its associated metadata."
 msgstr "Hiermit wird \"%s\" sowie alle zugehörigen Metadaten gelöscht."
 
-#: controllers/ExhibitsController.php:300
+#: controllers/ExhibitsController.php:301
 msgid "The item import was successfully started!"
 msgstr "Der Objekt-Import wurde erfolgreich gestartet."
 
@@ -106,7 +106,27 @@ msgstr "Objekt-Beziehungen"
 msgid "Please select all relations that you would like to display. If you do not want to display any relations, deselect all."
 msgstr "Bitte wählen Sie alle Beziehungen, die Sie darstellen wollen. Wenn Sie keine Beziehungen darstellen wollen, entfernen Sie alle Markierungen."
 
-#: forms/Network_Form_Exhibit.php:125
+#: forms/Network_Form_Exhibit.php:122 forms/Network_Form_Exhibit.php:155
+msgid "Unselect"
+msgstr "Deselektieren"
+
+#: forms/Network_Form_Exhibit.php:132
+msgid "All Item References"
+msgstr "Alle Objektreferenzen"
+
+#: forms/Network_Form_Exhibit.php:133
+msgid "By default, all reference elements will be displayed. Uncheck this box to limit the displayed element types."
+msgstr "Standardmäßig werden alle Referenz-Elemente dargestellt. Entfernen Sie diese Markierung, um die dargestellten Elemente zu begrenzen."
+
+#: forms/Network_Form_Exhibit.php:147
+msgid "Item References"
+msgstr "Objektreferenzen"
+
+#: forms/Network_Form_Exhibit.php:148
+msgid "Please select all reference elements that you would like to display. If you do not want to display any reference elements, deselect all."
+msgstr "Bitte wählen Sie alle Referenz-Elemente, die Sie darstellen wollen. Wenn Sie keine Referenzen darstellen wollen, entfernen Sie alle Markierungen."
+
+#: forms/Network_Form_Exhibit.php:162
 msgid "Save Exhibit"
 msgstr "Ausstellung speichern"
 

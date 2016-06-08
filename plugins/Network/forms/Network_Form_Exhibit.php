@@ -127,7 +127,15 @@ class Network_Form_Exhibit extends Omeka_Form
         $hasReferences = NetworkPlugin::itemReferencesActive();
 
         if ($hasReferences) {
-          // Item References:
+          // All References
+          $this->addElement('checkbox', 'all_references', array(
+              'label'         => __('All Item References'),
+              'description'   => __('By default, all reference elements will be displayed. '.
+                                    'Uncheck this box to limit the displayed element types.'),
+              'value'         => $this->exhibit->all_references
+          ));
+
+          // Selected References:
 
           // vgl. ItemReferences:_retrieveReferenceElements()
           $referenceElementsJson=get_option('item_references_select');
@@ -137,7 +145,8 @@ class Network_Form_Exhibit extends Omeka_Form
 
           $this->addElement('multiselect', 'selected_references', array(
               'label'         => __('Item References'),
-              'description'   => __('As the Item References plugin is installed, you may choose which reference elements types should be displayed as item connections in your network graph. Deselect all to omit item references at all.'),
+              'description' => __('Please select all reference elements that you would like to display. '.
+                                  'If you do not want to display any reference elements, deselect all.'),
               'multiOptions'  => $referenceElementTitles,
               'value'         => explode(",", $this->exhibit->selected_references),
               'size' => 10
@@ -162,6 +171,7 @@ class Network_Form_Exhibit extends Omeka_Form
             'all_relations',
             'selected_relations',
             'unselect_relations',
+            'all_references',
             'selected_references',
             'unselect_references',
         ), 'fields');

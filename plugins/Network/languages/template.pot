@@ -25,17 +25,17 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
-#: controllers/ExhibitsController.php:276
+#: controllers/ExhibitsController.php:277
 #, php-format
 msgid "The exhibit \"%s\" was successfully deleted!"
 msgstr ""
 
-#: controllers/ExhibitsController.php:289
+#: controllers/ExhibitsController.php:290
 #, php-format
 msgid "This will delete \"%s\" and its associated metadata."
 msgstr ""
 
-#: controllers/ExhibitsController.php:300
+#: controllers/ExhibitsController.php:301
 msgid "The item import was successfully started!"
 msgstr ""
 
@@ -124,7 +124,31 @@ msgid ""
 "want to display any relations, deselect all."
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:125
+#: forms/Network_Form_Exhibit.php:122 forms/Network_Form_Exhibit.php:155
+msgid "Unselect"
+msgstr ""
+
+#: forms/Network_Form_Exhibit.php:132
+msgid "All Item References"
+msgstr ""
+
+#: forms/Network_Form_Exhibit.php:133
+msgid ""
+"By default, all reference elements will be displayed. Uncheck this box to "
+"limit the displayed element types."
+msgstr ""
+
+#: forms/Network_Form_Exhibit.php:147
+msgid "Item References"
+msgstr ""
+
+#: forms/Network_Form_Exhibit.php:148
+msgid ""
+"Please select all reference elements that you would like to display. If you "
+"do not want to display any reference elements, deselect all."
+msgstr ""
+
+#: forms/Network_Form_Exhibit.php:162
 msgid "Save Exhibit"
 msgstr ""
 
