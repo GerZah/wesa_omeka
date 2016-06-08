@@ -27,6 +27,7 @@ function in_schema()
         all_items               TINYINT(1) NOT NULL,
         all_relations           TINYINT(1) NOT NULL,
         selected_relations      TEXT NULL,
+        item_references         TEXT NULL,
 
         PRIMARY KEY             (id)
 

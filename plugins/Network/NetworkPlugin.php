@@ -145,4 +145,15 @@ class NetworkPlugin extends Omeka_Plugin_AbstractPlugin
         return array_merge($globals, in_globals($args['exhibit']));
     }
 
+    /**
+     * Determine whether the ItemReferences module is installed and active
+     * @return boolean Installed and active -- or not.
+     */
+    public function itemReferencesActive() {
+      $db = get_db();
+      return !!($db->fetchOne(
+        "SELECT active FROM `$db->Plugins` WHERE name='ItemReferences'"
+      ));
+    }
+
 }

@@ -116,9 +116,39 @@ class Network_Form_Exhibit extends Omeka_Form
                                 'If you do not want to display any relations, deselect all.'),
             'value'  => explode(",", $this->exhibit->selected_relations),
             'multiOptions' => $itemRelationValues,
-            'size' => 20,
-              'style' => 'width: 500px;'
+            'size' => 10
           ));
+
+        // select item references
+        $hasReferences = NetworkPlugin::itemReferencesActive();
+
+        if ($hasReferences) {
+          // Item References:
+
+          // vgl. ItemReferences:_retrieveReferenceElements()
+          $referenceElementsJson=get_option('item_references_select');
+          if (!$referenceElementsJson) { $referenceElementsJson="[]"; }
+          $referenceElements = json_decode($referenceElementsJson,true);
+
+          // see ItemReferences:hookConfigForm()
+          $db = get_db();
+          $ids = implode(",", $referenceElements);
+          $sql = "SELECT id, name FROM `$db->Elements` WHERE id in ($ids)";
+          $itemReferencesArr = $db->fetchALl($sql);
+
+          $itemReferences = array();
+          foreach($itemReferencesArr as $itemReference) {
+            $itemReferences[$itemReference["id"]] = $itemReference["name"];
+          }
+
+          $this->addElement('multiselect', 'item_references', array(
+              'label'         => __('Item References'),
+              'description'   => __('As the Item References plugin is installed, you may choose which reference elements types should be displayed as item connections in your network graph. Deselect all to omit item references at all.'),
+              'multiOptions'  => $itemReferences,
+              'value'         => explode(",", $this->exhibit->item_references),
+              'size' => 10
+          ));
+        }
 
         // Submit:
         $this->addElement('submit', 'submit', array(
@@ -132,7 +162,8 @@ class Network_Form_Exhibit extends Omeka_Form
             'public',
             'all_items',
             'all_relations',
-            'selected_relations'
+            'selected_relations',
+            'item_references',
         ), 'fields');
 
         $this->addDisplayGroup(array(
