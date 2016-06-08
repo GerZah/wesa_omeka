@@ -124,9 +124,7 @@ class Network_Form_Exhibit extends Omeka_Form
         ));
 
         // select item references
-        $hasReferences = NetworkPlugin::itemReferencesActive();
-
-        if ($hasReferences) {
+        if (NetworkPlugin::itemReferencesActive()) {
           // All References
           $this->addElement('checkbox', 'all_references', array(
               'label'         => __('All Item References'),

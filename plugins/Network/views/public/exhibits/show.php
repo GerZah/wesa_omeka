@@ -78,7 +78,7 @@
       : "AND ($allRelations)"
     );
 
-    // Item subquery -- actually fetches all items that were imported into this exhibt
+    // Item subquery -- actually fetches all items that were imported into this exhibit
     $selectItemIds = "
       SELECT item_id
       FROM `$db->NetworkRecord`
@@ -117,6 +117,54 @@
     $propertyLabels = array();
     foreach($propertyLabelSets as $propertyLabelSet) {
       $propertyLabels[$propertyLabelSet["id"]] = $propertyLabelSet["label"];
+    }
+
+    // ----- Get actual references
+    if (NetworkPlugin::itemReferencesActive()) {
+
+      $referenceElements = "";
+      if ($allReferences) {
+        $referenceElementsJson=get_option('item_references_select');
+        if (!$referenceElementsJson) { $referenceElementsJson="[]"; }
+        $referenceElements = json_decode($referenceElementsJson,true);
+        $referenceElements = implode(",", $referenceElements);
+      }
+      else {
+        $selectReferences = "
+          SELECT selected_references
+          FROM `$db->NetworkExhibit`
+          WHERE id = $exhibit_id
+        ";
+        $referenceElements = $db->fetchOne($selectReferences);
+      }
+
+      if ($referenceElements) {
+
+        // fetch reference elements texts for imported items -- limit to references inside the imported collection
+        $selectReferencedElements = "
+          SELECT record_id as subject_item_id, element_id as reference_property_id, text as object_item_id
+          FROM `$db->ElementTexts`
+          WHERE element_id IN ($referenceElements)
+          AND record_id IN ($selectItemIds)
+          AND text IN ($selectItemIds)
+        ";
+        // As "text" contains only the target's numerical value, this works just fine
+        $refEdges = $db->fetchAll($selectReferencedElements);
+
+        foreach($refEdges as $refEdge) {
+          $edges[] = array(
+            "subject_item_id" => $refEdge["subject_item_id"],
+            "property_id" => "R".$refEdge["reference_property_id"], // add a "R" prefix for "reference property"
+            "object_item_id" => $refEdge["object_item_id"]
+          );
+        }
+
+        $referenceElementTitles = NetworkPlugin::referenceElementTitles(explode(",", $referenceElements));
+        // Add the reference element titles as edge label properties -- again with the "R" prefix
+        foreach($referenceElementTitles as $key => $val) { $propertyLabels["R".$key] = $val; }
+
+      }
+
     }
 
     // ----- Generate item list
@@ -185,7 +233,7 @@
         "data" => array(
           "source" => $edge["subject_item_id"],
           "target" => $edge["object_item_id"],
-          "label" => @$propertyLabels[$edge["property_id"]],
+          "label" => @$propertyLabels[$edge["property_id"]], // works both for relations and references due to "R" prefix
         )
       );
     }
