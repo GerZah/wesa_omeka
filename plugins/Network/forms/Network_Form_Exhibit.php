@@ -135,11 +135,11 @@ class Network_Form_Exhibit extends Omeka_Form
           $referenceElements = json_decode($referenceElementsJson,true);
           $referenceElementTitles = NetworkPlugin::referenceElementTitles($referenceElements);
 
-          $this->addElement('multiselect', 'item_references', array(
+          $this->addElement('multiselect', 'selected_references', array(
               'label'         => __('Item References'),
               'description'   => __('As the Item References plugin is installed, you may choose which reference elements types should be displayed as item connections in your network graph. Deselect all to omit item references at all.'),
               'multiOptions'  => $referenceElementTitles,
-              'value'         => explode(",", $this->exhibit->item_references),
+              'value'         => explode(",", $this->exhibit->selected_references),
               'size' => 10
           ));
           $this->addElement('button', 'unselect_references', array(
@@ -162,7 +162,7 @@ class Network_Form_Exhibit extends Omeka_Form
             'all_relations',
             'selected_relations',
             'unselect_relations',
-            'item_references',
+            'selected_references',
             'unselect_references',
         ), 'fields');
 

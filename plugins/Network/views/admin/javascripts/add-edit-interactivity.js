@@ -16,6 +16,6 @@ jQuery(document).ready(function() {
   }
 
   $("#unselect_relations").click(function() { $("#selected_relations option:selected").prop("selected", false); });
-  $("#unselect_references").click(function() { $("#item_references option:selected").prop("selected", false); });
+  $("#unselect_references").click(function() { $("#selected_references option:selected").prop("selected", false); });
 
 });
