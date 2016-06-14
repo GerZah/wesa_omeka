@@ -38,3 +38,7 @@ if (isset($_POST['tags'])) { $tags = $_POST['tags']; }
   name="submit_search"
   value="<?php echo __('Import Items'); ?>" />
 </div>
+
+</div>
+
+<?php echo foot(); ?>

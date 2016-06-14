@@ -209,7 +209,7 @@ public function confirmAction()
 
   // get POST values, fetchAll from items table and display
 
-  echo "<pre>" . print_r($_POST) . "</pre>"; die();
+  // echo "<pre>" . print_r($_POST,true) . "</pre>"; //die();
 }
 
 
