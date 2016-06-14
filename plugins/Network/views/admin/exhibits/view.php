@@ -19,66 +19,64 @@
 <table>
     <thead>
       <tr>
-        <th><?php echo __('Item Id'); ?></th>
-        <th><?php echo __('Item Title'); ?></th>
+        <th class="clickable"><?php echo __('Item Id'); ?></th>
+        <th class="clickable"><?php echo __('Item Title'); ?></th>
         <th><?php echo __('Item Type'); ?></th>
         <th><?php echo __('Actions'); ?></th>
       </tr>
       <tbody>
         <?php
         $db = get_db();
+        $exhibitId = in_getExhibitField('id');
         $select = "
-        SELECT
-          nr.item_id as recordItemId,
-          nr.item_title as itemName,
-          ty.name as typeName,
-          nr.id as recordId
-        FROM {$db->NetworkRecord} nr
-        LEFT JOIN {$db->Item_Types} ty ON nr.item_type_id = ty.id
-        WHERE 1
+          SELECT
+            nr.item_id as recordItemId,
+            nr.item_title as itemName,
+            it.name as typeName,
+            nr.id as recordId
+          FROM {$db->NetworkRecord} nr
+          LEFT JOIN {$db->Item_Types} it ON nr.item_type_id = it.id
+          WHERE nr.exhibit_id = $exhibitId
+          ORDER BY nr.item_title
         ";
 
         $elements = $db->fetchAll($select);
-        $data = array();
-        foreach($elements as $element) {
-          $data['recordItemId'] =  $element['recordItemId'];
-          $data['itemName'] =  $element['itemName'];
-          $data['typeName'] =  $element['typeName'];
-          $record_id =  $element['recordId'];
-          if($elements) {
+        if($elements) {
+          foreach($elements as $element) {
+            $itemUrl = url('items/show/' . $element['recordItemId']);
             ?>
+              <tr>
+                <td><a href="<?php echo $itemUrl; ?>"><?php echo $element['recordItemId']; ?></a></td>
+                <td><a href="<?php echo $itemUrl; ?>"><?php echo $element['itemName']; ?></a></td>
+                <td><?php echo $element['typeName']; ?></td>
+                <td>
+                  <a class="confirm"
+                    href="<?php echo $this->url('network/remove/', array('record_id' => $element['recordId'])); ?>">
+                    <?php echo __('Remove'); ?>
+                  </a>
+                </td>
+              </tr>
+            <?php
+          };
+        }
+        else {
+          $elements ="null";
+          ?>
             <tr>
-              <td><?php echo $data['recordItemId'] ?></td>
-              <td><?php echo $data['itemName'] ?></td>
-              <td><?php echo $data['typeName'] ?></td>
-              <td>
-                <a class="confirm"
-                  href="<?php echo $this->url('network/remove/', array('record_id' => $record_id)); ?>">
-                  <?php echo __('Remove'); ?>
-                </a>
-              </td>
+              <td><?php echo __("[n/a]"); ?></td>
+              <td><?php echo __("[n/a]"); ?></td>
+              <td><?php echo __("[n/a]"); ?></td>
+              <td><?php echo __("[n/a]"); ?></td>
             </tr>
           <?php
-          }
-          else {
-            $elements ="null";
-            ?>
-            <tr>
-              <td><?php echo __("[n/a]"); ?></td>
-              <td><?php echo __("[n/a]"); ?></td>
-              <td><?php echo __("[n/a]"); ?></td>
-              <td><?php echo __("[n/a]"); ?></td>
-            </tr>
-            <?php
-          }
-        }; ?>
+        }
+      ?>
       </tbody>
   </table>
   <script>
-  jQuery(document).ready(function()
-  {
+  jQuery(document).ready(function() {
     var $ = jQuery;
-    $('th').click(function(){
+    $('th.clickable').click(function(){
       var table = $(this).parents('table').eq(0)
       var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
       this.asc = !this.asc
@@ -91,7 +89,7 @@
         return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.localeCompare(valB)
       }
     }
-    function getCellValue(row, index){ return $(row).children('td').eq(index).html() }
+    function getCellValue(row, index){ return $(row).children('td').eq(index).text() }
   });
   </script>
 
