@@ -724,6 +724,7 @@ SQL
 
   		$regExIdx = "^\d+$"; // decimal number of at least one digit
   		$regExLatLng = "^(?:\+|-)?\d+(?:.\d+)?$"; // (+|-)1234(.1234) as latitude or longitude coordinate
+  		$regExProtoUrl = "^[a-z]+(?:s)?://.*$"; // image URL starts with a protocol, like http://, https:// etc.
 
   		foreach($mapOverlays as $mapOverlay) {
 
@@ -750,6 +751,11 @@ SQL
   			} else { break; }
 
   			if ( (floatval($latNorth) <= floatval($latSouth)) or (floatval($lngWest) >= floatval($lngEast)) ) { break; }
+
+        if ( !preg_match( "($regExProtoUrl)",$imgUrl) ) {
+          $imgUrl = ltrim($imgUrl, "/");
+          $imgUrl=public_url("mapoverlays/$imgUrl");
+        }
 
   			$result[$idx] = array( "identifier" => $identifier,
   															"imgUrl" => $imgUrl,
