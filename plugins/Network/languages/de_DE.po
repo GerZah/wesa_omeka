@@ -1,0 +1,273 @@
+# Translation for the Network plugin for Omeka.
+# Copyright (C) 2015 Gero Zahn
+# This file is distributed under the same license as the Omeka package.
+#
+# Translators:
+# Gero Zahn <gerozahn@campus.uni-paderborn.de>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: WeSa Omeka\n"
+"Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Network/issues\n"
+"POT-Creation-Date: 2012-01-09 21:49-0500\n"
+"PO-Revision-Date: 2016-06-08 17:14+0200\n"
+"Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
+"Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de_DE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.7\n"
+
+#: NetworkPlugin.php:118 NetworkPlugin.php:131 views/admin/exhibits/add.php:14 views/admin/exhibits/browse.php:14 views/admin/exhibits/confirm.php:14 views/admin/exhibits/edit.php:14 views/admin/exhibits/import.php:14 views/admin/exhibits/remove.php:3 views/admin/exhibits/view.php:14 views/public/exhibits/browse.php:13
+#: views/public/exhibits/browse.php:20
+msgid "Network"
+msgstr "Netzwerk"
+
+#: controllers/ExhibitsController.php:277
+#, php-format
+msgid "The exhibit \"%s\" was successfully deleted!"
+msgstr "Die Ausstellung \"%s\" wurde erfolgreich gelöscht!"
+
+#: controllers/ExhibitsController.php:290
+#, php-format
+msgid "This will delete \"%s\" and its associated metadata."
+msgstr "Hiermit wird \"%s\" sowie alle zugehörigen Metadaten gelöscht."
+
+#: controllers/ExhibitsController.php:301
+msgid "The item import was successfully started!"
+msgstr "Der Objekt-Import wurde erfolgreich gestartet."
+
+#: forms/Network_Form_Exhibit.php:46
+msgid "Title"
+msgstr "Titel"
+
+#: forms/Network_Form_Exhibit.php:47
+msgid "A top-level heading for the exhibit, displayed in the page header in the public view for the exhibit."
+msgstr "Die oberste Überschrift für die Ausstellung, die im Seitenkopf in der öffentlichen Ansicht der Ausstellung angezeigt werden soll."
+
+#: forms/Network_Form_Exhibit.php:56
+msgid "Enter a title."
+msgstr "Geben Sie einen Titel ein."
+
+#: forms/Network_Form_Exhibit.php:65 views/admin/exhibits/browse.php:36
+msgid "Public"
+msgstr "Öffentlich"
+
+#: forms/Network_Form_Exhibit.php:66
+msgid "By default, exhibits are visible only to site administrators. Check here to publish the exhibit to the public site."
+msgstr "Standardmäßig sind Ausstellungen nur für Administratoren sichtbar. Wählen Sie dies aus, um die Ausstellung auf der öffentlichen Seite sichtbar zu machen."
+
+#: forms/Network_Form_Exhibit.php:73
+msgid "Graph Structure"
+msgstr "Graph-Struktur"
+
+#: forms/Network_Form_Exhibit.php:74
+msgid "The network graph supports multiple graph structuring heuristics: While \"Grid\" is the default, \"Spread\" provides an always different, more organic presentation, which might require significantly more browser resources to initially balance the graph."
+msgstr "Der Netzwerk-Graph unterstützt mehrere Heuristiken zur Graphen-Strukturierung: Während \"Raster\" die Standardeinstellung darstellt, bietet \"Verteilt\" eine bei jedem Aufruf andere, eher organische Repräsentation, obwohl diese möglicherweise deutlich mehr Browser-Ressourcen bei der ursprünglichen Balancierung des Graphen erfordert."
+
+#: forms/Network_Form_Exhibit.php:78
+msgid "Grid"
+msgstr "Raster"
+
+#: forms/Network_Form_Exhibit.php:78
+msgid "Spread"
+msgstr "Verteilt"
+
+#: forms/Network_Form_Exhibit.php:84
+msgid "Color Item Types"
+msgstr "Objekttypen färben"
+
+#: forms/Network_Form_Exhibit.php:85
+msgid "By default, items from different item types will be displayed in different colors. Uncheck this box if you want all of them to remain black/grey."
+msgstr "Standardmäßig werden Objekte unterschiedlicher Objekttypen in unterschiedlichen Farben eingefärbt. Entfernen Sie diese Markierung, um alle Objekte in derselben Farbe darzustellen."
+
+#: forms/Network_Form_Exhibit.php:93
+msgid "All Items"
+msgstr "Alle Objekte"
+
+#: forms/Network_Form_Exhibit.php:94
+msgid "By default, the network will display only those items that have at least one connection to one other item. Check this box to force displaying all imported items."
+msgstr "Standardmäßig wird das Netzwerk nur die Objekte enthalten, die mindestens eine Verbindung zu einem anderen Objekt besitzen. Wählen Sie dies aus, um die Darstellung aller importierter Objekte zu erzwingen."
+
+#: forms/Network_Form_Exhibit.php:102
+msgid "All Item Relations"
+msgstr "Alle Objektbeziehungen"
+
+#: forms/Network_Form_Exhibit.php:103
+msgid "By default, all relations will be displayed. Uncheck this box to limit the displayed relations."
+msgstr "Standardmäßig werden alle Objektbeziehungen dargestellt. Entfernen Sie diese Markierung, um die dargestellten Beziehungen zu begrenzen."
+
+#: forms/Network_Form_Exhibit.php:114
+msgid "Item Relations"
+msgstr "Objekt-Beziehungen"
+
+#: forms/Network_Form_Exhibit.php:115
+msgid "Please select all relations that you would like to display. If you do not want to display any relations, deselect all."
+msgstr "Bitte wählen Sie alle Beziehungen, die Sie darstellen wollen. Wenn Sie keine Beziehungen darstellen wollen, entfernen Sie alle Markierungen."
+
+#: forms/Network_Form_Exhibit.php:122 forms/Network_Form_Exhibit.php:155
+msgid "Unselect"
+msgstr "Deselektieren"
+
+#: forms/Network_Form_Exhibit.php:132
+msgid "All Item References"
+msgstr "Alle Objektreferenzen"
+
+#: forms/Network_Form_Exhibit.php:133
+msgid "By default, all reference elements will be displayed. Uncheck this box to limit the displayed element types."
+msgstr "Standardmäßig werden alle Referenz-Elemente dargestellt. Entfernen Sie diese Markierung, um die dargestellten Elemente zu begrenzen."
+
+#: forms/Network_Form_Exhibit.php:147
+msgid "Item References"
+msgstr "Objektreferenzen"
+
+#: forms/Network_Form_Exhibit.php:148
+msgid "Please select all reference elements that you would like to display. If you do not want to display any reference elements, deselect all."
+msgstr "Bitte wählen Sie alle Referenz-Elemente, die Sie darstellen wollen. Wenn Sie keine Referenzen darstellen wollen, entfernen Sie alle Markierungen."
+
+#: forms/Network_Form_Exhibit.php:162
+msgid "Save Exhibit"
+msgstr "Ausstellung speichern"
+
+#: views/admin/exhibits/add.php:14 views/admin/exhibits/browse.php:25 views/admin/exhibits/browse.php:149
+msgid "Create an Exhibit"
+msgstr "Ausstellung erstellen"
+
+#: views/admin/exhibits/browse.php:14 views/public/exhibits/browse.php:13 views/public/exhibits/browse.php:20
+msgid "Browse Exhibits"
+msgstr "Ausstellungen durchstöbern"
+
+#: views/admin/exhibits/browse.php:33
+msgid "Exhibit"
+msgstr "Ausstellung"
+
+#: views/admin/exhibits/browse.php:34
+msgid "Created"
+msgstr "Erstellt"
+
+#: views/admin/exhibits/browse.php:35
+msgid "# Items"
+msgstr "# Objekte"
+
+#: views/admin/exhibits/browse.php:67
+msgid "Display"
+msgstr "Anzeige"
+
+#: views/admin/exhibits/browse.php:77
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: views/admin/exhibits/browse.php:87
+msgid "Items"
+msgstr "Objekte"
+
+#: views/admin/exhibits/browse.php:97
+msgid "Import"
+msgstr "Importieren"
+
+#: views/admin/exhibits/browse.php:107
+msgid "Delete"
+msgstr "Löschen"
+
+#: views/admin/exhibits/browse.php:129
+msgid "Yes"
+msgstr "Ja"
+
+#: views/admin/exhibits/browse.php:129
+msgid "No"
+msgstr "Nein"
+
+#: views/admin/exhibits/browse.php:144
+msgid "You have no exhibits."
+msgstr "Sie haben keine Ausstellungen."
+
+#: views/admin/exhibits/browse.php:145
+msgid "Get started by creating a new one!"
+msgstr "Starten Sie, indem Sie eine neue erstellen!"
+
+#: views/admin/exhibits/confirm.php:14
+msgid "Confirm Items to Import"
+msgstr "Objekte zum Importieren bestätigen"
+
+#: views/admin/exhibits/confirm.php:39 views/admin/exhibits/import.php:14 views/admin/exhibits/import.php:118
+msgid "Import Items"
+msgstr "Objekte importieren"
+
+#: views/admin/exhibits/edit.php:14
+#, php-format
+msgid "Edit \"%s\""
+msgstr "\"%s\" editieren"
+
+#: views/admin/exhibits/import.php:38
+msgid "Search by a Range of ID#s (eg: 1-4, 156, 79)"
+msgstr "Suchen nach Objekt-ID-Bereich (z.B. 1-4, 156, 79)"
+
+#: views/admin/exhibits/import.php:55
+msgid "Search By Collection"
+msgstr "Suchen nach Kollektion"
+
+#: views/admin/exhibits/import.php:75
+msgid "Search By Type"
+msgstr "Suchen nach Objekttyp"
+
+#: views/admin/exhibits/import.php:95
+msgid "Search By Tags"
+msgstr "Suchen nach Tags"
+
+#: views/admin/exhibits/import.php:112
+msgid "Preview and Import Items"
+msgstr "Voransicht und Objekte importieren"
+
+#: views/admin/exhibits/remove.php:3
+msgid "Remove Items from Exhibit"
+msgstr "Objekte aus der Ausstellung entfernen"
+
+#: views/admin/exhibits/remove.php:60
+msgid "You have successfully removed the item from exhibit."
+msgstr "Sie haben erfolgreich ein Objekt aus der Ausstellung entfernt"
+
+#: views/admin/exhibits/remove.php:66
+msgid "Undo"
+msgstr "Rückgängig"
+
+#: views/admin/exhibits/remove.php:67 views/admin/exhibits/undo.php:35
+msgid "Back"
+msgstr "Zurück"
+
+#: views/admin/exhibits/undo.php:2
+msgid "Re-add deleted item to Exhibit"
+msgstr "Gelöschtes Objekt wieder zur Ausstellung hinzufügen"
+
+#: views/admin/exhibits/undo.php:28
+msgid "You have successfully readded the item to exhibit."
+msgstr "Sie haben das Objekt erfolgreich erneut zur Ausstellung hinzugefügt."
+
+#: views/admin/exhibits/view.php:14
+#, php-format
+msgid "View Items in \"%s\""
+msgstr "Objekte in \"%s\" anschauen"
+
+#: views/admin/exhibits/view.php:22
+msgid "Item Id"
+msgstr "Objekt-ID"
+
+#: views/admin/exhibits/view.php:23
+msgid "Item Title"
+msgstr "Objekt-Titel"
+
+#: views/admin/exhibits/view.php:24
+msgid "Item Type"
+msgstr "Objekttyp"
+
+#: views/admin/exhibits/view.php:25
+msgid "Actions"
+msgstr "Aktionen"
+
+#: views/admin/exhibits/view.php:57
+msgid "Remove"
+msgstr "Entfernen"
+
+#: views/admin/exhibits/view.php:67 views/admin/exhibits/view.php:68 views/admin/exhibits/view.php:69 views/admin/exhibits/view.php:70
+msgid "[n/a]"
+msgstr "[n.v.]"
