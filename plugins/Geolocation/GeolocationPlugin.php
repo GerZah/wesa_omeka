@@ -755,6 +755,7 @@ SQL
         if ( !preg_match( "($regExProtoUrl)",$imgUrl) ) {
           $imgUrl = ltrim($imgUrl, "/");
           $imgUrl=public_url("mapoverlays/$imgUrl");
+          $imgUrl = $_SERVER["REQUEST_SCHEME"]."://".$_SERVER["HTTP_HOST"].$imgUrl;
         }
 
   			$result[$idx] = array( "identifier" => $identifier,
