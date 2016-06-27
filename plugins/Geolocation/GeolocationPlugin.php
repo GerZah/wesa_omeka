@@ -171,14 +171,18 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookAdminHead($args)
     {
         queue_css_file('geolocation-marker');
-        queue_js_url("//maps.google.com/maps/api/js?language=".get_html_lang()); # sensor=false&
+        queue_css_file('geolocation-slider');
+        # key=AIzaSyBKItvNq4ICenLMsRruVvf4mLfo6zVlLjA&
+        queue_js_url("https://maps.google.com/maps/api/js?language=".get_html_lang()); # sensor=false&
         queue_js_file('map');
     }
 
     public function hookPublicHead($args)
     {
         queue_css_file('geolocation-marker');
-        queue_js_url("//maps.google.com/maps/api/js?language=".get_html_lang()); # sensor=false&
+        queue_css_file('geolocation-slider');
+        # key=AIzaSyBKItvNq4ICenLMsRruVvf4mLfo6zVlLjA&
+        queue_js_url("https://maps.google.com/maps/api/js?language=".get_html_lang()); # sensor=false&
         queue_js_file('map');
     }
 
@@ -629,9 +633,10 @@ SQL
 				if ($overlays) {
 					$html .= '<tr>'.
                      '<th>' . __("Select Map Overlay:") . '</th>'.
-                     '<td colspan="2">'.
+                     '<td>'.
                        get_view()->formSelect('geolocation[overlay]', $overlay, null, $overlays["jsSelect"] ).
                      '</td>'.
+                     '<td><span id="ovlOpacSlider"></span></td>'.
                    '</tr>';
 				}
 

@@ -1,5 +1,6 @@
-<?php 
+<?php
 queue_css_file('geolocation-items-map');
+queue_css_file('jquery-ui');
 
 $title = __('Browse Items on the Map') . ' ' . __('(%s total)', $totalItems);
 echo head(array('title' => $title, 'bodyclass' => 'map browse'));
@@ -28,6 +29,7 @@ echo pagination_links();
                    '<span style="display:inline-block;"><form>'.
                        get_view()->formSelect('geolocation[overlay]', $overlay, null, $overlays["jsSelect"] ).
                    '</form></span>'.
+                   '<span id="ovlOpacSlider"></span>'.
                '</div>';
       }
     ?>
