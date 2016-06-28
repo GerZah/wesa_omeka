@@ -168,12 +168,15 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
         $router->addRoute('map_kml', $kmlRoute);
     }
 
+    // Google API Keys:
+    // gero.zahn@upb.de: AIzaSyBinFePMm2ICq3BoeYrcg7HCVFbqKgEd5I
+    // keil.upb@gmail.com: AIzaSyDTesk8eKAtPPHLu12JNz8V0kRvvzP_WxE
+
     public function hookAdminHead($args)
     {
         queue_css_file('geolocation-marker');
         queue_css_file('geolocation-slider');
-        # key=AIzaSyBKItvNq4ICenLMsRruVvf4mLfo6zVlLjA&
-        queue_js_url("https://maps.google.com/maps/api/js?language=".get_html_lang()); # sensor=false&
+        queue_js_url("https://maps.google.com/maps/api/js?key=AIzaSyDTesk8eKAtPPHLu12JNz8V0kRvvzP_WxE&language=".get_html_lang()); # sensor=false&
         queue_js_file('map');
     }
 
@@ -181,8 +184,7 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
     {
         queue_css_file('geolocation-marker');
         queue_css_file('geolocation-slider');
-        # key=AIzaSyBKItvNq4ICenLMsRruVvf4mLfo6zVlLjA&
-        queue_js_url("https://maps.google.com/maps/api/js?language=".get_html_lang()); # sensor=false&
+        queue_js_url("https://maps.google.com/maps/api/js?key=AIzaSyDTesk8eKAtPPHLu12JNz8V0kRvvzP_WxE&language=".get_html_lang()); # sensor=false&
         queue_js_file('map');
     }
 
@@ -490,7 +492,7 @@ SQL
         );
         return $layouts;
     }
-    
+
     public function filterApiImportOmekaAdapters($adapters, $args)
     {
         $geolocationAdapter = new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'Location');
@@ -544,7 +546,7 @@ SQL
 
         if (isset($args['tags'])) {
             $options['params']['tags'] = $args['tags'];
-        }        
+        }
 
         $pattern = '#^[0-9]*(px|%)$#';
 
@@ -584,7 +586,7 @@ SQL
             $post = $_POST;
         }
 
-        $usePost = !empty($post) 
+        $usePost = !empty($post)
                     && !empty($post['geolocation'])
                     && $post['geolocation']['longitude'] != ''
                     && $post['geolocation']['latitude'] != '';
@@ -610,7 +612,7 @@ SQL
 				$overlays = SELF::GeolocationConvertOverlayJsonForUse();
 
         $html .= '<div id="omeka-map-form" style="width: 100%; height: 300px"></div>';
-        
+
         $html .= '<div class="field">'.
                    '<table><tbody>'.
                     '<tr>'.
