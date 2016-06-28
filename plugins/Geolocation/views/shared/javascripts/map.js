@@ -87,7 +87,7 @@ OmekaMap.prototype = {
         this.map = new google.maps.Map(document.getElementById(this.mapDivId), mapOptions);
         this.markerBounds = new google.maps.LatLngBounds();
 
-        mapSelOverlay(this.options["overlay"], this.map);
+        mapSelOverlay(this.options["overlay"], this.map, true);
         var that = this;
         jQuery("#geoloc_ovl_options").ready(function() {
           initSlider();
@@ -450,7 +450,7 @@ OmekaMapForm.prototype = {
 
 };
 
-function mapSelOverlay(overlayIdx, map) {
+function mapSelOverlay(overlayIdx, map, preventSlider) {
   var done = false;
 
   if (typeof mapOverlay != 'undefined') { mapOverlay.setMap(null); }
@@ -467,7 +467,8 @@ function mapSelOverlay(overlayIdx, map) {
     done = true;
   }
 
-  jQuery(".ovlOpacSlider").slider("value", 100);
+  if (typeof preventSlider === "undefined") { preventSlider = false; }
+  if (!preventSlider) { jQuery(".ovlOpacSlider").slider("value", 100); }
 
   return done;
 }
