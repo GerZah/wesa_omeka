@@ -57,6 +57,7 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
         INDEX (`item_id`)) ENGINE = InnoDB";
         $db->query($sql);
 
+        set_option('geolocation_google_api_key', '');
         set_option('geolocation_default_latitude', '38');
         set_option('geolocation_default_longitude', '-77');
         set_option('geolocation_default_zoom_level', '5');
@@ -70,6 +71,7 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookUninstall()
     {
         // Delete the plugin options
+        delete_option('geolocation_google_api_key');
         delete_option('geolocation_default_latitude');
         delete_option('geolocation_default_longitude');
         delete_option('geolocation_default_zoom_level');
@@ -121,6 +123,7 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookConfig($args)
     {
         // Use the form to set a bunch of default options in the db
+        set_option('geolocation_google_api_key', $_POST['google_api_key']);
         set_option('geolocation_default_latitude', $_POST['default_latitude']);
         set_option('geolocation_default_longitude', $_POST['default_longitude']);
         set_option('geolocation_default_zoom_level', $_POST['default_zoomlevel']);
@@ -176,7 +179,9 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
     {
         queue_css_file('geolocation-marker');
         queue_css_file('geolocation-slider');
-        queue_js_url("https://maps.google.com/maps/api/js?key=AIzaSyDTesk8eKAtPPHLu12JNz8V0kRvvzP_WxE&language=".get_html_lang()); # sensor=false&
+        $key = urlencode(get_option('geolocation_google_api_key'));
+        if ($key) { $key = "key=".$key."&"; }
+        queue_js_url("https://maps.google.com/maps/api/js?".$key."language=".get_html_lang()); # sensor=false&
         queue_js_file('map');
     }
 
@@ -184,7 +189,9 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
     {
         queue_css_file('geolocation-marker');
         queue_css_file('geolocation-slider');
-        queue_js_url("https://maps.google.com/maps/api/js?key=AIzaSyDTesk8eKAtPPHLu12JNz8V0kRvvzP_WxE&language=".get_html_lang()); # sensor=false&
+        $key = urlencode(get_option('geolocation_google_api_key'));
+        if ($key) { $key = "key=".$key."&"; }
+        queue_js_url("https://maps.google.com/maps/api/js?".$key."language=".get_html_lang()); # sensor=false&
         queue_js_file('map');
     }
 

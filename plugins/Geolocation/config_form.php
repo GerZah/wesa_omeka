@@ -2,6 +2,24 @@
 <fieldset>
     <legend><?php echo __('General Settings'); ?></legend>
     <div class="field">
+      <div class="two columns alpha">
+       <label for="google_api_key"><?php echo __('Google Maps API Key'); ?></label>
+      </div>
+      <div class="inputs five columns omega">
+          <p class="explanation">
+            <?php echo __(
+              "While most Google Maps work without supplying an API key, some may not, and will create either a warning or even an error message. ".
+              "<a href='https://developers.google.com/maps/documentation/javascript/get-api-key?hl=en' target='_blank'>".
+              "Please follow this link</a> to find out more about how to obtain an API key for free."
+            ); ?>
+          </p>
+          <?php echo $view->formText('google_api_key', get_option('geolocation_google_api_key')); ?>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="field">
     <div class="two columns alpha">
         <label for="default_latitude"><?php echo __('Default Latitude'); ?></label>
     </div>
