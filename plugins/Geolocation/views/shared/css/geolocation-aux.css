@@ -30,3 +30,7 @@ div#geolocation {
   width: 10em;
   margin-left: 1em;
 }
+
+#geoloc_ovl_options {
+	margin-top: 0.5em;
+}

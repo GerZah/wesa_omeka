@@ -260,15 +260,15 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
                   . $view->itemGoogleMap($item, '100%', '270px' )
                   . '</div>';
 
-                  // $overlays = SELF::GeolocationConvertOverlayJsonForUse();
-                  // if ($overlays) {
-                  //   $overlay = $location["overlay"];
-                  //   $html .= '<div>'.
-                  //   __("Select Map Overlay:").
-                  //   get_view()->formSelect('geolocation[overlay]', $overlay, null, $overlays["jsSelect"] ).
-                  //   '<span class="ovlOpacSlider"></span>'.
-                  //   '</div>';
-                  // }
+                  $overlays = SELF::GeolocationConvertOverlayJsonForUse();
+                  if ($overlays) {
+                    $overlay = $location["overlay"];
+                    $html .= '<div id="geoloc_ovl_options">'.
+                    __("Select Map Overlay:").
+                    get_view()->formSelect('geolocation[overlay]', $overlay, null, $overlays["jsSelect"] ).
+                    '<span class="ovlOpacSlider"></span>'.
+                    '</div>';
+                  }
 
                   $html .= '</div>';
 
@@ -289,15 +289,15 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
             $html .= '<h2>Geolocation</h2>';
             $html .= $view->itemGoogleMap($item, $width, $height);
 
-            // $overlays = SELF::GeolocationConvertOverlayJsonForUse();
-            // if ($overlays) {
-            //   $overlay = $location["overlay"];
-            //   $html .= '<div>'.
-            //   __("Select Map Overlay:").
-            //   get_view()->formSelect('geolocation[overlay]', $overlay, null, $overlays["jsSelect"] ).
-            //   '<span class="ovlOpacSlider"></span>'.
-            //   '</div>';
-            // }
+            $overlays = SELF::GeolocationConvertOverlayJsonForUse();
+            if ($overlays) {
+              $overlay = $location["overlay"];
+              $html .= '<div id="geoloc_ovl_options">'.
+              __("Select Map Overlay:").
+              get_view()->formSelect('geolocation[overlay]', $overlay, null, $overlays["jsSelect"] ).
+              '<span class="ovlOpacSlider"></span>'.
+              '</div>';
+            }
 
             $html .= "</div>";
             echo $html;

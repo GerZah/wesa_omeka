@@ -87,8 +87,14 @@ OmekaMap.prototype = {
         this.map = new google.maps.Map(document.getElementById(this.mapDivId), mapOptions);
         this.markerBounds = new google.maps.LatLngBounds();
 
-        initSlider();
         mapSelOverlay(this.options["overlay"], this.map);
+        var that = this;
+        jQuery("#geoloc_ovl_options").ready(function() {
+          initSlider();
+          jQuery('#geolocation-overlay').change( function() {
+            mapSelOverlay(this.value, that.map);
+          });
+        });
 
         // Show the center marker if we have that enabled.
         if (this.center.show) {
@@ -467,7 +473,6 @@ function mapSelOverlay(overlayIdx, map) {
 }
 
 function initSlider() {
-  // console.log('initSlider');
   jQuery(".ovlOpacSlider").slider({
     min: 0,
     max: 100,
@@ -475,12 +480,10 @@ function initSlider() {
     change: mapSetOverlayOpacity
   })
   .slider("value", 100);
-  // jQuery(".ovlOpacSlider").hide();
 }
 
 function mapSetOverlayOpacity() {
   var sliderPerc = jQuery(".ovlOpacSlider").slider("value");
-  // console.log(sliderPerc);
   if (typeof mapOverlay != 'undefined') {
     mapOverlay.setOpacity(sliderPerc / 100);
   }
