@@ -461,25 +461,25 @@ function mapSelOverlay(overlayIdx, map) {
     done = true;
   }
 
-  jQuery("#ovlOpacSlider").slider("value", 100);
+  jQuery(".ovlOpacSlider").slider("value", 100);
 
   return done;
 }
 
 function initSlider() {
   // console.log('initSlider');
-  jQuery("#ovlOpacSlider").slider({
+  jQuery(".ovlOpacSlider").slider({
     min: 0,
     max: 100,
     slide: mapSetOverlayOpacity,
     change: mapSetOverlayOpacity
   })
   .slider("value", 100);
-  // jQuery("#ovlOpacSlider").hide();
+  // jQuery(".ovlOpacSlider").hide();
 }
 
 function mapSetOverlayOpacity() {
-  var sliderPerc = jQuery("#ovlOpacSlider").slider("value");
+  var sliderPerc = jQuery(".ovlOpacSlider").slider("value");
   // console.log(sliderPerc);
   if (typeof mapOverlay != 'undefined') {
     mapOverlay.setOpacity(sliderPerc / 100);

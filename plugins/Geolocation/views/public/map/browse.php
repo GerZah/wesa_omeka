@@ -29,7 +29,7 @@ echo pagination_links();
                    '<span style="display:inline-block;"><form>'.
                        get_view()->formSelect('geolocation[overlay]', $overlay, null, $overlays["jsSelect"] ).
                    '</form></span>'.
-                   '<span id="ovlOpacSlider"></span>'.
+                   '<span class="ovlOpacSlider"></span>'.
                '</div>';
       }
     ?>
