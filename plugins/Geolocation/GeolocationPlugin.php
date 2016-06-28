@@ -264,7 +264,7 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
                   if ($overlays) {
                     $overlay = $location["overlay"];
                     $html .= '<div id="geoloc_ovl_options">'.
-                    '<b>'.__("Select Map Overlay:").'</b>'.
+                    '<strong>'.__("Select Map Overlay:").'</strong>'.
                     get_view()->formSelect('geolocation[overlay]', $overlay, null, $overlays["jsSelect"] ).
                     '<span class="ovlOpacSlider"></span>'.
                     '</div>';
@@ -293,7 +293,7 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
             if ($overlays) {
               $overlay = $location["overlay"];
               $html .= '<div id="geoloc_ovl_options">'.
-              '<b>'.__("Select Map Overlay:").'</b>'.
+              '<strong>'.__("Select Map Overlay:").'</strong>'.
               get_view()->formSelect('geolocation[overlay]', $overlay, null, $overlays["jsSelect"] ).
               '<span class="ovlOpacSlider"></span>'.
               '</div>';
