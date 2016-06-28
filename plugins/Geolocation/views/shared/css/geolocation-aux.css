@@ -4,10 +4,10 @@ div#geolocation {
 
 .info-panel .map {
     margin-top:-18px;
-    display:block; 
-    margin-left:-18px; 
+    display:block;
+    margin-left:-18px;
     margin-bottom:0;
-    border-top:3px solid #eae9db; 
+    border-top:3px solid #eae9db;
     padding:0;
 }
 
@@ -20,7 +20,13 @@ div#geolocation {
 }
 
 .geolocation_balloon_title {
-    font-weight:bold; 
-    font-size:18px; 
+    font-weight:bold;
+    font-size:18px;
     margin-bottom:0px;
+}
+
+.ovlOpacSlider {
+  display: inline-block;
+  width: 10em;
+  margin-left: 1em;
 }

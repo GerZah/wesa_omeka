@@ -177,8 +177,9 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function hookAdminHead($args)
     {
-        queue_css_file('geolocation-marker');
-        queue_css_file('geolocation-slider');
+        queue_css_file('geolocation-aux');
+        queue_css_file('geolocation-items-map');
+        queue_css_file('jquery-ui');
         $key = urlencode(get_option('geolocation_google_api_key'));
         if ($key) { $key = "key=".$key."&"; }
         queue_js_url("https://maps.google.com/maps/api/js?".$key."language=".get_html_lang()); # sensor=false&
@@ -187,8 +188,9 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function hookPublicHead($args)
     {
-        queue_css_file('geolocation-marker');
-        queue_css_file('geolocation-slider');
+        queue_css_file('geolocation-aux');
+        queue_css_file('geolocation-items-map');
+        queue_css_file('jquery-ui');
         $key = urlencode(get_option('geolocation_google_api_key'));
         if ($key) { $key = "key=".$key."&"; }
         queue_js_url("https://maps.google.com/maps/api/js?".$key."language=".get_html_lang()); # sensor=false&
@@ -256,7 +258,20 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
                   . '<h4>' . __('Geolocation') . '</h4>'
                   . '<div style="margin: 14px 0">'
                   . $view->itemGoogleMap($item, '100%', '270px' )
-                  . '</div></div>';
+                  . '</div>';
+
+                  // $overlays = SELF::GeolocationConvertOverlayJsonForUse();
+                  // if ($overlays) {
+                  //   $overlay = $location["overlay"];
+                  //   $html .= '<div>'.
+                  //   __("Select Map Overlay:").
+                  //   get_view()->formSelect('geolocation[overlay]', $overlay, null, $overlays["jsSelect"] ).
+                  //   '<span class="ovlOpacSlider"></span>'.
+                  //   '</div>';
+                  // }
+
+                  $html .= '</div>';
+
             echo $html;
         }
     }
@@ -273,6 +288,17 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
             $html = "<div id='geolocation'>";
             $html .= '<h2>Geolocation</h2>';
             $html .= $view->itemGoogleMap($item, $width, $height);
+
+            // $overlays = SELF::GeolocationConvertOverlayJsonForUse();
+            // if ($overlays) {
+            //   $overlay = $location["overlay"];
+            //   $html .= '<div>'.
+            //   __("Select Map Overlay:").
+            //   get_view()->formSelect('geolocation[overlay]', $overlay, null, $overlays["jsSelect"] ).
+            //   '<span class="ovlOpacSlider"></span>'.
+            //   '</div>';
+            // }
+
             $html .= "</div>";
             echo $html;
         }
@@ -645,7 +671,7 @@ SQL
                      '<td>'.
                        get_view()->formSelect('geolocation[overlay]', $overlay, null, $overlays["jsSelect"] ).
                      '</td>'.
-                     '<td><span id="ovlOpacSlider"></span></td>'.
+                     '<td><span class="ovlOpacSlider"></span></td>'.
                    '</tr>';
 				}
 
