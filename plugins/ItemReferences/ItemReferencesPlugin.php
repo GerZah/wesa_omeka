@@ -680,17 +680,19 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
           if (count($reqOverlays) == 1) { $ovlDefault = array_keys($reqOverlays)[0]; }
 
           $output .= "<div id='".$data["mapId"]."' style='height:".$itemReferencesMapHeight."px; width:100%;'></div>\n";
+          $curCount = count($mapsData);
           if ($overlays) {
-            $output .= "<div><strong>".__("Select Map Overlay:")."</strong> ".
+            $output .= '<div id="reference_ovl_options"><strong>' . __("Select Map Overlay:") . '</strong> '.
               get_view()->formSelect(
                 $data["mapId"]."_ovl",
                 $ovlDefault,
                 array(
                   "class" => "refMapOvlSel",
-                  "data-map-arr" => count($mapsData), // latest added IDX - see above (*)
+                  "data-map-arr" => $curCount, // latest added IDX - see above (*)
                 ),
                 $overlays["jsSelect"]
               ).
+              "<span class='refMapOvlSlider' id='".$data["mapId"]."_slider' data-map-arr='".$curCount."'></span>".
               "</div>";
           }
 
