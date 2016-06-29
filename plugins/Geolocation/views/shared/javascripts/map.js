@@ -87,7 +87,7 @@ OmekaMap.prototype = {
         this.map = new google.maps.Map(document.getElementById(this.mapDivId), mapOptions);
         this.markerBounds = new google.maps.LatLngBounds();
 
-        mapSelOverlay(this.options["overlay"], this.map, true);
+        mapSelOverlay(this.options["overlay"], this.map);
         var that = this;
         jQuery("#geoloc_ovl_options").ready(function() {
           initSlider();
@@ -450,7 +450,7 @@ OmekaMapForm.prototype = {
 
 };
 
-function mapSelOverlay(overlayIdx, map, preventSlider) {
+function mapSelOverlay(overlayIdx, map) {
   var done = false;
 
   if (typeof mapOverlay != 'undefined') { mapOverlay.setMap(null); }
@@ -467,14 +467,15 @@ function mapSelOverlay(overlayIdx, map, preventSlider) {
     done = true;
   }
 
-  if (typeof preventSlider === "undefined") { preventSlider = false; }
-  if (!preventSlider) { jQuery(".ovlOpacSlider").slider("value", 100); }
+  if (jQuery("#ovlOpacSlider").hasClass("ui-slider")) {
+    jQuery("#ovlOpacSlider").slider("value", 100);
+  }
 
   return done;
 }
 
 function initSlider() {
-  jQuery(".ovlOpacSlider").slider({
+  jQuery("#ovlOpacSlider").slider({
     min: 0,
     max: 100,
     slide: mapSetOverlayOpacity,
@@ -484,7 +485,7 @@ function initSlider() {
 }
 
 function mapSetOverlayOpacity() {
-  var sliderPerc = jQuery(".ovlOpacSlider").slider("value");
+  var sliderPerc = jQuery("#ovlOpacSlider").slider("value");
   if (typeof mapOverlay != 'undefined') {
     mapOverlay.setOpacity(sliderPerc / 100);
   }
