@@ -145,11 +145,11 @@ jQuery(document).bind("omeka:elementformload", function() {
       var values = $("#"+currentEditId).data("values");
       if (typeof values === "undefined") { values = [ null, "", "", "" ]; }
       values[0] = $("#"+currentEditId).val();
-      if (values[0]!="") { values[0] = parseInt(values[0]); }
+      if (values[0]!="") { values[0] = parseFloat(values[0]); }
       targetData[currentField[0]] = values;
       if (!nonZero) {
         for(var j=0; j<4; j++) {
-          var v = ( values[j]=="" ? 0 : parseInt(values[j]) );
+          var v = ( values[j]=="" ? 0 : parseFloat(values[j]) );
           nonZero = (nonZero || (v!=0));
           if (nonZero) { break; }
         }
@@ -185,7 +185,7 @@ jQuery(document).bind("omeka:elementformload", function() {
       var values = targetData[key];
       var allZero = true;
       for(var j=0; j<4; j++) {
-        values[j] = parseInt(values[j]);
+        values[j] = parseFloat(values[j]);
         if (isNaN(values[j])) { values[j]=0; }
         allZero &= !values[j];
       }
@@ -303,7 +303,7 @@ jQuery(document).bind("omeka:elementformload", function() {
     var values = new Array();
     for(var i=1; (i<=3); i++) {
       values[i] = $("#measurementValue"+i).val();
-      if (values[i].match(/^\d*$/)==null) {
+      if (values[i].match(/^\d*(?:\.\d*)?$/)==null) {
         alert(measurementsI18n["enterNumerical"]);
         $("#measurementValue"+i).focus();
         parseError = true;
@@ -313,7 +313,7 @@ jQuery(document).bind("omeka:elementformload", function() {
     if (!parseError) {
       for(var i=1; (i<=3); i++) {
         values[i] = (values[i]=="" ? 0 : values[i])
-        values[i] = parseInt(values[i]);
+        values[i] = parseFloat(values[i]);
       }
       $("#"+currentEditId).data("values", values);
       recalcTripleToSingle(currentEditId);
@@ -324,10 +324,10 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   function recalcTripleToSingle(editId) {
     var values = $("#"+editId).data("values");
-    var exp = parseInt($("#"+editId).data("exp"));
+    var exp = parseFloat($("#"+editId).data("exp"));
     if (typeof values !== "undefined") {
       var newval = (values[1] * Math.pow(curConv2,exp) + values[2]) * Math.pow(curConv3,exp) + values[3];
-      $("#"+editId).val(newval); // myNumberFormat
+      $("#"+editId).val(newval);
     }
   }
 
@@ -339,10 +339,10 @@ jQuery(document).bind("omeka:elementformload", function() {
     var origData = [];
 
     for(var i=0; i<editFields.length; i++) {
-      var curVal = parseInt($("#"+editFields[i][1]).val());
+      var curVal = parseFloat($("#"+editFields[i][1]).val());
       if (isNaN(curVal)) { curVal=0; }
       origData[editFields[i][0]] = curVal;
-      $("#"+editFields[i][1]+"Derived").val( curVal ) // myNumberFormat
+      $("#"+editFields[i][1]+"Derived").val( curVal )
         .removeClass("measurementsCalculated measurementsDeriveError");
       $("#"+editFields[i][1]+"Derived").data("values", $("#"+editFields[i][1]).data("values"));
     }
@@ -369,10 +369,10 @@ jQuery(document).bind("omeka:elementformload", function() {
     }
 
     if (origData["f1"] && origData["f2"] && origData["f3"]) {
-      derivedData["l1"] = Math.round( Math.sqrt( origData["f1"] * origData["f2"] / origData["f3"] ) );
-      derivedData["l2"] = Math.round( Math.sqrt( origData["f1"] * origData["f3"] / origData["f2"] ) );
-      derivedData["l3"] = Math.round( Math.sqrt( origData["f2"] * origData["f3"] / origData["f1"] ) );
-      derivedData["v"] = Math.round( Math.sqrt( origData["f1"] * origData["f2"] * origData["f3"] ) );
+      derivedData["l1"] = Math.sqrt( origData["f1"] * origData["f2"] / origData["f3"] );
+      derivedData["l2"] = Math.sqrt( origData["f1"] * origData["f3"] / origData["f2"] );
+      derivedData["l3"] = Math.sqrt( origData["f2"] * origData["f3"] / origData["f1"] );
+      derivedData["v"] = Math.sqrt( origData["f1"] * origData["f2"] * origData["f3"] );
       // derivedData["v"] = derivedData["l1"] * derivedData["l2"] * derivedData["l3"]; // alternatively
     }
 
@@ -382,8 +382,9 @@ jQuery(document).bind("omeka:elementformload", function() {
     for(var i=0; i<editFields.length; i++) {
       var key = editFields[i][0];
       if (typeof derivedData[key] !== "undefined") {
+        derivedData[key] = Math.round(derivedData[key] * 1000) / 1000;
         var field = "#"+editFields[i][1]+"Derived";
-        $(field).val(derivedData[key]).addClass("measurementsCalculated"); // myNumberFormat
+        $(field).val(derivedData[key]).addClass("measurementsCalculated");
         if (origData[key] && origData[key]!=derivedData[key]) { $(field).addClass("measurementsDeriveError"); }
         $(field).data("values", reUnitValue(i));
       }
@@ -395,10 +396,10 @@ jQuery(document).bind("omeka:elementformload", function() {
     var conv2 = Math.pow(curConv2, exp);
     var conv3 = Math.pow(curConv3, exp);
 
-    var oldValue = parseInt($("#"+editFields[field][1]).val());
-    var newValue = parseInt($("#"+editFields[field][1]+"Derived").val());
+    var oldValue = parseFloat($("#"+editFields[field][1]).val());
+    var newValue = parseFloat($("#"+editFields[field][1]+"Derived").val());
     var value = ( isNaN(newValue) ? oldValue : newValue );
-    value = parseInt( isNaN(value) ? 0 : value );
+    value = parseFloat( isNaN(value) ? 0 : value );
 
     var result = [];
     result[0] = value;
@@ -415,7 +416,9 @@ jQuery(document).bind("omeka:elementformload", function() {
 
   // ---------------------------------------------------------------------------
 
-  function myNumberFormat(x) { return number_format(x, 0, ",", "."); }
+  function myNumberFormat(x) {
+    return number_format(x, 3, ",", ".").replace(/0+$/,'').replace(/,+$/,'');
+  }
 
   /* http://phpjs.org/functions/number_format/ */
   function number_format (number, decimals, dec_point, thousands_sep) {

@@ -14,6 +14,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     'initialize',
     'install',
     'uninstall',
+    'upgrade',
     'config_form', # prepare and display configuration form
     'config', # store config settings in the database
     'admin_head',
@@ -237,6 +238,36 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
   # ----------------------------------------------------------------------------
 
+	/**
+	* Upgrade the plugin.
+	*/
+  public function hookUpgrade($args) {
+    if (version_compare($args['old_version'], '0.2', '<')) {
+      $db = get_db();
+      $qu="
+        ALTER TABLE `$db->MeasurementsValues`
+          MODIFY l1  DOUBLE NOT NULL,
+          MODIFY l2  DOUBLE NOT NULL,
+          MODIFY l3  DOUBLE NOT NULL,
+          MODIFY f1  DOUBLE NOT NULL,
+          MODIFY f2  DOUBLE NOT NULL,
+          MODIFY f3  DOUBLE NOT NULL,
+          MODIFY v   DOUBLE NOT NULL,
+          MODIFY l1d DOUBLE NOT NULL,
+          MODIFY l2d DOUBLE NOT NULL,
+          MODIFY l3d DOUBLE NOT NULL,
+          MODIFY f1d DOUBLE NOT NULL,
+          MODIFY f2d DOUBLE NOT NULL,
+          MODIFY f3d DOUBLE NOT NULL,
+          MODIFY vd  DOUBLE NOT NULL
+      ";
+      $db->query($qu);
+    }
+  }
+
+
+  # ----------------------------------------------------------------------------
+
   /**
 	* Display the plugin configuration form.
 	*/
@@ -389,6 +420,10 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     return $components;
   }
 
+  protected function myNumberFormat($x) {
+    return rtrim( number_format($x, 3, ",", "."), "0," );
+  }
+
   protected function _verbatimSourceData($json, $br="") {
     $sourceData = json_decode(html_entity_decode($json));
     $result = "";
@@ -419,7 +454,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
         $allZero = true;
         foreach(array_keys($values) as $idx) {
-          $values[$idx] = intval($values[$idx]);
+          $values[$idx] = floatval($values[$idx]);
           $allZero &= !$values[$idx];
         }
 
@@ -434,12 +469,12 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
         if ( (!$allZero) and (!$cacheHit) ) {
           $result .= $currentField[1] . " = ";
-          $result .= number_format($values[0], 0, ",", ".") . " " . $singleUnits[3] . SELF::$_indices[$currentField[2]];
+          $result .= SELF::myNumberFormat($values[0]) . " " . $singleUnits[3] . SELF::$_indices[$currentField[2]];
 
           $result .= " (";
           $valueText = array();
           for($j=1; $j<=3; $j++) {
-            $valueText[] = number_format($values[$j], 0, ",", ".") . " " . $singleUnits[$j] . SELF::$_indices[$currentField[2]];
+            $valueText[] = SELF::myNumberFormat($values[$j]) . " " . $singleUnits[$j] . SELF::$_indices[$currentField[2]];
           }
           $result .= implode(" / ", $valueText);
           $result .= ")\n";
@@ -529,7 +564,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
           // full "ab-cd-de" triple unit to avoid confusion
           $dataTuple["u"] = $db->quote($matches[2]."-".$matches[3]."-".$matches[4]);
           foreach(SELF::$_editFields AS $editField) {
-            $dataTuple[$editField[0]] = intval($data[$editField[0]][0]);
+            $dataTuple[$editField[0]] = floatval($data[$editField[0]][0]); // round()
           }
         }
         if ($dataTuple) { $dataTuples[] = implode(",",$dataTuple); }
