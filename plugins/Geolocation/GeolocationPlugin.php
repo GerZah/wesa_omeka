@@ -171,10 +171,6 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
         $router->addRoute('map_kml', $kmlRoute);
     }
 
-    // Google API Keys:
-    // gero.zahn@upb.de: AIzaSyBinFePMm2ICq3BoeYrcg7HCVFbqKgEd5I
-    // keil.upb@gmail.com: AIzaSyDTesk8eKAtPPHLu12JNz8V0kRvvzP_WxE
-
     public function hookAdminHead($args)
     {
         queue_css_file('geolocation-aux');
