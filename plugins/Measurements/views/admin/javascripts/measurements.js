@@ -88,6 +88,7 @@ jQuery(document).bind("omeka:elementformload", function() {
     }
 
     $("#measurementUnits").val(unitId).change(); // incl. update derived
+    $("#measurementNumber").val(sourceData["n"]);
 
     lightbox("#measurementsPopup");
   } );
@@ -110,6 +111,7 @@ jQuery(document).bind("omeka:elementformload", function() {
       $("#"+allEditFields[i][1]).val("").removeData("values");
     }
     $("#measurementUnits").val(-1);
+    $("#measurementNumber").val("");
   }
 
   // ---------------------------------------------------------------------------
@@ -128,7 +130,15 @@ jQuery(document).bind("omeka:elementformload", function() {
   $("#measurementsApply").click(function(e) { // unbind("click").
     var targetData = new Object();
     if ( (curTripleUnit==null) || (curTripleUnit<0) ) {
+      $("#measurementUnits").focus();
       alert(measurementsI18n["selectTriple"]);
+      return;
+    }
+
+    targetData["n"] = $("#measurementNumber").val();
+    if ( (targetData["n"]!="") && (targetData["n"].match(/^\d*$/)==null) ) {
+      $("#measurementNumber").focus();
+      alert(measurementsI18n["enterNumber"]);
       return;
     }
 
@@ -214,6 +224,10 @@ jQuery(document).bind("omeka:elementformload", function() {
         result += valueText.join(" / ");
         result += ")\n";
       }
+    }
+
+    if (targetData["n"]!="") {
+      result += "\n" + measurementsI18n["numberVerb"] + ": " +targetData["n"] + "\n";
     }
 
     return result;

@@ -10,10 +10,12 @@
   $i18nStrings = array(
     "selectTriple" => __("Please start by selecting a triple unit."),
     "enterNumerical" => __("Please enter numerical values into all fields (or leave them empty)."),
+    "enterNumber" => __("Please enter the number of items (or leave the field empty)."),
     "unitVerb" => __("Unit"),
     "lengthVerb" => __("Dimension"),
     "faceVerb" => __("Face"),
     "volumeVerb" => __("Volume"),
+    "numberVerb" => __("Number"),
     "enteredData" => __("Entered Data"),
     "derivedData" => __("Derived Data"),
   );
@@ -99,6 +101,12 @@
         "readonly" => true,
         "exp" => 3,
         "span" => "measurementsLenghtUnit3 measurementsVolumeUnit",
+      ));
+      echo "<span style='display:inline-block; width:3em;'></span> <strong>" . __("Number") . ":</strong> ";
+      echo editField(array(
+        "view" => $view,
+        "id" => "measurementNumber",
+        "title" => __("Number")
       ));
     ?>
   </p>

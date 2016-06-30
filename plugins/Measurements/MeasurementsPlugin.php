@@ -205,7 +205,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $fields = array();
     foreach(SELF::$_editFields as $editField) {
       $key = $editField[0];
-      $fields[] = "`$key` int(10) unsigned default NULL,";
+      $fields[] = "`$key` DOUBLE DEFAULT NULL,";
     }
     $fields = implode("\n", $fields);
 
@@ -216,6 +216,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
           `item_id` int(10) unsigned NOT NULL REFERENCES `$db->Item`,
           $fields
           `unit` varchar(".MEASUREMENT_UNIT_LEN.") NOT NULL,
+          `number` int(10) unsigned DEFAULT NULL,
           PRIMARY KEY (`id`),
           INDEX (unit)
       ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
@@ -261,6 +262,11 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
           MODIFY f3d DOUBLE NOT NULL,
           MODIFY vd  DOUBLE NOT NULL
       ";
+      $db->query($qu);
+    }
+    if (version_compare($args['old_version'], '0.3', '<')) {
+      $db = get_db();
+      $qu="ALTER TABLE `$db->MeasurementsValues` ADD `number` INT UNSIGNED DEFAULT NULL";
       $db->query($qu);
     }
   }
@@ -480,6 +486,12 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
           $result .= ")\n";
         }
       }
+
+      $number = @$sourceData->n;
+      if ($number) {
+        $result .= "\n" . __("Number") . ": " . $number . "\n";
+      }
+
     }
 
     if ($br) { $result = str_replace("\n", $br, $result); }
@@ -563,6 +575,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
           preg_match("/".SELF::$_saniUnitRegex."/", $data["u"], $matches);
           // full "ab-cd-de" triple unit to avoid confusion
           $dataTuple["u"] = $db->quote($matches[2]."-".$matches[3]."-".$matches[4]);
+          $dataTuple["n"] = ( $data["n"]=="" ? "null" : $db->quote($data["n"]) );
           foreach(SELF::$_editFields AS $editField) {
             $dataTuple[$editField[0]] = floatval($data[$editField[0]][0]); // round()
           }
@@ -572,7 +585,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
       if ($dataTuples) {
 
-        $dataSet = array( "item_id", "unit" );
+        $dataSet = array( "item_id", "unit", "number" );
         foreach(SELF::$_editFields AS $editField) {
           $dataSet[] = $editField[0];
         }

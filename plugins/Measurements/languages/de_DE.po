@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Measurements/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-05-23 18:51+0200\n"
+"PO-Revision-Date: 2016-06-30 16:05+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -19,51 +19,55 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.7\n"
 
-#: MeasurementsPlugin.php:33 views/admin/index/index.php:8
+#: MeasurementsPlugin.php:34 views/admin/index/index.php:8
 msgid "Measurements Analysis"
 msgstr "Maß-Analyse"
 
-#: MeasurementsPlugin.php:94 MeasurementsPlugin.php:95 MeasurementsPlugin.php:96 MeasurementsPlugin.php:101 MeasurementsPlugin.php:102 MeasurementsPlugin.php:103 measurements-form.php:14 measurements-form.php:61 measurements-form.php:66 measurements-form.php:110 measurements-form.php:115 measurements-form.php:174
+#: MeasurementsPlugin.php:95 MeasurementsPlugin.php:96 MeasurementsPlugin.php:97 MeasurementsPlugin.php:102 MeasurementsPlugin.php:103 MeasurementsPlugin.php:104 measurements-form.php:15 measurements-form.php:63 measurements-form.php:68 measurements-form.php:118 measurements-form.php:123 measurements-form.php:182
 msgid "Dimension"
 msgstr "Dimension"
 
-#: MeasurementsPlugin.php:97 MeasurementsPlugin.php:98 MeasurementsPlugin.php:99 MeasurementsPlugin.php:104 MeasurementsPlugin.php:105 MeasurementsPlugin.php:106 measurements-form.php:15 measurements-form.php:77 measurements-form.php:82 measurements-form.php:126 measurements-form.php:131
+#: MeasurementsPlugin.php:98 MeasurementsPlugin.php:99 MeasurementsPlugin.php:100 MeasurementsPlugin.php:105 MeasurementsPlugin.php:106 MeasurementsPlugin.php:107 measurements-form.php:16 measurements-form.php:79 measurements-form.php:84 measurements-form.php:134 measurements-form.php:139
 msgid "Face"
 msgstr "Fläche"
 
-#: MeasurementsPlugin.php:100 MeasurementsPlugin.php:107 measurements-form.php:16 measurements-form.php:93 measurements-form.php:97 measurements-form.php:142 measurements-form.php:146 views/admin/index/index.php:45
+#: MeasurementsPlugin.php:101 MeasurementsPlugin.php:108 measurements-form.php:17 measurements-form.php:95 measurements-form.php:99 measurements-form.php:150 measurements-form.php:154 views/admin/index/index.php:45
 msgid "Volume"
 msgstr "Volumen"
 
-#: MeasurementsPlugin.php:174
+#: MeasurementsPlugin.php:175
 msgid "[n/a]"
 msgstr "[n.v.]"
 
-#: MeasurementsPlugin.php:263
+#: MeasurementsPlugin.php:300
 msgid "Item Type"
 msgstr "Objekttyp"
 
-#: MeasurementsPlugin.php:332 MeasurementsPlugin.php:333 views/admin/index/index.php:42
+#: MeasurementsPlugin.php:369 MeasurementsPlugin.php:370 views/admin/index/index.php:42
 msgid "Select Below"
 msgstr "Unten auswählen"
 
-#: MeasurementsPlugin.php:386
+#: MeasurementsPlugin.php:423
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: MeasurementsPlugin.php:387 measurements-form.php:157 measurements-form.php:182
+#: MeasurementsPlugin.php:424 measurements-form.php:165 measurements-form.php:190
 msgid "Clear"
 msgstr "Löschen"
 
-#: MeasurementsPlugin.php:411 measurements-form.php:17
+#: MeasurementsPlugin.php:452 measurements-form.php:19
 msgid "Entered Data"
 msgstr "Eingegebene Daten"
 
-#: MeasurementsPlugin.php:414 measurements-form.php:18 measurements-form.php:106
+#: MeasurementsPlugin.php:455 measurements-form.php:20 measurements-form.php:114
 msgid "Derived Data"
 msgstr "Abgeleitete Daten"
 
-#: MeasurementsPlugin.php:691
+#: MeasurementsPlugin.php:492 measurements-form.php:18 measurements-form.php:105 measurements-form.php:109
+msgid "Number"
+msgstr "Anzahl"
+
+#: MeasurementsPlugin.php:739
 msgid "Measurements Debug Output"
 msgstr "Maße Debug-Ausgabe"
 
@@ -124,34 +128,37 @@ msgid "Please enter numerical values into all fields (or leave them empty)."
 msgstr "Bitte geben Sie in alle Felder numerische Werte ein (oder lassen Sie diese leer)."
 
 #: measurements-form.php:13
+msgid "Please enter the number of items (or leave the field empty)."
+msgstr "Bitte geben Sie die Anzahl der Elemente ein (oder lassen Sie das Feld leer)."
+
+#: measurements-form.php:14
 msgid "Unit"
 msgstr "Einheit"
 
-#: measurements-form.php:48
+#: measurements-form.php:50
 msgid "Measurements"
 msgstr "Maße"
 
-#: measurements-form.php:52
+#: measurements-form.php:54
 msgid "Triple Unit"
 msgstr "Einheiten-Tripel"
 
-#: measurements-form.php:57
+#: measurements-form.php:59
 msgid "Data Entry"
 msgstr "Dateneingabe"
 
-#: measurements-form.php:156 measurements-form.php:181
+#: measurements-form.php:164 measurements-form.php:189
 msgid "Apply"
 msgstr "Anwenden"
 
-#: measurements-form.php:158 measurements-form.php:183 views/admin/index/index.php:166 views/admin/index/index.php:202
+#: measurements-form.php:166 measurements-form.php:191 views/admin/index/index.php:166 views/admin/index/index.php:202
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: measurements-form.php:166
+#: measurements-form.php:174
 msgid "Triple Unit Data"
 msgstr "Einheiten-Tripel Eingabe"
 
-#. / item measurements detail page
 #: views/admin/index/index.php:28
 msgid "dim1"
 msgstr "Dim1"
