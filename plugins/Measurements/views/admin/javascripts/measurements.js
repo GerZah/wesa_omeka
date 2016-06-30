@@ -302,8 +302,8 @@ jQuery(document).bind("omeka:elementformload", function() {
     var parseError = false;
     var values = new Array();
     for(var i=1; (i<=3); i++) {
-      values[i] = $("#measurementValue"+i).val();
-      if (values[i].match(/^\d*(?:(?:\.|,)\d+)?$/)==null) {
+      values[i] = $("#measurementValue"+i).val().replace(",", ".");
+      if (values[i].match(/^\d*(?:.\d+)?$/)==null) {
         alert(measurementsI18n["enterNumerical"]);
         $("#measurementValue"+i).focus();
         parseError = true;
@@ -313,7 +313,6 @@ jQuery(document).bind("omeka:elementformload", function() {
     if (!parseError) {
       for(var i=1; (i<=3); i++) {
         values[i] = (values[i]=="" ? 0 : values[i]);
-        values[i] = values[i].replace(",", ".");
         values[i] = parseFloat(values[i]);
       }
       $("#"+currentEditId).data("values", values);
