@@ -108,6 +108,7 @@
       <th><?php echo __("Title"); ?></th>
       <th colspan="7" class="measOrig"><?php echo __("Original Values"); ?></th>
       <th colspan="7" class="measCalc"><?php echo __("Converted Values"); ?></th>
+      <th><?php echo __("Number"); ?></th>
     </tr>
     <tr>
       <th></th>
@@ -119,6 +120,7 @@
           }
         }
       ?>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -131,6 +133,7 @@
             echo "<td class='measurementValue meas".$key.$suffix."'></td>";
           }
         }
+        echo "<td class='measurementValue measn'></td>";
         echo "</tr>";
       }
     ?>

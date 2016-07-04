@@ -91,7 +91,7 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
         $where = implode(" AND ", $where);
 
         $qu = "
-          SELECT item_id as itemId, l1d as l1, l2d as l2, l3d as l3, f1d as f1, f2d as f2, f3d as f3, vd as v, unit
+          SELECT item_id as itemId, l1d as l1, l2d as l2, l3d as l3, f1d as f1, f2d as f2, f3d as f3, vd as v, unit, number as n
           FROM `$db->MeasurementsValues`
           WHERE $where
         ";

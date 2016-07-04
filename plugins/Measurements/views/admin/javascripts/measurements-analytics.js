@@ -223,6 +223,9 @@ jQuery(document).ready(function () {
                 }
               });
             }
+            var number = data.data[i]["n"];
+            number = ( number ? number : "-" );
+            $("#measurementsTable #"+rowId+" .measn").html(number);
           });
         }
       }
