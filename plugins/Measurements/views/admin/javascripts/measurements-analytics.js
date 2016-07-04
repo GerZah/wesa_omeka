@@ -127,7 +127,7 @@ jQuery(document).ready(function () {
     var curArea = parseInt($("#measurementsArea").val());
     $(
       ".measl1, .measl2, .measl3, .measf1, .measf2, .measf3, .measv, "+
-      ".measl1c, .measl2c, .measl3c, .measf1c, .measf2c, .measf3c, .measvc"
+      ".measl1c, .measl2c, .measl3c, .measf1c, .measf2c, .measf3c, .measvc, .measw"
     ).hide();
     switch (curArea) {
       case 0: {
@@ -139,15 +139,17 @@ jQuery(document).ready(function () {
         $("th.measOrig, th.measCalc").attr("colSpan", "3");
       } break;
       case 2: {
-        $(".measv, .measvc").show();
-        $("th.measOrig, th.measCalc").attr("colSpan", "1");
+        $(".measv, .measvc, .measw").show();
+        $("th.measOrig").attr("colSpan", "1");
+        $("th.measCalc").attr("colSpan", "2");
       } break;
       default: {
         $(
           ".measl1, .measl2, .measl3, .measf1, .measf2, .measf3, .measv, "+
-          ".measl1c, .measl2c, .measl3c, .measf1c, .measf2c, .measf3c, .measvc"
+          ".measl1c, .measl2c, .measl3c, .measf1c, .measf2c, .measf3c, .measvc, .measw"
         ).show();
-        $("th.measOrig, th.measCalc").attr("colSpan", "7");
+        $("th.measOrig").attr("colSpan", "7");
+        $("th.measCalc").attr("colSpan", "8");
       } break;
     }
   }
@@ -223,10 +225,35 @@ jQuery(document).ready(function () {
                 }
               });
             }
-            var number = data.data[i]["n"];
-            number = ( number ? number : "-" );
-            $("#measurementsTable #"+rowId+" .measn").html(number);
           });
+          var number = data.data[i]["n"];
+          number = ( number ? number : "-" );
+          $("#measurementsTable #"+rowId+" .measn").html(number);
+          if (unitsSimple[curUnit]!="mm") {
+            $("#measurementsTable #"+rowId+" .measw").html("-");
+          }
+          else {
+            var volume = data.data[i]["vc"];
+
+            var baseWeight = 2.6 * volume / 1000000000;
+            var weights = [baseWeight];
+
+            var number = data.data[i]["n"];
+            if (number) { weights.push(baseWeight*number); }
+
+            var fullWeightText = "";
+
+            weights.forEach(function(weight) {
+              var unit = "t";
+              if (weight<1) { weight *= 1000; unit = "kg"; }
+              if (weight<1) { weight *= 1000; unit = "g"; }
+              var weightText = myNumberFormat(weight) + " " + unit;
+              fullWeightText += ( fullWeightText ? "<br>" : "" );
+              fullWeightText += weightText;
+            });
+
+            $("#measurementsTable #"+rowId+" .measw").html(fullWeightText);
+          }
         }
       }
 
@@ -254,6 +281,13 @@ jQuery(document).ready(function () {
             $(detailCell).html(cellContent).removeClass("hlCell");
             if ($(tableCell).hasClass("hlCell")) { $(detailCell).addClass("hlCell"); }
           });
+        });
+
+        var addKeys = [ "w", "n" ];
+        addKeys.forEach(function(addKey) {
+          var tableCell = "#"+row + " td.meas"+addKey;
+          var detailCell = "#details"+addKey;
+          $(detailCell).html( $(tableCell).html() );
         });
 
         lightbox("#measurementsAnalysisPopup");

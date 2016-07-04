@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Measurements/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-06-30 16:05+0200\n"
+"PO-Revision-Date: 2016-07-04 18:14+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -17,21 +17,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 1.8.8\n"
 
 #: MeasurementsPlugin.php:34 views/admin/index/index.php:8
 msgid "Measurements Analysis"
 msgstr "Maß-Analyse"
 
-#: MeasurementsPlugin.php:95 MeasurementsPlugin.php:96 MeasurementsPlugin.php:97 MeasurementsPlugin.php:102 MeasurementsPlugin.php:103 MeasurementsPlugin.php:104 measurements-form.php:15 measurements-form.php:63 measurements-form.php:68 measurements-form.php:118 measurements-form.php:123 measurements-form.php:182
+#: MeasurementsPlugin.php:95 MeasurementsPlugin.php:96
+#: MeasurementsPlugin.php:97 MeasurementsPlugin.php:102
+#: MeasurementsPlugin.php:103 MeasurementsPlugin.php:104
+#: measurements-form.php:15 measurements-form.php:63 measurements-form.php:68
+#: measurements-form.php:118 measurements-form.php:123
+#: measurements-form.php:182
 msgid "Dimension"
 msgstr "Dimension"
 
-#: MeasurementsPlugin.php:98 MeasurementsPlugin.php:99 MeasurementsPlugin.php:100 MeasurementsPlugin.php:105 MeasurementsPlugin.php:106 MeasurementsPlugin.php:107 measurements-form.php:16 measurements-form.php:79 measurements-form.php:84 measurements-form.php:134 measurements-form.php:139
+#: MeasurementsPlugin.php:98 MeasurementsPlugin.php:99
+#: MeasurementsPlugin.php:100 MeasurementsPlugin.php:105
+#: MeasurementsPlugin.php:106 MeasurementsPlugin.php:107
+#: measurements-form.php:16 measurements-form.php:79 measurements-form.php:84
+#: measurements-form.php:134 measurements-form.php:139
 msgid "Face"
 msgstr "Fläche"
 
-#: MeasurementsPlugin.php:101 MeasurementsPlugin.php:108 measurements-form.php:17 measurements-form.php:95 measurements-form.php:99 measurements-form.php:150 measurements-form.php:154 views/admin/index/index.php:45
+#: MeasurementsPlugin.php:101 MeasurementsPlugin.php:108
+#: measurements-form.php:17 measurements-form.php:95 measurements-form.php:99
+#: measurements-form.php:150 measurements-form.php:154
+#: views/admin/index/index.php:45
 msgid "Volume"
 msgstr "Volumen"
 
@@ -43,7 +55,8 @@ msgstr "[n.v.]"
 msgid "Item Type"
 msgstr "Objekttyp"
 
-#: MeasurementsPlugin.php:369 MeasurementsPlugin.php:370 views/admin/index/index.php:42
+#: MeasurementsPlugin.php:369 MeasurementsPlugin.php:370
+#: views/admin/index/index.php:42
 msgid "Select Below"
 msgstr "Unten auswählen"
 
@@ -51,7 +64,8 @@ msgstr "Unten auswählen"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: MeasurementsPlugin.php:424 measurements-form.php:165 measurements-form.php:190
+#: MeasurementsPlugin.php:424 measurements-form.php:165
+#: measurements-form.php:190
 msgid "Clear"
 msgstr "Löschen"
 
@@ -59,15 +73,20 @@ msgstr "Löschen"
 msgid "Entered Data"
 msgstr "Eingegebene Daten"
 
-#: MeasurementsPlugin.php:455 measurements-form.php:20 measurements-form.php:114
+#: MeasurementsPlugin.php:455 measurements-form.php:20
+#: measurements-form.php:114
 msgid "Derived Data"
 msgstr "Abgeleitete Daten"
 
-#: MeasurementsPlugin.php:492 measurements-form.php:18 measurements-form.php:105 measurements-form.php:109
+#. /th><td id='detailsn'></td><td>-</td></tr>";
+#. echo "<tr><th>".__("Weight")."</th><td>-</td><td id='detailsw'></td></tr>";
+#: MeasurementsPlugin.php:492 MeasurementsPlugin.php:631
+#: measurements-form.php:18 measurements-form.php:105 measurements-form.php:109
+#: views/admin/index/index.php:111 views/admin/index/index.php:168
 msgid "Number"
 msgstr "Anzahl"
 
-#: MeasurementsPlugin.php:739
+#: MeasurementsPlugin.php:753
 msgid "Measurements Debug Output"
 msgstr "Maße Debug-Ausgabe"
 
@@ -151,7 +170,8 @@ msgstr "Dateneingabe"
 msgid "Apply"
 msgstr "Anwenden"
 
-#: measurements-form.php:166 measurements-form.php:191 views/admin/index/index.php:166 views/admin/index/index.php:202
+#: measurements-form.php:166 measurements-form.php:191
+#: views/admin/index/index.php:175 views/admin/index/index.php:211
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -159,6 +179,7 @@ msgstr "Abbrechen"
 msgid "Triple Unit Data"
 msgstr "Einheiten-Tripel Eingabe"
 
+#. / item measurements detail page
 #: views/admin/index/index.php:28
 msgid "dim1"
 msgstr "Dim1"
@@ -223,55 +244,63 @@ msgstr "Beziehung hinzufügen"
 msgid "Title"
 msgstr "Titel"
 
-#: views/admin/index/index.php:109 views/admin/index/index.php:147
+#: views/admin/index/index.php:109 views/admin/index/index.php:152
 msgid "Original Values"
 msgstr "Original-Werte"
 
-#: views/admin/index/index.php:110 views/admin/index/index.php:147
+#: views/admin/index/index.php:110 views/admin/index/index.php:152
 msgid "Converted Values"
 msgstr "Konvertierte Werte"
 
-#: views/admin/index/index.php:164
+#: views/admin/index/index.php:121 views/admin/index/index.php:168
+msgid "Weight"
+msgstr "Gewicht"
+
+#: views/admin/index/index.php:168
+msgid "single / all"
+msgstr "einzeln / alle"
+
+#: views/admin/index/index.php:173
 msgid "Open Item"
 msgstr "Objekt öffnen"
 
-#: views/admin/index/index.php:165
+#: views/admin/index/index.php:174
 msgid "Open Item in New Window"
 msgstr "Objekt in neuem Fenster öffnen"
 
-#: views/admin/index/index.php:171 views/admin/index/index.php:201
+#: views/admin/index/index.php:180 views/admin/index/index.php:210
 msgid "Add Relationship"
 msgstr "Beziehung hinzufügen"
 
-#: views/admin/index/index.php:175
+#: views/admin/index/index.php:184
 msgid "The item that you selected last (which highlighted in a slightly different color) will be the subject of the newly added relationship, while the one or more other highlighted item(s) will become object(s) of that relationship."
 msgstr "Das Objekt, das Sie als letztes selektiert haben (das in einer etwas anderen Farbe hervorgehoben ist), wird die Subjekt-Ressource der neu erstellten Beziehung darstellen, während das bzw. die weiteren hervorgehobenen Objekt(e) die Objekt-Ressource(n) darstellen."
 
-#: views/admin/index/index.php:180
+#: views/admin/index/index.php:189
 msgid "Subject Item"
 msgstr "Subjekt-Ressource"
 
-#: views/admin/index/index.php:181
+#: views/admin/index/index.php:190
 msgid "Object Item(s)"
 msgstr "Objekt-Ressource(n)"
 
-#: views/admin/index/index.php:187
+#: views/admin/index/index.php:196
 msgid "Item Relations"
 msgstr "Objekt-Beziehungen"
 
-#: views/admin/index/index.php:194
+#: views/admin/index/index.php:203
 msgid "Relationship Comment"
 msgstr "Beziehungs-Kommentar"
 
-#: views/admin/index/index.php:206
+#: views/admin/index/index.php:215
 msgid "Relation(s) created successfully."
 msgstr "Beziehung(en) erfolgreich angelegt."
 
-#: views/admin/index/index.php:207
+#: views/admin/index/index.php:216
 msgid "Error while creating relation(s)."
 msgstr "Fehler beim Anlegen der Beziehung(en)"
 
-#: views/admin/index/index.php:209
+#: views/admin/index/index.php:218
 msgid "Close"
 msgstr "Schließen"
 

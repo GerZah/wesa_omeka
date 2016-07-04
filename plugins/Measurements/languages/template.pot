@@ -76,12 +76,15 @@ msgstr ""
 msgid "Derived Data"
 msgstr ""
 
-#: MeasurementsPlugin.php:492 measurements-form.php:18
-#: measurements-form.php:105 measurements-form.php:109
+#. /th><td id='detailsn'></td><td>-</td></tr>";
+#. echo "<tr><th>".__("Weight")."</th><td>-</td><td id='detailsw'></td></tr>";
+#: MeasurementsPlugin.php:492 MeasurementsPlugin.php:631
+#: measurements-form.php:18 measurements-form.php:105 measurements-form.php:109
+#: views/admin/index/index.php:111 views/admin/index/index.php:168
 msgid "Number"
 msgstr ""
 
-#: MeasurementsPlugin.php:739
+#: MeasurementsPlugin.php:753
 msgid "Measurements Debug Output"
 msgstr ""
 
@@ -182,7 +185,7 @@ msgid "Apply"
 msgstr ""
 
 #: measurements-form.php:166 measurements-form.php:191
-#: views/admin/index/index.php:166 views/admin/index/index.php:202
+#: views/admin/index/index.php:175 views/admin/index/index.php:211
 msgid "Cancel"
 msgstr ""
 
@@ -190,6 +193,7 @@ msgstr ""
 msgid "Triple Unit Data"
 msgstr ""
 
+#. / item measurements detail page
 #: views/admin/index/index.php:28
 msgid "dim1"
 msgstr ""
@@ -254,58 +258,66 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: views/admin/index/index.php:109 views/admin/index/index.php:147
+#: views/admin/index/index.php:109 views/admin/index/index.php:152
 msgid "Original Values"
 msgstr ""
 
-#: views/admin/index/index.php:110 views/admin/index/index.php:147
+#: views/admin/index/index.php:110 views/admin/index/index.php:152
 msgid "Converted Values"
 msgstr ""
 
-#: views/admin/index/index.php:164
+#: views/admin/index/index.php:121 views/admin/index/index.php:168
+msgid "Weight"
+msgstr ""
+
+#: views/admin/index/index.php:168
+msgid "single / all"
+msgstr ""
+
+#: views/admin/index/index.php:173
 msgid "Open Item"
 msgstr ""
 
-#: views/admin/index/index.php:165
+#: views/admin/index/index.php:174
 msgid "Open Item in New Window"
 msgstr ""
 
-#: views/admin/index/index.php:171 views/admin/index/index.php:201
+#: views/admin/index/index.php:180 views/admin/index/index.php:210
 msgid "Add Relationship"
 msgstr ""
 
-#: views/admin/index/index.php:175
+#: views/admin/index/index.php:184
 msgid ""
 "The item that you selected last (which highlighted in a slightly different "
 "color) will be the subject of the newly added relationship, while the one or "
 "more other highlighted item(s) will become object(s) of that relationship."
 msgstr ""
 
-#: views/admin/index/index.php:180
+#: views/admin/index/index.php:189
 msgid "Subject Item"
 msgstr ""
 
-#: views/admin/index/index.php:181
+#: views/admin/index/index.php:190
 msgid "Object Item(s)"
 msgstr ""
 
-#: views/admin/index/index.php:187
+#: views/admin/index/index.php:196
 msgid "Item Relations"
 msgstr ""
 
-#: views/admin/index/index.php:194
+#: views/admin/index/index.php:203
 msgid "Relationship Comment"
 msgstr ""
 
-#: views/admin/index/index.php:206
+#: views/admin/index/index.php:215
 msgid "Relation(s) created successfully."
 msgstr ""
 
-#: views/admin/index/index.php:207
+#: views/admin/index/index.php:216
 msgid "Error while creating relation(s)."
 msgstr ""
 
-#: views/admin/index/index.php:209
+#: views/admin/index/index.php:218
 msgid "Close"
 msgstr ""
 

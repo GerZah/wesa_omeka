@@ -107,7 +107,7 @@
     <tr>
       <th><?php echo __("Title"); ?></th>
       <th colspan="7" class="measOrig"><?php echo __("Original Values"); ?></th>
-      <th colspan="7" class="measCalc"><?php echo __("Converted Values"); ?></th>
+      <th colspan="8" class="measCalc"><?php echo __("Converted Values"); ?></th>
       <th><?php echo __("Number"); ?></th>
     </tr>
     <tr>
@@ -118,6 +118,7 @@
             $cl = "meas$id$suffix";
             echo "<th class='$cl'>".__($key)."</th>";
           }
+          if ($suffix=="c") { echo "<th class='measw'>".__("Weight")."</th>"; }
         }
       ?>
       <th></th>
@@ -132,6 +133,7 @@
           foreach(array_keys($titleKeys) as $key) {
             echo "<td class='measurementValue meas".$key.$suffix."'></td>";
           }
+          if ($suffix=="c") { echo "<td class='measurementValue measw'></td>"; }
         }
         echo "<td class='measurementValue measn'></td>";
         echo "</tr>";
@@ -161,6 +163,10 @@
         }
         echo "</tr>\n";
       }
+      // echo "<tr><th>".__("Number")."</th><td id='detailsn'></td><td>-</td></tr>";
+      // echo "<tr><th>".__("Weight")."</th><td>-</td><td id='detailsw'></td></tr>";
+      echo "<tr><th></th><th>".__("Number")."</th><th>".__("Weight")." (".__("single / all").")</th></tr>";
+      echo "<tr><th></th><td id='detailsn'></td><td id='detailsw'></td></tr>";
     ?>
   </table>
   <p class="measurementCenter">
