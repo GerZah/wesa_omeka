@@ -628,6 +628,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         $tripleSelect[$tripleGroupIdx][$idx."-3"] = $matches[4] . SELF::$_indices[3];
       }
     }
+    $tripleSelect = array("#" => __("Number")) + $tripleSelect;
     // echo "<pre>" . print_r($tripleSelect,true) . "</pre>";
     echo common('measurements-advanced-search', array("tripleSelect" => $tripleSelect ));
   }
@@ -659,8 +660,10 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         $ungroupedSaniUnits = $tripleUnits["ungroupedSaniUnits"];
 
         $measurementsUnits = @$params["measurements_units"];
+        $searchForNumber = (!is_array($measurementsUnits));
         if (is_array($measurementsUnits)) {
           foreach($measurementsUnits as $measurementsUnit) {
+            if ($measurementsUnit=="#") { $searchForNumber = true; }
             preg_match("/$regExOneOrTwoNum/", $measurementsUnit, $matches);
             if ($matches) {
               $unit = $matches[1];
@@ -689,7 +692,18 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
         $conditions = array();
 
-        if (!$units) { $units[] = array("e" => 0); }
+        if ($searchForNumber) {
+          if (!$to) {
+            $conditions[] = "(number=$from)";
+          }
+          else {
+            $conditions[] = "(number BETWEEN $from AND $to)";
+          }
+        }
+
+        if (!is_array($measurementsUnits)) {
+          if (!$units) { $units[] = array("e" => 0); }
+        }
 
         foreach($units as $unit) {
           $condition = "";
