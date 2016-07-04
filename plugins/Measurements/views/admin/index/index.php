@@ -113,9 +113,9 @@
     <tr>
       <th></th>
       <?php
-        for($i=1; ($i<=2); $i++) {
+        foreach(array("", "c") as $suffix) {
           foreach($titleKeys as $id => $key) {
-            $cl = "meas$id" . ($i == 2 ? "c" : "");
+            $cl = "meas$id$suffix";
             echo "<th class='$cl'>".__($key)."</th>";
           }
         }
