@@ -16,6 +16,7 @@ jQuery(document).bind("omeka:elementformload", function() {
       $('#id_limit_reference').val('');
 
       updateChoices();
+      updateSelectButton();
   }
 
   function resetOptions() {
@@ -96,7 +97,20 @@ jQuery(document).bind("omeka:elementformload", function() {
         $(this).html() +
         '</a>'
       );
+      updateSelectButton();
   });
+
+  function updateSelectButton() {
+      var selectButton = $('#select_item');
+      if ($('#new_reference_object_item_id_reference').val()) {
+          selectButton.removeProp('disabled');
+          selectButton.removeAttr('disabled');
+      }
+      else {
+          selectButton.prop('disabled', true);
+          selectButton.attr('disabled', true);
+      }
+  }
 
   $('#selector-previous-page-reference').click(function (e) {
       e.preventDefault();
@@ -153,7 +167,11 @@ jQuery(document).bind("omeka:elementformload", function() {
 
     $("#select_item").unbind("click").click(function(e) {
       e.preventDefault();
-      $("#"+currentTitle).val($('#object_title_reference').text());
+
+      var currentTitleVerb = $('#object_title_reference').text();
+      currentTitleVerb = currentTitleVerb.substr(currentTitleVerb.indexOf(" ")+1);
+
+      $("#"+currentTitle).val(currentTitleVerb);
       $("#"+currentId).val($('#new_reference_object_item_id_reference').val());
 
       lightbox.close();
