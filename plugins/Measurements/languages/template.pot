@@ -80,7 +80,7 @@ msgstr ""
 #. echo "<tr><th>".__("Weight")."</th><td>-</td><td id='detailsw'></td></tr>";
 #: MeasurementsPlugin.php:492 MeasurementsPlugin.php:631
 #: measurements-form.php:18 measurements-form.php:105 measurements-form.php:109
-#: views/admin/index/index.php:111 views/admin/index/index.php:168
+#: views/admin/index/index.php:124 views/admin/index/index.php:181
 msgid "Number"
 msgstr ""
 
@@ -185,7 +185,7 @@ msgid "Apply"
 msgstr ""
 
 #: measurements-form.php:166 measurements-form.php:191
-#: views/admin/index/index.php:175 views/admin/index/index.php:211
+#: views/admin/index/index.php:188 views/admin/index/index.php:224
 msgid "Cancel"
 msgstr ""
 
@@ -238,86 +238,94 @@ msgstr ""
 msgid "Measurement Analytical Unit"
 msgstr ""
 
-#: views/admin/index/index.php:59
+#: views/admin/index/index.php:57
+msgid "Weight Factor"
+msgstr ""
+
+#: views/admin/index/index.php:65
+msgid "t/m³"
+msgstr ""
+
+#: views/admin/index/index.php:72
 msgid "Filter item ID (e.g. \"42-500\")"
 msgstr ""
 
-#: views/admin/index/index.php:70
+#: views/admin/index/index.php:83
 msgid "Filter target range (e.g. \"20.5-50\")"
 msgstr ""
 
-#: views/admin/index/index.php:81
+#: views/admin/index/index.php:94
 msgid "Filter Title Text"
 msgstr ""
 
-#: views/admin/index/index.php:95
+#: views/admin/index/index.php:108
 msgid "Add Relation"
 msgstr ""
 
-#: views/admin/index/index.php:108
+#: views/admin/index/index.php:121
 msgid "Title"
 msgstr ""
 
-#: views/admin/index/index.php:109 views/admin/index/index.php:152
+#: views/admin/index/index.php:122 views/admin/index/index.php:165
 msgid "Original Values"
 msgstr ""
 
-#: views/admin/index/index.php:110 views/admin/index/index.php:152
+#: views/admin/index/index.php:123 views/admin/index/index.php:165
 msgid "Converted Values"
 msgstr ""
 
-#: views/admin/index/index.php:121 views/admin/index/index.php:168
+#: views/admin/index/index.php:134 views/admin/index/index.php:181
 msgid "Weight"
 msgstr ""
 
-#: views/admin/index/index.php:168
+#: views/admin/index/index.php:181
 msgid "single / all"
 msgstr ""
 
-#: views/admin/index/index.php:173
+#: views/admin/index/index.php:186
 msgid "Open Item"
 msgstr ""
 
-#: views/admin/index/index.php:174
+#: views/admin/index/index.php:187
 msgid "Open Item in New Window"
 msgstr ""
 
-#: views/admin/index/index.php:180 views/admin/index/index.php:210
+#: views/admin/index/index.php:193 views/admin/index/index.php:223
 msgid "Add Relationship"
 msgstr ""
 
-#: views/admin/index/index.php:184
+#: views/admin/index/index.php:197
 msgid ""
 "The item that you selected last (which highlighted in a slightly different "
 "color) will be the subject of the newly added relationship, while the one or "
 "more other highlighted item(s) will become object(s) of that relationship."
 msgstr ""
 
-#: views/admin/index/index.php:189
+#: views/admin/index/index.php:202
 msgid "Subject Item"
 msgstr ""
 
-#: views/admin/index/index.php:190
+#: views/admin/index/index.php:203
 msgid "Object Item(s)"
 msgstr ""
 
-#: views/admin/index/index.php:196
+#: views/admin/index/index.php:209
 msgid "Item Relations"
 msgstr ""
 
-#: views/admin/index/index.php:203
+#: views/admin/index/index.php:216
 msgid "Relationship Comment"
 msgstr ""
 
-#: views/admin/index/index.php:215
+#: views/admin/index/index.php:228
 msgid "Relation(s) created successfully."
 msgstr ""
 
-#: views/admin/index/index.php:216
+#: views/admin/index/index.php:229
 msgid "Error while creating relation(s)."
 msgstr ""
 
-#: views/admin/index/index.php:218
+#: views/admin/index/index.php:231
 msgid "Close"
 msgstr ""
 

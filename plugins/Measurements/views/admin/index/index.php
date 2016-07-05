@@ -62,7 +62,7 @@
                                 // "maxlength" => 16,
                               )
                           );
-  echo " " . $view->formLabel('measurementsWeightFactor', __('t/km'));
+  echo " " . $view->formLabel('measurementsWeightFactor', __('t/m³'));
 
 ?>
 </div>
