@@ -24,6 +24,7 @@ jQuery(document).ready(function () {
 
   // ---------------------------------------------------------------------------
 
+  var curWeightFactor = 2.0;
   var curFromId = -1;
   var curToId = -1;
   var curFromRange = -1;
@@ -32,6 +33,7 @@ jQuery(document).ready(function () {
 
   var editTimer = null;
 
+  $("#measurementsWeightFactor").keyup(editUpdate).blur(editEnd);
   $("#measurementsIdFilter").keyup(editUpdate).blur(editEnd);
   $("#measurementsRangeFilter").keyup(editUpdate).blur(editEnd);
   $("#measurementsTitleFilter").keyup(editUpdate).blur(editEnd);
@@ -46,8 +48,19 @@ jQuery(document).ready(function () {
     editTimer = null;
     curTitleFilter = $("#measurementsTitleFilter").val().trim();
 
-    var idRegEx = /\s*(\d+)-(\d+)\s*/;
+    var weightRegEx = /\s*(\d+)(?:(?:,|\.)(\d+))?\s*/;
+    var curVal = $("#measurementsWeightFactor").val();
+    var matches = curVal.match(weightRegEx);
+    if (matches == null) {
+      curWeightFactor = 2.0;
+    }
+    else {
+      var prefix = matches[1];
+      var suffix = matches[2];
+      curWeightFactor = parseFloat(prefix+"."+suffix);
+    }
 
+    var idRegEx = /\s*(\d+)-(\d+)\s*/;
     var curVal = $("#measurementsIdFilter").val();
     var matches = curVal.match(idRegEx);
     if (matches == null) {
@@ -235,7 +248,7 @@ jQuery(document).ready(function () {
           else {
             var volume = data.data[i]["vc"];
 
-            var baseWeight = 2.6 * volume / 1000000000;
+            var baseWeight = curWeightFactor * volume / 1000000000;
             var weights = [baseWeight];
 
             var number = data.data[i]["n"];

@@ -44,19 +44,32 @@
     1 => __("Surfaces"),
     2 => __("Volume"),
   );
-  echo $view->formLabel('measurementsArea', __('Measurement Analytical Area')) . ": ".
-        $view->formSelect('measurementsArea', array(), array(), $measurementsArea);
+  echo $view->formLabel('measurementsArea', __('Measurement Analytical Area')) . ": ";
+  echo $view->formSelect('measurementsArea', array(), array(), $measurementsArea);
 
   echo "<span class='oneEm'></span>";
 
-  echo $view->formLabel('measurementsUnit', __('Measurement Analytical Unit')) . ": ".
-        $view->formSelect('measurementsUnit', array(), array(), $measurementUnits["select"]);
+  echo $view->formLabel('measurementsUnit', __('Measurement Analytical Unit')) . ": ";
+  echo $view->formSelect('measurementsUnit', array(), array(), $measurementUnits["select"]);
+
+  echo "<span class='oneEm'></span>";
+
+  echo $view->formLabel('measurementsWeightFactor', __('Weight Factor')) . ": ";
+  echo $view->formInput("measurementsWeightFactor",
+                          "2,0",
+                          array("type" => "text",
+                                "size" => 8,
+                                // "maxlength" => 16,
+                              )
+                          );
+  echo " " . $view->formLabel('measurementsWeightFactor', __('t/km'));
+
 ?>
 </div>
 
 <div class="measurementCenter">
   <?php
-    echo __('Filter item ID (e.g. "42-500")') . ": ";
+    echo $view->formLabel('measurementsIdFilter', __('Filter item ID (e.g. "42-500")')) . ": ";
     echo $view->formInput("measurementsIdFilter",
                             null,
                             array("type" => "text",
@@ -67,7 +80,7 @@
 
     echo "<span class='oneEm'></span>";
 
-    echo __('Filter target range (e.g. "20.5-50")') . ": ";
+    echo $view->formLabel('measurementsRangeFilter', __('Filter target range (e.g. "20.5-50")')) . ": ";
     echo $view->formInput("measurementsRangeFilter",
                             null,
                             array("type" => "text",
@@ -78,7 +91,7 @@
 
     echo "<span class='oneEm'></span>";
 
-    echo __('Filter Title Text') . ": ";
+    echo $view->formLabel('measurementsTitleFilter', __('Filter Title Text')) . ": ";
     echo $view->formInput("measurementsTitleFilter",
                             null,
                             array("type" => "text",
