@@ -263,7 +263,7 @@ jQuery(document).ready(function () {
         updateChoices();
     });
 
-    $('#selector-previous-page').click(function (e) {
+    $('#selector-previous-page a').click(function (e) {
         e.preventDefault();
         if (0 < options['page']) {
             options['page']--;
@@ -271,7 +271,7 @@ jQuery(document).ready(function () {
         }
     });
 
-    $('#selector-next-page').click(function (e) {
+    $('#selector-next-page a').click(function (e) {
         e.preventDefault();
         if (options['page'] < options['max_page']) {
             options['page']++;
