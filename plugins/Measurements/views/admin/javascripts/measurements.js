@@ -85,10 +85,10 @@ jQuery(document).bind("omeka:elementformload", function() {
         }
       }
       $("#measurementUnits").val(unitId);
+      $("#measurementNumber").val(sourceData["n"]);
     }
 
     $("#measurementUnits").val(unitId).change(); // incl. update derived
-    $("#measurementNumber").val(sourceData["n"]);
 
     lightbox("#measurementsPopup");
   } );
