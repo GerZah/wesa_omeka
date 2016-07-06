@@ -240,7 +240,7 @@ jQuery(document).ready(function () {
             }
           });
           var number = data.data[i]["n"];
-          number = ( number ? number : "-" );
+          number = ( number ? number : "(1)" );
           $("#measurementsTable #"+rowId+" .measn").html(number);
           if (unitsSimple[curUnit]!="mm") {
             $("#measurementsTable #"+rowId+" .measw").html("-");
@@ -252,7 +252,7 @@ jQuery(document).ready(function () {
             var weights = [baseWeight];
 
             var number = data.data[i]["n"];
-            if (number) { weights.push(baseWeight*number); }
+            if (number>1) { weights.push(baseWeight*number); }
 
             var fullWeightText = "";
 
