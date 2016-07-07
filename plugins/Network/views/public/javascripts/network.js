@@ -99,17 +99,24 @@ jQuery(document).ready(function () {
         cy.$("#"+id).addClass("color"+color);
       });
 
+      var stickySelection = stickyNodeSelection;
+      var initialFade = true;
+
       cy.on('tap', 'node', function(e){
         var node = e.cyTarget;
         var neighborhood = node.neighborhood().add(node);
 
-        cy.elements().addClass('faded');
+        if ( (initialFade) || (!stickySelection) ) {
+          cy.elements().addClass('faded');
+          initialFade = false;
+        }
         neighborhood.removeClass('faded');
       });
 
       cy.on('tap', function(e){
         if( e.cyTarget === cy ){
           cy.elements().removeClass('faded');
+          initialFade = true;
         }
       });
     }

@@ -89,6 +89,7 @@ public function addAction()
   $exhibit = new NetworkExhibit;
   $exhibit->all_relations = true;
   $exhibit->all_references = true;
+  $exhibit->sticky_node_selection = false;
   $exhibit->color_item_types = true;
   $form = $this->_getExhibitForm($exhibit);
 

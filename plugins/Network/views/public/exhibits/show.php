@@ -20,13 +20,14 @@
   // ----- Get display configuration switches
 
   $selectSwitches = "
-    SELECT graph_structure, all_items, all_relations, all_references, color_item_types
+    SELECT graph_structure, all_items, all_relations, all_references, color_item_types, sticky_node_selection
     FROM `$db->NetworkExhibit`
     WHERE id = $exhibit_id
   ";
   $switches = $db->fetchAll($selectSwitches);
   $graphStructure = intval($switches[0]["graph_structure"]); // Which graph balancing method
   $colorItemTypes = intval(!!$switches[0]["color_item_types"]); // Display different item types in different colors
+  $stickyNodeSelection = intval(!!$switches[0]["sticky_node_selection"]); // Keep highlighted nodes highlighted until clicking the background
   $allItems = intval(!!$switches[0]["all_items"]); // Display all items, as opposed to limiting to participating ones
   $allRelations = intval(!!$switches[0]["all_relations"]); // Display all relations (if selected or by default)
   $allReferences = intval(!!$switches[0]["all_references"]); // Display all references (if selected or by default)
@@ -39,7 +40,8 @@
 
   queue_js_string(
     'var cytoBaseUrl = ' . json_encode(CURRENT_BASE_URL) . "; " .
-    'var cytoGraphStructure = ' . $graphStructure . ";"
+    'var cytoGraphStructure = ' . $graphStructure . ";".
+    'var stickyNodeSelection = ' . $stickyNodeSelection . ";"
   );
 
 

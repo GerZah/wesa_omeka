@@ -23,6 +23,7 @@ function in_schema()
         title                   TEXT NULL,
         public                  TINYINT(1) NOT NULL,
         graph_structure         TINYINT(1) NOT NULL,
+        sticky_node_selection   TINYINT(1) NOT NULL,
         color_item_types        TINYINT(1) NOT NULL,
         all_items               TINYINT(1) NOT NULL,
         all_relations           TINYINT(1) NOT NULL,

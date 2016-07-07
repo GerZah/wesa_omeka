@@ -79,6 +79,17 @@ class Network_Form_Exhibit extends Omeka_Form
             'value'         => $this->exhibit->graph_structure
         ));
 
+        // Sticky node selection:
+        $this->addElement('checkbox', 'sticky_node_selection', array(
+            'label'         => __('Sticky Node Selection'),
+            'description'   => __('By default, when clicking a node, this node and all its neighors are '.
+                                  'being highlighted, while all the other nodes are being greyed out. '.
+                                  'If you check this box, formerly highlighted nodes will remain highlighed '.
+                                  'until clicking the background. This may help exploring higher-level '.
+                                  'neighborhood contexts by clicking from node to node.'),
+            'value'         => $this->exhibit->sticky_node_selection
+        ));
+
         // Color item types:
         $this->addElement('checkbox', 'color_item_types', array(
             'label'         => __('Color Item Types'),
@@ -163,6 +174,7 @@ class Network_Form_Exhibit extends Omeka_Form
         $this->addDisplayGroup(array(
             'title',
             'graph_structure',
+            'sticky_node_selection',
             'color_item_types',
             'public',
             'all_items',

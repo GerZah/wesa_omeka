@@ -19,6 +19,7 @@ class NetworkExhibit extends Network_Row_Expandable
     public $item_query;
     public $title;
     public $graph_structure;
+    public $sticky_node_selection;
     public $color_item_types;
     public $all_items;
     public $all_relations;
