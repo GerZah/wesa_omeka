@@ -25,17 +25,17 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
-#: controllers/ExhibitsController.php:277
+#: controllers/ExhibitsController.php:278
 #, php-format
 msgid "The exhibit \"%s\" was successfully deleted!"
 msgstr ""
 
-#: controllers/ExhibitsController.php:290
+#: controllers/ExhibitsController.php:291
 #, php-format
 msgid "This will delete \"%s\" and its associated metadata."
 msgstr ""
 
-#: controllers/ExhibitsController.php:301
+#: controllers/ExhibitsController.php:302
 msgid "The item import was successfully started!"
 msgstr ""
 
@@ -84,71 +84,84 @@ msgid "Spread"
 msgstr ""
 
 #: forms/Network_Form_Exhibit.php:84
-msgid "Color Item Types"
+msgid "Sticky Item Selection"
 msgstr ""
 
 #: forms/Network_Form_Exhibit.php:85
+msgid ""
+"By default, when clicking an item, this item and all its neighors are being "
+"highlighted, while all the other items are being greyed out. If you check "
+"this box, formerly highlighted items will remain highlighed until clicking "
+"the background. This may help exploring higher-level neighborhood contexts "
+"by clicking from item to item."
+msgstr ""
+
+#: forms/Network_Form_Exhibit.php:95
+msgid "Color Item Types"
+msgstr ""
+
+#: forms/Network_Form_Exhibit.php:96
 msgid ""
 "By default, items from different item types will be displayed in different "
 "colors. Uncheck this box if you want all of them to remain black/grey."
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:93
+#: forms/Network_Form_Exhibit.php:104
 msgid "All Items"
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:94
+#: forms/Network_Form_Exhibit.php:105
 msgid ""
 "By default, the network will display only those items that have at least one "
 "connection to one other item. Check this box to force displaying all "
 "imported items."
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:102
+#: forms/Network_Form_Exhibit.php:113
 msgid "All Item Relations"
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:103
+#: forms/Network_Form_Exhibit.php:114
 msgid ""
 "By default, all relations will be displayed. Uncheck this box to limit the "
 "displayed relations."
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:114
+#: forms/Network_Form_Exhibit.php:125
 msgid "Item Relations"
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:115
+#: forms/Network_Form_Exhibit.php:126
 msgid ""
 "Please select all relations that you would like to display. If you do not "
 "want to display any relations, deselect all."
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:122 forms/Network_Form_Exhibit.php:155
+#: forms/Network_Form_Exhibit.php:133 forms/Network_Form_Exhibit.php:164
 msgid "Unselect"
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:132
+#: forms/Network_Form_Exhibit.php:141
 msgid "All Item References"
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:133
+#: forms/Network_Form_Exhibit.php:142
 msgid ""
 "By default, all reference elements will be displayed. Uncheck this box to "
 "limit the displayed element types."
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:147
+#: forms/Network_Form_Exhibit.php:156
 msgid "Item References"
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:148
+#: forms/Network_Form_Exhibit.php:157
 msgid ""
 "Please select all reference elements that you would like to display. If you "
 "do not want to display any reference elements, deselect all."
 msgstr ""
 
-#: forms/Network_Form_Exhibit.php:162
+#: forms/Network_Form_Exhibit.php:171
 msgid "Save Exhibit"
 msgstr ""
 
@@ -289,11 +302,11 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: views/admin/exhibits/view.php:57
+#: views/admin/exhibits/view.php:55
 msgid "Remove"
 msgstr ""
 
-#: views/admin/exhibits/view.php:67 views/admin/exhibits/view.php:68
-#: views/admin/exhibits/view.php:69 views/admin/exhibits/view.php:70
+#: views/admin/exhibits/view.php:66 views/admin/exhibits/view.php:67
+#: views/admin/exhibits/view.php:68 views/admin/exhibits/view.php:69
 msgid "[n/a]"
 msgstr ""

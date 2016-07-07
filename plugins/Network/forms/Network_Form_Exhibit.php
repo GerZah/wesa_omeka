@@ -81,12 +81,12 @@ class Network_Form_Exhibit extends Omeka_Form
 
         // Sticky node selection:
         $this->addElement('checkbox', 'sticky_node_selection', array(
-            'label'         => __('Sticky Node Selection'),
-            'description'   => __('By default, when clicking a node, this node and all its neighors are '.
-                                  'being highlighted, while all the other nodes are being greyed out. '.
-                                  'If you check this box, formerly highlighted nodes will remain highlighed '.
+            'label'         => __('Sticky Item Selection'),
+            'description'   => __('By default, when clicking an item, this item and all its neighors are '.
+                                  'being highlighted, while all the other items are being greyed out. '.
+                                  'If you check this box, formerly highlighted items will remain highlighed '.
                                   'until clicking the background. This may help exploring higher-level '.
-                                  'neighborhood contexts by clicking from node to node.'),
+                                  'neighborhood contexts by clicking from item to item.'),
             'value'         => $this->exhibit->sticky_node_selection
         ));
 
