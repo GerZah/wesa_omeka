@@ -33,7 +33,7 @@
 
 	$csv=array();
 
-	$file = fopen('ProsopographieWeSa4.csv', 'r');
+	$file = fopen('ProsopographieWeSa5.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
@@ -61,9 +61,10 @@
 
 			$name = $line[$headers["Name"]];
 			$andereSchreibweisen = $line[$headers["andere Schreibweisen"]];
-			$geburtszeitpunkt = $line[$headers["Geburtszeitpunkt"]];
-			$sterbezeitpunkt = $line[$headers["Sterbezeitpunkt"]];
+			$geburtszeitpunkt = @$line[$headers["Geburtszeitpunkt"]];
+			$sterbezeitpunkt = @$line[$headers["Sterbezeitpunkt"]];
 			$kommentar = $line[$headers["Kommentar"]];
+			$kommentar2 = @$line[$headers["Kommentar 2"]];
 
 			// Process main name plus alternative spellings
 			$namen = array( trim($name) );
@@ -94,8 +95,16 @@
 			if ($kommentar) {
 				$year = "\d{4}";
 				$anmerkungen = preg_replace( "/($year)/", "[G] $1", $kommentar );
+				$anmerkungen = str_replace("[G][G]", "[G]", $anmerkungen);
 			}
-			if ($anmerkungen) { $metadata['Anmerkungen'] = array( array('text' => $anmerkungen, 'html' => false) ); }
+			if ($anmerkungen) {
+				$anmerkungenData = array();
+				$anmerkungenData[] = array('text' => $anmerkungen, 'html' => false);
+				if ($kommentar2) {
+					$anmerkungenData[] = array('text' => $kommentar2, 'html' => false);
+				}
+				$metadata['Anmerkungen'] = $anmerkungenData;
+			}
 
 			// http://omeka.readthedocs.org/en/eb3/Reference/libraries/globals/insert_item.html
 			$metaData = array("item_type_id" => $importItemTypeID);
