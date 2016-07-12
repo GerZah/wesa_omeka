@@ -38,7 +38,7 @@
 	$relationshipTitles = array( importTargetRelationTitle => 0, importTransactionRelationTitle => 0);
 
 	foreach(array_keys($relationshipTitles) as $title) {
-		$sqlTitle = mysql_real_escape_string($title);
+		$sqlTitle = addcslashes($title, '%_');
 		$sql = "SELECT id FROM {$db->ItemRelationsProperty} WHERE label='".$sqlTitle."'";
 		$titleId	 = $db->fetchOne($sql);
 		if ($titleId) { $relationshipTitles[$title] = $titleId;  }
@@ -99,7 +99,7 @@
 	}
 
 	foreach(array_keys($relationTargets) as $title) { // Now find the respective IDs
-		$sqlTitle = mysql_real_escape_string($title);
+		$sqlTitle = addcslashes($title, '%_');
 		$sql = "SELECT record_id FROM {$db->ElementTexts} WHERE element_id=$titleElementID AND text='".$sqlTitle."'";
 		$titleId = $db->fetchOne($sql);
 		if ($titleId) { $relationTargets[$title] = $titleId; }
