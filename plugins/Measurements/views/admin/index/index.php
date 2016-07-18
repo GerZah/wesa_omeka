@@ -13,7 +13,7 @@
 
   $html[] = '<link href="' . css_src('measurements-analytics') . '" rel="stylesheet">';
   $html[] = '<script type="text/javascript">';
-  $html[] = 'var measurementsJsonUrl = ' . json_encode(url('measurements/')) . ';'; // "lookup/" / "addrelation/"
+  $html[] = 'var measurementsJsonUrl = ' . json_encode(url('measurements/')) . ';'; // "lookup/" / "addrel/"
   $html[] = 'var measurementsTableLen = ' . MEASUREMENT_TABLE_LEN . ';';
   $html[] = 'var measurementsBaseUrl = ' . json_encode(CURRENT_BASE_URL) . ';';
   $html[] = 'var unitsSimple = ' . json_encode($measurementUnits["simple"]) . ';';

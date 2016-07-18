@@ -1,13 +1,13 @@
 <?php
 /**
  * Measurements
- * AddRelationController
+ * AddrelController
  */
 
 /**
  * Add Relation controller.
  */
-class Measurements_AddRelationController extends Omeka_Controller_AbstractActionController {
+class Measurements_AddrelController extends Omeka_Controller_AbstractActionController {
 
   public function indexAction() {
     $result = array();
@@ -60,7 +60,7 @@ class Measurements_AddRelationController extends Omeka_Controller_AbstractAction
     $realSelectedRelation = $db->fetchOne("SELECT id FROM `$db->ItemRelationsProperty` WHERE id=$selectedRelation");
 
     # Comment might become empty
-    $realRelationComment = mysql_real_escape_string(trim($relationComment));
+    $realRelationComment = addcslashes(trim($relationComment), "%_");
 
     // Processed mirror response (for checking the wires) -- can/should be removed after regular function is established
     // $result["realSubjectItemId"] = $realSubjectItemId;

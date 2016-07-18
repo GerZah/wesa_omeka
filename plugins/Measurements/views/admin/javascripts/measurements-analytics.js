@@ -422,7 +422,7 @@ jQuery(document).ready(function () {
 
       $("#doAddRelBtn").prop("disabled", true);
       $.ajax({
-        url: measurementsJsonUrl + "addrelation/",
+        url: measurementsJsonUrl + "addrel/",
         dataType: 'json',
         data: ajaxData,
         success: function(data) {
