@@ -13,8 +13,9 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
     $result = array();
     $result["data"] = null; # Sanity
 
-    $area = $unit = $page = $fromId = $toId = -1;
+    $area = $unit = $page = $fromId = $toId = $fromRange = $toRange = -1;
     $title = "";
+    $measurements = array();
 
     if ($this->_hasParam("area")) { $area = intval($this->_getParam('area')); }
     if ($this->_hasParam("unit")) { $unit = intval($this->_getParam('unit')); }
@@ -97,7 +98,6 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
         ";
         $singleMeasurements = $db->fetchAll($qu); // Eeeevil! :-(
 
-        $measurements = array();
         foreach($singleMeasurements as $singleMeasurement) {
           SELF::_sortDimensions($singleMeasurement);
           switch ($area) {
