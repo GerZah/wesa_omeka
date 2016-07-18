@@ -579,33 +579,67 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     $itemId = $item->id;
 
     $db = get_db();
-    $sql = "SELECT DISTINCT record_id FROM `$db->ElementTexts`".
-          " WHERE element_id in ($referenceElementsStr)".
-          " AND text = '$itemId'";
+    $sql = "
+      SELECT DISTINCT et.record_id, el.item_type_id, it.name
+      FROM `$db->ElementTexts` et
+      LEFT JOIN `$db->Items` el ON et.record_id = el.id
+      LEFT JOIN `$db->ItemTypes` it ON el.item_type_id = it.id
+      WHERE et.element_id in ($referenceElementsStr)
+      AND et.text = '$itemId'
+      ORDER BY it.name ASC, el.modified DESC
+    ";
     $referencers = $db->fetchAll($sql);
+    // echo "<pre>$sql - ".count($referencers)."\n" . print_r($referencers,true) . "</pre>";
+
+    $itemTypes = array();
+    foreach($referencers as $referencer) {
+      $typeName = ( @$referencer["name"] ? $referencer["name"] : __("[n/a]") );
+      $itemTypes[$referencer["item_type_id"]] = $typeName;
+    }
 
     if ($referencers) {
       echo "<h2>".__("Items Referencing this Item")."</h2>\n";
 
-      echo "<ul>\n";
+      $refItemTypeShowHide = __("Show / Hide");
+      $refItemTypeShowHideAll = __("Show / Hide All");
+      ?>
+      <script type='text/javascript'>
+          var refItemTypeShowHide = <?php echo json_encode($refItemTypeShowHide); ?>;
+          var refItemTypeShowHideAll = <?php echo json_encode($refItemTypeShowHideAll); ?>;
+      </script>
+      <?php
+      echo js_tag('item-references-item-type-toggle');
+
+      echo "<table id='refItemTypeTable'>\n";
+
+      $lastType = -1;
       foreach($referencers as $referencer) {
+        if ($referencer["item_type_id"] != $lastType) {
+          $lastType = $referencer["item_type_id"];
+          echo "<tr class='refItemTypeHead' data-item-type='$lastType'>".
+                "<th colspan='3'>" . $itemTypes[$lastType] . "</th></tr>\n";
+        }
         $referencerId = $referencer["record_id"];
         $referencerUrl = url('items/show/' . $referencerId);
-        $data = SELF::getDataForId($referencerId);
-        if ($data !== false) {
+        $title = $details = "";
+        if ($data = SELF::getDataForId($referencerId)) {
           $title = $data["title"];
           $details = $data["details"];
-          echo "<li><a href='" . $referencerUrl . "'>" .
-                $title .
-                "</a>".
-                ( !$details ? "" :
-                  " <span class='itemRefDetailsLink'>(".__("Details").")</span>".
-                  "<div class='itemRefDetailsText'>$details</div>"
-                ).
-                "</li>\n";
+          // echo "<pre>" . print_r($data,true) . "</pre>";
         }
+        echo "<tr class='refItemTypeRow refItemType_".$lastType."'>";
+        echo "<td><a href='" . $referencerUrl . "'>#$referencerId</a></td>";
+        echo "<td><a href='" . $referencerUrl . "'>$title</a></td>";
+        echo "<td>".
+              ( !$details ? "" :
+                "<span class='itemRefDetailsLink'>".__("Details")."</span>".
+                "<div class='itemRefDetailsText'>$details</div>"
+              ).
+              "</td>";
+        echo "</tr>\n";
       }
-      echo "</ul>\n";
+
+      echo "</table>\n";
     }
 
   }
