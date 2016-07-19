@@ -682,14 +682,19 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
           $elementName = $db->fetchOne($sql);
           $output .= "<h4>$elementName</h4>\n";
 
+          $isLineReference = intval($itemReferencesConfiguration[$elementId][0]==2);
+
           $data = array(
             "mapId" => "map".$elementId,
             "coords" => array(),
-            "line" => intval($itemReferencesConfiguration[$elementId][0]==2),
+            "line" => $isLineReference,
             "color" => intval($itemReferencesConfiguration[$elementId][1]),
           );
 
           $reqOverlays = array();
+
+          $distances = array();
+          $lastPin = null;
 
           foreach($referenceMap as $pin) {
             if ($pin) {
@@ -701,6 +706,21 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
                 "ovl" => $pin["overlay"],
                 "zl" => $pin["zoom_level"],
               );
+              if (($lastPin) and ($isLineReference)) {
+                $distances[] = array(
+                  "fromTitle" =>
+                    "<a href='".$lastPin["url"]."'>" . $lastPin["geo_title"] . "</a>",
+                  "toTitle" =>
+                    "<a href='".$pin["url"]."'>" . $pin["geo_title"] . "</a>",
+                  "linDistance" => number_format(
+                    SELF::_getDistanceFromLatLonInKm(
+                      $pin["latitude"], $pin["longitude"],
+                      $lastPin["latitude"], $lastPin["longitude"]
+                    ) , 3, ",", "."
+                  ) . " km",
+                );
+              }
+              $lastPin = $pin;
               if (isset($reqOverlays[$pin["overlay"]])) {
                 $reqOverlays[$pin["overlay"]]++;
               }
@@ -712,6 +732,27 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
           $ovlDefault = -1;
           if (count($reqOverlays) == 1) { $ovlDefault = array_keys($reqOverlays)[0]; }
+
+          $distHtml = "";
+          if ($distances) {
+            $distHtml .= "<h5>" . __("Linear Distances")  . "</h5>\n";
+            $distHtml .= "<table>";
+            $distHtml .= "<thead><tr>";
+            $distHtml .= "<th>" . __("Start Point") . "</th>";
+            $distHtml .= "<th>" . __("End Point") . "</th>";
+            $distHtml .= "<th style='text-align:right;'>" . __("Linear Distance") . "</th>";
+            $distHtml .= "</tr></thead>\n";
+            $distHtml .= "<tbody>\n";
+            foreach($distances as $distance) {
+              $distHtml .= "<tr>";
+              $distHtml .= "<td>" . $distance["fromTitle"] . "</td>";
+              $distHtml .= "<td>" . $distance["toTitle"] . "</td>";
+              $distHtml .= "<td style='text-align:right;'>" . $distance["linDistance"] . "</td>";
+              $distHtml .= "</tr>\n";
+            }
+            $distHtml .= "</tbody>\n";
+            $distHtml .= "</table>\n";
+          }
 
           $output .= "<div id='".$data["mapId"]."' style='height:".$itemReferencesMapHeight."px; width:100%;'></div>\n";
           $curCount = count($mapsData);
@@ -727,6 +768,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
                 $overlays["jsSelect"]
               ).
               "<span class='refMapOvlSlider' id='".$data["mapId"]."_slider' data-map-arr='".$curCount."'></span>".
+              $distHtml.
               "</div>";
           }
 
@@ -744,6 +786,25 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
     }
 
     return $js;
+  }
+
+  /**
+  * Helper function to caculate linear distances (i.e. air distances) between two lat/lng tuples
+  * ... adapted from http://stackoverflow.com/a/27943
+  */
+
+  protected function _getDistanceFromLatLonInKm($lat1, $lon1, $lat2,$lon2) {
+    $R = 6371; // Radius of the earth in km
+    $dLat = deg2rad($lat2-$lat1);  // deg2rad below
+    $dLon = deg2rad($lon2-$lon1);
+    $a =
+      sin($dLat/2) * sin($dLat/2) +
+      cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+      sin($dLon/2) * sin($dLon/2)
+      ;
+    $c = 2 * atan2(sqrt($a), sqrt(1-$a));
+    $d = $R * $c; // Distance in km
+    return $d;
   }
 
   /**
