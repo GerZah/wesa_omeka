@@ -693,10 +693,12 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
 
           $reqOverlays = array();
 
-          $distances = array();
+          $lineDistances = array();
           $lastPin = null;
 
-          foreach($referenceMap as $pin) {
+          $distanceArrays = array();
+
+          foreach($referenceMap as $pinIndex => $pin) {
             if ($pin) {
               $data["coords"][] = array( // see below (*)
                 "title" => $pin["geo_title"],
@@ -706,21 +708,48 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
                 "ovl" => $pin["overlay"],
                 "zl" => $pin["zoom_level"],
               );
-              if (($lastPin) and ($isLineReference)) {
-                $distances[] = array(
-                  "fromTitle" =>
-                    "<a href='".$lastPin["url"]."'>" . $lastPin["geo_title"] . "</a>",
-                  "toTitle" =>
-                    "<a href='".$pin["url"]."'>" . $pin["geo_title"] . "</a>",
-                  "linDistance" => number_format(
-                    SELF::_getDistanceFromLatLonInKm(
-                      $pin["latitude"], $pin["longitude"],
-                      $lastPin["latitude"], $lastPin["longitude"]
-                    ) , 3, ",", "."
-                  ) . " km",
-                );
+
+              if ($isLineReference) { // Line references: calculate distances from stop to stop
+                if ($lastPin) { // Have we already seen the stop before this one?
+                  $lineDistances[] = array(
+                    "fromTitle" =>
+                      "<a href='".$lastPin["url"]."'>" . $lastPin["geo_title"] . "</a>",
+                    "toTitle" =>
+                      "<a href='".$pin["url"]."'>" . $pin["geo_title"] . "</a>",
+                    "linDistance" => SELF::_km_format(
+                      SELF::_getDistanceFromLatLonInKm(
+                        $pin["latitude"], $pin["longitude"],
+                        $lastPin["latitude"], $lastPin["longitude"]
+                      )
+                    )
+                  );
+                }
+                $lastPin = $pin;
               }
-              $lastPin = $pin;
+
+              else { // Not line reference -- but location reference
+                // in this case calculate distances from here to everywhere else
+                $distanceArray = array();
+                foreach($referenceMap as $otherPinIndex => $otherPin) {
+                  if ($pinIndex != $otherPinIndex) {
+                    $distanceArray[$otherPin["geo_title"]] = array(
+                      "fromTitle" =>
+                        "<a href='".$pin["url"]."'>" . $pin["geo_title"] . "</a>",
+                      "toTitle" =>
+                          "<a href='".$otherPin["url"]."'>" . $otherPin["geo_title"] . "</a>",
+                      "linDistance" => SELF::_km_format(
+                        SELF::_getDistanceFromLatLonInKm(
+                          $pin["latitude"], $pin["longitude"],
+                          $otherPin["latitude"], $otherPin["longitude"]
+                        )
+                      )
+                    );
+                  }
+                }
+                ksort($distanceArray);
+                $distanceArrays[ $pin["geo_title"] ] = $distanceArray;
+              }
+
               if (isset($reqOverlays[$pin["overlay"]])) {
                 $reqOverlays[$pin["overlay"]]++;
               }
@@ -730,29 +759,60 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
             }
           }
 
+          ksort($distanceArrays);
+
           $ovlDefault = -1;
           if (count($reqOverlays) == 1) { $ovlDefault = array_keys($reqOverlays)[0]; }
 
           $distHtml = "";
-          if ($distances) {
-            $distHtml .= "<h5>" . __("Linear Distances")  . "</h5>\n";
-            $distHtml .= "<table>";
-            $distHtml .= "<thead><tr>";
-            $distHtml .= "<th>" . __("Start Point") . "</th>";
-            $distHtml .= "<th>" . __("End Point") . "</th>";
-            $distHtml .= "<th style='text-align:right;'>" . __("Linear Distance") . "</th>";
-            $distHtml .= "</tr></thead>\n";
-            $distHtml .= "<tbody>\n";
-            foreach($distances as $distance) {
+          $distHtml .= "<h5>" . __("Linear Distances")  . "</h5>\n";
+
+          $classInfix = ( $lineDistances ? ""
+            : "class='refDistanceTable refDistanceElement_".$elementId."' data-element='".$elementId."'"
+          );
+
+          $distHtml .= "<table $classInfix>";
+          $distHtml .= "<thead><tr>";
+          $distHtml .= "<th>" . __("Start Point") . "</th>";
+          $distHtml .= "<th>" . __("End Point") . "</th>";
+          $distHtml .= "<th style='text-align:right;'>" . __("Linear Distance") . "</th>";
+          $distHtml .= "</tr></thead>\n";
+          $distHtml .= "<tbody>\n";
+
+          if ($lineDistances) {
+            foreach($lineDistances as $lineDistance) {
               $distHtml .= "<tr>";
-              $distHtml .= "<td>" . $distance["fromTitle"] . "</td>";
-              $distHtml .= "<td>" . $distance["toTitle"] . "</td>";
-              $distHtml .= "<td style='text-align:right;'>" . $distance["linDistance"] . "</td>";
+              $distHtml .= "<td>" . $lineDistance["fromTitle"] . "</td>";
+              $distHtml .= "<td>" . $lineDistance["toTitle"] . "</td>";
+              $distHtml .= "<td style='text-align:right;'>" . $lineDistance["linDistance"] . "</td>";
               $distHtml .= "</tr>\n";
             }
-            $distHtml .= "</tbody>\n";
-            $distHtml .= "</table>\n";
           }
+
+          else {
+            $cnt = 0;
+            foreach($distanceArrays as $fromTitle => $distanceArray) {
+              $cnt++;
+              $distHtml .= "<tr class='refDistanceHead' data-block='".$elementId."_".$cnt."'>".
+                            "<th colspan='3'>$fromTitle</th>".
+                            "</tr>\n";
+              $first = true;
+              $rowSpan = count($distanceArray);
+              foreach($distanceArray as $distance) {
+                $distHtml .= "<tr class='refDistanceRow refDistanceBlock_".$elementId."_".$cnt."'>";
+                if ($first) {
+                  $distHtml .= "<td rowspan='$rowSpan'>" . $distance["fromTitle"] . "</td>";
+                  $first = false;
+                }
+                $distHtml .= "<td>" . $distance["toTitle"] . "</td>";
+                $distHtml .= "<td style='text-align:right;'>" . $distance["linDistance"] . "</td>";
+                $distHtml .= "</tr>\n";
+              }
+            }
+          }
+
+          $distHtml .= "</tbody>\n";
+          $distHtml .= "</table>\n";
 
           $output .= "<div id='".$data["mapId"]."' style='height:".$itemReferencesMapHeight."px; width:100%;'></div>\n";
           $curCount = count($mapsData);
@@ -781,11 +841,43 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
       if ($mapsData) {
         echo $output;
         $js .= "var mapsData=".json_encode($mapsData).";\n";
+
+        $refItemTypeShowHide = __("Show / Hide");
+        $refItemTypeShowHideAll = __("Show / Hide All");
+        $js .= "var refDistancesShowHide = ".json_encode($refItemTypeShowHide).";\n";
+        $js .= "var refDistancesShowHideAll = ".json_encode($refItemTypeShowHideAll).";\n";
+        echo js_tag('item-references-distances-toggle');
+
+
       }
 
     }
 
     return $js;
+  }
+
+  /**
+  * Helper function to encapsulate the number format for km measurements which
+  * fall back to one decimal digit below 5 km and to meters below 1 km etc.
+  */
+  protected function _km_format($km) {
+    $result = round($km);
+
+    if ($km>5) { $result = number_format($km, 0, ",", ".") . " km"; }
+    else if ($km>1) { $result = number_format($km, 1, ",", ".") . " km"; }
+    else {
+
+      $m = round($km * 1000);
+
+      if ($m>500) { $m = round($m / 100) * 100; }
+      else if ($m>100) { $m = round($m / 50) * 50; }
+      else if ($m>50) { $m = round($m / 10) * 10; }
+      else if ($m>20) { $m = round($m / 5) * 5; }
+      $result = number_format($m, 0, ",", ".") . " m";
+
+    }
+
+    return $result;
   }
 
   /**
