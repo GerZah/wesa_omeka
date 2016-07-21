@@ -13,6 +13,20 @@ span.pageCount { display: inline-block; width: 3em; text-align: center; }
 #measurementsTable tr.lastHl td { background-color : #ffeee5; }
 #measurementsTable tr.hlRow td.hlCell { background-color : #ffff90; }
 
+@media print {
+  th { border: 0.2em solid black; }
+  #detailsTable td.hlCell,
+  #measurementsTable td.hlCell { border: 0.2em dashed black; }
+  header,
+  #content-nav,
+  #search-form,
+  .measurementCenter a,
+  .measurementCenter button,
+  .lity-close {
+    display:none;
+  }
+}
+
 #measurementsTable td span {
   display: inline-block;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
