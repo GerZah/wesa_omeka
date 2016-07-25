@@ -30,6 +30,7 @@ jQuery(document).ready(function () {
   var curFromRange = -1;
   var curToRange = -1;
   var curTitleFilter = "";
+  var curBreakdownNumbers = false;
 
   var editTimer = null;
 
@@ -37,6 +38,7 @@ jQuery(document).ready(function () {
   $("#measurementsIdFilter").keyup(editUpdate).blur(editEnd);
   $("#measurementsRangeFilter").keyup(editUpdate).blur(editEnd);
   $("#measurementsTitleFilter").keyup(editUpdate).blur(editEnd);
+  $("#measurementsBreakdownNumbers").change(editUpdate).blur(editEnd);
 
   function editUpdate() {
     if (editTimer != null) { clearTimeout(editTimer); }
@@ -47,6 +49,8 @@ jQuery(document).ready(function () {
     if (editTimer != null) { clearTimeout(editTimer); }
     editTimer = null;
     curTitleFilter = $("#measurementsTitleFilter").val().trim();
+    curBreakdownNumbers = $("#measurementsBreakdownNumbers").prop("checked");
+    console.log(curBreakdownNumbers);
 
     var weightRegEx = /\s*(\d+)(?:(?:,|\.)(\d+))?\s*/;
     var curVal = $("#measurementsWeightFactor").val();
@@ -199,7 +203,7 @@ jQuery(document).ready(function () {
       var numData = data.data.length;
       var numRows = $("#measurementsTable tbody tr").length;
       // console.log(numData + " vs. " + numRows);
-      for(i=0; i<numRows; i++) {
+      for(var i=0; i<numRows; i++) {
         var rowId = "measurementsRow"+i;
         var itemUrl = false;
         if (i<numData) {
@@ -223,13 +227,17 @@ jQuery(document).ready(function () {
           var suffixes = [ "", "c" ];
           suffixes.forEach(function(suffix) {
             var keys = [ ["l1", "l2", "l3"], ["f1", "f2", "f3"], ["v"]];
-            for(dim=0; dim<=2; dim++) {
+            for(var dim=0; dim<=2; dim++) {
               var unit = (suffix == "" ? data.data[i].unit : unitsSimple[curUnit] );
               var unitSuffix = ( dim == 0 ? "" : (dim == 1 ? "²" : "³") );
               keys[dim].forEach(function(key) {
                 $("#measurementsTable #"+rowId+" .meas"+key+suffix)
                 .html(
-                  myNumberFormat(data.data[i][key+suffix])
+                  myNumberFormat(
+                    data.data[i][key+suffix],
+                    data.unitsInv[unit].convs,
+                    dim
+                  )
                   + "<br>"
                   + "<span>" + unit + "</span>" + unitSuffix
                 );
@@ -440,8 +448,40 @@ jQuery(document).ready(function () {
 
   // ---------------------------------------------------------------------------
 
-  function myNumberFormat(x) {
-    var result = number_format(x, 3, ",", ".");
+  function myNumberFormat(x, convs, dim) {
+    var result = x;
+    if ((typeof convs === 'undefined') || (!curBreakdownNumbers)) {
+      result = clipZeroSuffix( number_format(x, 3, ",", ".") );
+    }
+    else {
+      var convsSplit = convs.split("-");
+      for(var i=0; (i<=2); i++) {
+        convsSplit[i] = Math.pow( parseInt(convsSplit[i]), dim+1 );
+      }
+      // console.log(x, convs, dim, convsSplit);
+      var fullNum = Math.floor(x);
+      var decimals = x-fullNum;
+      decimals = clipZeroSuffix( number_format(decimals, 3, ",", ".") );
+      decimals = ( decimals == "0" ? "" : "," + decimals.substring(2) );
+
+      var third = fullNum % convsSplit[2];
+      fullNum = Math.floor(fullNum / convsSplit[2]);
+      var second = fullNum % convsSplit[1];
+      fullNum = Math.floor(fullNum / convsSplit[1]);
+      var first = fullNum;
+
+      first = number_format(first, 0, ",", ".");
+      second = number_format(second, 0, ",", ".");
+      third = number_format(third, 0, ",", ".");
+
+      // console.log(first,second,third,decimals);
+      result = first + "-" + second + "-" + third + decimals;
+    }
+    // result = x + " | " + result;
+    return result;
+  }
+
+  function clipZeroSuffix(result) {
     var len = result.length;
     while (result.substring(len-1) == "0") {
       result = result.substring(0, len-1);

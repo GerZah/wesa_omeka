@@ -103,6 +103,12 @@
 </div>
 
 <div id="measurementPaginate" class="measurementCenter">
+  <div class="breakdownDiv">
+    <?php
+      echo $view->formLabel('measurementsBreakdownNumbers', __('Breakdown Numbers')) . ": ";
+      echo $view->formCheckbox('measurementsBreakdownNumbers', null, array('checked' => false));
+    ?>
+  </div>
   <div class="addRelDiv">
     <button type="button" id="addRelBtn" class="green button">
       <?php echo __("Add Relation"); ?>

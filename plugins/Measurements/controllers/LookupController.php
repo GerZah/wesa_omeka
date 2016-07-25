@@ -27,16 +27,18 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
     if ($this->_hasParam("title")) { $title = $this->_getParam('title'); }
 
     $units = MeasurementsPlugin::getSaniUnits();
+    // print_r($units);
     if (isset($units[$unit])) {
       $unitsInv = array();
       foreach(array_keys($units) as $unitIdx) {
         $unitIndex = implode("-", $units[$unitIdx]["units"]);
         $unitsInv[$unitIndex] = array(
           "idx" => $unitIdx,
-          "mmConv" => doubleval($units[$unitIdx]["mmconv"])
+          "mmConv" => doubleval($units[$unitIdx]["mmconv"]),
+          "convs" => implode("-", $units[$unitIdx]["convs"])
         );
       }
-      // echo print_r($unitsInv,true) . "\n";
+      // print_r($unitsInv);
 
       $curUnit = $units[$unit];
       $targetUnit = implode("-",$curUnit["units"]);
@@ -170,6 +172,7 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
     // Now convert all values -- but only for the remaining slice
     foreach(array_keys($slice) as $idx) {
       SELF::_convertMeasurement($slice[$idx], $targetUnit, $unitsInv, $area, true);
+      // $slice[$idx]["convs"] = $unitsInv[$slice[$idx]["unit"]]["convs"];
     }
 
     // collect page's item's IDs to retrieve their titles
@@ -199,6 +202,9 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
     $result["numPages"] = $numPages;
     $result["page"] = $page;
     $result["from"] = $from;
+
+    $result["unitsInv"] = $unitsInv;
+    // $result["requestUri"] = $_SERVER["REQUEST_URI"];
 
     $this->_helper->json($result);
   }

@@ -378,7 +378,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         $tripleSelect[$groupName][$idx] = $saniUnit["verb"];
         $leastSelect[$groupName][$idx] = implode("-", $saniUnit["units"]) .
           ( $saniUnit["units"][2] == "mm" ? "" : " (1 ".$saniUnit["units"][2]." = ".$saniUnit["mmconv"]." mm)" );
-        $leastSimple[$idx] = $saniUnit["units"][2];
+        $leastSimple[$idx] = implode("-", $saniUnit["units"]) ; // $saniUnit["units"][2];
         $ungroupedSaniUnits[$idx] = $saniUnit;
       }
     }

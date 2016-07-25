@@ -49,3 +49,9 @@ span.pageCount { display: inline-block; width: 3em; text-align: center; }
   top: 0px;
   right: 0px;
 }
+
+.breakdownDiv {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
