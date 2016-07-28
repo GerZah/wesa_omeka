@@ -16,6 +16,10 @@
 	ini_set('include_path', '.' . DIRECTORY_SEPARATOR . '..');
 	require_once 'bootstrap.php';
 
+	if ( !isset($_GET["proceed"]) ) {
+    echo 'Please add "?proceed" to the end of this URL to proceed.'."\n\n";
+    die("Quitting ... done nothing yet.");
+  }
 	// Configure and initialize the application.
 	$application = new Omeka_Application(APPLICATION_ENV);
 	$application->initialize();
