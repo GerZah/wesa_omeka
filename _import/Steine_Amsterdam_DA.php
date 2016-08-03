@@ -3,6 +3,10 @@
 	header('Content-type: text/plain; charset=utf-8');
 	// -----------------------------------------------
 
+	ini_set('max_execution_time', 300); // 300 seconds == 5 minutes
+
+	// -----------------------------------------------
+
 	define("importItemType", "Sandstein-Element");
 	define("importTargetRelationTitle", "ist verbaut an Gebäude oder Gebäudeteil");
 	define("importBelongsRelationTitle", "gehört zu");
@@ -90,7 +94,7 @@
 	fclose($file);
 	if (!$csv) { die("CSV file error."); }
 
-	$csv = array_slice($csv, 0, 100); // +#+#+# DEBUG
+	// $csv = array_slice($csv, 0, 100); // +#+#+# DEBUG *** Error: 453
 
 	$headers=array_flip($csv[0]); // Store Headers array for later use ...
 	unset($csv[0]); // ... but remove them from the array
@@ -109,39 +113,44 @@
 
 	// print_r($csv);
 
-	/* */
 	$alreadyCreated = array();
 
+	/* * / // alreadyCreated simulation (check if sorted sequence will work)
 	foreach($csv as $line) {
 
 		$shortName = $line[ $headers["ShortName"] ];
 		$alreadyCreated[ $shortName ] = true;
 
-		$link = $line[ $headers["Link"] ];
-		if ( ($link) and (!$alreadyCreated[ $link ]) ) {
-			die("*** Unknown reference: $link\n");
-		}
-
-		$importType = substr_count($shortName, "_");
+		$importType = substr_count($shortName, "_"); // Heuristic
+		// However: Does it have measures? In that case: Sandstein-Element
+		if (
+			($line[$headers["Length"]] != "0,00") and
+			($line[$headers["Height"]] != "0,00") and
+			($line[$headers["Depth"]] != "0,00")
+		) { $importType = 4; }
+		$importItemType = $importItemTypes[$importType];
 
 		echo
-			$importType . " = " . $importItemTypes[$importType]["name"] .
+			$importType . " = " . $importItemType["name"] .
 			": ".
 			implode(", ", array_slice($line, $headers["Object"], 8)).
 			"\n"
 		;
-	}
-	/* */
 
+		$link = $line[ $headers["Link"] ];
+		if ( ($link) and (!@$alreadyCreated[ $link ]) ) {
+			echo "*** Unknown reference: $link. (Exiting.)\n"; die();
+		}
+
+	}
+	print_r($alreadyCreated);
 	die();
+	/* */
 
 	// -----------------------------------------------
 
 	foreach($csv as $line) {
-		# print_r($line);
-
-		# +#+#+#+# From here down: old code for Michael's blocks --
-		# which is absolutely unusable here.
+		print_r($line);
 
 		# Concept:
 
@@ -162,138 +171,174 @@
 		# 7. That ID should be found in the name/ID array
 		# 8. Create that link -- together with importTargetRelationTitle / $relationshipTitles[importTargetRelationTitle]
 
-		/* * /
-		$titel = $line[$headers["Stein-Titel"]];
-		$l1 = $line[$headers["Dimension 1"]];
-		$l2 = $line[$headers["Dimension 2"]];
-		$l3 = $line[$headers["Dimension 3"]];
-		$unit = $line[$headers["Einheit"]];
-		$num = $line[$headers["Anzahl"]];
+		$shortName = $line[$headers["ShortName"]];
 
-		$regEx = "/^(\d+),(\d+)$/"; // "1,234"
-		$regEx = "/^(\d+)-(\d+)-(\d+)(?:,(\d+))?$/"; // "1-2-3,4"
-		foreach(array("l1", "l2", "l3") as $var) {
-			if (preg_match($regEx, $$var, $matches)) {
-				echo $$var . " = ";
-				if (@$matches[4]) {
-					$matches[3] = $matches[3] . "." . $matches[4];
-				}
-				foreach(array_keys($matches) as $i) { $matches[$i] = floatval($matches[$i]); }
-				$$var =
-					$matches[1] * 2 * 12
-					+ $matches[2] * 12
-					+ $matches[3]
-				;
-				$$var = floatval($$var);
-				$$var = array($$var, $matches[1], $matches[2], $matches[3]);
-				echo json_encode($$var) . "\n";
-			}
-			else { $matches = array(0,0,0,0); }
-		}
-
-		// "l1":[65,0,5,5],"l2":[19.5,0,1,7.5],"l3":[17,0,1,5]
-
-		$measurements = array(
-			"u" => "$unit (1-2-12)",
-			"l1" => $l1, "l2" => $l2, "l3" => $l3,
-			"f1" => array("","","",""), "f2" => array("","","",""), "f3" => array("","","",""), "v" => array("","","",""),
-			"n" => $num,
-		);
-
-		$l1 = $measurements["l1"][0];
-		$l2 = $measurements["l2"][0];
-		$l3 = $measurements["l3"][0];
-
-		$measurements["l1d"] = $measurements["l1"];
-		$measurements["l2d"] = $measurements["l2"];
-		$measurements["l3d"] = $measurements["l3"];
-		$measurements["f1d"] = array($l1 * $l2, 0, 0, 0);
-		$measurements["f2d"] = array($l1 * $l3, 0, 0, 0);
-		$measurements["f3d"] = array($l2 * $l3, 0, 0, 0);
-		$measurements["vd"] = array($l1 * $l2 * $l3, 0, 0, 0);
-
-		foreach(array("f1d" => 2, "f2d" => 2, "f3d" => 2, "vd" => 3) as $comp => $exp) {
-			$fact3 = pow(2, $exp);
-			$fact2 = pow(12, $exp);
-			$fact23 = $fact2*$fact3;
-			$curr = $measurements[$comp][0];
-			$measurements[$comp][1] = intval($curr / $fact23);
-			$curr = $curr - $measurements[$comp][1]*$fact23;
-			$measurements[$comp][2] = intval($curr / $fact2);
-			$curr = $curr - $measurements[$comp][2]*$fact2;
-			$measurements[$comp][3] = $curr;
-		}
-
-		$measurements = json_encode($measurements);
-
-		// "l1d":[65,0,5,5],"l2d":[19.5,0,1,7.5],"l3d":[17,0,1,5]
-		// "f1d":[1267.5,2,0,115.5],"f2d":[1105,1,3,97],"f3d":[331.5,0,2,43.5]
-		// "vd":[21547.5,1,4,811.5]}
-
-		$anmerkungen = trim($line[$headers["Anmerkung"]]);
-		$charge = trim($line[$headers["Charge/ Position"]]);
-
-		// http://omeka.readthedocs.org/en/eb3/Reference/libraries/globals/insert_item.html
-		$metaData = array("item_type_id" => $importItemTypeID); // +#+#+#+#
-		$elementTexts = array(
-			'Dublin Core' => array(
-				titleElementText => array( array('text' => $titel, 'html' => false) ),
-			),
-			'Item Type Metadata' => array(
-				measurementElementText => array( array('text' => $measurements, 'html' => false) ),
-				"Anmerkungen" => array( array('text' => $anmerkungen, 'html' => false) ),
-				"Charge / Position" => array( array('text' => $charge, 'html' => false) ),
-				"Sandstein-Produkt" => array( array('text' => "Halbfertigprodukt", 'html' => false) ),
-				"Halbfertigprodukt" => array( array('text' => "Blockstein", 'html' => false) ),
-			)
-		);
-		print_r($elementTexts);
-
-		// $itemId = 0; // Default value for debug
-		$item = insert_item($metaData, $elementTexts);
-		$itemId = $item["id"];
-		echo "New Item: $itemId\n";
-
-		$values = array();
-
-		$zielObjekte = @$line[$headers["Zielobjekt"]]; // Zielobjekte (target objects) and ...
-		$zielObjekte = ( $zielObjekte ? explode(";", $zielObjekte) : array() );
-
-		foreach($zielObjekte as $zielObjekt) {
-			echo "Ziel: $zielObjekt\n";
-			$zielId = $relationTargets[$zielObjekt];
-			$relationshipId = $relationshipTitles[importTargetRelationTitle];
-			if (($zielId) and ($relationshipId) ){ $values[] = "$itemId,$relationshipId,$zielId"; }
-		}
-
-		$transaktionen = @$line[$headers["Transaktion"]]; // ... and Transaktionen (transactions)
-		$transaktionen = ( $transaktionen ? explode(";", $zielObjekte) : array() );
-
-		foreach($transaktionen as $transaktion) {
-			echo "Transaktion: $transaktion\n";
-			$transaktionId = $relationTargets[$transaktion];
-			$relationshipId = $relationshipTitles[importBelongsRelationTitle];
-			if (($transaktionId) and ($relationshipId) ){ $values[] = "$itemId,$relationshipId,$transaktionId"; }
-		}
-
-		if ($values) {
-			$valuesVerb = "(" . implode("),(", $values) . ")";
-			echo "$valuesVerb\n";
-
-			$sql="
-				INSERT INTO {$db->ItemRelationsRelations}
-					(subject_item_id, property_id, object_item_id)
-					VALUES $valuesVerb
+		if ($shortName == "RhAMS") {
+			# Step 0: Don't import "RhAMS", but calculate its item ID -- which is #1183
+			$sql = "
+				SELECT record_id FROM `$db->ElementTexts`
+				WHERE text='Amsterdam, Rathaus' AND element_id = $titleElementID
 			";
-			$db->query($sql);
-
-			// update_item($itemId);
-			// ... unnecessary, as we don't add comments that need to go into the search index
-
+			$rhAmsId = $db->fetchOne($sql);
+			if ($rhAmsId) { $alreadyCreated[$shortName] = $rhAmsId; }
+			else { die("*** '$shortName' not found in DB. (Exiting.)"); }
+			// echo "$sql\n";
+			// echo $rhAmsId;
+			// die();
 		}
 
-		/* */
+		else {
 
+			# Step 1: Construct title (array) from ShortName, LongName, and Name
+			$titles = array(
+				array('text' => $shortName, 'html' => false),
+				array('text' => $line[$headers["Longname"]], 'html' => false),
+				array('text' => $line[$headers["Name"]], 'html' => false),
+			);
+			print_r($titles);
+
+			# Step 2: Determine object item type
+			$importType = substr_count($shortName, "_"); // Heuristic
+			// However: Does it have measures? In that case: Sandstein-Element
+			if (
+				($line[$headers["Length"]] != "0,00") and
+				($line[$headers["Height"]] != "0,00") and
+				($line[$headers["Depth"]] != "0,00")
+			) { $importType = 4; }
+			$importItemType = $importItemTypes[$importType];
+			print_r($importItemType);
+
+			$itemTypeMetaData = array();
+
+			# Step 3: "Sandstein-Element"? Gather dimensions and calculate derived values
+			$unit = $num = null;
+			$l1 = $l2 = $l3 = 0;
+
+			if ($importItemType["name"] == "Sandstein-Element") {
+				$unit = "m-cm-mm"; // fixed for all entries
+				$num = 1; // fixed -- one of each
+
+				$l1 = floatval(str_replace(",", ".", $line[$headers["Length"]]));
+				$l2 = floatval(str_replace(",", ".", $line[$headers["Height"]]));
+				$l3 = floatval(str_replace(",", ".", $line[$headers["Depth"]]));
+
+				foreach(array("l1", "l2", "l3") as $var) {
+					$tupel = array(0,0,0,0);
+					if ($$var>=1) {
+						$tupel[1] = intval(floor($$var)); // m
+						$$var = $$var - $tupel[1];
+					}
+					$$var = $$var * 100; // cm
+					if ($$var>=1) {
+						$tupel[2] = intval(floor($$var));
+						$$var = $$var - $tupel[2];
+					}
+					$$var = $$var * 10; // mm
+					if ($$var>=1) {
+						$tupel[3] = intval(floor($$var));
+						$$var = $$var - $tupel[3];
+					}
+					$tupel[0] = $tupel[1]*1000 + $tupel[2]*10 + $tupel[3];
+					$$var = $tupel;
+					// echo $var . " - " . print_r($$var,true) . "\n";
+				}
+
+				$measurements = array(
+					"u" => "$unit (1-100-10)",
+					"l1" => $l1, "l2" => $l2, "l3" => $l3,
+					"f1" => array("","","",""), "f2" => array("","","",""), "f3" => array("","","",""), "v" => array("","","",""),
+					"n" => $num,
+				);
+
+				$l1 = $measurements["l1"][0];
+				$l2 = $measurements["l2"][0];
+				$l3 = $measurements["l3"][0];
+
+				$measurements["l1d"] = $measurements["l1"];
+				$measurements["l2d"] = $measurements["l2"];
+				$measurements["l3d"] = $measurements["l3"];
+				$measurements["f1d"] = array($l1 * $l2, 0, 0, 0);
+				$measurements["f2d"] = array($l1 * $l3, 0, 0, 0);
+				$measurements["f3d"] = array($l2 * $l3, 0, 0, 0);
+				$measurements["vd"] = array($l1 * $l2 * $l3, 0, 0, 0);
+
+				foreach(array("f1d" => 2, "f2d" => 2, "f3d" => 2, "vd" => 3) as $comp => $exp) {
+					$fact3 = pow(2, $exp);
+					$fact2 = pow(12, $exp);
+					$fact23 = $fact2*$fact3;
+					$curr = $measurements[$comp][0];
+					$measurements[$comp][1] = intval($curr / $fact23);
+					$curr = $curr - $measurements[$comp][1]*$fact23;
+					$measurements[$comp][2] = intval($curr / $fact2);
+					$curr = $curr - $measurements[$comp][2]*$fact2;
+					$measurements[$comp][3] = $curr;
+				}
+
+				// print_r($measurements);
+				$measurements = json_encode($measurements);
+				echo $measurements."\n";
+
+				$itemTypeMetaData += array(
+					measurementElementText => array( array('text' => $measurements, 'html' => false) ),
+					"Sandstein-Produkt" => array( array('text' => "Halbfertigprodukt", 'html' => false) ),
+					"Halbfertigprodukt" => array( array('text' => "Blockstein", 'html' => false) ),
+				);
+
+			}
+
+			$dublinCore = array(
+				titleElementText => $titles
+			);
+
+			// http://omeka.readthedocs.org/en/eb3/Reference/libraries/globals/insert_item.html
+			$metaData = array("item_type_id" => $importItemType["id"]);
+
+			$elementTexts = array(
+				'Dublin Core' => $dublinCore,
+				'Item Type Metadata' => $itemTypeMetaData,
+			);
+
+			// print_r($metaData);
+			// print_r($elementTexts);
+
+			# Step 4: Import item
+			// $itemId = 0; // Default value for debug
+			$item = insert_item($metaData, $elementTexts);
+
+			# Step 5: Determine freshly imported itemId
+			$itemId = $item["id"];
+			echo "New Item: $itemId\n";
+
+			$alreadyCreated[$shortName] = $itemId;
+
+			$link = $line[$headers["Link"]];
+			if ($link) {
+				$linkId = $alreadyCreated[$link];
+				if (!$linkId) {
+					echo "*** Unknown reference: $link. (Exiting.)\n"; die();
+				}
+				else {
+
+					$linkRelation = (
+						$importItemType["name"] == "Sandstein-Element"
+						? importTargetRelationTitle
+						: importBelongsRelationTitle
+					);
+					$linkRelationId = $relationshipTitles[$linkRelation];
+					echo "Relation '$linkRelation' ($linkRelationId) from $itemId towards $linkId\n";
+
+					$sql="
+						INSERT INTO {$db->ItemRelationsRelations}
+							(subject_item_id, property_id, object_item_id)
+							VALUES ($itemId, $linkRelationId, $linkId)
+					";
+					$db->query($sql);
+
+				}
+			}
+		}
 	}
+
+	print_r($alreadyCreated);
 
 ?>
