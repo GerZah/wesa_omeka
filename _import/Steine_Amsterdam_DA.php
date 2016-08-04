@@ -14,11 +14,12 @@
 	define("measurementElementText", "Maße");
 
 	$importItemTypes = array(
-		0 => array( "name" => "Gebäude / Bauwerk" ),
-		1 => array( "name" => "Gebäudeteil" ),
-		2 => array( "name" => "Sandstein-Baugruppe" ),
-		3 => array( "name" => "Sandstein-Bauteil" ),
-		4 => array( "name" => "Sandstein-Element" ),
+		1 => array( "name" => "Sandstein-Element" ),
+		2 => array( "name" => "Sandstein-Bauteil" ),
+		3 => array( "name" => "Sandstein-Baugruppe" ),
+		4 => array( "name" => "Gebäudeteil" ),
+		5 => array( "name" => "Gebäudesegment" ),
+		6 => array( "name" => "Gebäude / Bauwerk" ),
 	);
 
 	// -----------------------------------------------
@@ -89,12 +90,11 @@
 	// -----------------------------------------------
 
 	$csv=array();
-	$file = fopen('amsterdam_front_8_skaliert_edited_01.csv', 'r');
+	$file = fopen('amsterdam_front_9_skaliert_edited_02a.csv', 'r');
+	if (!$file) { die("File error."); }
 	while (($line = fgetcsv($file, 0, ",")) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 	if (!$csv) { die("CSV file error."); }
-
-	// $csv = array_slice($csv, 0, 100); // +#+#+# DEBUG *** Error: 453
 
 	$headers=array_flip($csv[0]); // Store Headers array for later use ...
 	unset($csv[0]); // ... but remove them from the array
@@ -103,14 +103,16 @@
 	usort($csv, function ($a, $b) {
 		global $headers;
 
-		$a_ = substr_count( $a[ $headers["ShortName"] ], "_" );
-		$b_ = substr_count( $b[ $headers["ShortName"] ], "_" );
+		// Sort by Hierarchy, but in descending order
+		$a_ = -$a[ $headers["Hierarchy"] ];
+		$b_ = -$b[ $headers["Hierarchy"] ];
     if ($a_ == $b_) {
       return 0;
     }
     return ($a_ < $b_) ? -1 : 1;
 	});
 
+	// $csv = array_slice($csv, 0, 100); # +#+#+# DEBUG
 	// print_r($csv);
 
 	$alreadyCreated = array();
@@ -121,13 +123,7 @@
 		$shortName = $line[ $headers["ShortName"] ];
 		$alreadyCreated[ $shortName ] = true;
 
-		$importType = substr_count($shortName, "_"); // Heuristic
-		// However: Does it have measures? In that case: Sandstein-Element
-		if (
-			($line[$headers["Length"]] != "0,00") and
-			($line[$headers["Height"]] != "0,00") and
-			($line[$headers["Depth"]] != "0,00")
-		) { $importType = 4; }
+		$importType = $line[ $headers["Hierarchy"] ];
 		$importItemType = $importItemTypes[$importType];
 
 		echo
@@ -150,7 +146,7 @@
 	// -----------------------------------------------
 
 	foreach($csv as $line) {
-		print_r($line);
+		// print_r($line);
 
 		# Concept:
 
@@ -159,8 +155,7 @@
 		# ... but then import all others.
 
 		# 1. Construct title from ShortName, Longname, and Name
-		# 2. Determine the object item type from
-		#			$importType = substr_count($shortName, "_");
+		# 2. Determine the object item type $importType from (NEW) "Hierarchy" column
 		#			($importItemTypes[$importType]["name"])
 		#			== $importItemTypes[$importType]["id"]
 		# 3. If import item type == 4 == "Sandstein-Element":
@@ -195,26 +190,32 @@
 				array('text' => $line[$headers["Longname"]], 'html' => false),
 				array('text' => $line[$headers["Name"]], 'html' => false),
 			);
-			print_r($titles);
+			// print_r($titles);
 
 			# Step 2: Determine object item type
-			$importType = substr_count($shortName, "_"); // Heuristic
-			// However: Does it have measures? In that case: Sandstein-Element
-			if (
-				($line[$headers["Length"]] != "0,00") and
-				($line[$headers["Height"]] != "0,00") and
-				($line[$headers["Depth"]] != "0,00")
-			) { $importType = 4; }
+			$importType = $line[ $headers["Hierarchy"] ];
 			$importItemType = $importItemTypes[$importType];
-			print_r($importItemType);
+			// print_r($importItemType);
 
-			$itemTypeMetaData = array();
+			$anmerkungen = $line[ $headers["ID"] ];
+
+			$itemTypeMetaData = array(
+				"Anmerkungen" => array( array('text' => $anmerkungen, 'html' => false) )
+			);
+
+			echo "------- $anmerkungen - ".$importItemType["name"].": $shortName\n";
 
 			# Step 3: "Sandstein-Element"? Gather dimensions and calculate derived values
 			$unit = $num = null;
 			$l1 = $l2 = $l3 = 0;
 
-			if ($importItemType["name"] == "Sandstein-Element") {
+			$hasMeasurements = (
+				($line[$headers["Length"]] != "0,00") and
+				($line[$headers["Height"]] != "0,00") and
+				($line[$headers["Depth"]] != "0,00")
+			);
+
+			if ($hasMeasurements) {
 				$unit = "m-cm-mm"; // fixed for all entries
 				$num = 1; // fixed -- one of each
 
