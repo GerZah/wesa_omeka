@@ -427,7 +427,11 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
   }
 
   protected function myNumberFormat($x) {
-    return rtrim( number_format($x, 3, ",", "."), "0," );
+    return rtrim ( rtrim( number_format($x, 3, ",", "."), "0" ), ",");
+    // $result = number_format($x, 3, ",", ".");
+    // $result = preg_replace("/0+$/", "", $result);
+    // $result = preg_replace("/,+$/", "", $result);
+    // return $result;
   }
 
   protected function _verbatimSourceData($json, $br="") {
