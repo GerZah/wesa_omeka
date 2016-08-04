@@ -250,7 +250,7 @@ jQuery(document).ready(function () {
           var number = data.data[i]["n"];
           number = ( number ? number : "(1)" );
           $("#measurementsTable #"+rowId+" .measn").html(number);
-          if (unitsSimple[curUnit]!="mm") {
+          if (unitsSimple[curUnit] != "m-cm-mm") {
             $("#measurementsTable #"+rowId+" .measw").html("-");
           }
           else {
