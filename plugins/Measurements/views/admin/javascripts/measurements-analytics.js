@@ -50,7 +50,6 @@ jQuery(document).ready(function () {
     editTimer = null;
     curTitleFilter = $("#measurementsTitleFilter").val().trim();
     curBreakdownNumbers = $("#measurementsBreakdownNumbers").prop("checked");
-    console.log(curBreakdownNumbers);
 
     var weightRegEx = /\s*(\d+)(?:(?:,|\.)(\d+))?\s*/;
     var curVal = $("#measurementsWeightFactor").val();

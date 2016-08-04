@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Measurements/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-07-05 11:01+0200\n"
+"PO-Revision-Date: 2016-08-04 11:56+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -63,9 +63,7 @@ msgstr "Eingegebene Daten"
 msgid "Derived Data"
 msgstr "Abgeleitete Daten"
 
-#. /th><td id='detailsn'></td><td>-</td></tr>";
-#. echo "<tr><th>".__("Weight")."</th><td>-</td><td id='detailsw'></td></tr>";
-#: MeasurementsPlugin.php:492 MeasurementsPlugin.php:631 measurements-form.php:18 measurements-form.php:105 measurements-form.php:109 views/admin/index/index.php:124 views/admin/index/index.php:181
+#: MeasurementsPlugin.php:492 MeasurementsPlugin.php:631 measurements-form.php:18 measurements-form.php:105 measurements-form.php:109 views/admin/index/index.php:130 views/admin/index/index.php:187
 msgid "Number"
 msgstr "Anzahl"
 
@@ -153,7 +151,7 @@ msgstr "Dateneingabe"
 msgid "Apply"
 msgstr "Anwenden"
 
-#: measurements-form.php:166 measurements-form.php:191 views/admin/index/index.php:188 views/admin/index/index.php:224
+#: measurements-form.php:166 measurements-form.php:191 views/admin/index/index.php:194 views/admin/index/index.php:230
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -161,7 +159,6 @@ msgstr "Abbrechen"
 msgid "Triple Unit Data"
 msgstr "Einheiten-Tripel Eingabe"
 
-#. / item measurements detail page
 #: views/admin/index/index.php:28
 msgid "dim1"
 msgstr "Dim1"
@@ -227,70 +224,74 @@ msgid "Filter Title Text"
 msgstr "Titel-Text filtern"
 
 #: views/admin/index/index.php:108
+msgid "Breakdown Numbers"
+msgstr "Zahlen aufschlüsseln"
+
+#: views/admin/index/index.php:114
 msgid "Add Relation"
 msgstr "Beziehung hinzufügen"
 
-#: views/admin/index/index.php:121
+#: views/admin/index/index.php:127
 msgid "Title"
 msgstr "Titel"
 
-#: views/admin/index/index.php:122 views/admin/index/index.php:165
+#: views/admin/index/index.php:128 views/admin/index/index.php:171
 msgid "Original Values"
 msgstr "Original-Werte"
 
-#: views/admin/index/index.php:123 views/admin/index/index.php:165
+#: views/admin/index/index.php:129 views/admin/index/index.php:171
 msgid "Converted Values"
 msgstr "Konvertierte Werte"
 
-#: views/admin/index/index.php:134 views/admin/index/index.php:181
+#: views/admin/index/index.php:140 views/admin/index/index.php:187
 msgid "Weight"
 msgstr "Gewicht"
 
-#: views/admin/index/index.php:181
+#: views/admin/index/index.php:187
 msgid "single / all"
 msgstr "einzeln / alle"
 
-#: views/admin/index/index.php:186
+#: views/admin/index/index.php:192
 msgid "Open Item"
 msgstr "Objekt öffnen"
 
-#: views/admin/index/index.php:187
+#: views/admin/index/index.php:193
 msgid "Open Item in New Window"
 msgstr "Objekt in neuem Fenster öffnen"
 
-#: views/admin/index/index.php:193 views/admin/index/index.php:223
+#: views/admin/index/index.php:199 views/admin/index/index.php:229
 msgid "Add Relationship"
 msgstr "Beziehung hinzufügen"
 
-#: views/admin/index/index.php:197
+#: views/admin/index/index.php:203
 msgid "The item that you selected last (which highlighted in a slightly different color) will be the subject of the newly added relationship, while the one or more other highlighted item(s) will become object(s) of that relationship."
 msgstr "Das Objekt, das Sie als letztes selektiert haben (das in einer etwas anderen Farbe hervorgehoben ist), wird die Subjekt-Ressource der neu erstellten Beziehung darstellen, während das bzw. die weiteren hervorgehobenen Objekt(e) die Objekt-Ressource(n) darstellen."
 
-#: views/admin/index/index.php:202
+#: views/admin/index/index.php:208
 msgid "Subject Item"
 msgstr "Subjekt-Ressource"
 
-#: views/admin/index/index.php:203
+#: views/admin/index/index.php:209
 msgid "Object Item(s)"
 msgstr "Objekt-Ressource(n)"
 
-#: views/admin/index/index.php:209
+#: views/admin/index/index.php:215
 msgid "Item Relations"
 msgstr "Objekt-Beziehungen"
 
-#: views/admin/index/index.php:216
+#: views/admin/index/index.php:222
 msgid "Relationship Comment"
 msgstr "Beziehungs-Kommentar"
 
-#: views/admin/index/index.php:228
+#: views/admin/index/index.php:234
 msgid "Relation(s) created successfully."
 msgstr "Beziehung(en) erfolgreich angelegt."
 
-#: views/admin/index/index.php:229
+#: views/admin/index/index.php:235
 msgid "Error while creating relation(s)."
 msgstr "Fehler beim Anlegen der Beziehung(en)"
 
-#: views/admin/index/index.php:231
+#: views/admin/index/index.php:237
 msgid "Close"
 msgstr "Schließen"
 
