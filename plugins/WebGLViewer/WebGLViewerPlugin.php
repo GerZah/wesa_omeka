@@ -42,14 +42,12 @@ protected static $numIframes = 0;
 		$indexfile = WEBGL_DIR."/index.html";
 		touch($indexfile);
 		copy(FILES_DIR."/original/index.html", $indexfile);
-		SELF::_installOptions();
 	}
 
   /**
    * Uninstall the plugin.
    */
   public function hookUninstall() {
-		SELF::_uninstallOptions();
 		SELF::_rmdir(WEBGL_DIR);
 		SELF::_uninstallOptions();
 	}
@@ -167,6 +165,30 @@ protected static $numIframes = 0;
 							sprintf(__('Open WebGL model "%s" in new window'), $glName).
 							'</a>'.
 							'</div>';
+        $wasd = "<div style='".
+          "display: block; ".
+          "float: right; ".
+          "text-align: center; ".
+          "font-size: 150%; ".
+          "vertical-align: bottom; ".
+          "line-height: 1.2em".
+        "'>".
+          "<a class='wasdLink' id='wasdW' href='#'>[W]</a>"."<br>".
+          "<a class='wasdLink' id='wasdA' href='#'>[A]</a>"." ".
+          "<a class='wasdLink' id='wasdS' href='#'>[S]</a>"." ".
+          "<a class='wasdLink' id='wasdD' href='#'>[D]</a>".
+        "</div>";
+        echo "<ul>".
+                "<li>" . __("To rotate the model, please drag it with your mouse or finger.") . "</li>".
+                "<li>" . __("To zoom in or out, please use your scroll wheel.") . "</li>".
+                "<li>$wasd" .
+                  __("To pan (i.e. to move the model horizontally or vertically), ".
+                    "please press the W/A/S/D keys on your keyboard ".
+                    "(hold down the Shift key to move faster) or click/tap them ".
+                    "as displayed on the right."
+                  ).
+                "</li>".
+              "</ul>";
 				$jsFile = WEB_PLUGIN."/WebGLViewer/WebGLhelper.js";
 				echo "<script src='$jsFile'></script>";
 			}
