@@ -116,35 +116,91 @@ class VideoEmbedPlugin extends Omeka_Plugin_AbstractPlugin {
         }
       }
 
+      if ($fileArray) {
+        echo "<h2>" . (
+          count(SELF::$_foundEmbeds) > 1
+          ? __("Embedded Videos")
+          : __("Embedded Video")
+        ) . "</h2>";
+      }
+
+      $embedNum = 0;
+
       foreach(SELF::$_foundEmbeds as $embed) {
 
         if ($fileArray[$embed[1]]) {
           // echo "<pre>" . print_r($embed,true) . "</pre>";
           // echo "<pre>" . print_r($fileArray[$embed[1]], true) . "</pre>";
 
+          $embedNum++;
+          $videoId = "videoembed$embedNum";
+
           $url = public_url("files/original/".$fileArray[$embed[1]]["filename"]);
-          $title = $fileArray[$embed[1]]["original_filename"];
           $escapedUrl = html_escape($url);
+
+          $title = $fileArray[$embed[1]]["original_filename"];
+          $from = $embed[2];
+          $to = $embed[3];
+
+          if ($from) { $url .= "#t=$from"; }
+
+          $playString = "";
+
+          if (($from) and ($to)) {
+            $fromVerb = SELF::_formatTimeCode($from);
+            $toVerb = SELF::_formatTimeCode($to);
+
+            $playString = sprintf(
+              __('Click here to play "%1$s" from %2$s to %3$s'),
+              $title, $fromVerb, $toVerb
+            );
+            $playString =
+              "<p>".
+              "<a href='#' class='videoEmbedLink' ".
+                "data-video='$videoId' ".
+                "data-from='$from' ".
+                "data-to='$to' ".
+              ">".
+              "[$playString]".
+              "</a>".
+              "</p>"
+            ;
+
+            $title .= " (" . $fromVerb." - ".$toVerb . ")";
+          }
+
           $attrs = array(
               'src' => $url,
+              'id' => $videoId,
               'class' => 'omeka-media',
-              'width' => "320", // $options['width'],
-              'height' => "200", // $options['height'],
+              'width' => "480", // $options['width'],
+              // 'height' => "270", // $options['height'],
               'controls' => true, // (bool) $options['controller'],
               // 'autoplay' => (bool) $options['autoplay'],
               // 'loop'     => (bool) $options['loop'],
           );
 
-          $html = '<video ' . tag_attributes($attrs) . '>' .
-                  '<a href="' . $escapedUrl . '">$title</a>' .
-                  '</video>'
+          $html =
+            "<video " . tag_attributes($attrs) . ">" .
+            "<a href='$escapedUrl'>$title</a>" .
+            "</video>" .
+            "$playString"
           ;
           echo "<h4>$title</h4>\n";
           echo "$html\n";
-
         }
       }
+
+      echo '<link href="'.public_url("plugins/VideoEmbed/videoembed.css").'" media="all" rel="stylesheet" type="text/css">';
+      echo '<script type="text/javascript" src="'.public_url("plugins/VideoEmbed/videoembed.js").'"></script>';
+
     }
+  }
+
+  private function _formatTimeCode($tc) {
+    $minutes = floor($tc/60);
+    $seconds = $tc % 60;
+    return $minutes . ":" . ($seconds<10 ? "0" : "") . $seconds;
   }
 
   /**
