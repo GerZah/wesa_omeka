@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: VideoEmbed\n"
 "Report-Msgid-Bugs-To: https://github.com/GerZah/wesa_omeka/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-08-10 13:55+0200\n"
+"PO-Revision-Date: 2016-08-10 17:58+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>, 2016\n"
 "Language-Team: German (Germany) (https://www.transifex.com/upb/teams/56327/"
 "de_DE/)\n"
@@ -19,18 +19,31 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.8\n"
 
-#: VideoEmbedPlugin.php:169
+#: VideoEmbedPlugin.php:176
 msgid "Embedded Videos"
 msgstr "Eingebettete Videos"
 
-#: VideoEmbedPlugin.php:170
+#: VideoEmbedPlugin.php:177
 msgid "Embedded Video"
 msgstr "Eingebettetes Video"
 
-#: VideoEmbedPlugin.php:208
+#: VideoEmbedPlugin.php:217
 #, php-format
 msgid "Click here to play \"%1$s\" from %2$s to %3$s"
-msgstr "Klicken Sie hier, um \"%1$s\" von %2$s to %3$s abzuspielen"
+msgstr "Klicken Sie hier, um \"%1$s\" von %2$s bis %3$s abzuspielen"
+
+#: VideoEmbedPlugin.php:316
+msgid "Related items also referencing this video"
+msgstr "Verwandte Objekte, die dieses Video ebenfalls referenzieren"
+
+#: VideoEmbedPlugin.php:322
+msgid "Complete Video"
+msgstr "Vollständiges Video"
+
+#: VideoEmbedPlugin.php:327
+#, php-format
+msgid "From %1$s to %2$s"
+msgstr "Von %1$s bis %2$s"
 
 #: config_form.php:5
 msgid "Remove Pseudo Code"
@@ -45,10 +58,22 @@ msgstr ""
 "entfernen (siehe unten)."
 
 #: config_form.php:23
+msgid "Display Related items"
+msgstr "Verwandte Objekte anzeigen"
+
+#: config_form.php:28
+msgid ""
+"Display related items that also embed the same video, sorted after their "
+"respective timecodes."
+msgstr ""
+"Verwandte Objekte anzeigen, die ebenfalls dasselbe Video referenzieren, "
+"sortiert nach deren jeweiligen Timecodes."
+
+#: config_form.php:41
 msgid "Video Width in Admin View"
 msgstr "Video-Breite in Admin-Ansicht"
 
-#: config_form.php:28
+#: config_form.php:46
 msgid ""
 "Width of the embedded video viewer in admin backend, in pixels. – Enter "
 "\"0\" for 100% width."
@@ -56,11 +81,11 @@ msgstr ""
 "Breite in Pixeln der eingebetteten Video-Ansicht im Admin-Backend. – Geben "
 "Sie \"0\" für \"100%\" Breite ein."
 
-#: config_form.php:37
+#: config_form.php:55
 msgid "Video Width in Public View"
 msgstr "Video-Breite in Öffentlicher Ansicht"
 
-#: config_form.php:43
+#: config_form.php:61
 msgid ""
 "Width of the embedded video viewer in public frontend, in pixels. – Enter "
 "\"0\" for 100% width."
@@ -68,11 +93,11 @@ msgstr ""
 "Breite in Pixeln der eingebetteten Video-Ansicht in der Öffentlichen "
 "Ansicht. – Geben Sie \"0\" für \"100%\" Breite ein."
 
-#: config_form.php:55
+#: config_form.php:73
 msgid "Documentation"
 msgstr "Dokumentation"
 
-#: config_form.php:60
+#: config_form.php:78
 msgid ""
 "\r\n"
 "          If you upload a video file to Omeka (or any other kind of file "
@@ -91,7 +116,7 @@ msgstr ""
 "hochladen, das Referenzen auf mehrere Objekte enthält; Dateien können nicht "
 "mehreren Objekten gleichzeitig zugeordnet sein."
 
-#: config_form.php:70
+#: config_form.php:88
 msgid ""
 "\r\n"
 "          With this plugin, you may refence videos by adding a “pseudo code "
@@ -116,7 +141,7 @@ msgstr ""
 "Bedarf, das Video mehrfach hochzuladen oder es gar in mehrere Teile "
 "aufzuspalten und diese hochzuladen."
 
-#: config_form.php:81
+#: config_form.php:99
 msgid ""
 "\r\n"
 "          To reference a video file, first find out its numerical ID. The "
@@ -134,12 +159,12 @@ msgstr ""
 "ID sind nicht dasselbe. – Nehmen wir zum Beispiel an, Sie hätten die Video-"
 "ID #42 ermittelt."
 
-#: config_form.php:88
+#: config_form.php:106
 msgid "To reference video #42, enter: <strong>{{#42}}</strong>"
 msgstr ""
 "Um das Video #42 zu referenzieren, schreiben Sie: <strong>{{#42}}</strong>"
 
-#: config_form.php:89
+#: config_form.php:107
 msgid ""
 "To play video #42 from 0:50 to 1:10, enter: <strong>{{#42;50-70}}</strong>"
 msgstr ""

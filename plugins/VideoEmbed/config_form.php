@@ -20,6 +20,24 @@
 
 <div class="field">
   <div class="two columns alpha">
+      <?php echo get_view()->formLabel('videoembed_show_related_items', __('Display Related items')); ?>
+  </div>
+  <div class="inputs five columns omega">
+    <p class="explanation">
+      <?php
+        echo __('Display related items that also embed the same video, sorted after their respective timecodes.');
+      ?>
+    </p>
+    <div>
+      <?php
+        echo $view->formCheckbox('videoembed_show_related_items', true, array('checked' => SELF::$_curOptions["videoembed_show_related_items"]));
+      ?>
+    </div>
+  </div>
+</div>
+
+<div class="field">
+  <div class="two columns alpha">
       <?php echo get_view()->formLabel('videoembed_adminwidth', __('Video Width in Admin View')); ?>
   </div>
   <div class="inputs five columns omega">

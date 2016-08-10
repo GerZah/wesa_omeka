@@ -17,17 +17,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: VideoEmbedPlugin.php:169
+#: VideoEmbedPlugin.php:176
 msgid "Embedded Videos"
 msgstr ""
 
-#: VideoEmbedPlugin.php:170
+#: VideoEmbedPlugin.php:177
 msgid "Embedded Video"
 msgstr ""
 
-#: VideoEmbedPlugin.php:208
+#: VideoEmbedPlugin.php:217
 #, php-format
 msgid "Click here to play \"%1$s\" from %2$s to %3$s"
+msgstr ""
+
+#: VideoEmbedPlugin.php:316
+msgid "Related items also referencing this video"
+msgstr ""
+
+#: VideoEmbedPlugin.php:322
+msgid "Complete Video"
+msgstr ""
+
+#: VideoEmbedPlugin.php:327
+#, php-format
+msgid "From %1$s to %2$s"
 msgstr ""
 
 #: config_form.php:5
@@ -41,30 +54,40 @@ msgid ""
 msgstr ""
 
 #: config_form.php:23
-msgid "Video Width in Admin View"
+msgid "Display Related items"
 msgstr ""
 
 #: config_form.php:28
+msgid ""
+"Display related items that also embed the same video, sorted after their "
+"respective timecodes."
+msgstr ""
+
+#: config_form.php:41
+msgid "Video Width in Admin View"
+msgstr ""
+
+#: config_form.php:46
 msgid ""
 "Width of the embedded video viewer in admin backend, in pixels. – Enter "
 "\"0\" for 100% width."
 msgstr ""
 
-#: config_form.php:37
+#: config_form.php:55
 msgid "Video Width in Public View"
 msgstr ""
 
-#: config_form.php:43
+#: config_form.php:61
 msgid ""
 "Width of the embedded video viewer in public frontend, in pixels. – Enter "
 "\"0\" for 100% width."
 msgstr ""
 
-#: config_form.php:55
+#: config_form.php:73
 msgid "Documentation"
 msgstr ""
 
-#: config_form.php:60
+#: config_form.php:78
 msgid ""
 "\r\n"
 "          If you upload a video file to Omeka (or any other kind of file for "
@@ -77,7 +100,7 @@ msgid ""
 "        "
 msgstr ""
 
-#: config_form.php:70
+#: config_form.php:88
 msgid ""
 "\r\n"
 "          With this plugin, you may refence videos by adding a “pseudo code "
@@ -93,7 +116,7 @@ msgid ""
 "        "
 msgstr ""
 
-#: config_form.php:81
+#: config_form.php:99
 msgid ""
 "\r\n"
 "          To reference a video file, first find out its numerical ID. The "
@@ -105,11 +128,11 @@ msgid ""
 "        "
 msgstr ""
 
-#: config_form.php:88
+#: config_form.php:106
 msgid "To reference video #42, enter: <strong>{{#42}}</strong>"
 msgstr ""
 
-#: config_form.php:89
+#: config_form.php:107
 msgid ""
 "To play video #42 from 0:50 to 1:10, enter: <strong>{{#42;50-70}}</strong>"
 msgstr ""
