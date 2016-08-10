@@ -7,23 +7,34 @@
  */
 class VideoEmbedPlugin extends Omeka_Plugin_AbstractPlugin {
 
+  // ---------------------------------------------------------------------------
+
   protected $_options = array(
-  	// 'webgl_viewer_height' => 500,
+  	'videoembed_adminwidth' => 480,
+    'videoembed_publicwidth' => 480,
+    'videoembed_remove_pseudocode' => true,
   );
+  protected static $_curOptions;
+
+  // ---------------------------------------------------------------------------
 
   # Pseudo code to embed video: {{#xx}} or {{#xx;yy-zz}}
   protected static $_videoEmbedRegEx = "{{#(\d+)(?:;(\d+)-(\d+))?}}";
   private static $_foundEmbeds;
 
+  // ---------------------------------------------------------------------------
+
   protected $_hooks = array(
-    'initialize',
     'install',
     'uninstall',
-    // 'config_form',
-    // 'config',
+    'initialize',
+    'config_form',
+    'config',
     'admin_items_show',
     'public_items_show',
   );
+
+  // ---------------------------------------------------------------------------
 
   /**
    * Install the plugin.
@@ -32,12 +43,36 @@ class VideoEmbedPlugin extends Omeka_Plugin_AbstractPlugin {
 		SELF::_installOptions();
   }
 
+  // ---------------------------------------------------------------------------
+
   /**
    * Uninstall the plugin.
    */
   public function hookUninstall() {
 		SELF::_uninstallOptions();
 	}
+
+  // ---------------------------------------------------------------------------
+
+  /**
+	* Display the plugin configuration form.
+	*/
+	public static function hookConfigForm() {
+    require dirname(__FILE__) . '/config_form.php';
+  }
+
+  // ---------------------------------------------------------------------------
+
+  /**
+	* Handle the plugin configuration form.
+	*/
+	public static function hookConfig() {
+    set_option("videoembed_adminwidth",        intval($_POST['videoembed_adminwidth']) );
+    set_option("videoembed_publicwidth",       intval($_POST['videoembed_publicwidth']) );
+    set_option("videoembed_remove_pseudocode", !!($_POST['videoembed_remove_pseudocode']) );
+  }
+
+  // ---------------------------------------------------------------------------
 
   /**
    * Add the translations and connect display module
@@ -46,12 +81,12 @@ class VideoEmbedPlugin extends Omeka_Plugin_AbstractPlugin {
     add_translation_source(dirname(__FILE__) . '/languages');
     $db = get_db();
 
+    // Add pseudo code filter to all elements
     $sql = "
       SELECT es.name AS el_set, el.name AS el_name
       FROM `$db->Elements` el
       LEFT JOIN `$db->ElementSets` es ON el.element_set_id = es.id
     ";
-
     $elements = $db->fetchAll($sql);
     foreach($elements as $element) {
         add_filter(
@@ -60,9 +95,19 @@ class VideoEmbedPlugin extends Omeka_Plugin_AbstractPlugin {
         );
     }
 
-    SELF::$_foundEmbeds = array(); # Start with an empty array -- will be filled if we find embeddings
+    // Start with an empty array -- will be filled if we find embeddings
+    // during content display.
+    SELF::$_foundEmbeds = array();
 
+    // Retrieve all options from database
+    SELF::$_curOptions["videoembed_adminwidth"]        = intval(get_option("videoembed_adminwidth"));
+    SELF::$_curOptions["videoembed_publicwidth"]       = intval(get_option("videoembed_publicwidth"));
+    SELF::$_curOptions["videoembed_remove_pseudocode"] = !!(get_option("videoembed_remove_pseudocode"));
+
+    // echo "<pre>" . print_r(SELF::$_curOptions,true) . "<pre>"; die();
   }
+
+  // ---------------------------------------------------------------------------
 
   /**
   * Non-interfering content filter, checking for and collecting video embed pseudocode via RegEx
@@ -79,7 +124,7 @@ class VideoEmbedPlugin extends Omeka_Plugin_AbstractPlugin {
       SELF::$_foundEmbeds[$data[0]] = $data;
     }
 
-    if (true) { # +#+#+# Configuration switch: remove {{#xx;yy-zz}} pseudocode embeddings
+    if (SELF::$_curOptions["videoembed_remove_pseudocode"]) {
       $result = preg_replace("/$regEx/", "", $result);
     }
 
@@ -89,10 +134,12 @@ class VideoEmbedPlugin extends Omeka_Plugin_AbstractPlugin {
     return $result;
   }
 
+  // ---------------------------------------------------------------------------
+
   /**
   * Additional item display: display referenced video players
   */
-  public function hookAdminItemsShow($args) {
+  protected function _VideoEmbedShow($adminView) {
     $fileIds = array();
     foreach(SELF::$_foundEmbeds as $embed) {
       $fileIds[$embed[1]] = $embed[1];
@@ -124,11 +171,18 @@ class VideoEmbedPlugin extends Omeka_Plugin_AbstractPlugin {
         ) . "</h2>";
       }
 
+      $width = (
+        $adminView
+        ? SELF::$_curOptions["videoembed_adminwidth"]
+        : SELF::$_curOptions["videoembed_publicwidth"]
+      );
+      if (!$width) { $width = "100%"; }
+
       $embedNum = 0;
 
       foreach(SELF::$_foundEmbeds as $embed) {
 
-        if ($fileArray[$embed[1]]) {
+        if (isset($fileArray[$embed[1]])) {
           // echo "<pre>" . print_r($embed,true) . "</pre>";
           // echo "<pre>" . print_r($fileArray[$embed[1]], true) . "</pre>";
 
@@ -173,8 +227,7 @@ class VideoEmbedPlugin extends Omeka_Plugin_AbstractPlugin {
               'src' => $url,
               'id' => $videoId,
               'class' => 'omeka-media',
-              'width' => "480", // $options['width'],
-              // 'height' => "270", // $options['height'],
+              'width' => "$width",
               'controls' => true, // (bool) $options['controller'],
               // 'autoplay' => (bool) $options['autoplay'],
               // 'loop'     => (bool) $options['loop'],
@@ -197,16 +250,27 @@ class VideoEmbedPlugin extends Omeka_Plugin_AbstractPlugin {
     }
   }
 
+  // ---------------------------------------------------------------------------
+
   private function _formatTimeCode($tc) {
     $minutes = floor($tc/60);
     $seconds = $tc % 60;
     return $minutes . ":" . ($seconds<10 ? "0" : "") . $seconds;
   }
 
+  // ---------------------------------------------------------------------------
+
+  /**
+  * Additional item display: display referenced video players
+  */
+  public function hookAdminItemsShow($args) { SELF::_VideoEmbedShow(true); }
+
   /**
   * Same as hookAdminItemsShow, but in public context
   */
-  public function hookPublicItemsShow($args) { SELF::hookAdminItemsShow($args); }
+  public function hookPublicItemsShow($args) { SELF::_VideoEmbedShow(false); }
+
+  // ---------------------------------------------------------------------------
 
 }
 

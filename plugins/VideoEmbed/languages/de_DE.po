@@ -1,0 +1,147 @@
+# Translation for the Video Embed plugin for Omeka.
+# Copyright (C) 2016 Gero Zahn
+# This file is distributed under the same license as the Omeka package.
+# Gero Zahn <gero.zahn@upb.de>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: VideoEmbed\n"
+"Report-Msgid-Bugs-To: https://github.com/GerZah/wesa_omeka/issues\n"
+"POT-Creation-Date: 2012-01-09 21:49-0500\n"
+"PO-Revision-Date: 2016-08-10 13:55+0200\n"
+"Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>, 2016\n"
+"Language-Team: German (Germany) (https://www.transifex.com/upb/teams/56327/"
+"de_DE/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de_DE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.8\n"
+
+#: VideoEmbedPlugin.php:169
+msgid "Embedded Videos"
+msgstr "Eingebettete Videos"
+
+#: VideoEmbedPlugin.php:170
+msgid "Embedded Video"
+msgstr "Eingebettetes Video"
+
+#: VideoEmbedPlugin.php:208
+#, php-format
+msgid "Click here to play \"%1$s\" from %2$s to %3$s"
+msgstr "Klicken Sie hier, um \"%1$s\" von %2$s to %3$s abzuspielen"
+
+#: config_form.php:5
+msgid "Remove Pseudo Code"
+msgstr "Pseudocode entfernen"
+
+#: config_form.php:10
+msgid ""
+"Remove \"{{#xx}}\" / \"{{#xx;yy-zz}}\" pseudo code tags when displaying "
+"content (see below)."
+msgstr ""
+"\"{{#xx}}\" / \"{{#xx;yy-zz}}\" Pseudocode-Tags bei der Anzeige von Inhalt "
+"entfernen (siehe unten)."
+
+#: config_form.php:23
+msgid "Video Width in Admin View"
+msgstr "Video-Breite in Admin-Ansicht"
+
+#: config_form.php:28
+msgid ""
+"Width of the embedded video viewer in admin backend, in pixels. – Enter "
+"\"0\" for 100% width."
+msgstr ""
+"Breite in Pixeln der eingebetteten Video-Ansicht im Admin-Backend. – Geben "
+"Sie \"0\" für \"100%\" Breite ein."
+
+#: config_form.php:37
+msgid "Video Width in Public View"
+msgstr "Video-Breite in Öffentlicher Ansicht"
+
+#: config_form.php:43
+msgid ""
+"Width of the embedded video viewer in public frontend, in pixels. – Enter "
+"\"0\" for 100% width."
+msgstr ""
+"Breite in Pixeln der eingebetteten Video-Ansicht in der Öffentlichen "
+"Ansicht. – Geben Sie \"0\" für \"100%\" Breite ein."
+
+#: config_form.php:55
+msgid "Documentation"
+msgstr "Dokumentation"
+
+#: config_form.php:60
+msgid ""
+"\r\n"
+"          If you upload a video file to Omeka (or any other kind of file "
+"for that matter), it will be part of that particular\r\n"
+"          item that you added it to. Sometimes, however, it might be "
+"desirable to reference a video file from different other\r\n"
+"          items. A good example for this is when you upload a video file "
+"that contains references to multiple icons; files\r\n"
+"          can not be attached to multiple items at once.\r\n"
+"        "
+msgstr ""
+"Wenn Sie eine Video-Datei zu Omeka hochladen (bzw. in dieser Hinsicht jede "
+"andere Art von Datei), so wird Sie Teil eines bestimmten Objekts sein. "
+"Manchmal kann es jedoch wünschenswert sein, ein Video aus anderen Objekten "
+"zu referenzieren. Ein gutes Beispiel hierfür ist, wenn Sie ein Video "
+"hochladen, das Referenzen auf mehrere Objekte enthält; Dateien können nicht "
+"mehreren Objekten gleichzeitig zugeordnet sein."
+
+#: config_form.php:70
+msgid ""
+"\r\n"
+"          With this plugin, you may refence videos by adding a “pseudo code "
+"tag” anywhere in your item's content. It doesn't\r\n"
+"          matter where you add it, it could be in some comment field or "
+"anywhere else. This way, the video will be displayed\r\n"
+"          below your regular item's content. Even better: You may specify a "
+"specific timecode, so the video reference will\r\n"
+"          give you the ability to play only one particular segment from "
+"that video. This frees you from the need to\r\n"
+"          upload videos multiple times and/or to split it into multiple "
+"pieces and upload those.\r\n"
+"        "
+msgstr ""
+"Mit diesem Plugin können Sie Videos durch Hinzufügen eines „Pseudocode-"
+"Tags“ irgendwo in Ihrem Objekt-Inhalt referenzieren. Es kommt nicht darauf "
+"an, wo Sie dieses hinzufügen: Es könnte in irgendeinem Kommentarfeld oder "
+"anderswo sein. Auf fiese Weise wird das Video unterhalb des normalen Objekt-"
+"Inhaltes dargestellt. Noch besser: Sie können einen bestimmten Timecode "
+"spezifizieren, wodurch Sie die Möglichkeit haben, nur ein bestimmtes "
+"Segment des referenzierten Videos abzuspielen. Dadurch entfällt für Sie der "
+"Bedarf, das Video mehrfach hochzuladen oder es gar in mehrere Teile "
+"aufzuspalten und diese hochzuladen."
+
+#: config_form.php:81
+msgid ""
+"\r\n"
+"          To reference a video file, first find out its numerical ID. The "
+"easiest way is to check the content that it is part of\r\n"
+"          and click on its video placeholder icon. <em>Please note:</em> "
+"The files use a separate numbering than the items:\r\n"
+"          Item ID and file ID are not the same thing. – For example, let us "
+"say that you found the video ID to be #42.\r\n"
+"        "
+msgstr ""
+"Um ein Video zu referenzieren, ermitteln Sie zuerst dessen numerische ID. "
+"Am einfachsten ist es, den Inhalt in dem es enthalten ist anzusehen und auf "
+"das Video-Platzhalter-Symbol zu klicken. <em>Bitte beachten Sie:</em> "
+"Dateien benutzen eine andere Nummerierung als Objekte: Objekt-ID und Datei-"
+"ID sind nicht dasselbe. – Nehmen wir zum Beispiel an, Sie hätten die Video-"
+"ID #42 ermittelt."
+
+#: config_form.php:88
+msgid "To reference video #42, enter: <strong>{{#42}}</strong>"
+msgstr ""
+"Um das Video #42 zu referenzieren, schreiben Sie: <strong>{{#42}}</strong>"
+
+#: config_form.php:89
+msgid ""
+"To play video #42 from 0:50 to 1:10, enter: <strong>{{#42;50-70}}</strong>"
+msgstr ""
+"Um das Video #42 von 0:50 bis 1:10 abzuspielen, schreiben Sie: "
+"<strong>{{#42;50-70}}</strong>"

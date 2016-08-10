@@ -1,0 +1,115 @@
+# Translation for the Video Embed plugin for Omeka.
+# Copyright (C) 2016 Gero Zahn
+# This file is distributed under the same license as the Omeka package.
+# Gero Zahn <gero.zahn@upb.de>, 2016.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: VideoEmbed\n"
+"Report-Msgid-Bugs-To: https://github.com/GerZah/wesa_omeka/issues\n"
+"POT-Creation-Date: 2012-01-09 21:49-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Gero Zahn<gero.zahn@upb.de>\n"
+"Language-Team: English (https://www.transifex.com/upb/wesa-omeka/)\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: VideoEmbedPlugin.php:169
+msgid "Embedded Videos"
+msgstr ""
+
+#: VideoEmbedPlugin.php:170
+msgid "Embedded Video"
+msgstr ""
+
+#: VideoEmbedPlugin.php:208
+#, php-format
+msgid "Click here to play \"%1$s\" from %2$s to %3$s"
+msgstr ""
+
+#: config_form.php:5
+msgid "Remove Pseudo Code"
+msgstr ""
+
+#: config_form.php:10
+msgid ""
+"Remove \"{{#xx}}\" / \"{{#xx;yy-zz}}\" pseudo code tags when displaying "
+"content (see below)."
+msgstr ""
+
+#: config_form.php:23
+msgid "Video Width in Admin View"
+msgstr ""
+
+#: config_form.php:28
+msgid ""
+"Width of the embedded video viewer in admin backend, in pixels. – Enter "
+"\"0\" for 100% width."
+msgstr ""
+
+#: config_form.php:37
+msgid "Video Width in Public View"
+msgstr ""
+
+#: config_form.php:43
+msgid ""
+"Width of the embedded video viewer in public frontend, in pixels. – Enter "
+"\"0\" for 100% width."
+msgstr ""
+
+#: config_form.php:55
+msgid "Documentation"
+msgstr ""
+
+#: config_form.php:60
+msgid ""
+"\r\n"
+"          If you upload a video file to Omeka (or any other kind of file for "
+"that matter), it will be part of that particular\r\n"
+"          item that you added it to. Sometimes, however, it might be "
+"desirable to reference a video file from different other\r\n"
+"          items. A good example for this is when you upload a video file "
+"that contains references to multiple icons; files\r\n"
+"          can not be attached to multiple items at once.\r\n"
+"        "
+msgstr ""
+
+#: config_form.php:70
+msgid ""
+"\r\n"
+"          With this plugin, you may refence videos by adding a “pseudo code "
+"tag” anywhere in your item's content. It doesn't\r\n"
+"          matter where you add it, it could be in some comment field or "
+"anywhere else. This way, the video will be displayed\r\n"
+"          below your regular item's content. Even better: You may specify a "
+"specific timecode, so the video reference will\r\n"
+"          give you the ability to play only one particular segment from that "
+"video. This frees you from the need to\r\n"
+"          upload videos multiple times and/or to split it into multiple "
+"pieces and upload those.\r\n"
+"        "
+msgstr ""
+
+#: config_form.php:81
+msgid ""
+"\r\n"
+"          To reference a video file, first find out its numerical ID. The "
+"easiest way is to check the content that it is part of\r\n"
+"          and click on its video placeholder icon. <em>Please note:</em> The "
+"files use a separate numbering than the items:\r\n"
+"          Item ID and file ID are not the same thing. – For example, let us "
+"say that you found the video ID to be #42.\r\n"
+"        "
+msgstr ""
+
+#: config_form.php:88
+msgid "To reference video #42, enter: <strong>{{#42}}</strong>"
+msgstr ""
+
+#: config_form.php:89
+msgid ""
+"To play video #42 from 0:50 to 1:10, enter: <strong>{{#42;50-70}}</strong>"
+msgstr ""
