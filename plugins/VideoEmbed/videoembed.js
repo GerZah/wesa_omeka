@@ -10,11 +10,17 @@ jQuery(document).ready(function () {
     // console.log(videoId,playFrom,playTo);
 
     var videoObj = document.getElementById(videoId);
-    videoObj.addEventListener('timeupdate', function() {
-      if(this.currentTime > playTo){ this.pause(); }
-    });
+    videoObj.addEventListener('timeupdate', timeUpdateCallback);
     videoObj.currentTime = playFrom;
     videoObj.play();
+
+    function timeUpdateCallback() {
+      if(this.currentTime > playTo){
+        this.pause();
+        this.removeEventListener('timeupdate', timeUpdateCallback);
+      }
+    }
+
   });
 
 });
