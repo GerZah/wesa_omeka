@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: https://github.com/GerZah/wesa_omeka/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-08-05 16:53+0200\n"
+"PO-Revision-Date: 2016-08-12 18:37+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -19,27 +19,31 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.8\n"
 
-#: WebGLViewerPlugin.php:165
-#, php-format
-msgid "Open WebGL model \"%s\" in new window"
-msgstr "Öffnen Sie das WebGL-Modell „%s“ in neuem Fenster"
-
-#: WebGLViewerPlugin.php:182
+#: WebGLViewerPlugin.php:177
 msgid "To rotate the model, please drag it with your mouse or finger."
 msgstr "Um das Modell zu rotieren, ziehen Sie es bitte mit Ihrer Maus oder Ihrem Finger."
 
-#: WebGLViewerPlugin.php:183
-msgid "To zoom in or out, please use your scroll wheel."
-msgstr "Um es ein- oder auszuzoomen, verwenden Sie bitte Ihr Scrollrad."
+#: WebGLViewerPlugin.php:178
+msgid "To zoom in or out, please use the scroll wheel on your mouse."
+msgstr "Um es ein- oder auszuzoomen, verwenden Sie bitte das Scrollrad Ihrer Maus."
 
-#: WebGLViewerPlugin.php:185
-msgid "To pan (i.e. to move the model horizontally or vertically), please press the W/A/S/D keys on your keyboard (hold down the Shift key to move faster) or click/tap them as displayed on the right."
-msgstr "Zum horizontalen oder vertikalen verschieben drücken Sie bitte die W/A/S/D Tasten auf Ihrer Tastatur (halten Sie die Umsch-Taste für schnellere Bewegung gedrückt) oder klicken/tippen Sie wie hier rechts abgebildet."
+#: WebGLViewerPlugin.php:180
+msgid "To pan (i.e. to move the model horizontally or vertically), please press the cursor keys ↑/↓/←/→ keys after once clicking on the 3D model. Hold down the Shift key to move faster. Otherwise click/tap the arrows as displayed on the right."
+msgstr "Zum horizontalen oder vertikalen Verschieben drücken Sie bitte die ↑/↓/←/→ Tasten auf Ihrer Tastatur, nachdem Sie einmal auf das 3D-Modell geklickt haben. Halten Sie die Umsch-Taste für schnellere Bewegung gedrückt. Alternativ klicken/tippen Sie die Pfeile wie hier rechts abgebildet."
 
-#: WebGLViewerPlugin.php:200
+#: WebGLViewerPlugin.php:187
+msgid "Alternatively, you may also press the W/A/S/D keys (with or without holding down the Shift key)."
+msgstr "Alternativ können Sie auch die W/A/S/D-Tasten drücken (mit oder ohne gedrückt gehaltener Umsch-Taste)."
+
+#: WebGLViewerPlugin.php:194
 #, php-format
-msgid "Download zip file \"%s\""
-msgstr "Zip-Datei „%s“ herunterladen"
+msgid "Click here to open WebGL model \"%s\" in new window"
+msgstr "Klicken Sie hier, um das WebGL-Modell „%s“ in einem neuem Fenster zu öffnen"
+
+#: WebGLViewerPlugin.php:205
+#, php-format
+msgid "Click here do download zip file \"%s\""
+msgstr "Klicken Sie hier, um die Zip-Datei „%s“ herunterzuladen"
 
 #: config_form.php:4
 msgid "Height"

@@ -160,35 +160,40 @@ protected static $numIframes = 0;
 																	" class='webGlFrame'".
 																	" id='webGlFrame".(++SELF::$numIframes)."'>".
 							"</iframe>";
-				echo '<div class="item-file">'.
-							"<a href='$url' target='_blank'>".
-							sprintf(__('Open WebGL model "%s" in new window'), $glName).
-							'</a>'.
-							'</div>';
         $wasd = "<div style='".
           "display: block; ".
           "float: right; ".
           "text-align: center; ".
-          "font-size: 150%; ".
+          "font-size: 200%; ".
           "vertical-align: bottom; ".
           "line-height: 1.2em".
         "'>".
-          "<a class='wasdLink' id='wasdW' href='#'>[W]</a>"."<br>".
-          "<a class='wasdLink' id='wasdA' href='#'>[A]</a>"." ".
-          "<a class='wasdLink' id='wasdS' href='#'>[S]</a>"." ".
-          "<a class='wasdLink' id='wasdD' href='#'>[D]</a>".
+          "<a class='wasdLink' id='wasdW' href='#'>[↑]</a>"."<br>".
+          "<a class='wasdLink' id='wasdA' href='#'>[←]</a>"." ".
+          "<a class='wasdLink' id='wasdS' href='#'>[↓]</a>"." ".
+          "<a class='wasdLink' id='wasdD' href='#'>[→]</a>".
         "</div>";
-        echo "<ul>".
-                "<li>" . __("To rotate the model, please drag it with your mouse or finger.") . "</li>".
-                "<li>" . __("To zoom in or out, please use your scroll wheel.") . "</li>".
-                "<li>$wasd" .
+        echo "<ul style='font-size:80%;'>".
+                "<li>$wasd" . __("To rotate the model, please drag it with your mouse or finger.") . "</li>".
+                "<li>" . __("To zoom in or out, please use the scroll wheel on your mouse.") . "</li>".
+                "<li>" .
                   __("To pan (i.e. to move the model horizontally or vertically), ".
-                    "please press the W/A/S/D keys on your keyboard ".
-                    "(hold down the Shift key to move faster) or click/tap them ".
-                    "as displayed on the right."
+                    "please press the cursor keys ↑/↓/←/→ keys after once ".
+                    "clicking on the 3D model. Hold down the Shift key to move faster. ".
+                    "Otherwise click/tap the arrows as displayed on the right."
                   ).
                 "</li>".
-              "</ul>";
+                "<li>".
+                  __("Alternatively, you may also press the W/A/S/D keys ".
+                    "(with or without holding down the Shift key)."
+                  ).
+                "</li>".
+                "</ul>";
+        echo '<div class="item-file">'.
+							"<a href='$url' target='_blank'>[".
+							sprintf(__('Click here to open WebGL model "%s" in new window'), $glName).
+							']</a>'.
+							'</div>';
 				$jsFile = WEB_PLUGIN."/WebGLViewer/WebGLhelper.js";
 				echo "<script src='$jsFile'></script>";
 			}
@@ -196,9 +201,9 @@ protected static $numIframes = 0;
 
 		$zipFilename = WEB_FILES . "/" . $file->getStoragePath();
 		echo '<div class="item-file application-zip">'.
-					'<a href="'.$zipFilename.'">'.
-					sprintf(__('Download zip file "%s"'), $file->original_filename).
-					'</a>'.
+					'<a href="'.$zipFilename.'">['.
+					sprintf(__('Click here do download zip file "%s"'), $file->original_filename).
+					']</a>'.
 					"</div>\n";
 
 		# echo "<pre>" . print_r($file,1) . "</pre>";

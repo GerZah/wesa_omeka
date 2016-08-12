@@ -17,29 +17,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: WebGLViewerPlugin.php:165
-#, php-format
-msgid "Open WebGL model \"%s\" in new window"
-msgstr ""
-
-#: WebGLViewerPlugin.php:182
+#: WebGLViewerPlugin.php:177
 msgid "To rotate the model, please drag it with your mouse or finger."
 msgstr ""
 
-#: WebGLViewerPlugin.php:183
-msgid "To zoom in or out, please use your scroll wheel."
+#: WebGLViewerPlugin.php:178
+msgid "To zoom in or out, please use the scroll wheel on your mouse."
 msgstr ""
 
-#: WebGLViewerPlugin.php:185
+#: WebGLViewerPlugin.php:180
 msgid ""
 "To pan (i.e. to move the model horizontally or vertically), please press the "
-"W/A/S/D keys on your keyboard (hold down the Shift key to move faster) or "
-"click/tap them as displayed on the right."
+"cursor keys ↑/↓/←/→ keys after once clicking on the 3D model. Hold down the "
+"Shift key to move faster. Otherwise click/tap the arrows as displayed on the "
+"right."
 msgstr ""
 
-#: WebGLViewerPlugin.php:200
+#: WebGLViewerPlugin.php:187
+msgid ""
+"Alternatively, you may also press the W/A/S/D keys (with or without holding "
+"down the Shift key)."
+msgstr ""
+
+#: WebGLViewerPlugin.php:194
 #, php-format
-msgid "Download zip file \"%s\""
+msgid "Click here to open WebGL model \"%s\" in new window"
+msgstr ""
+
+#: WebGLViewerPlugin.php:205
+#, php-format
+msgid "Click here do download zip file \"%s\""
 msgstr ""
 
 #: config_form.php:4

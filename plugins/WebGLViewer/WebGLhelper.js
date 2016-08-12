@@ -11,7 +11,7 @@ jQuery('.webGlFrame').on("load", function(event) {
   $(that).on('keypress', panner);
 
   function panner(e) {
-    // console.log('Handler for .keypress() called. - ' + e.charCode);
+    if ($(':focus').is("input")) { return; }
     switch (e.charCode) {
       case 97: aKey(0.1); break; // a
       case 115: sKey(0.1); break; // s
@@ -21,7 +21,36 @@ jQuery('.webGlFrame').on("load", function(event) {
       case 83: sKey(0.5);; break; // S
       case 68: dKey(0.5); break; // D
       case 87: wKey(0.5); break; // W
+      default: return;
     }
+    e.preventDefault();
+  }
+
+  // $(document).keydown(cursorPannerDown);
+  $(that).keydown(cursorPannerDown)
+
+  function cursorPannerDown(e) {
+    if ($(':focus').is("input")) { return; }
+    // http://stackoverflow.com/a/6011119 / http://stackoverflow.com/a/3781282
+    var key = e.which;
+    var shifted = e.shiftKey;
+
+    switch(e.which) {
+      case 37: aKey( (shifted ? 0.5 : 0.1) ); // left
+      break;
+
+      case 38: wKey( (shifted ? 0.5 : 0.1) ); // up
+      break;
+
+      case 39: dKey( (shifted ? 0.5 : 0.1) ); // right
+      break;
+
+      case 40: sKey( (shifted ? 0.5 : 0.1) ); // down
+      break;
+
+      default: return;
+    }
+    e.preventDefault();
   }
 
   $(".wasdLink").click(function(e){ e.preventDefault(); });
