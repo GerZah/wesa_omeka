@@ -683,6 +683,7 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
           $output .= "<h4>$elementName</h4>\n";
 
           $isLineReference = intval($itemReferencesConfiguration[$elementId][0]==2);
+          $moreThanOnePin = (count($referenceMap) > 1);
 
           $data = array(
             "mapId" => "map".$elementId,
@@ -709,45 +710,47 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
                 "zl" => $pin["zoom_level"],
               );
 
-              if ($isLineReference) { // Line references: calculate distances from stop to stop
-                if ($lastPin) { // Have we already seen the stop before this one?
-                  $lineDistances[] = array(
-                    "fromTitle" =>
-                      "<a href='".$lastPin["url"]."'>" . $lastPin["geo_title"] . "</a>",
-                    "toTitle" =>
-                      "<a href='".$pin["url"]."'>" . $pin["geo_title"] . "</a>",
-                    "linDistance" => SELF::_km_format(
-                      SELF::_getDistanceFromLatLonInKm(
-                        $pin["latitude"], $pin["longitude"],
-                        $lastPin["latitude"], $lastPin["longitude"]
-                      )
-                    )
-                  );
-                }
-                $lastPin = $pin;
-              }
-
-              else { // Not line reference -- but location reference
-                // in this case calculate distances from here to everywhere else
-                $distanceArray = array();
-                foreach($referenceMap as $otherPinIndex => $otherPin) {
-                  if ($pinIndex != $otherPinIndex) {
-                    $distanceArray[$otherPin["geo_title"]] = array(
+              if ($moreThanOnePin) {
+                if ($isLineReference) { // Line references: calculate distances from stop to stop
+                  if ($lastPin) { // Have we already seen the stop before this one?
+                    $lineDistances[] = array(
                       "fromTitle" =>
-                        "<a href='".$pin["url"]."'>" . $pin["geo_title"] . "</a>",
+                        "<a href='".$lastPin["url"]."'>" . $lastPin["geo_title"] . "</a>",
                       "toTitle" =>
-                          "<a href='".$otherPin["url"]."'>" . $otherPin["geo_title"] . "</a>",
+                        "<a href='".$pin["url"]."'>" . $pin["geo_title"] . "</a>",
                       "linDistance" => SELF::_km_format(
                         SELF::_getDistanceFromLatLonInKm(
                           $pin["latitude"], $pin["longitude"],
-                          $otherPin["latitude"], $otherPin["longitude"]
+                          $lastPin["latitude"], $lastPin["longitude"]
                         )
                       )
                     );
                   }
+                  $lastPin = $pin;
                 }
-                ksort($distanceArray);
-                $distanceArrays[ $pin["geo_title"] ] = $distanceArray;
+
+                else { // Not line reference -- but location reference
+                  // in this case calculate distances from here to everywhere else
+                  $distanceArray = array();
+                  foreach($referenceMap as $otherPinIndex => $otherPin) {
+                    if ($pinIndex != $otherPinIndex) {
+                      $distanceArray[$otherPin["geo_title"]] = array(
+                        "fromTitle" =>
+                          "<a href='".$pin["url"]."'>" . $pin["geo_title"] . "</a>",
+                        "toTitle" =>
+                            "<a href='".$otherPin["url"]."'>" . $otherPin["geo_title"] . "</a>",
+                        "linDistance" => SELF::_km_format(
+                          SELF::_getDistanceFromLatLonInKm(
+                            $pin["latitude"], $pin["longitude"],
+                            $otherPin["latitude"], $otherPin["longitude"]
+                          )
+                        )
+                      );
+                    }
+                  }
+                  ksort($distanceArray);
+                  $distanceArrays[ $pin["geo_title"] ] = $distanceArray;
+                }
               }
 
               if (isset($reqOverlays[$pin["overlay"]])) {
@@ -765,54 +768,57 @@ class ItemReferencesPlugin extends Omeka_Plugin_AbstractPlugin
           if (count($reqOverlays) == 1) { $ovlDefault = array_keys($reqOverlays)[0]; }
 
           $distHtml = "";
-          $distHtml .= "<h5>" . __("Linear Distances")  . "</h5>\n";
 
-          $classInfix = ( $lineDistances ? ""
-            : "class='refDistanceTable refDistanceElement_".$elementId."' data-element='".$elementId."'"
-          );
+          if ($moreThanOnePin) {
+            $distHtml .= "<h5>" . __("Linear Distances")  . "</h5>\n";
 
-          $distHtml .= "<table $classInfix>";
-          $distHtml .= "<thead><tr>";
-          $distHtml .= "<th>" . __("Start Point") . "</th>";
-          $distHtml .= "<th>" . __("End Point") . "</th>";
-          $distHtml .= "<th style='text-align:right;'>" . __("Linear Distance") . "</th>";
-          $distHtml .= "</tr></thead>\n";
-          $distHtml .= "<tbody>\n";
+            $classInfix = ( $lineDistances ? ""
+              : "class='refDistanceTable refDistanceElement_".$elementId."' data-element='".$elementId."'"
+            );
 
-          if ($lineDistances) {
-            foreach($lineDistances as $lineDistance) {
-              $distHtml .= "<tr>";
-              $distHtml .= "<td>" . $lineDistance["fromTitle"] . "</td>";
-              $distHtml .= "<td>" . $lineDistance["toTitle"] . "</td>";
-              $distHtml .= "<td style='text-align:right;'>" . $lineDistance["linDistance"] . "</td>";
-              $distHtml .= "</tr>\n";
-            }
-          }
+            $distHtml .= "<table $classInfix>";
+            $distHtml .= "<thead><tr>";
+            $distHtml .= "<th>" . __("Start Point") . "</th>";
+            $distHtml .= "<th>" . __("End Point") . "</th>";
+            $distHtml .= "<th style='text-align:right;'>" . __("Linear Distance") . "</th>";
+            $distHtml .= "</tr></thead>\n";
+            $distHtml .= "<tbody>\n";
 
-          else {
-            $cnt = 0;
-            foreach($distanceArrays as $fromTitle => $distanceArray) {
-              $cnt++;
-              $distHtml .= "<tr class='refDistanceHead' data-block='".$elementId."_".$cnt."'>".
-                            "<th colspan='3'>$fromTitle</th>".
-                            "</tr>\n";
-              $first = true;
-              $rowSpan = count($distanceArray);
-              foreach($distanceArray as $distance) {
-                $distHtml .= "<tr class='refDistanceRow refDistanceBlock_".$elementId."_".$cnt."'>";
-                if ($first) {
-                  $distHtml .= "<td rowspan='$rowSpan'>" . $distance["fromTitle"] . "</td>";
-                  $first = false;
-                }
-                $distHtml .= "<td>" . $distance["toTitle"] . "</td>";
-                $distHtml .= "<td style='text-align:right;'>" . $distance["linDistance"] . "</td>";
+            if ($lineDistances) {
+              foreach($lineDistances as $lineDistance) {
+                $distHtml .= "<tr>";
+                $distHtml .= "<td>" . $lineDistance["fromTitle"] . "</td>";
+                $distHtml .= "<td>" . $lineDistance["toTitle"] . "</td>";
+                $distHtml .= "<td style='text-align:right;'>" . $lineDistance["linDistance"] . "</td>";
                 $distHtml .= "</tr>\n";
               }
             }
-          }
 
-          $distHtml .= "</tbody>\n";
-          $distHtml .= "</table>\n";
+            else {
+              $cnt = 0;
+              foreach($distanceArrays as $fromTitle => $distanceArray) {
+                $cnt++;
+                $distHtml .= "<tr class='refDistanceHead' data-block='".$elementId."_".$cnt."'>".
+                              "<th colspan='3'>$fromTitle</th>".
+                              "</tr>\n";
+                $first = true;
+                $rowSpan = count($distanceArray);
+                foreach($distanceArray as $distance) {
+                  $distHtml .= "<tr class='refDistanceRow refDistanceBlock_".$elementId."_".$cnt."'>";
+                  if ($first) {
+                    $distHtml .= "<td rowspan='$rowSpan'>" . $distance["fromTitle"] . "</td>";
+                    $first = false;
+                  }
+                  $distHtml .= "<td>" . $distance["toTitle"] . "</td>";
+                  $distHtml .= "<td style='text-align:right;'>" . $distance["linDistance"] . "</td>";
+                  $distHtml .= "</tr>\n";
+                }
+              }
+            }
+
+            $distHtml .= "</tbody>\n";
+            $distHtml .= "</table>\n";
+          }
 
           $output .= "<div id='".$data["mapId"]."' style='height:".$itemReferencesMapHeight."px; width:100%;'></div>\n";
           $curCount = count($mapsData);
