@@ -69,11 +69,23 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
 
         $titleAnd = "1";
         if ($title) {
-          $titleInfix = SELF::_mres($title);
+          $titleClause = "1"; # Sanity
+
+          $titleClauses = array();
+          $titles = explode(",", $title); // Multiple search terms, seperated by comma
+          foreach(array_keys($titles) as $idx) {
+            $oneTitle = SELF::_mres(trim($titles[$idx]));
+            if ($oneTitle) { $titleClauses[] = "text LIKE '%$oneTitle%'";}
+          }
+          if ($titleClauses) {
+            $titleClause = "(" . implode(" OR ", $titleClauses) . ")";
+          }
+
           $idAnd = "";
           if ( ($fromId>0) and ($toId>0) and ($fromId<=$toId) ) {
             $idAnd = "AND record_id >= $fromId AND record_id<=$toId";
           }
+
           $titleElement = $db->fetchOne("
                             SELECT id FROM `$db->Elements`
                             WHERE name = 'Title'
@@ -82,7 +94,7 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
           $qu = "
             SELECT record_id
             FROM `$db->ElementTexts`
-            WHERE element_id=$titleElement AND text LIKE '%$titleInfix%'
+            WHERE element_id=$titleElement AND $titleClause
             $idAnd
           ";
           $ids = $db->fetchAll($qu);
