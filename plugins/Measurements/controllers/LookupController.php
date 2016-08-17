@@ -56,7 +56,13 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
         $db = get_db();
 
         $where = array();
-        $where[] = "1";
+        // $where[] = "1";
+        $where[] = "it.item_type_id = " .
+                    $db->fetchOne("
+                      SELECT id FROM `$db->ItemType`
+                      WHERE name = 'Sandstein-Element'
+                    ");
+
         if ( ($fromId>0) and ($toId>0) and ($fromId<=$toId) ) {
           $where[] = "item_id >= $fromId AND item_id<=$toId";
         }
@@ -95,7 +101,8 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
 
         $qu = "
           SELECT item_id as itemId, l1d as l1, l2d as l2, l3d as l3, f1d as f1, f2d as f2, f3d as f3, vd as v, unit, number as n
-          FROM `$db->MeasurementsValues`
+          FROM `$db->MeasurementsValues` mv
+          LEFT JOIN `$db->Items` it ON mv.item_id = it.id
           WHERE $where
         ";
         $singleMeasurements = $db->fetchAll($qu); // Eeeevil! :-(
