@@ -114,11 +114,17 @@
       <?php echo __("Add Relation"); ?>
     </button>
   </div>
-  <a href="#" data-pagstep="m2" id="paginateFirst">|«</a>
-  <a href="#" data-pagstep="m1" id="paginatePrev">«</a>
+  <a href="#" class="paginateFirstLast" data-pagstep="first">|«</a>
+  <a href="#" class="paginateTho" data-pagstep="-1000">«<sub>1000</sub></a>
+  <a href="#" class="paginateHun" data-pagstep="-100">«<sub>100</sub></a>
+  <a href="#" class="paginateTen" data-pagstep="-10">«<sub>10</sub></a>
+  <a href="#" class="paginateOne" data-pagstep="-1">«</sub></a>
   <span id="curPage" class="pageCount"></span> / <span id="numPages" class="pageCount"></span>
-  <a href="#" data-pagstep="p1" id="paginateNext">»</a>
-  <a href="#" data-pagstep="p2" id="paginateLast">»|</a>
+  <a href="#" class="paginateOne" data-pagstep="+1">»</a>
+  <a href="#" class="paginateTen" data-pagstep="+10"><sub>10</sub>»</a>
+  <a href="#" class="paginateHun" data-pagstep="+100"><sub>100</sub>»</a>
+  <a href="#" class="paginateTho" data-pagstep="+1000"><sub>1000</sub>»</a>
+  <a href="#" class="paginateFirstLast" data-pagstep="last">»|</a>
 </div>
 
 <table id="measurementsTable">

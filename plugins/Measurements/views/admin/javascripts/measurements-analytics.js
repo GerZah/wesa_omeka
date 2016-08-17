@@ -42,7 +42,7 @@ jQuery(document).ready(function () {
 
   function editUpdate() {
     if (editTimer != null) { clearTimeout(editTimer); }
-    editTimer = setTimeout(editEnd, 1000);
+    editTimer = setTimeout(editEnd, 750);
   }
 
   function editEnd() {
@@ -182,6 +182,7 @@ jQuery(document).ready(function () {
     $("#curPage").empty();
     $("#numPages").empty();
     $("#addRelBtn").prop("disabled", true);
+    $("#measurementPaginate a").hide();
   }
 
   // -------------
@@ -197,8 +198,14 @@ jQuery(document).ready(function () {
       // console.log("non-null data");
       curPage = parseInt(data.page);
       numPages = parseInt(data.numPages);
+
       $("#curPage").append(curPage+1);
       $("#numPages").append(numPages);
+      if (numPages > 1)     { $(".paginateFirstLast, .paginateOne").show(); }
+      if (numPages > 10)   { $(".paginateTen").show(); }
+      if (numPages > 100)  { $(".paginateHun").show(); }
+      if (numPages > 1000) { $(".paginateTho").show(); }
+
       var numData = data.data.length;
       var numRows = $("#measurementsTable tbody tr").length;
       // console.log(numData + " vs. " + numRows);
@@ -332,10 +339,9 @@ jQuery(document).ready(function () {
     // console.log("clicked " + clickedId + " / " + pagStep);
 
     switch (pagStep) {
-      case "p2": curPage = numPages; updateData(); break;
-      case "p1": curPage += 1; updateData(); break;
-      case "m1": curPage -= 1; updateData(); break;
-      case "m2": curPage = 0; updateData(); break;
+      case "first": curPage = 0; updateData(); break;
+      case "last": curPage = numPages; updateData(); break;
+      default: var offs = parseInt(pagStep); curPage += offs; updateData();
     }
   });
 
