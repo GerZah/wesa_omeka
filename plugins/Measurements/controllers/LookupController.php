@@ -69,15 +69,20 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
 
         $titleAnd = "1";
         if ($title) {
-          $titleInfix = mysql_real_escape_string($title);
+          $titleInfix = SELF::_mres($title);
           $idAnd = "";
           if ( ($fromId>0) and ($toId>0) and ($fromId<=$toId) ) {
             $idAnd = "AND record_id >= $fromId AND record_id<=$toId";
           }
+          $titleElement = $db->fetchOne("
+                            SELECT id FROM `$db->Elements`
+                            WHERE name = 'Title'
+                          ");
+
           $qu = "
             SELECT record_id
             FROM `$db->ElementTexts`
-            WHERE element_id=50 AND text LIKE '%$titleInfix%'
+            WHERE element_id=$titleElement AND text LIKE '%$titleInfix%'
             $idAnd
           ";
           $ids = $db->fetchAll($qu);
@@ -281,6 +286,15 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
     $tmp=$x;
     $x=$y;
     $y=$tmp;
+  }
+
+  // ---------------------------------------------------------------------------
+
+  private function _mres($value) {
+    // http://stackoverflow.com/a/1162502
+    $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
+    $replace = array("\\\\","\\0","\\n", "\\r", "\'", '\"', "\\Z");
+    return str_replace($search, $replace, $value);
   }
 
   // ---------------------------------------------------------------------------
