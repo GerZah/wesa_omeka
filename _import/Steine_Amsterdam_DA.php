@@ -281,8 +281,8 @@
 
 				$itemTypeMetaData += array(
 					measurementElementText => array( array('text' => $measurements, 'html' => false) ),
-					"Sandstein-Produkt" => array( array('text' => "Halbfertigprodukt", 'html' => false) ),
-					"Halbfertigprodukt" => array( array('text' => "Blockstein", 'html' => false) ),
+					// "Sandstein-Produkt" => array( array('text' => "Halbfertigprodukt", 'html' => false) ),
+					// "Halbfertigprodukt" => array( array('text' => "Blockstein", 'html' => false) ),
 				);
 
 			}
