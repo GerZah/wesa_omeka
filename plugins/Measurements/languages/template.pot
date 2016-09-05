@@ -17,7 +17,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: MeasurementsPlugin.php:34 views/admin/index/index.php:8
+#: MeasurementsPlugin.php:34 views/admin/index/index.php:2
+#: views/admin/index/index.php:11 views/admin/index/table.php:8
 msgid "Measurements Analysis"
 msgstr ""
 
@@ -41,7 +42,7 @@ msgstr ""
 #: MeasurementsPlugin.php:101 MeasurementsPlugin.php:108
 #: measurements-form.php:17 measurements-form.php:95 measurements-form.php:99
 #: measurements-form.php:150 measurements-form.php:154
-#: views/admin/index/index.php:45
+#: views/admin/index/table.php:45
 msgid "Volume"
 msgstr ""
 
@@ -54,7 +55,7 @@ msgid "Item Type"
 msgstr ""
 
 #: MeasurementsPlugin.php:369 MeasurementsPlugin.php:370
-#: views/admin/index/index.php:42
+#: views/admin/index/table.php:42
 msgid "Select Below"
 msgstr ""
 
@@ -67,23 +68,23 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: MeasurementsPlugin.php:452 measurements-form.php:19
+#: MeasurementsPlugin.php:456 measurements-form.php:19
 msgid "Entered Data"
 msgstr ""
 
-#: MeasurementsPlugin.php:455 measurements-form.php:20
+#: MeasurementsPlugin.php:459 measurements-form.php:20
 #: measurements-form.php:114
 msgid "Derived Data"
 msgstr ""
 
-#: MeasurementsPlugin.php:492 MeasurementsPlugin.php:631
+#: MeasurementsPlugin.php:496 MeasurementsPlugin.php:635
 #: measurements-form.php:18 measurements-form.php:105
-#: measurements-form.php:109 views/admin/index/index.php:130
-#: views/admin/index/index.php:187
+#: measurements-form.php:109 views/admin/index/table.php:136
+#: views/admin/index/table.php:193
 msgid "Number"
 msgstr ""
 
-#: MeasurementsPlugin.php:753
+#: MeasurementsPlugin.php:757
 msgid "Measurements Debug Output"
 msgstr ""
 
@@ -184,7 +185,7 @@ msgid "Apply"
 msgstr ""
 
 #: measurements-form.php:166 measurements-form.php:191
-#: views/admin/index/index.php:194 views/admin/index/index.php:230
+#: views/admin/index/table.php:200 views/admin/index/table.php:236
 msgid "Cancel"
 msgstr ""
 
@@ -192,142 +193,158 @@ msgstr ""
 msgid "Triple Unit Data"
 msgstr ""
 
-#: views/admin/index/index.php:28
+#: views/admin/index/index.php:9
+msgid ""
+"Click button below to be taken to the <strong>Measurements Analysis</strong> "
+"table."
+msgstr ""
+
+#: views/admin/index/index.php:18
+msgid ""
+"Click button below to be taken to the <strong>Transaction Analysis</strong> "
+"page."
+msgstr ""
+
+#: views/admin/index/index.php:20 views/admin/index/transactions.php:2
+msgid "Transaction Analysis"
+msgstr ""
+
+#: views/admin/index/table.php:28
 msgid "dim1"
 msgstr ""
 
-#: views/admin/index/index.php:29
+#: views/admin/index/table.php:29
 msgid "dim2"
 msgstr ""
 
-#: views/admin/index/index.php:30
+#: views/admin/index/table.php:30
 msgid "dim3"
 msgstr ""
 
-#: views/admin/index/index.php:31
+#: views/admin/index/table.php:31
 msgid "face1"
 msgstr ""
 
-#: views/admin/index/index.php:32
+#: views/admin/index/table.php:32
 msgid "face2"
 msgstr ""
 
-#: views/admin/index/index.php:33
+#: views/admin/index/table.php:33
 msgid "face3"
 msgstr ""
 
-#: views/admin/index/index.php:34
+#: views/admin/index/table.php:34
 msgid "vol"
 msgstr ""
 
-#: views/admin/index/index.php:43
+#: views/admin/index/table.php:43
 msgid "Dimensions"
 msgstr ""
 
-#: views/admin/index/index.php:44
+#: views/admin/index/table.php:44
 msgid "Surfaces"
 msgstr ""
 
-#: views/admin/index/index.php:47
+#: views/admin/index/table.php:47
 msgid "Measurement Analytical Area"
 msgstr ""
 
-#: views/admin/index/index.php:52
+#: views/admin/index/table.php:52
 msgid "Measurement Analytical Unit"
 msgstr ""
 
-#: views/admin/index/index.php:57
+#: views/admin/index/table.php:57
 msgid "Weight Factor"
 msgstr ""
 
-#: views/admin/index/index.php:65
+#: views/admin/index/table.php:65
 msgid "t/m³"
 msgstr ""
 
-#: views/admin/index/index.php:72
+#: views/admin/index/table.php:72
 msgid "Filter item ID (e.g. \"42-500\")"
 msgstr ""
 
-#: views/admin/index/index.php:83
+#: views/admin/index/table.php:83
 msgid "Filter target range (e.g. \"20.5-50\")"
 msgstr ""
 
-#: views/admin/index/index.php:94
+#: views/admin/index/table.php:94
 msgid "Filter Title Text"
 msgstr ""
 
-#: views/admin/index/index.php:108
+#: views/admin/index/table.php:108
 msgid "Breakdown Numbers"
 msgstr ""
 
-#: views/admin/index/index.php:114
+#: views/admin/index/table.php:114
 msgid "Add Relation"
 msgstr ""
 
-#: views/admin/index/index.php:127
+#: views/admin/index/table.php:133
 msgid "Title"
 msgstr ""
 
-#: views/admin/index/index.php:128 views/admin/index/index.php:171
+#: views/admin/index/table.php:134 views/admin/index/table.php:177
 msgid "Original Values"
 msgstr ""
 
-#: views/admin/index/index.php:129 views/admin/index/index.php:171
+#: views/admin/index/table.php:135 views/admin/index/table.php:177
 msgid "Converted Values"
 msgstr ""
 
-#: views/admin/index/index.php:140 views/admin/index/index.php:187
+#: views/admin/index/table.php:146 views/admin/index/table.php:193
 msgid "Weight"
 msgstr ""
 
-#: views/admin/index/index.php:187
+#: views/admin/index/table.php:193
 msgid "single / all"
 msgstr ""
 
-#: views/admin/index/index.php:192
+#: views/admin/index/table.php:198
 msgid "Open Item"
 msgstr ""
 
-#: views/admin/index/index.php:193
+#: views/admin/index/table.php:199
 msgid "Open Item in New Window"
 msgstr ""
 
-#: views/admin/index/index.php:199 views/admin/index/index.php:229
+#: views/admin/index/table.php:205 views/admin/index/table.php:235
 msgid "Add Relationship"
 msgstr ""
 
-#: views/admin/index/index.php:203
+#: views/admin/index/table.php:209
 msgid ""
 "The item that you selected last (which highlighted in a slightly different "
 "color) will be the subject of the newly added relationship, while the one or "
 "more other highlighted item(s) will become object(s) of that relationship."
 msgstr ""
 
-#: views/admin/index/index.php:208
+#: views/admin/index/table.php:214
 msgid "Subject Item"
 msgstr ""
 
-#: views/admin/index/index.php:209
+#: views/admin/index/table.php:215
 msgid "Object Item(s)"
 msgstr ""
 
-#: views/admin/index/index.php:215
+#: views/admin/index/table.php:221
 msgid "Item Relations"
 msgstr ""
 
-#: views/admin/index/index.php:222
+#: views/admin/index/table.php:228
 msgid "Relationship Comment"
 msgstr ""
 
-#: views/admin/index/index.php:234
+#: views/admin/index/table.php:240
 msgid "Relation(s) created successfully."
 msgstr ""
 
-#: views/admin/index/index.php:235
+#: views/admin/index/table.php:241
 msgid "Error while creating relation(s)."
 msgstr ""
 
-#: views/admin/index/index.php:237
+#: views/admin/index/table.php:243
 msgid "Close"
 msgstr ""
 
