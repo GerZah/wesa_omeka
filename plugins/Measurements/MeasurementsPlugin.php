@@ -450,8 +450,8 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
       foreach(array_keys(SELF::$_editFields) as $i) {
         $currentField = SELF::$_editFields[$i];
-        $key = $currentField[0];
-        switch ($key) {
+        $editField = $currentField[0];
+        switch ($editField) {
           case 'l1':
               $result .= __("Entered Data").": \n\n";
             break;
@@ -459,8 +459,8 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
               $result .= "\n".__("Derived Data").": \n\n";
             break;
         }
-        $editField = $key;
         $values = $sourceData->$editField;
+        $values = ( is_array($values) ? $values : array() );
 
         $allZero = true;
         foreach(array_keys($values) as $idx) {
@@ -469,11 +469,11 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         }
 
         $cacheHit = false;
-        if (substr($key,-1) != "d") {
-          $cache[$key] = $values;
+        if (substr($editField,-1) != "d") {
+          $cache[$editField] = $values;
         }
-        else if ( isset($cache[substr($key,0,2)]) ) {
-          $cached = $cache[substr($key,0,-1)];
+        else if ( isset($cache[substr($editField,0,2)]) ) {
+          $cached = $cache[substr($editField,0,-1)];
           $cacheHit = !array_diff_assoc($values,$cached);
         }
 
