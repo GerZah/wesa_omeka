@@ -15,6 +15,12 @@ class Measurements_IndexController extends Omeka_Controller_AbstractActionContro
   * Front admin page.
   */
   public function indexAction() {
+  }
+
+  /**
+  * Measurement Table -- with all the action
+  */
+  public function tableAction() {
     $this->view->measurementUnits = MeasurementsPlugin::unitsForAnalytics();
   }
 
