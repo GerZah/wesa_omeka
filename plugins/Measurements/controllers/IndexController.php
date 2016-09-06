@@ -28,6 +28,7 @@ class Measurements_IndexController extends Omeka_Controller_AbstractActionContro
   * Front admin page.
   */
   public function transactionsAction() {
+    $this->view->transactionWeights = MeasurementsPlugin::transactionWeights();
   }
 
 }

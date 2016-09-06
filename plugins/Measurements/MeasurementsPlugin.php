@@ -56,6 +56,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
   private static $_saniUnits;
   private static $_measurementsElements;
   private static $_debugOutput;
+  private static $_itemRelationsActive;
 
   # ----------------------------------------------------------------------------
 
@@ -117,7 +118,11 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     SELF::$_saniUnits = SELF::_prepareSaniUnits( SELF::_getRawUnitsFromConfig() );
     SELF::$_measurementsElements = SELF::_retrieveMeasurementElements();
     SELF::$_debugOutput = (int)(boolean) get_option('measurements_debug_output');
-}
+
+    $db = get_db();
+    $qu = "SELECT active FROM `$db->Plugins` WHERE name='ItemRelations'";
+    SELF::$_itemRelationsActive = !!$db->fetchOne($qu);
+  }
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -794,6 +799,146 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
       "simple" => $tripleUnits["leastSimple"]
     );
     return $result;
+  }
+
+  # ----------------------------------------------------------------------------
+
+  public function transactionWeights() {
+
+    if (!SELF::$_itemRelationsActive) { return array(); }
+
+    $db = get_db();
+
+    // ----------------- ... should come out plugin configuration and/or _GET parameters
+    $sandstoneElementItemType = 21; # "Sandstein-Element"
+    $belongsToRelation = 195; # "gehört zu"
+    $transactionItemType = 24; # "Transaktion"
+    $measurementElementText = "Maße"; # Text element containing the JSON array
+    $weightFactor = 2.0; # tons per cubic meter
+    // -----------------
+
+    // How to find transactions which stone blocks relating to them?
+    $sqlStub = "
+      SELECT %s
+      FROM `$db->Items` it
+      LEFT JOIN `$db->ItemRelationsRelations` rel ON rel.object_item_id = it.id
+      LEFT JOIN `$db->Items` obit ON rel.subject_item_id = obit.id
+      WHERE obit.item_type_id = $sandstoneElementItemType
+      AND rel.property_id = $belongsToRelation
+      AND it.item_type_id = $transactionItemType
+      %s
+      %s
+    ";
+
+    // How many do we have of those? Altogether?
+    $countSql = sprintf($sqlStub, "COUNT( DISTINCT(it.id) ) AS cnt", "", "");
+    $count = $db->fetchOne($countSql);
+    $maxPage = floor(($count-1) / 10);
+
+    $page = -1;
+    $items = array();
+    $itemDetails = array();
+    $invUnits = array();
+
+    if ($maxPage >= 0) {
+
+      $page = intval(@$_GET["page"]);
+      $page = ( $page<0 ? 0 : $page );
+      $page = ( $page>$maxPage ? $maxPage : $page );
+
+      $from = $page*10;
+
+      $itemSql = sprintf(
+        $sqlStub,
+        "DISTINCT(it.id)",
+        "ORDER BY it.modified DESC",
+        "LIMIT 10 OFFSET $from"
+      );
+      $items = $db->fetchAll($itemSql);
+
+      $tripleUnits = SELF::_getTripleUnits();
+      $invUnits = array();
+      foreach($tripleUnits["ungroupedSaniUnits"] as $unit) {
+        $invUnits[ $unit["verb"] ] = $unit["mmconv"] * $unit["mmconv"] * $unit["mmconv"];
+      }
+      // echo "<pre>" . print_r($invUnits,true) . "</pre>"; die();
+      // Should be something like:
+      // Array
+      // (
+      //     [m-cm-mm (1-100-10)] => 1
+      //     [AmstE-F-D (1-2-12)] => 13124.983471812
+      //     [BremE-F-D (1-2-12)] => 14019.312673828
+      // )
+
+      foreach($items as $item) {
+        $itemId = $item["id"];
+        $fullItem = get_record_by_id('Item', $itemId);
+        $itemData = array();
+
+        $itemData["itemTitle"] = metadata($fullItem, array('Dublin Core', 'Title'));
+
+        $stoneIdQuery = "
+          SELECT DISTINCT(subject_item_id) AS itemId
+          FROM `$db->ItemRelationsRelations`
+          WHERE object_item_id = $itemId
+          AND property_id = $belongsToRelation
+        ";
+        $stones = $db->fetchAll($stoneIdQuery);
+        // $itemData["stones"] = $stones;
+
+        $fullVolume = 0;
+
+        $itemData["stoneData"] = array();
+        foreach($stones as $stone) {
+          $stoneId = $stone["itemId"];
+          $stoneItem = get_record_by_id('Item', $stoneId);
+          $stoneTitle = metadata($stoneItem, array('Dublin Core', 'Title'));
+
+          $stoneDetails = array();
+          $stoneDetails["t"] = $stoneTitle;
+
+          $stoneMeasurementsJson = metadata(
+            $stoneItem,
+            array('Item Type Metadata', $measurementElementText),
+            array('no_filter' => true)
+          );
+          $stoneMeasurements = json_decode($stoneMeasurementsJson);
+
+          $stoneDetails["u"] = $stoneMeasurements->u;
+
+          $stoneDetails["n"] = intval(@$stoneMeasurements->n);
+          if ($stoneDetails["n"]<1) { $stoneDetails["n"] = 1; }
+
+          $stoneDetails["v"] = $stoneMeasurements->vd[0];
+
+          if ( isset( $invUnits[$stoneDetails["u"]] ) ) {
+            $mmConv = $invUnits[$stoneDetails["u"]];
+            $stoneDetails["vc"] = $stoneDetails["v"] * $mmConv;
+
+            $fullVolume += $stoneDetails["n"] * $stoneDetails["vc"];
+            $stoneDetails["w"] = $stoneDetails["vc"] / (1000*1000*1000) * $weightFactor;
+            $stoneDetails["wn"] = $stoneDetails["w"] * $stoneDetails["n"];
+          }
+
+          $itemData["stoneData"][$stoneId] = $stoneDetails;
+        }
+
+        $itemData["fullV"] = $fullVolume;
+        $itemData["fullW"] = $fullVolume / (1000*1000*1000) * $weightFactor;
+        $itemDetails[$itemId] = $itemData;
+      }
+
+    }
+
+    return array(
+      "cnt" => $count,
+      "maxPage" => $maxPage,
+      "page" => $page,
+      "itemIds" => $items,
+      "itemDetails" => $itemDetails,
+      "invUnits" => $invUnits,
+    );
+
   }
 
   # ----------------------------------------------------------------------------
