@@ -1,3 +1,5 @@
 .measurementCenter { padding: 0.5em 0; text-align: center; }
+.measurementRight { text-align: right; }
+.itemsHiddenUpFront { display: none; }
 span.oneEm { display: inline-block; width: 1em; }
 span.pageCount { display: inline-block; width: 3em; text-align: center; }

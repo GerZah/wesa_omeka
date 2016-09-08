@@ -7,7 +7,7 @@
 
   foreach($transactionWeights as $idx => $val) { $$idx = $val; }
 
-  echo
+  echo "<div class='measurementCenter'>\n".
     $this->formSelect( 'st',$sandstoneElementItemType, array(), $itemTypesSelect )
     . " "
     . $this->formSelect( 'rel', $belongsToRelation, array(), $relationsSelect )
@@ -15,10 +15,18 @@
     . $this->formSelect( 'tr', $transactionItemType, array(), $itemTypesSelect )
     // . " "
     // . $this->formButton( 'applyBtn', __("Apply"), array() )
+    . "</div>\n";
   ;
 
   $urlStub = "?st=$sandstoneElementItemType&rel=$belongsToRelation&tr=$transactionItemType&page=";
 
+?>
+
+<?php
+  if (!$itemDetails) {
+    echo "<p>" . __("No items that match this constellation of which weights could be added.") . "</p>\n";
+  }
+  else {
 ?>
 
 <div class="measurementCenter">
@@ -35,41 +43,53 @@
   <?php if ($maxPage>=1) { ?><a href="<?php echo $urlStub.$maxPage; ?>">»|</a><?php } ?>
 </div>
 
-<?
+<table>
+<tr>
+  <td colspan="6" class='measurementRight'>
+    <a href="#" class="transactionShowHideAllRows">[<?php echo __("Show / Hide All"); ?>]</a>
+  </td>
+</tr>
 
-  echo "<ul>\n";
+<?php
+
   foreach($itemDetails as $itemId => $transaction) {
+    echo "<tr>";
     $iId = $transaction["itemId"]; // $itemId
     $transactionUrl= url('items/show/' . $iId);
-    echo "<li><a href='$transactionUrl'>" .
-      $transaction["itemTitle"] .
-      "</a> (#$iId): <strong>" .
-      round($transaction["fullW"],4) .
-      " t</strong>"
+    echo "<th colspan='2'>#$iId</th>";
+    echo "<td><a href='$transactionUrl'>" . $transaction["itemTitle"] . "</a></td>";
+    echo "<td colspan='2' class='measurementRight'>" . round($transaction["fullW"],4) . " t</td>";
+    echo "<td class='measurementRight'>"
+      . "<a href='#' class='transactionShowHideRows' data-item='$itemId'>"
+      . "[" . __("Show / Hide") . "]"
+      . "</a></td>"
     ;
-    echo "<ul>\n";
+    echo "<tbody class='itemsHiddenUpFront tr$itemId'>";
     foreach($transaction["stoneData"] as $stoneId => $stone) {
+      echo "<tr>";
       $stoneUrl= url('items/show/' . $stoneId);
-      echo "<li><a href='$stoneUrl'>" .
-        $stone["t"] .
-        "</a> (#$stoneId)<br>" .
-        round($stone["w"],4) .
-        " t" .
-        ( $stone["n"] == 1 ? "" :
-          " <em>x " . $stone["n"] .
-          "</em> = " .
-          round($stone["wn"],4) .
-          " t"
-        ) .
-        "</li>";
-      ;
+      echo "<td>&nbsp;</td>";
+      echo "<th>#$stoneId</th>";
+      echo "<td><a href='$stoneUrl'>" . $stone["t"] . "</a></td>";
+      echo "<td class='measurementRight'>" . (
+        $stone["n"] == 1 ? "&nbsp;" :
+        $stone["n"] . " x " . round($stone["w"],4) . " t ="
+      ) . "</td>";
+      echo "<td class='measurementRight'>" . round($stone["wn"],4) . " t</td>";
+      echo "<td>&nbsp;</td>";
+      echo "</tr>\n";
     }
-    echo "</ul>\n";
-    echo "</li>\n";
+    echo "</tbody>";
+    echo "</tr>\n";
   }
-  echo "</ul>\n";
 
   // echo "<pre>-------------\n" . print_r($transactionWeights, true) . "</pre>\n";
 
+  }
+?>
+
+</table>
+
+<?php
   echo foot();
 ?>

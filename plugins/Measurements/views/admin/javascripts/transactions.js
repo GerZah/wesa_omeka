@@ -28,4 +28,25 @@ jQuery(document).ready(function () {
 
   // ---------------------------------------------------------------------------
 
+  var allShown = false;
+
+  $("a.transactionShowHideAllRows").click(function(e) {
+    e.preventDefault();
+    allShown = !allShown;
+    if (allShown) {
+      $(".itemsHiddenUpFront").show();
+    }
+    else {
+      $(".itemsHiddenUpFront").hide();
+    }
+  });
+
+  $("a.transactionShowHideRows").click(function(e){
+    e.preventDefault();
+    var clickedId = $(this).data('item');
+    $("tbody.tr"+clickedId).toggle();
+  });
+
+  // ---------------------------------------------------------------------------
+
 });
