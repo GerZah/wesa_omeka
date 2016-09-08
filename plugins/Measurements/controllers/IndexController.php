@@ -28,6 +28,15 @@ class Measurements_IndexController extends Omeka_Controller_AbstractActionContro
   * Front admin page.
   */
   public function transactionsAction() {
+    $this->view->relationsSelect = get_table_options('ItemRelationsProperty');
+
+    $itemTypesSelect = array();
+    foreach (get_records('ItemType', array(), 0) as $itemType) {
+      $itemTypesSelect[$itemType->id] = $itemType["name"];
+    }
+    asort($itemTypesSelect);
+    $this->view->itemTypesSelect = array(__("Select Below")) + $itemTypesSelect;
+
     $this->view->transactionWeights = MeasurementsPlugin::transactionWeights();
   }
 

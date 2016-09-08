@@ -803,6 +803,24 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
   # ----------------------------------------------------------------------------
 
+  protected function _getVsDefaultTableProperty($getField, $dbField, $dbTable, $dbVerbField, $verbVal, $def) {
+    $result = $def; # Sanity
+    $db = get_db();
+    $table = $db->$dbTable;
+    if (isset($_GET[$getField])) {
+      $get = intval($_GET[$getField]);
+      $qu = "SELECT COUNT(*) FROM `$table` WHERE $dbField=$get";
+      if ($db->fetchOne($qu)) { $result = $get; }
+    }
+    else {
+      $qu = "SELECT $dbField FROM `$table` WHERE $dbVerbField='$verbVal'";
+      $result = $db->fetchOne($qu);
+    }
+    return $result;
+  }
+
+  # ----------------------------------------------------------------------------
+
   public function transactionWeights() {
 
     if (!SELF::$_itemRelationsActive) { return array(); }
@@ -810,11 +828,33 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $db = get_db();
 
     // ----------------- ... should come out plugin configuration and/or _GET parameters
-    $sandstoneElementItemType = 21; # "Sandstein-Element"
-    $belongsToRelation = 195; # "gehört zu"
-    $transactionItemType = 24; # "Transaktion"
+    // $transactionItemType = 24; # "Transaktion"
     $measurementElementText = "Maße"; # Text element containing the JSON array
     $weightFactor = 2.0; # tons per cubic meter
+    $transactionsPerPage = 10; # how many transactions to be display in pagintion
+    // -----------------
+    // $debugMaxCount = 123; # +#+#+# How many simulated items should we show?
+    // -----------------
+
+    // ----------------- find out which item type should be used with weights -- usually "Sandstein-Element" == 21
+    $sandstoneElementItemType = SELF::_getVsDefaultTableProperty(
+      "st", "id", "ItemType", "name", "Sandstein-Element", -1
+    );
+    // die("<pre>".intval($sandstoneElementItemType)."</pre>");
+    // -----------------
+
+    // ----------------- find out which relation should be used -- usualls "gehört zu" == 195
+    $belongsToRelation = SELF::_getVsDefaultTableProperty(
+      "rel", "id", "ItemRelationsProperty", "label", "gehört zu", -1
+    );
+    // die("<pre>".intval($belongsToRelation)."</pre>");
+    // -----------------
+
+    // ----------------- find out which item type should be references -- usually "Transaktion" == 24
+    $transactionItemType = SELF::_getVsDefaultTableProperty(
+      "tr", "id", "ItemType", "name", "Transaktion", -1
+    );
+    // die("<pre>".intval($sandstoneElementItemType)."</pre>");
     // -----------------
 
     // How to find transactions which stone blocks relating to them?
@@ -833,26 +873,29 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     // How many do we have of those? Altogether?
     $countSql = sprintf($sqlStub, "COUNT( DISTINCT(it.id) ) AS cnt", "", "");
     $count = $db->fetchOne($countSql);
+    if (isset($debugMaxCount)) { $count = $debugMaxCount; }
     $maxPage = floor(($count-1) / 10);
 
+    // Sanity Values
     $page = -1;
     $items = array();
     $itemDetails = array();
     $invUnits = array();
 
-    if ($maxPage >= 0) {
+    if ($maxPage >= 0) { // Do we at least have one page?
 
-      $page = intval(@$_GET["page"]);
-      $page = ( $page<0 ? 0 : $page );
-      $page = ( $page>$maxPage ? $maxPage : $page );
+      $page = intval(@$_GET["page"]); // Which page are we asked to display?
+      $page = ( $page<0 ? 0 : $page ); // Push negative values to at least first page == 0
+      $page = ( $page>$maxPage ? $maxPage : $page ); // Does that page even exist?
 
-      $from = $page*10;
+      $from = $page * $transactionsPerPage;
+      if (isset($debugMaxCount)) { $from = 0; }
 
       $itemSql = sprintf(
         $sqlStub,
         "DISTINCT(it.id)",
         "ORDER BY it.modified DESC",
-        "LIMIT 10 OFFSET $from"
+        "LIMIT $transactionsPerPage OFFSET $from"
       );
       $items = $db->fetchAll($itemSql);
 
@@ -875,6 +918,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         $fullItem = get_record_by_id('Item', $itemId);
         $itemData = array();
 
+        $itemData["itemId"] = $itemId;
         $itemData["itemTitle"] = metadata($fullItem, array('Dublin Core', 'Title'));
 
         $stoneIdQuery = "
@@ -930,13 +974,33 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
     }
 
+    if (isset($debugMaxCount)) {
+      if (count($itemDetails)==0) {
+        $count = 0;
+        $page = -1;
+        $maxPage = -1;
+      }
+      else {
+        if ($page<$maxPage) {
+          $simPage = 0;
+          $firstItem = array_pop($itemDetails);
+          while (count($itemDetails) < $transactionsPerPage) {
+            array_push($itemDetails, $firstItem);
+          }
+        }
+      }
+    }
+
     return array(
       "cnt" => $count,
       "maxPage" => $maxPage,
       "page" => $page,
-      "itemIds" => $items,
+      // "itemIds" => $items,
       "itemDetails" => $itemDetails,
-      "invUnits" => $invUnits,
+      // "invUnits" => $invUnits,
+      "sandstoneElementItemType" => $sandstoneElementItemType,
+      "belongsToRelation" => $belongsToRelation,
+      "transactionItemType" => $transactionItemType,
     );
 
   }
