@@ -22,69 +22,69 @@ msgstr ""
 msgid "Measurements Analysis"
 msgstr ""
 
-#: MeasurementsPlugin.php:95 MeasurementsPlugin.php:96
-#: MeasurementsPlugin.php:97 MeasurementsPlugin.php:102
-#: MeasurementsPlugin.php:103 MeasurementsPlugin.php:104
+#: MeasurementsPlugin.php:96 MeasurementsPlugin.php:97
+#: MeasurementsPlugin.php:98 MeasurementsPlugin.php:103
+#: MeasurementsPlugin.php:104 MeasurementsPlugin.php:105
 #: measurements-form.php:15 measurements-form.php:63 measurements-form.php:68
 #: measurements-form.php:118 measurements-form.php:123
 #: measurements-form.php:182
 msgid "Dimension"
 msgstr ""
 
-#: MeasurementsPlugin.php:98 MeasurementsPlugin.php:99
-#: MeasurementsPlugin.php:100 MeasurementsPlugin.php:105
-#: MeasurementsPlugin.php:106 MeasurementsPlugin.php:107
+#: MeasurementsPlugin.php:99 MeasurementsPlugin.php:100
+#: MeasurementsPlugin.php:101 MeasurementsPlugin.php:106
+#: MeasurementsPlugin.php:107 MeasurementsPlugin.php:108
 #: measurements-form.php:16 measurements-form.php:79 measurements-form.php:84
 #: measurements-form.php:134 measurements-form.php:139
 msgid "Face"
 msgstr ""
 
-#: MeasurementsPlugin.php:101 MeasurementsPlugin.php:108
+#: MeasurementsPlugin.php:102 MeasurementsPlugin.php:109
 #: measurements-form.php:17 measurements-form.php:95 measurements-form.php:99
 #: measurements-form.php:150 measurements-form.php:154
 #: views/admin/index/table.php:45
 msgid "Volume"
 msgstr ""
 
-#: MeasurementsPlugin.php:175
+#: MeasurementsPlugin.php:180
 msgid "[n/a]"
 msgstr ""
 
-#: MeasurementsPlugin.php:300
+#: MeasurementsPlugin.php:305
 msgid "Item Type"
 msgstr ""
 
-#: MeasurementsPlugin.php:369 MeasurementsPlugin.php:370
-#: views/admin/index/table.php:42
+#: MeasurementsPlugin.php:374 MeasurementsPlugin.php:375
+#: controllers/IndexController.php:38 views/admin/index/table.php:42
 msgid "Select Below"
 msgstr ""
 
-#: MeasurementsPlugin.php:423
+#: MeasurementsPlugin.php:428
 msgid "Edit"
 msgstr ""
 
-#: MeasurementsPlugin.php:424 measurements-form.php:165
+#: MeasurementsPlugin.php:429 measurements-form.php:165
 #: measurements-form.php:190
 msgid "Clear"
 msgstr ""
 
-#: MeasurementsPlugin.php:456 measurements-form.php:19
+#: MeasurementsPlugin.php:461 measurements-form.php:19
 msgid "Entered Data"
 msgstr ""
 
-#: MeasurementsPlugin.php:459 measurements-form.php:20
+#: MeasurementsPlugin.php:464 measurements-form.php:20
 #: measurements-form.php:114
 msgid "Derived Data"
 msgstr ""
 
-#: MeasurementsPlugin.php:496 MeasurementsPlugin.php:635
+#: MeasurementsPlugin.php:501 MeasurementsPlugin.php:640
 #: measurements-form.php:18 measurements-form.php:105
 #: measurements-form.php:109 views/admin/index/table.php:136
 #: views/admin/index/table.php:193
 msgid "Number"
 msgstr ""
 
-#: MeasurementsPlugin.php:757
+#: MeasurementsPlugin.php:762
 msgid "Measurements Debug Output"
 msgstr ""
 
@@ -181,6 +181,7 @@ msgid "Data Entry"
 msgstr ""
 
 #: measurements-form.php:164 measurements-form.php:189
+#: views/admin/index/transactions.php:30
 msgid "Apply"
 msgstr ""
 
@@ -253,7 +254,7 @@ msgstr ""
 msgid "Measurement Analytical Unit"
 msgstr ""
 
-#: views/admin/index/table.php:57
+#: views/admin/index/table.php:57 views/admin/index/transactions.php:26
 msgid "Weight Factor"
 msgstr ""
 
@@ -261,7 +262,7 @@ msgstr ""
 msgid "t/m³"
 msgstr ""
 
-#: views/admin/index/table.php:72
+#: views/admin/index/table.php:72 views/admin/index/transactions.php:20
 msgid "Filter item ID (e.g. \"42-500\")"
 msgstr ""
 
@@ -269,7 +270,7 @@ msgstr ""
 msgid "Filter target range (e.g. \"20.5-50\")"
 msgstr ""
 
-#: views/admin/index/table.php:94
+#: views/admin/index/table.php:94 views/admin/index/transactions.php:23
 msgid "Filter Title Text"
 msgstr ""
 
@@ -346,6 +347,18 @@ msgstr ""
 
 #: views/admin/index/table.php:243
 msgid "Close"
+msgstr ""
+
+#: views/admin/index/transactions.php:48
+msgid "No items that match this constellation of which weights could be added."
+msgstr ""
+
+#: views/admin/index/transactions.php:70
+msgid "Show / Hide All"
+msgstr ""
+
+#: views/admin/index/transactions.php:92
+msgid "Show / Hide"
 msgstr ""
 
 #: views/shared/common/measurements-advanced-search.php:3

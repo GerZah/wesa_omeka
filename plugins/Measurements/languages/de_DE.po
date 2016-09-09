@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Measurements/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-09-05 18:36+0200\n"
+"PO-Revision-Date: 2016-09-09 18:29+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -19,73 +19,55 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.9\n"
 
-#: MeasurementsPlugin.php:34 views/admin/index/index.php:2
-#: views/admin/index/index.php:11 views/admin/index/table.php:8
+#: MeasurementsPlugin.php:34 views/admin/index/index.php:2 views/admin/index/index.php:11 views/admin/index/table.php:8
 msgid "Measurements Analysis"
 msgstr "Maß-Analyse"
 
-#: MeasurementsPlugin.php:95 MeasurementsPlugin.php:96
-#: MeasurementsPlugin.php:97 MeasurementsPlugin.php:102
-#: MeasurementsPlugin.php:103 MeasurementsPlugin.php:104
-#: measurements-form.php:15 measurements-form.php:63 measurements-form.php:68
-#: measurements-form.php:118 measurements-form.php:123
-#: measurements-form.php:182
+#: MeasurementsPlugin.php:96 MeasurementsPlugin.php:97 MeasurementsPlugin.php:98 MeasurementsPlugin.php:103 MeasurementsPlugin.php:104 MeasurementsPlugin.php:105 measurements-form.php:15 measurements-form.php:63 measurements-form.php:68 measurements-form.php:118 measurements-form.php:123 measurements-form.php:182
 msgid "Dimension"
 msgstr "Dimension"
 
-#: MeasurementsPlugin.php:98 MeasurementsPlugin.php:99
-#: MeasurementsPlugin.php:100 MeasurementsPlugin.php:105
-#: MeasurementsPlugin.php:106 MeasurementsPlugin.php:107
-#: measurements-form.php:16 measurements-form.php:79 measurements-form.php:84
-#: measurements-form.php:134 measurements-form.php:139
+#: MeasurementsPlugin.php:99 MeasurementsPlugin.php:100 MeasurementsPlugin.php:101 MeasurementsPlugin.php:106 MeasurementsPlugin.php:107 MeasurementsPlugin.php:108 measurements-form.php:16 measurements-form.php:79 measurements-form.php:84 measurements-form.php:134 measurements-form.php:139
 msgid "Face"
 msgstr "Fläche"
 
-#: MeasurementsPlugin.php:101 MeasurementsPlugin.php:108
-#: measurements-form.php:17 measurements-form.php:95 measurements-form.php:99
-#: measurements-form.php:150 measurements-form.php:154
-#: views/admin/index/table.php:45
+#: MeasurementsPlugin.php:102 MeasurementsPlugin.php:109 measurements-form.php:17 measurements-form.php:95 measurements-form.php:99 measurements-form.php:150 measurements-form.php:154 views/admin/index/table.php:45
 msgid "Volume"
 msgstr "Volumen"
 
-#: MeasurementsPlugin.php:175
+#: MeasurementsPlugin.php:180
 msgid "[n/a]"
 msgstr "[n.v.]"
 
-#: MeasurementsPlugin.php:300
+#: MeasurementsPlugin.php:305
 msgid "Item Type"
 msgstr "Objekttyp"
 
-#: MeasurementsPlugin.php:369 MeasurementsPlugin.php:370
-#: views/admin/index/table.php:42
+#: MeasurementsPlugin.php:374 MeasurementsPlugin.php:375 controllers/IndexController.php:38 views/admin/index/table.php:42
 msgid "Select Below"
 msgstr "Unten auswählen"
 
-#: MeasurementsPlugin.php:423
+#: MeasurementsPlugin.php:428
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: MeasurementsPlugin.php:424 measurements-form.php:165
-#: measurements-form.php:190
+#: MeasurementsPlugin.php:429 measurements-form.php:165 measurements-form.php:190
 msgid "Clear"
 msgstr "Löschen"
 
-#: MeasurementsPlugin.php:456 measurements-form.php:19
+#: MeasurementsPlugin.php:461 measurements-form.php:19
 msgid "Entered Data"
 msgstr "Eingegebene Daten"
 
-#: MeasurementsPlugin.php:459 measurements-form.php:20
-#: measurements-form.php:114
+#: MeasurementsPlugin.php:464 measurements-form.php:20 measurements-form.php:114
 msgid "Derived Data"
 msgstr "Abgeleitete Daten"
 
-#: MeasurementsPlugin.php:496 MeasurementsPlugin.php:635
-#: measurements-form.php:18 measurements-form.php:105 measurements-form.php:109
-#: views/admin/index/table.php:136 views/admin/index/table.php:193
+#: MeasurementsPlugin.php:501 MeasurementsPlugin.php:640 measurements-form.php:18 measurements-form.php:105 measurements-form.php:109 views/admin/index/table.php:136 views/admin/index/table.php:193
 msgid "Number"
 msgstr "Anzahl"
 
-#: MeasurementsPlugin.php:757
+#: MeasurementsPlugin.php:762
 msgid "Measurements Debug Output"
 msgstr "Maße Debug-Ausgabe"
 
@@ -165,12 +147,11 @@ msgstr "Einheiten-Tripel"
 msgid "Data Entry"
 msgstr "Dateneingabe"
 
-#: measurements-form.php:164 measurements-form.php:189
+#: measurements-form.php:164 measurements-form.php:189 views/admin/index/transactions.php:30
 msgid "Apply"
 msgstr "Anwenden"
 
-#: measurements-form.php:166 measurements-form.php:191
-#: views/admin/index/table.php:200 views/admin/index/table.php:236
+#: measurements-form.php:166 measurements-form.php:191 views/admin/index/table.php:200 views/admin/index/table.php:236
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -234,7 +215,7 @@ msgstr "Maß-Analyse Bereich"
 msgid "Measurement Analytical Unit"
 msgstr "Maß-Analyse Einheit"
 
-#: views/admin/index/table.php:57
+#: views/admin/index/table.php:57 views/admin/index/transactions.php:26
 msgid "Weight Factor"
 msgstr "Gewichtsfaktor"
 
@@ -242,7 +223,7 @@ msgstr "Gewichtsfaktor"
 msgid "t/m³"
 msgstr "t/m³"
 
-#: views/admin/index/table.php:72
+#: views/admin/index/table.php:72 views/admin/index/transactions.php:20
 msgid "Filter item ID (e.g. \"42-500\")"
 msgstr "Objekt-ID-Filtern (z.B. \"42-500\")"
 
@@ -250,7 +231,7 @@ msgstr "Objekt-ID-Filtern (z.B. \"42-500\")"
 msgid "Filter target range (e.g. \"20.5-50\")"
 msgstr "Zielbereich filtern (z.B. \"20,5-50\")"
 
-#: views/admin/index/table.php:94
+#: views/admin/index/table.php:94 views/admin/index/transactions.php:23
 msgid "Filter Title Text"
 msgstr "Titel-Text filtern"
 
@@ -325,6 +306,18 @@ msgstr "Fehler beim Anlegen der Beziehung(en)"
 #: views/admin/index/table.php:243
 msgid "Close"
 msgstr "Schließen"
+
+#: views/admin/index/transactions.php:48
+msgid "No items that match this constellation of which weights could be added."
+msgstr "Kein Objekt entspricht dieser Konstellation, in der Gewichte addiert werden könnten."
+
+#: views/admin/index/transactions.php:70
+msgid "Show / Hide All"
+msgstr "Alle ein- / ausblenden"
+
+#: views/admin/index/transactions.php:92
+msgid "Show / Hide"
+msgstr "Ein- / ausblenden"
 
 #: views/shared/common/measurements-advanced-search.php:3
 msgid "Measurements Search"

@@ -18,13 +18,13 @@
 
   echo "<div class='measurementCenter'>\n"
     . $this->formLabel('idfilter', __('Filter item ID (e.g. "42-500")')) . ": "
-    . $this->formText('idfilter', $idfilter, array("size" => 12) )
+    . $this->formText('idfilter', $idfilter, array("size" => 8) )
     . "<span class='oneEm'></span>"
     . $this->formLabel('titlefilter', __('Filter Title Text')) . ": "
-    . $this->formInput("titlefilter", $titlefilter, array("type" => "text", "size" => 12 ) )
-    . "<br>"
+    . $this->formInput("titlefilter", $titlefilter, array("type" => "text", "size" => 8 ) )
+    . "<span class='oneEm'></span>"
     . $this->formLabel('weightfactor', __('Weight Factor')) . ": "
-    . $this->formInput("weightfactor", $weightfactor, array("type" => "text","size" => 12) )
+    . $this->formInput("weightfactor", $weightfactor, array("type" => "text","size" => 4) )
     . "<span class='oneEm'></span>"
     . $this->formHidden( 'page', $page )
     . $this->formButton( 'applyBtn', __("Apply"), array() )
