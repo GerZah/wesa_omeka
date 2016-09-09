@@ -63,7 +63,7 @@ jQuery(document).ready(function () {
       curWeightFactor = parseFloat(prefix+"."+suffix);
     }
 
-    var idRegEx = /\s*(\d+)-(\d+)\s*/;
+    var idRegEx = /\s*(\d+)(?:-(\d+))?\s*/;
     var curVal = $("#measurementsIdFilter").val();
     var matches = curVal.match(idRegEx);
     if (matches == null) {
@@ -73,6 +73,7 @@ jQuery(document).ready(function () {
     else {
       curFromId = parseInt(matches[1]);
       curToId = parseInt(matches[2]);
+      curToId = ( isNaN(curToId) ? curFromId : curToId );
       if (curFromId > curToId) {
         var help = curFromId;
         curFromId = curToId;
