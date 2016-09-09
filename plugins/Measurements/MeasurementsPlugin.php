@@ -828,8 +828,6 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $db = get_db();
 
     // ----------------- ... should come out plugin configuration and/or _GET parameters
-    // $transactionItemType = 24; # "Transaktion"
-    $measurementElementText = "Maße"; # Text element containing the JSON array
     $weightFactor = 2.0; # tons per cubic meter
     $transactionsPerPage = 10; # how many transactions to be display in pagintion
     // -----------------
@@ -965,11 +963,15 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
           $stoneDetails = array();
           $stoneDetails["t"] = $stoneTitle;
 
-          $stoneMeasurementsJson = metadata(
-            $stoneItem,
-            array('Item Type Metadata', $measurementElementText),
-            array('no_filter' => true)
-          );
+          $measurementElements = implode(",", SELF::$_measurementsElements);
+          $sql = "
+            SELECT text
+            FROM `$db->ElementTexts`
+            WHERE record_id = $stoneId
+            AND element_id IN ($measurementElements)
+            LIMIT 1
+          ";
+          $stoneMeasurementsJson = $db->fetchOne($sql);
           $stoneMeasurements = json_decode($stoneMeasurementsJson);
 
           $stoneDetails["u"] = $stoneMeasurements->u;
