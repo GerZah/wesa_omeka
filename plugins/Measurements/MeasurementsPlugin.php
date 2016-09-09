@@ -833,29 +833,50 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $weightFactor = 2.0; # tons per cubic meter
     $transactionsPerPage = 10; # how many transactions to be display in pagintion
     // -----------------
-    // $debugMaxCount = 123; # +#+#+# How many simulated items should we show?
+    // $debugMaxCount = 12; # +#+#+# How many simulated items should we show?
     // -----------------
 
     // ----------------- find out which item type should be used with weights -- usually "Sandstein-Element" == 21
     $sandstoneElementItemType = SELF::_getVsDefaultTableProperty(
       "st", "id", "ItemType", "name", "Sandstein-Element", -1
     );
-    // die("<pre>".intval($sandstoneElementItemType)."</pre>");
-    // -----------------
 
     // ----------------- find out which relation should be used -- usualls "gehört zu" == 195
     $belongsToRelation = SELF::_getVsDefaultTableProperty(
       "rel", "id", "ItemRelationsProperty", "label", "gehört zu", -1
     );
-    // die("<pre>".intval($belongsToRelation)."</pre>");
-    // -----------------
 
     // ----------------- find out which item type should be references -- usually "Transaktion" == 24
     $transactionItemType = SELF::_getVsDefaultTableProperty(
       "tr", "id", "ItemType", "name", "Transaktion", -1
     );
-    // die("<pre>".intval($sandstoneElementItemType)."</pre>");
-    // -----------------
+
+    // ----------------- apply ID filter?
+    $idFilterArr = array();
+    $idFilter = trim(@$_GET["idfilter"]); // so what did we get?
+    if ($idFilter) {
+      if (preg_match_all("/\d+(?:-\d+)?/", $idFilter, $allMatches)) { // split it at commas
+        foreach($allMatches[0] as $singleMatch) {
+          preg_match("/(\d+)(?:-(\d+))?/", $singleMatch, $match); // split the single ones into 1-2 decimals each
+          $from = $match[1];
+          $to = ( isset($match[2]) ? $match[2] : $from );
+          // echo "<pre>$singleMatch: $from - $to</pre>";
+          $idFilterArr[] = array($from, $to); // one normalized entry
+        }
+      }
+    }
+    $idFilter = ( $idFilterArr ? $idFilter : "" ); // did what we got make sense? then OK, otherwise blank it
+
+    // ----------------- create the infix to be actually filtering for IDs
+    $idFilterInfix = "";
+    if ($idFilterArr) {
+      $fromTo = array();
+      foreach($idFilterArr as $area) {
+        $fromTo[] = "(it.id BETWEEN " . $area[0] . " AND " . $area[1] . ")";
+      }
+      $idFilterInfix = "AND (" . implode(" OR " , $fromTo) .  ")";
+      // echo "<pre>$idFilterInfix</pre>"; die();
+    }
 
     // How to find transactions which stone blocks relating to them?
     $sqlStub = "
@@ -868,10 +889,11 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
       AND it.item_type_id = $transactionItemType
       %s
       %s
+      %s
     ";
 
     // How many do we have of those? Altogether?
-    $countSql = sprintf($sqlStub, "COUNT( DISTINCT(it.id) ) AS cnt", "", "");
+    $countSql = sprintf($sqlStub, "COUNT( DISTINCT(it.id) ) AS cnt", $idFilterInfix, "", "");
     $count = $db->fetchOne($countSql);
     if (isset($debugMaxCount)) { $count = $debugMaxCount; }
     $maxPage = floor(($count-1) / 10);
@@ -894,6 +916,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
       $itemSql = sprintf(
         $sqlStub,
         "DISTINCT(it.id)",
+        $idFilterInfix,
         "ORDER BY it.modified DESC",
         "LIMIT $transactionsPerPage OFFSET $from"
       );
@@ -1001,6 +1024,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
       "sandstoneElementItemType" => $sandstoneElementItemType,
       "belongsToRelation" => $belongsToRelation,
       "transactionItemType" => $transactionItemType,
+      "idfilter" => $idFilter,
     );
 
   }

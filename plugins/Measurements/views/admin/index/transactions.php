@@ -7,18 +7,29 @@
 
   foreach($transactionWeights as $idx => $val) { $$idx = $val; }
 
-  echo "<div class='measurementCenter'>\n".
-    $this->formSelect( 'st',$sandstoneElementItemType, array(), $itemTypesSelect )
+  echo "<div class='measurementCenter'>\n"
+    . $this->formSelect( 'st',$sandstoneElementItemType, array(), $itemTypesSelect )
     . " "
     . $this->formSelect( 'rel', $belongsToRelation, array(), $relationsSelect )
     . " "
     . $this->formSelect( 'tr', $transactionItemType, array(), $itemTypesSelect )
-    // . " "
-    // . $this->formButton( 'applyBtn', __("Apply"), array() )
-    . "</div>\n";
+    . "</div>\n"
   ;
 
-  $urlStub = "?st=$sandstoneElementItemType&rel=$belongsToRelation&tr=$transactionItemType&page=";
+  echo "<div class='measurementCenter'>\n"
+    . $this->formLabel('idfilter', __('Filter item ID (e.g. "42-500")')) . ": "
+    . $this->formText('idfilter', $idfilter, array("size" => 10, "maxlength" => 60))
+    . " "
+    . $this->formButton( 'applyBtn', __("Apply"), array() )
+    . "</div>\n"
+  ;
+
+  $urlStub =
+    "?st=$sandstoneElementItemType".
+    "&rel=$belongsToRelation".
+    "&tr=$transactionItemType".
+    "&idfilter=$idfilter".
+    "&page=";
 
 ?>
 

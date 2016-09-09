@@ -3,7 +3,7 @@ jQuery(document).ready(function () {
 
   // ---------------------------------------------------------------------------
 
-  // $("#applyBtn").click(updateUrl);
+  $("#applyBtn").click(updateUrl);
   $("#st").change(updateUrl);
   $("#rel").change(updateUrl);
   $("#tr").change(updateUrl);
@@ -15,12 +15,14 @@ jQuery(document).ready(function () {
     var rel = $("#rel").val();
     var tr = $("#tr").val();
     var page = $("#page").val();
+    var idfilter = $("#idfilter").val();
 
     var newUrl = curUrl
       + "?st=" + st
       + "&rel=" + rel
       + "&tr=" + tr
       + "&page=" + page
+      + "&idfilter=" + idfilter
     ;
 
     window.location = newUrl;
