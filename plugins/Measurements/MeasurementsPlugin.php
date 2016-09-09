@@ -861,6 +861,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
           $from = $match[1];
           $to = ( isset($match[2]) ? $match[2] : $from );
           // echo "<pre>$singleMatch: $from - $to</pre>";
+          if ($from>$to) { $help = $from; $from = $to; $to = $help; }
           $idFilterArr[] = array($from, $to); // one normalized entry
         }
       }
