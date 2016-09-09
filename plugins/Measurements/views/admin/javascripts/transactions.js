@@ -4,9 +4,10 @@ jQuery(document).ready(function () {
   // ---------------------------------------------------------------------------
 
   $("#applyBtn").click(updateUrl);
-  $("#st").change(updateUrl);
-  $("#rel").change(updateUrl);
-  $("#tr").change(updateUrl);
+  $("#st, #rel, #tr").change(updateUrl);
+  $("#idfilter, #titlefilter, #weightfactor").keyup(checkEnterKey);
+
+  function checkEnterKey(e) { if (e.keyCode == 13) { updateUrl(); } }
 
   function updateUrl() {
     var curUrl = window.location.href.split('?')[0]; // http://stackoverflow.com/a/28662284
@@ -15,7 +16,10 @@ jQuery(document).ready(function () {
     var rel = $("#rel").val();
     var tr = $("#tr").val();
     var page = $("#page").val();
-    var idfilter = $("#idfilter").val();
+    page = ( page == null ? "" : page );
+    var idfilter = $("#idfilter").val().trim();
+    var titlefilter = $("#titlefilter").val().trim();
+    var weightfactor = $("#weightfactor").val().trim();
 
     var newUrl = curUrl
       + "?st=" + st
@@ -23,6 +27,8 @@ jQuery(document).ready(function () {
       + "&tr=" + tr
       + "&page=" + page
       + "&idfilter=" + idfilter
+      + "&titlefilter=" + titlefilter
+      + "&weightfactor=" + weightfactor
     ;
 
     window.location = newUrl;

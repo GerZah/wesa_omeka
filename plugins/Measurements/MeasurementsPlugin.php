@@ -827,11 +827,22 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
     $db = get_db();
 
-    // ----------------- ... should come out plugin configuration and/or _GET parameters
-    $weightFactor = 2.0; # tons per cubic meter
-    $transactionsPerPage = 10; # how many transactions to be display in pagintion
     // -----------------
     // $debugMaxCount = 12; # +#+#+# How many simulated items should we show?
+    // ----------------- ... should come out plugin configuration and/or _GET parameters
+    $transactionsPerPage = 10; # how many transactions to be display in pagintion
+    // -----------------
+
+    // ----------------- determine the weight factor to be reckoned with
+    $weightfactor = trim(@$_GET["weightfactor"]);
+    if (preg_match("/(\d+)(?:(?:,|.)(\d+))?/", $weightfactor, $match)) {
+      $weightString = $match[1] . ( isset($match[2]) ? "." . $match[2] : ""  );
+      $weightFactorFloat = floatval($weightString);
+    }
+    else {
+      $weightfactor = "2,0";
+      $weightFactorFloat = 2;
+    }
     // -----------------
 
     // ----------------- find out which item type should be used with weights -- usually "Sandstein-Element" == 21
@@ -877,6 +888,33 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
       // echo "<pre>$idFilterInfix</pre>"; die();
     }
 
+    // ----------------- create the infix to be filter for item titles
+    $titleFilterInfix = "";
+    $title = trim(@$_GET["titlefilter"]); // so what did we get?
+    if ($title) {
+      $titleClauses = array();
+      $titles = explode(",", $title); // Multiple search terms, seperated by comma
+      foreach(array_keys($titles) as $idx) {
+        $oneTitle = MeasurementsPlugin::mres(trim($titles[$idx]));
+        if ($oneTitle) { $titleClauses[] = "text LIKE '%%$oneTitle%%'";}
+      }
+      if ($titleClauses) {
+        $titleClause = "(" . implode(" OR ", $titleClauses) . ")";
+        $titleElementId = $db->fetchOne("SELECT id FROM `$db->Elements` WHERE name = 'Title'");
+        $nameIdFilterInfix = str_replace("it.id", "record_id", $idFilterInfix);
+        $titleFilterInfix = "
+          AND it.id in (
+            SELECT record_id
+            FROM `$db->ElementTexts`
+            WHERE element_id = $titleElementId
+            $nameIdFilterInfix
+            AND $titleClause
+          )
+        ";
+      }
+      // die("<pre>$titleFilterInfix</pre>");
+    }
+
     // How to find transactions which stone blocks relating to them?
     $sqlStub = "
       SELECT %s
@@ -886,13 +924,15 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
       WHERE obit.item_type_id = $sandstoneElementItemType
       AND rel.property_id = $belongsToRelation
       AND it.item_type_id = $transactionItemType
-      %s
+      $idFilterInfix
+      $titleFilterInfix
       %s
       %s
     ";
 
     // How many do we have of those? Altogether?
-    $countSql = sprintf($sqlStub, "COUNT( DISTINCT(it.id) ) AS cnt", $idFilterInfix, "", "");
+    $countSql = sprintf($sqlStub, "COUNT( DISTINCT(it.id) ) AS cnt", "", "");
+    // die("<pre>$countSql</pre>");
     $count = $db->fetchOne($countSql);
     if (isset($debugMaxCount)) { $count = $debugMaxCount; }
     $maxPage = floor(($count-1) / 10);
@@ -915,10 +955,10 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
       $itemSql = sprintf(
         $sqlStub,
         "DISTINCT(it.id)",
-        $idFilterInfix,
         "ORDER BY it.modified DESC",
         "LIMIT $transactionsPerPage OFFSET $from"
       );
+      // die("<pre>$itemSql</pre>");
       $items = $db->fetchAll($itemSql);
 
       $tripleUnits = SELF::_getTripleUnits();
@@ -986,7 +1026,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
             $stoneDetails["vc"] = $stoneDetails["v"] * $mmConv;
 
             $fullVolume += $stoneDetails["n"] * $stoneDetails["vc"];
-            $stoneDetails["w"] = $stoneDetails["vc"] / (1000*1000*1000) * $weightFactor;
+            $stoneDetails["w"] = $stoneDetails["vc"] / (1000*1000*1000) * $weightFactorFloat;
             $stoneDetails["wn"] = $stoneDetails["w"] * $stoneDetails["n"];
           }
 
@@ -994,7 +1034,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
         }
 
         $itemData["fullV"] = $fullVolume;
-        $itemData["fullW"] = $fullVolume / (1000*1000*1000) * $weightFactor;
+        $itemData["fullW"] = $fullVolume / (1000*1000*1000) * $weightFactorFloat;
         $itemDetails[$itemId] = $itemData;
       }
 
@@ -1028,12 +1068,22 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
       "belongsToRelation" => $belongsToRelation,
       "transactionItemType" => $transactionItemType,
       "idfilter" => $idFilter,
+      "titlefilter" => $title,
+      "weightfactor" => $weightfactor
     );
 
   }
 
   # ----------------------------------------------------------------------------
 
+  public function mres($value) {
+    // http://stackoverflow.com/a/1162502
+    $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
+    $replace = array("\\\\","\\0","\\n", "\\r", "\'", '\"', "\\Z");
+    return str_replace($search, $replace, $value);
+  }
+
+  # ----------------------------------------------------------------------------
 }
 
 ?>

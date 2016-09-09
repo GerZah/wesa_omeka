@@ -74,7 +74,7 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
           $titleClauses = array();
           $titles = explode(",", $title); // Multiple search terms, seperated by comma
           foreach(array_keys($titles) as $idx) {
-            $oneTitle = SELF::_mres(trim($titles[$idx]));
+            $oneTitle = MeasurementsPlugin::mres(trim($titles[$idx]));
             if ($oneTitle) { $titleClauses[] = "text LIKE '%$oneTitle%'";}
           }
           if ($titleClauses) {
@@ -298,15 +298,6 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
     $tmp=$x;
     $x=$y;
     $y=$tmp;
-  }
-
-  // ---------------------------------------------------------------------------
-
-  private function _mres($value) {
-    // http://stackoverflow.com/a/1162502
-    $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
-    $replace = array("\\\\","\\0","\\n", "\\r", "\'", '\"', "\\Z");
-    return str_replace($search, $replace, $value);
   }
 
   // ---------------------------------------------------------------------------

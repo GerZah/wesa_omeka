@@ -9,17 +9,24 @@
 
   echo "<div class='measurementCenter'>\n"
     . $this->formSelect( 'st',$sandstoneElementItemType, array(), $itemTypesSelect )
-    . " "
+    . "<span class='oneEm'></span>"
     . $this->formSelect( 'rel', $belongsToRelation, array(), $relationsSelect )
-    . " "
+    . "<span class='oneEm'></span>"
     . $this->formSelect( 'tr', $transactionItemType, array(), $itemTypesSelect )
     . "</div>\n"
   ;
 
   echo "<div class='measurementCenter'>\n"
     . $this->formLabel('idfilter', __('Filter item ID (e.g. "42-500")')) . ": "
-    . $this->formText('idfilter', $idfilter, array("size" => 10, "maxlength" => 60))
-    . " "
+    . $this->formText('idfilter', $idfilter, array("size" => 12) )
+    . "<span class='oneEm'></span>"
+    . $this->formLabel('titlefilter', __('Filter Title Text')) . ": "
+    . $this->formInput("titlefilter", $titlefilter, array("type" => "text", "size" => 12 ) )
+    . "<br>"
+    . $this->formLabel('weightfactor', __('Weight Factor')) . ": "
+    . $this->formInput("weightfactor", $weightfactor, array("type" => "text","size" => 12) )
+    . "<span class='oneEm'></span>"
+    . $this->formHidden( 'page', $page )
     . $this->formButton( 'applyBtn', __("Apply"), array() )
     . "</div>\n"
   ;
@@ -28,8 +35,11 @@
     "?st=$sandstoneElementItemType".
     "&rel=$belongsToRelation".
     "&tr=$transactionItemType".
-    "&idfilter=$idfilter".
-    "&page=";
+    "&idfilter=".urlencode($idfilter).
+    "&titlefilter=".urlencode($titlefilter).
+    "&weightfactor=".urlencode($weightfactor).
+    "&page="
+  ;
 
 ?>
 
@@ -63,38 +73,43 @@
 
 <?php
 
-  foreach($itemDetails as $itemId => $transaction) {
-    echo "<tr>";
-    $iId = $transaction["itemId"]; // $itemId
-    $transactionUrl= url('items/show/' . $iId);
-    echo "<th colspan='2'>#$iId</th>";
-    echo "<td><a href='$transactionUrl'>" . $transaction["itemTitle"] . "</a></td>";
-    echo "<td colspan='2' class='measurementRight'>" . round($transaction["fullW"],4) . " t</td>";
-    echo "<td class='measurementRight'>"
-      . "<a href='#' class='transactionShowHideRows' data-item='$itemId'>"
-      . "[" . __("Show / Hide") . "]"
-      . "</a></td>"
-    ;
-    echo "<tbody class='itemsHiddenUpFront tr$itemId'>";
-    foreach($transaction["stoneData"] as $stoneId => $stone) {
+    function formatWeight($weight) {
+      $unit = "t";
+      if ($weight<1) { $weight *= 1000; $unit = "kg"; }
+      if ($weight<1) { $weight *= 1000; $unit = "g"; }
+      return number_format($weight, 3, ",", ".") . " " . $unit;
+    }
+
+    foreach($itemDetails as $itemId => $transaction) {
       echo "<tr>";
-      $stoneUrl= url('items/show/' . $stoneId);
-      echo "<td>&nbsp;</td>";
-      echo "<th>#$stoneId</th>";
-      echo "<td><a href='$stoneUrl'>" . $stone["t"] . "</a></td>";
-      echo "<td class='measurementRight'>" . (
-        $stone["n"] == 1 ? "&nbsp;" :
-        $stone["n"] . " x " . round($stone["w"],4) . " t ="
-      ) . "</td>";
-      echo "<td class='measurementRight'>" . round($stone["wn"],4) . " t</td>";
-      echo "<td>&nbsp;</td>";
+      $iId = $transaction["itemId"]; // $itemId
+      $transactionUrl= url('items/show/' . $iId);
+      echo "<th colspan='2'>#$iId</th>";
+      echo "<td><a href='$transactionUrl'>" . $transaction["itemTitle"] . "</a></td>";
+      echo "<td colspan='2' class='measurementRight'>" . formatWeight($transaction["fullW"]) . "</td>";
+      echo "<td class='measurementRight'>"
+        . "<a href='#' class='transactionShowHideRows' data-item='$itemId'>"
+        . "[" . __("Show / Hide") . "]"
+        . "</a></td>"
+      ;
+      echo "<tbody class='itemsHiddenUpFront tr$itemId'>";
+      foreach($transaction["stoneData"] as $stoneId => $stone) {
+        echo "<tr>";
+        $stoneUrl= url('items/show/' . $stoneId);
+        echo "<td>&nbsp;</td>";
+        echo "<th>#$stoneId</th>";
+        echo "<td><a href='$stoneUrl'>" . $stone["t"] . "</a></td>";
+        echo "<td class='measurementRight'>" . (
+          $stone["n"] == 1 ? "&nbsp;" :
+          $stone["n"] . " x " . formatWeight($stone["w"]) . " ="
+        ) . "</td>";
+        echo "<td class='measurementRight'>" . formatWeight($stone["wn"]) . "</td>";
+        echo "<td>&nbsp;</td>";
+        echo "</tr>\n";
+      }
+      echo "</tbody>";
       echo "</tr>\n";
     }
-    echo "</tbody>";
-    echo "</tr>\n";
-  }
-
-  // echo "<pre>-------------\n" . print_r($transactionWeights, true) . "</pre>\n";
 
   }
 ?>
@@ -102,5 +117,6 @@
 </table>
 
 <?php
+// echo "<pre>-------------\n" . print_r($transactionWeights, true) . "</pre>\n";
   echo foot();
 ?>
