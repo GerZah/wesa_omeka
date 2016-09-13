@@ -7,7 +7,7 @@
   echo
     "<li>" .
       __("Click button below to be taken to the <strong>Measurements Analysis</strong> table.") . "<br>\n" .
-      "<a href='" . html_escape(url('measurements/index/table')) . "' class='green button'>" .
+      "<a href='" . html_escape(url('measurements/index/measurements')) . "' class='green button'>" .
       __('Measurements Analysis') .
       "</a>" .
     "</li>\n"

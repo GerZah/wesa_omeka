@@ -20,7 +20,7 @@ class Measurements_IndexController extends Omeka_Controller_AbstractActionContro
   /**
   * Measurement Table -- with all the action
   */
-  public function tableAction() {
+  public function measurementsAction() {
     $this->view->measurementUnits = MeasurementsPlugin::unitsForAnalytics();
   }
 
