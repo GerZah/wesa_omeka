@@ -110,6 +110,8 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     );
   }
 
+  public function itemRelationsActive() { return SELF::$_itemRelationsActive; }
+
   /**
 	* Initialize static variables (units, selected elements, etc.) so they can be used anywhere
 	*/
@@ -823,7 +825,20 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
   public function transactionWeights() {
 
-    if (!SELF::$_itemRelationsActive) { return array(); }
+    if (!SELF::$_itemRelationsActive) {
+      return array(
+        "cnt" => 0,
+        "maxPage" => 0,
+        "page" => 0,
+        "itemDetails" => false,
+        "sandstoneElementItemType" => 0,
+        "belongsToRelation" => 0,
+        "transactionItemType" => 0,
+        "idfilter" => "",
+        "titlefilter" => "",
+        "weightfactor" => ""
+      );
+    }
 
     $db = get_db();
 
