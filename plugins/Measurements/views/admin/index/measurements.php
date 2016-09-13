@@ -215,8 +215,12 @@
     <h5><?php echo __("Object Item(s)"); ?></h5>
     <p id="addRelObjectItems"></p>
     <?php
-      $measurementsRelations = get_table_options('ItemRelationsProperty');
-      // echo "<pre>" . print_r($itemRelationValues, true) . "</pre>";
+      if (!MeasurementsPlugin::itemRelationsActive()) {
+        $measurementsRelations = array();
+      }
+      else {
+        $measurementsRelations = get_table_options('ItemRelationsProperty');
+      }
       echo "<strong>" .
             $view->formLabel('measurementsRelations', __('Item Relations')) .
             ":</strong> " .
