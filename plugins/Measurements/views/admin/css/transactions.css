@@ -3,3 +3,16 @@
 .itemsHiddenUpFront { display: none; }
 span.oneEm { display: inline-block; width: 1em; }
 span.pageCount { display: inline-block; width: 3em; text-align: center; }
+
+@media print {
+  #content { margin:1em; width:95%; width:calc(100% + -3em); }
+  header,
+  #content-nav,
+  #search-form,
+  .measurementCenter a,
+  .measurementCenter button,
+  .transactionShowHideAllRows, .transactionShowHideRows,
+  .hideInPrint {
+    display:none;
+  }
+}

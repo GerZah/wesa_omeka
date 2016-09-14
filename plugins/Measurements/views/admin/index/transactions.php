@@ -65,7 +65,7 @@
 </div>
 
 <table>
-<tr>
+<tr class="hideInPrint">
   <td colspan="6" class='measurementRight'>
     <a href="#" class="transactionShowHideAllRows">[<?php echo __("Show / Hide All"); ?>]</a>
   </td>
@@ -87,7 +87,7 @@
       echo "<th colspan='2'>#$iId</th>";
       echo "<td><a href='$transactionUrl'>" . $transaction["itemTitle"] . "</a></td>";
       echo "<td colspan='2' class='measurementRight'>" . formatWeight($transaction["fullW"]) . "</td>";
-      echo "<td class='measurementRight'>"
+      echo "<td class='measurementRight hideInPrint'>"
         . "<a href='#' class='transactionShowHideRows' data-item='$itemId'>"
         . "[" . __("Show / Hide") . "]"
         . "</a></td>"
@@ -104,7 +104,7 @@
           $stone["n"] . " x " . formatWeight($stone["w"]) . " ="
         ) . "</td>";
         echo "<td class='measurementRight'>" . formatWeight($stone["wn"]) . "</td>";
-        echo "<td>&nbsp;</td>";
+        echo "<td class='hideInPrint'>&nbsp;</td>";
         echo "</tr>\n";
       }
       echo "</tbody>";
