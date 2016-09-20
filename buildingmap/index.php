@@ -116,7 +116,7 @@
 			}
 		?>
 		<div>
-			<svg id="mySvg" width="<?php echo $canvasW; ?>" height="<?php echo $canvasH; ?>" viewbox="0 0 50 50">
+			<svg id="mySvg" width="<?php echo $canvasW; ?>" height="<?php echo $canvasH; ?>">
 		  	<!-- <circle class="blueYellow" cx="50" cy="50" r="40" /> -->
 				<?php
 					foreach($polygons as $polygon) {
