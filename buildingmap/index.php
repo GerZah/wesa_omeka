@@ -11,7 +11,7 @@
 		<?php
 
 			$polygons = array(); # Sanity
-			$canvasW = 1400; $canvasH = 1400; // could/should come from the SVG DOM div
+			$canvasW = 1000; $canvasH = 320; // could/should come from the SVG DOM div
 
 			# ------------
 
@@ -33,6 +33,7 @@
 
 				$polygons = array();
 				$cancelCnt = -1;
+				// $cancelCnt = 100;
 
 				foreach($csv as $element) {
 
@@ -63,69 +64,48 @@
 					$polygons[] = $polygon;
 				}
 
-				// ---------------------
-
-				$diffX = $maxX - $minX;
-				$diffY = $maxY - $minY;
-				$aspect = $diffX / $diffY;
-
-				$paintW = $canvasW; $paintH = $canvasH;
-				if ($aspect > 1) { $paintH /= $aspect; } else { $paintW *= $aspect; }
-
-				// ---------------------
-
-				$maxXN = $paintW-1; $maxYN = $paintH-1;
-				$maxXT = $maxX - $minX; $maxYT = $maxY - $minY;
-				$factX = $maxXN / $maxXT; $factY = $maxYN / $maxYT;
-
-				foreach(array_keys($polygons) as $pIdx) {
-					$normCoords = array();
-					foreach(array_keys($polygon["coords"]) as $idx) {
-						$normCoords[$idx] = array(
-							"x" => ($polygons[$pIdx]["coords"][$idx]["x"]-$minX) * $factX,
-							"y" => ($polygons[$pIdx]["coords"][$idx]["y"]-$minY) * $factY,
-						);
+				foreach(array_keys($polygons) as $idx) {
+					foreach(array_keys($polygons[$idx]["coords"]) as $cidx) {
+						$polygons[$idx]["coords"][$cidx]["x"] = $polygons[$idx]["coords"][$cidx]["x"] - $minX;
+						$polygons[$idx]["coords"][$cidx]["y"] = $maxY + $minY - $polygons[$idx]["coords"][$cidx]["y"];
 					}
-					$polygons[$pIdx]["normCoords"] = $normCoords;
-					// echo "<pre>" . json_encode($polygon["coords"]) . "</pre>";
-					// echo "<pre>" . json_encode($polygon["normCoords"]) . "</pre>";
 				}
 
+				$maxX = $maxX - $minX; $minX = 0;
+				$maxY = $maxY - $minY; $minY = 0;
+
 				// ---------------------
 
-				echo "<p>"
-				. "minX: $minX / maxX: $maxX <br>"
-				. "minY: $minY / maxY: $maxY"
-				. "</p>";
-
-				echo "<p>"
-				. "diffX: $diffX / diffY: $diffY = aspect: $aspect : 1"
-				. "</p>";
-
-				echo "<p>"
-				. "canvasW: $canvasW / canvasH: $canvasH<br>"
-				. "paintW: $paintW / paintH: $paintH<br>"
-				. "</p>";
-
-				echo "<p>"
-				. "maxXN: $maxXN / maxYN: $maxYN<br>"
-				. "maxXT: $maxXT / maxYN: $maxYT<br>"
-				. "factX: $factX / factY: $factY><br>"
-				. "</p>";
-
+				// echo "<p>"
+				// . "minX: $minX / maxX: $maxX <br>"
+				// . "minY: $minY / maxY: $maxY"
+				// . "</p>";
 			}
 		?>
 		<div>
-			<svg id="mySvg" width="<?php echo $canvasW; ?>" height="<?php echo $canvasH; ?>">
-		  	<!-- <circle class="blueYellow" cx="50" cy="50" r="40" /> -->
+			<!-- width="<?php echo $canvasW; ?>"
+			height="<?php echo $canvasH; ?>" -->
+			<svg
+				id="mySvg"
+				viewbox="<?php echo "$minX $minY $maxX $maxY"; ?>"
+			>
 				<?php
 					foreach($polygons as $polygon) {
 						$points = array();
-						foreach($polygon["normCoords"] as $normCoord) {
-							$points[] = $normCoord["x"] . "," . ($paintH - $normCoord["y"]);
+						foreach($polygon["coords"] as $coord) {
+							$points[] = implode(",", $coord);
 						}
 						$points = implode(" ", $points);
-						echo "<polygon points='$points' class='buildingBlock' />";
+						$id = $polygon["id"];
+						$shortName = $polygon["shortName"];
+						echo
+							"<polygon "
+							. "points='$points' class='buildingBlock' "
+							. "data-id='$id'"
+							. ">"
+							."<title>$shortName</title>"
+							."</polygon>"
+						;
 					}
 				?>
 			</svg>

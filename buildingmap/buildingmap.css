@@ -11,5 +11,5 @@
 .buildingBlock {
   fill: #ccc;
   stroke: red;
-  stroke-width: 1px;
+  stroke-width: 0.05px;
 }
