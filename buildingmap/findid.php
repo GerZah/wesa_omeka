@@ -27,8 +27,9 @@
         SELECT record_id
         FROM `$db->ElementTexts`
         WHERE element_id = $anmerkungen
-        AND text LIKE '%$id%'
+        AND TRIM(text) = '$id'
       ";
+			// AND text LIKE '%$id%'
       $item = $db->fetchOne($sql);
       // echo "$sql\n-> $item\n";
 

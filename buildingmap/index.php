@@ -1,9 +1,14 @@
 <html>
 	<head>
 		<title>Building Map</title>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 		<link href="../application/views/scripts/css/jquery-ui.css" media="all" rel="stylesheet" type="text/css" >
-		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+		<script type="text/javascript" src="jquery.qtip.min.js"></script>
+		<link href="./jquery.qtip.min.css" rel="stylesheet" type="text/css" >
+
 		<script type="text/javascript" src="buildingmap.js"></script>
 		<link href="./buildingmap.css" rel="stylesheet" type="text/css" >
 	</head>
@@ -99,12 +104,16 @@
 						$id = $polygon["id"];
 						$shortName = $polygon["shortName"];
 						echo
-							"<polygon "
-							. "points='$points' class='buildingBlock' "
-							. "data-id='$id'"
+							"<a xlink:href='#'"
+							. " class='buildingBlockLink'"
+							. " data-id='$id'"
+							. " data-name='$shortName'"
+							. " title='$shortName'"
 							. ">"
-							."<title>$shortName</title>"
+							. "<polygon points='$points' class='buildingBlock'>"
+							// ."<text>$shortName</text>"
 							."</polygon>"
+							."</a>"
 						;
 					}
 				?>
