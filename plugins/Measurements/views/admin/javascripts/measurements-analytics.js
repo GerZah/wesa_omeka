@@ -67,6 +67,7 @@ jQuery(document).ready(function () {
     var rangeRegEx = /\s*(\d+)(?:[\.|,](\d+))?-(\d+)(?:[\.|,](\d+))?\s*/;
 
     var curVal = $("#measurementsRangeFilter").val();
+    if (curVal.indexOf("-")==-1) { curVal = curVal + "-" + curVal; } // q&d
     var matches = curVal.match(rangeRegEx);
     if (matches == null) {
       curFromRange = -1;
