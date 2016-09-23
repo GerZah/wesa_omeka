@@ -13,18 +13,19 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
     $result = array();
     $result["data"] = null; # Sanity
 
+    // error_log("http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"); die();
+
     $area = $unit = $page = $fromId = $toId = $fromRange = $toRange = -1;
-    $title = "";
+    $title = $ids = "";
     $measurements = array();
 
     if ($this->_hasParam("area")) { $area = intval($this->_getParam('area')); }
     if ($this->_hasParam("unit")) { $unit = intval($this->_getParam('unit')); }
     if ($this->_hasParam("page")) { $page = intval($this->_getParam('page')); }
-    if ($this->_hasParam("fromId")) { $fromId = intval($this->_getParam('fromId')); }
-    if ($this->_hasParam("toId")) { $toId = intval($this->_getParam('toId')); }
     if ($this->_hasParam("fromRange")) { $fromRange = doubleval($this->_getParam('fromRange')); }
     if ($this->_hasParam("toRange")) { $toRange = doubleval($this->_getParam('toRange')); }
     if ($this->_hasParam("title")) { $title = $this->_getParam('title'); }
+    if ($this->_hasParam("ids")) { $ids = $this->_getParam("ids"); }
 
     $units = MeasurementsPlugin::getSaniUnits();
     // print_r($units);
@@ -63,8 +64,33 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
                       WHERE name = 'Sandstein-Element'
                     ");
 
-        if ( ($fromId>0) and ($toId>0) and ($fromId<=$toId) ) {
-          $where[] = "item_id >= $fromId AND item_id<=$toId";
+        // ----------------- apply ID filter?
+        // ... very similar to the code in MeasurementsPlugin::transactionWeights()
+        $idFilterArr = array();
+        $idFilter = trim($ids);
+        if ($idFilter) {
+          if (preg_match_all("/\d+(?:-\d+)?/", $idFilter, $allMatches)) { // split it at commas
+            foreach($allMatches[0] as $singleMatch) {
+              preg_match("/(\d+)(?:-(\d+))?/", $singleMatch, $match); // split the single ones into 1-2 decimals each
+              $from = $match[1];
+              $to = ( isset($match[2]) ? $match[2] : $from );
+              // echo "$singleMatch: $from - $to\n";
+              if ($from>$to) { $help = $from; $from = $to; $to = $help; }
+              $idFilterArr[] = array($from, $to); // one normalized entry
+            }
+          }
+        }
+        $idFilter = ( $idFilterArr ? $idFilter : "" ); // did what we got make sense? then OK, otherwise blank it
+
+        // ----------------- create the infix to be actually filtering for IDs
+        $idFilterInfix = "";
+        if ($idFilterArr) {
+          $fromTo = array();
+          foreach($idFilterArr as $idArea) {
+            $fromTo[] = "(item_id BETWEEN " . $idArea[0] . " AND " . $idArea[1] . ")";
+          }
+          $idFilterInfix = "(" . implode(" OR " , $fromTo) .  ")";
+          $where[] = $idFilterInfix;
         }
 
         $titleAnd = "1";
@@ -82,8 +108,8 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
           }
 
           $idAnd = "";
-          if ( ($fromId>0) and ($toId>0) and ($fromId<=$toId) ) {
-            $idAnd = "AND record_id >= $fromId AND record_id<=$toId";
+          if ($idFilterInfix) {
+            $idAnd = "AND " . str_replace("item_id", "record_id", $idFilterInfix);
           }
 
           $titleElement = $db->fetchOne("

@@ -25,11 +25,10 @@ jQuery(document).ready(function () {
   // ---------------------------------------------------------------------------
 
   var curWeightFactor = 2.0;
-  var curFromId = -1;
-  var curToId = -1;
   var curFromRange = -1;
   var curToRange = -1;
   var curTitleFilter = "";
+  var curIds = "";
   var curBreakdownNumbers = false;
 
   var editTimer = null;
@@ -63,23 +62,7 @@ jQuery(document).ready(function () {
       curWeightFactor = parseFloat(prefix+"."+suffix);
     }
 
-    var idRegEx = /\s*(\d+)(?:-(\d+))?\s*/;
-    var curVal = $("#measurementsIdFilter").val();
-    var matches = curVal.match(idRegEx);
-    if (matches == null) {
-      curFromId = -1;
-      curToId = -1;
-    }
-    else {
-      curFromId = parseInt(matches[1]);
-      curToId = parseInt(matches[2]);
-      curToId = ( isNaN(curToId) ? curFromId : curToId );
-      if (curFromId > curToId) {
-        var help = curFromId;
-        curFromId = curToId;
-        curToId = help;
-      }
-    }
+    curIds = $("#measurementsIdFilter").val();
 
     var rangeRegEx = /\s*(\d+)(?:[\.|,](\d+))?-(\d+)(?:[\.|,](\d+))?\s*/;
 
@@ -116,11 +99,10 @@ jQuery(document).ready(function () {
       area: curArea,
       unit: curUnit,
       page: curPage,
-      fromId: curFromId,
-      toId: curToId,
       fromRange: curFromRange,
       toRange: curToRange,
-      title: curTitleFilter
+      title: curTitleFilter,
+      ids: curIds
     };
     // console.log(ajaxData);
 
