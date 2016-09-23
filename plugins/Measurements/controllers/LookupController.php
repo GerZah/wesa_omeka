@@ -149,7 +149,7 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
           SELF::_convertMeasurement($measurements[$idx], $targetUnit, $unitsInv, $area);
         }
 
-        // Sort ascending by the converted ["xc] value
+        // Sort decending by the converted ["xc] value
         usort($measurements, function($x,$y) {
           if ($x["xc"] == $y["xc"]) {
             if ($x["l1"] == $y["l1"]) {
@@ -157,13 +157,13 @@ class Measurements_LookupController extends Omeka_Controller_AbstractActionContr
                 if ($x["l2"] == $y["l2"]) {
                   return 0;
                 }
-                return ($x["l3"] < $y["l3"] ? -1 : 1);
+                return ($x["l3"] > $y["l3"] ? -1 : 1);
               }
-              return ($x["l2"] < $y["l2"] ? -1 : 1);
+              return ($x["l2"] > $y["l2"] ? -1 : 1);
             }
-            return ($x["l1"] < $y["l1"] ? -1 : 1);
+            return ($x["l1"] > $y["l1"] ? -1 : 1);
           }
-          return ($x["xc"] < $y["xc"] ? -1 : 1);
+          return ($x["xc"] > $y["xc"] ? -1 : 1);
         });
 
       }
