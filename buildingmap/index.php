@@ -88,6 +88,15 @@
 				// . "</p>";
 			}
 
+			$highlights = @$_GET["highlights"];
+			if (!$highlights) {
+				$highlights = array();
+			}
+			else {
+				$highlights = explode(",", $highlights);
+				// echo "<pre>" . print_r($highlights,true) . "</pre>";
+			}
+
 		?>
 		<div>
 			<svg
@@ -105,6 +114,7 @@
 						$points = implode(" ", $points);
 						$id = $polygon["id"];
 						$shortName = $polygon["shortName"];
+						$highlight = ( in_array($id, $highlights) ? "hlBlock" : "" );
 						echo
 							"<a xlink:href='#'"
 							. " class='buildingBlockLink'"
@@ -112,7 +122,7 @@
 							// . " data-name='$shortName'"
 							// . " title='$shortName'"
 							. ">"
-							. "<polygon points='$points' class='buildingBlock'>"
+							. "<polygon points='$points' class='buildingBlock $highlight'>"
 							// ."<text>$shortName</text>"
 							. "<title>$shortName</title>"
 							."</polygon>"

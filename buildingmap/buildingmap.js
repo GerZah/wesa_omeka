@@ -21,6 +21,7 @@ $(document).ready(function() {
     if (!isDragging) {
       // console.log("buildingBlockLink " + verb);
       // alert(verb);
+      $(this).find("polygon").addClass("hlBlock");
       window.open("findid.php?id="+$(this).data("id"))
     }
   });
