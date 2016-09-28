@@ -1,0 +1,15 @@
+.blueYellow {
+  stroke: blue;
+  stroke-width: 4;
+  fill: yellow;
+}
+
+#mySvg {
+  border: thin solid grey
+}
+
+.buildingBlock {
+  fill: #ccc;
+  stroke: red;
+  stroke-width: 0.05px;
+}
