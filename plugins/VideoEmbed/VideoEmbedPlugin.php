@@ -131,6 +131,7 @@ class VideoEmbedPlugin extends Omeka_Plugin_AbstractPlugin {
 
     if (SELF::$_curOptions["videoembed_remove_pseudocode"]) {
       $result = preg_replace("/$regEx/", "", $result);
+      if (trim($result)=="") { $result = "&nbsp;"; }
     }
 
     // $result .= "\n<pre>$matchCount: " . print_r($matches,true) . "</pre>\n";
