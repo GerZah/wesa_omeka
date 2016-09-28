@@ -6,9 +6,10 @@
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 		<link href="../application/views/scripts/css/jquery-ui.css" media="all" rel="stylesheet" type="text/css" >
 
-		<script type="text/javascript" src="jquery.qtip.min.js"></script>
-		<link href="./jquery.qtip.min.css" rel="stylesheet" type="text/css" >
+		<!-- <script type="text/javascript" src="jquery.qtip.min.js"></script>
+		<link href="./jquery.qtip.min.css" rel="stylesheet" type="text/css" > -->
 
+		<script src="svg-pan-zoom.min.js"></script>
 		<script type="text/javascript" src="buildingmap.js"></script>
 		<link href="./buildingmap.css" rel="stylesheet" type="text/css" >
 	</head>
@@ -16,7 +17,7 @@
 		<?php
 
 			$polygons = array(); # Sanity
-			$canvasW = 1000; $canvasH = 320; // could/should come from the SVG DOM div
+			$canvasW = "100%"; $canvasH = "450"; // could/should come from the SVG DOM div
 
 			# ------------
 
@@ -86,12 +87,13 @@
 				// . "minY: $minY / maxY: $maxY"
 				// . "</p>";
 			}
+
 		?>
 		<div>
-			<!-- width="<?php echo $canvasW; ?>"
-			height="<?php echo $canvasH; ?>" -->
 			<svg
 				id="mySvg"
+				width="<?php echo $canvasW; ?>"
+				height="<?php echo $canvasH; ?>"
 				viewbox="<?php echo "$minX $minY $maxX $maxY"; ?>"
 			>
 				<?php
@@ -107,11 +109,12 @@
 							"<a xlink:href='#'"
 							. " class='buildingBlockLink'"
 							. " data-id='$id'"
-							. " data-name='$shortName'"
-							. " title='$shortName'"
+							// . " data-name='$shortName'"
+							// . " title='$shortName'"
 							. ">"
 							. "<polygon points='$points' class='buildingBlock'>"
 							// ."<text>$shortName</text>"
+							. "<title>$shortName</title>"
 							."</polygon>"
 							."</a>"
 						;

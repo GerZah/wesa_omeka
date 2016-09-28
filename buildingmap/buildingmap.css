@@ -5,7 +5,8 @@
 }
 
 #mySvg {
-  border: thin solid grey
+  border: 2px solid #8cc;
+  background-color: #eff;
 }
 
 .buildingBlock {
