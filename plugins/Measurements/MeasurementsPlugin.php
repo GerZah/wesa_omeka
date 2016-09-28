@@ -87,7 +87,49 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
       }
     }
 
+    // Add ID filter to all (!) elements -- except those that are already filtered
+    $idFilterInfix = "";
+    if ($measurementElements) {
+      $measurementElementsVerb = implode(",", $measurementElements);
+      $idFilterInfix = "WHERE el.id NOT IN ($measurementElementsVerb)";
+    }
+    $sql = "
+      SELECT es.name AS el_set, el.name AS el_name
+      FROM `$db->Elements` el
+      LEFT JOIN `$db->ElementSets` es ON el.element_set_id = es.id
+      $idFilterInfix
+    ";
+    $elements = $db->fetchAll($sql);
+    foreach($elements as $element) {
+        add_filter(
+            array("Display", 'Item', $element["el_set"], $element["el_name"]),
+            array($this, "filterDisplayID")
+        );
+    }
+
 	}
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  /**
+  * content filter, checking for "RhAMS" IDs via RegEx and linking over to the SVG building map
+  */
+  public function filterDisplayID($text, $args) {
+    $regEx = "ID1608011245_\d+"; // RhAMS building blocks
+
+    if (preg_match_all("/$regEx/", $text, $allMatches)) {
+      foreach($allMatches as $match) {
+        $url = public_url("/buildingmap/rhams.php?highlights=".$match[0]);
+        $text = str_replace(
+          $match[0],
+          "<a href='$url' target='_blank'>[" . $match[0] . "]</a>",
+          $text
+        );
+      }
+    }
+
+    return $text;
+  }
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
