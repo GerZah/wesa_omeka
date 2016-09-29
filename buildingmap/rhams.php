@@ -122,7 +122,7 @@
 							// . " data-name='$shortName'"
 							// . " title='$shortName'"
 							. ">"
-							. "<polygon points='$points' class='buildingBlock $highlight'>"
+							. "<polygon points='$points' class='buildingBlock $highlight' id='$id'>"
 							// ."<text>$shortName</text>"
 							. "<title>$shortName</title>"
 							."</polygon>"

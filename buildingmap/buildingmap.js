@@ -26,6 +26,22 @@ $(document).ready(function() {
     }
   });
 
+  $(window).resize(function(){
+    zoomBuilding.resize();
+    zoomBuilding.fit();
+    zoomBuilding.center();
+  })
+
+  // setTimeout(function() {
+  //   $(".hlBlock").each(function( index ) {
+  //     console.log( index + ": " + $( this ).text() + " / " + $( this, "polygon" ).attr("id") );
+  //   });
+  //   zoomBuilding.zoom(10);
+  //   zoomBuilding.pan({x:-100, y:-100});
+  // }, 1000);
+
+  // --------------
+
   // $('a.buildingBlockLink[title]').qtip({
   //   position: {
   //     my: 'top left',

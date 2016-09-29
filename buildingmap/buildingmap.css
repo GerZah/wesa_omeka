@@ -1,18 +1,12 @@
-.blueYellow {
-  stroke: blue;
-  stroke-width: 4;
-  fill: yellow;
-}
-
 #mySvg {
-  border: 2px solid #8cc;
-  background-color: #eff;
+  border: 2px solid #80cccc;
+  background-color: #f0ffff;
 }
 
 .buildingBlock {
-  fill: #ccc;
+  fill: #ecc;
   stroke: red;
   stroke-width: 0.05px;
 }
 
-.hlBlock { fill: #ffc; }
+.hlBlock { fill: #ffff80; }
