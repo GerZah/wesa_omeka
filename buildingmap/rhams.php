@@ -1,19 +1,18 @@
 <html>
 	<head>
-		<title>Building Map</title>
+		<title>Rathaus Amsterdam</title>
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 		<link href="../application/views/scripts/css/jquery-ui.css" media="all" rel="stylesheet" type="text/css" >
 
-		<!-- <script type="text/javascript" src="jquery.qtip.min.js"></script>
-		<link href="./jquery.qtip.min.css" rel="stylesheet" type="text/css" > -->
-
 		<script src="svg-pan-zoom.min.js"></script>
 		<script type="text/javascript" src="buildingmap.js"></script>
-		<link href="./buildingmap.css" rel="stylesheet" type="text/css" >
+		<link href="reset.css" media="all" rel="stylesheet" type="text/css" >
+		<link href="buildingmap.css" rel="stylesheet" type="text/css" >
 	</head>
 	<body>
+		<h2>Rathaus Amsterdam</h2>
 		<?php
 
 			$polygons = array(); # Sanity
@@ -31,20 +30,12 @@
 
 				$headers=array_flip(array_shift($csv));
 
-				// echo "<pre>" . print_r($headers,true) . "</pre>";
-				// echo "<pre>" . print_r($csv,true) . "</pre>";
-
 				$minX = false; $maxX = false;
 				$minY = false; $maxY = false;
 
 				$polygons = array();
-				$cancelCnt = -1;
-				// $cancelCnt = 100;
 
 				foreach($csv as $element) {
-
-					if (!$cancelCnt--) { break; }
-
 					$polygon = array(
 						"id" => $element[ $headers["ID"] ],
 						"shortName" => $element[ $headers["ShortName"] ],
@@ -64,9 +55,6 @@
 						if ($maxY === false) { $maxY = $y ;} else { if ($y > $maxY) { $maxY = $y; } }
 
 					}
-					// echo json_encode($polygon)."<br>";
-					// echo "<pre>" . count($polygon["coords"]) . " - " . print_r($polygon,true) . "</pre>";
-					// echo $polygon["shortName"] . ": " . $polygon["id"] . " / " . count($polygon["coords"]) . "<br>";
 					$polygons[] = $polygon;
 				}
 
@@ -80,12 +68,6 @@
 				$maxX = $maxX - $minX; $minX = 0;
 				$maxY = $maxY - $minY; $minY = 0;
 
-				// ---------------------
-
-				// echo "<p>"
-				// . "minX: $minX / maxX: $maxX <br>"
-				// . "minY: $minY / maxY: $maxY"
-				// . "</p>";
 			}
 
 			$highlights = @$_GET["highlights"];
@@ -118,12 +100,8 @@
 						echo
 							"<a xlink:href='#'"
 							. " class='buildingBlockLink'"
-							. " data-id='$id'"
-							// . " data-name='$shortName'"
-							// . " title='$shortName'"
 							. ">"
 							. "<polygon points='$points' class='buildingBlock $highlight' id='$id'>"
-							// ."<text>$shortName</text>"
 							. "<title>$shortName</title>"
 							."</polygon>"
 							."</a>"

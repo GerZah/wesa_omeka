@@ -1,3 +1,21 @@
+body {
+  margin: 1em;
+  font-family: Verdana, Arial, sans-serif;
+  font-size:10pt;
+  background-color: white;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: bold;
+  margin: 1em 0;
+}
+
+h1 { font-size: 130%; }
+h2 { font-size: 125%; }
+h3 { font-size: 120%; }
+h4 { font-size: 115%; }
+h5 { font-size: 110%; }
+
 #mySvg {
   border: 2px solid #80cccc;
   background-color: #f0ffff;

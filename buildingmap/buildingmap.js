@@ -15,14 +15,11 @@ $(document).ready(function() {
   .mousedown(function(){ isDragging=false; })
   .mousemove(function(){ isDragging=true; })
   .click(function(e){
-    // console.log("isDragging: " + isDragging);
     event.preventDefault();
-    var verb = $(this).data("id"); // + ": " + $(this).data("name");
+    var verb = $(this).find("polygon").attr("id");
     if (!isDragging) {
-      // console.log("buildingBlockLink " + verb);
-      // alert(verb);
       $(this).find("polygon").addClass("hlBlock");
-      window.open("findid.php?id="+$(this).data("id"))
+      window.open("findid.php?id="+verb);
     }
   });
 
@@ -33,67 +30,39 @@ $(document).ready(function() {
   })
 
   setTimeout(function() {
+    // inspired by http://stackoverflow.com/a/39788577/5394093
+
+    var minX = false;
+    var maxX = false;
+    var minY = false;
+    var maxY = false;
+
     $(".hlBlock").each(function( index ) {
-      // console.log( index + ": " + $( this ).text() + " / " + $( this, "polygon" ).attr("id") );
-      // http://stackoverflow.com/a/39788577/5394093
-      var poly = document.getElementById($( this, "polygon" ).attr("id"));
+      var poly = document.getElementById( $(this).attr("id") );
       var bbox = poly.getBBox();
-      var center = {
-        x: bbox.x + bbox.width/2,
-        y: bbox.y + bbox.height/2
-      };
-      // console.log(bbox,center);
-      zoomBuilding.pan({x:0,y:0});
-      var realZoom= zoomBuilding.getSizes().realZoom;
-      zoomBuilding.pan({
-        x: -(center.x*realZoom)+(zoomBuilding.getSizes().width/2),
-        y: -(center.y*realZoom)+(zoomBuilding.getSizes().height/2)
-      });
-      zoomBuilding.zoom(5);
+      minX = ( minX == false ? bbox.x : Math.min(minX, bbox.x) );
+      minY = ( minY == false ? bbox.y : Math.min(minY, bbox.y) );
+      maxX = ( maxX == false ? bbox.x+bbox.width : Math.max(maxX, bbox.x+bbox.width) );
+      maxY = ( maxY == false ? bbox.y+bbox.height : Math.max(maxY, bbox.y+bbox.height) );
     });
+
+    if (minX != false) { // all others, too
+      var xDiff = maxX-minX;
+      var yDiff = maxY-minY;
+      var centerX = minX + xDiff/2;
+      var centerY = minY + yDiff/2;
+
+      zoomBuilding.pan({x:0,y:0});
+      var sizes = zoomBuilding.getSizes();
+      zoomBuilding.pan({
+        x: -(centerX*sizes.realZoom)+(sizes.width/2),
+        y: -(centerY*sizes.realZoom)+(sizes.height/2)
+      });
+
+      var viewBox = sizes.viewBox
+        , newScale = Math.min(viewBox.width/xDiff, viewBox.height/yDiff);
+      zoomBuilding.zoom(newScale);
+    }
   }, 1000);
-
-  // setTimeout(function() {
-  //   zoomBuilding.zoom(1);
-  //   zoomBuilding.pan({x:-100, y:-100});
-  // }, 1000);
-  //
-  // setTimeout(function() {
-  //   zoomBuilding.zoom(2);
-  //   zoomBuilding.pan({x:-100, y:-100});
-  // }, 2000);
-  //
-  // setTimeout(function() {
-  //   zoomBuilding.zoom(3);
-  //   zoomBuilding.pan({x:-100, y:-100});
-  // }, 3000);
-
-  // --------------
-
-  // $('a.buildingBlockLink[title]').qtip({
-  //   position: {
-  //     my: 'top left',
-  //     at: 'bottomleft',
-  //     target: 'mouse',
-  //     adjust: { mouse: false },
-  //   },
-  //   show: 'click',
-  //   hide: 'click'
-  // });
-
-  // $('a.buildingBlockLink[title]').qtip({
-  //   show: 'click',
-  //   hide: 'click'
-  // });
-
-  // $('.buildingBlock').qtip({
-  //   content: {
-  //       text: 'Support for SVG with no extra configuration! Awesome.'
-  //   },
-  //   position: {
-  //       my: 'top left',
-  //       at: 'bottom right'
-  //   }
-  // });
 
 });

@@ -1,1 +1,1 @@
-RewriteRule ^(_import/.*)$ $1 [L]
+RewriteRule ^(buildingmap/.*)$ $1 [L]
