@@ -32,13 +32,41 @@ $(document).ready(function() {
     zoomBuilding.center();
   })
 
+  setTimeout(function() {
+    $(".hlBlock").each(function( index ) {
+      // console.log( index + ": " + $( this ).text() + " / " + $( this, "polygon" ).attr("id") );
+      // http://stackoverflow.com/a/39788577/5394093
+      var poly = document.getElementById($( this, "polygon" ).attr("id"));
+      var bbox = poly.getBBox();
+      var center = {
+        x: bbox.x + bbox.width/2,
+        y: bbox.y + bbox.height/2
+      };
+      // console.log(bbox,center);
+      zoomBuilding.pan({x:0,y:0});
+      var realZoom= zoomBuilding.getSizes().realZoom;
+      zoomBuilding.pan({
+        x: -(center.x*realZoom)+(zoomBuilding.getSizes().width/2),
+        y: -(center.y*realZoom)+(zoomBuilding.getSizes().height/2)
+      });
+      zoomBuilding.zoom(5);
+    });
+  }, 1000);
+
   // setTimeout(function() {
-  //   $(".hlBlock").each(function( index ) {
-  //     console.log( index + ": " + $( this ).text() + " / " + $( this, "polygon" ).attr("id") );
-  //   });
-  //   zoomBuilding.zoom(10);
+  //   zoomBuilding.zoom(1);
   //   zoomBuilding.pan({x:-100, y:-100});
   // }, 1000);
+  //
+  // setTimeout(function() {
+  //   zoomBuilding.zoom(2);
+  //   zoomBuilding.pan({x:-100, y:-100});
+  // }, 2000);
+  //
+  // setTimeout(function() {
+  //   zoomBuilding.zoom(3);
+  //   zoomBuilding.pan({x:-100, y:-100});
+  // }, 3000);
 
   // --------------
 
