@@ -3,8 +3,6 @@ queue_js_file('items');
 queue_js_file('tabs');
 queue_css_file('reassignfiles');
 echo head(array('title' => __('Reassign Files to Item'), 'bodyclass' => 'reassignfiles'));
-$numLatest = ( isset($_GET["numlatest"]) ? intval($_GET["numlatest"]) : 50 );
-$numLatest = ( $numLatest < 50 ? 50 : $numLatest );
 ?>
 <?php echo flash(); ?>
 <div class="drawer-contents">
@@ -15,35 +13,17 @@ $numLatest = ( $numLatest < 50 ? 50 : $numLatest );
         <p><?php echo __("Please select an existing item to reassign files to."); ?></p>
         <p>
         <?php
-          $extension = 50;
-          $newUrl = $_SERVER['REDIRECT_URL'] . "?numlatest=" . ($numLatest + $extension);
           echo
             sprintf(__("<em>Please note:</em> Currently displaying %d latest modified items."), $numLatest)
-            . " <a href='$newUrl'>"
-            . "[" . sprintf(__("Click here to display %d more."), $extension) . "]"
+            . " <a href='$extendedUrl'>"
+            . "[" . sprintf(__("Click here to display %d more."), $numExtension) . "]"
             . "</a>"
           ;
         ?>
         </p>
       </div>
       <div class="inputs three columns omega">
-        <?php
-          $itemNames = array();
-          $sqlDb = get_db();
-          $item = array(-1 => __('Select Below'));
-          $query = "
-            SELECT id
-            FROM `$sqlDb->Items`
-            ORDER BY modified DESC
-            LIMIT $numLatest
-          ";
-          $itemIds = $sqlDb->fetchAll($query);
-          foreach ($itemIds as $itemId) {
-            $curItem = get_record_by_id('Item', $itemId["id"]);
-            $item[$itemId["id"]] = metadata($curItem, array('Dublin Core', 'Title')) . " [#".$itemId["id"]."]";
-          }
-          echo $this->formSelect('reassignFilesItem', $item, array('multiple' => false), $item);
-        ?>
+        <?php echo $this->formSelect('reassignFilesItem', false, array('multiple' => false), $itemSelect); ?>
       </div>
       <div>
       </div>
