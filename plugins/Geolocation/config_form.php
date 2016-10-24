@@ -180,17 +180,32 @@
     </div>
     <div class="inputs five columns omega">
         <p class="explanation">
-        	<?php echo __('You may define one or more image overlays that can be superimposed on top of the Google Maps map. '.
-        	              'By this you can use e.g. a historical map for geolocation. The used map will be stored and will '.
-        	              'also be superimposed later during map presentation.<br>'.
-        	              '<strong>Please note:</strong> Please use the following form, one per line:<br>'.
-        	              '<em>idx#;identifier;imgURL;LATnorth;LATsouth;LNGeast;LNGwest</em><br>For example:<br>'.
-        	              '<input style="width:100%;" readonly disabled id="geolocation_example"'.
-        	              'value="1;Talkeetna;https://developers.google.com/maps/documentation/javascript/examples/full/images/talkeetna.png;'.
-        	              '62.400471;62.281819;-150.005608;-150.287132">'); ?>
+        	<?php
+            echo __(
+              'You may define one or more image overlays that can be superimposed on top of the Google Maps map. '
+              . 'By this you can use e.g. a historical map for geolocation. The used map will be stored and will '
+              . 'also be superimposed later during map presentation.<br>'
+              . '<strong>Please note:</strong> Please use the following form, one per line:<br>'
+              . '<em>idx#;identifier;imgURL;LATnorth;LATsouth;LNGeast;LNGwest</em><br>For example:<br>'
+              . '<input style="width:100%;" readonly disabled id="geolocation_example"'
+              . 'value="1;Talkeetna;https://developers.google.com/maps/documentation/javascript/examples/full/images/talkeetna.png;'
+              . '62.400471;62.281819;-150.005608;-150.287132">'
+            );
+          ?>
         </p>
 
         <?php echo get_view()->formTextarea('geolocation_map_overlays', $geolocationMapOverlays, array( "rows" => 8 ) ); ?>
+
+        <p>
+          <?php
+            echo __(
+              'If you wish, you may append a group title, like this:<br>'
+              . '<em>idx#;identifier;imgURL;LATn;LATs;LNGe;LNGw;grouptitle</em><br>'
+              . 'Overlays with the same group title will be grouped in the overlay select box '
+              . 'for improved overview.'
+            );
+          ?>
+        </p>
 
     </div>
 </div>

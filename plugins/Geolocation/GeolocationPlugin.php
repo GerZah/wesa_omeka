@@ -764,7 +764,7 @@ SQL
 
   		foreach($mapOverlays as $mapOverlay) {
 
-  			$idx = $identifier = $imgUrl = $latNorth = $latSouth = $lngEast = $lngWest = false;
+  			$idx = $identifier = $imgUrl = $latNorth = $latSouth = $lngEast = $lngWest = $groupTitle = false;
 
   			foreach( array_keys($mapOverlay) as $key ) { $mapOverlay[$key] = trim( $mapOverlay[$key] ); }
 
@@ -785,6 +785,7 @@ SQL
   			if ( ( isset($mapOverlay[6]) ) and ( preg_match( "($regExLatLng)", trim($mapOverlay[6]) ) ) ) { // 7th element: western longitude
   				$lngWest = trim($mapOverlay[6]);
   			} else { break; }
+  			if ( isset($mapOverlay[7]) ) { $groupTitle = trim($mapOverlay[7]); }
 
   			if ( (floatval($latNorth) <= floatval($latSouth)) or (floatval($lngWest) >= floatval($lngEast)) ) { break; }
 
@@ -800,6 +801,7 @@ SQL
   															"latSouth" => $latSouth,
   															"lngEast" => $lngEast,
   															"lngWest" => $lngWest,
+  															"groupTitle" => $groupTitle,
   														);
 
   		}
@@ -809,12 +811,17 @@ SQL
   			$result = array( "fulldata" => $result, "jsSelect" => array( -1 => __("Select Below") ), "jsData" => json_encode($result) );
 
   			foreach($result["fulldata"] as $idx => $overlay) {
-  				$result["jsSelect"][$idx] = $overlay["identifier"];
+  				$groupTitle = ( $overlay["groupTitle"] ? $overlay["groupTitle"] : __("[n/a]") );
+  				if (!isset($result["jsSelect"][$groupTitle])) {
+  					$result["jsSelect"][$groupTitle] = array();
+  				}
+  				$result["jsSelect"][$groupTitle][$idx] = $overlay["identifier"];
   			}
 
   		}
 
-  		# echo("<pre>" . print_r($result,true) . "</pre>");
+  		// echo "<pre>" . print_r($result["jsSelect"],true) . "</pre>"; die();
+  		// echo "<pre>" . print_r($result,true) . "</pre>"; die();
 
   		return $result;
   	}
