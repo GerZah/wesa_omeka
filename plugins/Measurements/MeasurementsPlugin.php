@@ -111,22 +111,29 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  private function _linkURL(&$text, $allMatches, $phpFileName) {
+    foreach($allMatches as $match) {
+      $url = public_url("/buildingmap/$phpFileName.php?highlights=".$match[0]);
+      $text = str_replace(
+        $match[0],
+        "<a href='$url' target='_blank'>[" . $match[0] . "]</a>",
+        $text
+      );
+    }
+  }
+
   /**
   * content filter, checking for "RhAMS" IDs via RegEx and linking over to the SVG building map
   */
   public function filterDisplayID($text, $args) {
     $regEx = "ID1608011245_\d+"; // RhAMS building blocks
+    if (preg_match_all("/$regEx/", $text, $allMatches)) { SELF::_linkUrl($text, $allMatches, "rhams"); }
 
-    if (preg_match_all("/$regEx/", $text, $allMatches)) {
-      foreach($allMatches as $match) {
-        $url = public_url("/buildingmap/rhams.php?highlights=".$match[0]);
-        $text = str_replace(
-          $match[0],
-          "<a href='$url' target='_blank'>[" . $match[0] . "]</a>",
-          $text
-        );
-      }
-    }
+    $regEx = "THL_FAS_ID\d+_\d+"; // Leiden Facade building blocks
+    if (preg_match_all("/$regEx/", $text, $allMatches)) { SELF::_linkUrl($text, $allMatches, "leidenfassade"); }
+
+    $regEx = "THL_TR_ID\d+_\d+"; // Leiden Stairs building blocks
+    if (preg_match_all("/$regEx/", $text, $allMatches)) { SELF::_linkUrl($text, $allMatches, "leidentreppe"); }
 
     return $text;
   }
