@@ -113,7 +113,7 @@
     return ($a_ < $b_) ? -1 : 1;
 	});
 
-	// $csv = array_slice($csv, 0, 100); # +#+#+# DEBUG
+	$csv = array_slice($csv, 0, 100); # +#+#+# DEBUG
 	// print_r($csv);
 
 	$alreadyCreated = array();
@@ -222,9 +222,9 @@
 				$unit = "m-cm-mm"; // fixed for all entries
 				$num = 1; // fixed -- one of each
 
-				$l1 = floatval(str_replace(",", ".", $line[$headers["Length"]]));
-				$l2 = floatval(str_replace(",", ".", $line[$headers["Height"]]));
-				$l3 = floatval(str_replace(",", ".", $line[$headers["Depth"]]));
+				$l1 = floatval(str_replace(",", ".", $line[$headers["Length"]])) / 100;
+				$l2 = floatval(str_replace(",", ".", $line[$headers["Height"]])) / 100;
+				$l3 = floatval(str_replace(",", ".", $line[$headers["Depth"]])) / 100;
 
 				foreach(array("l1", "l2", "l3") as $var) {
 					$tupel = array(0,0,0,0);

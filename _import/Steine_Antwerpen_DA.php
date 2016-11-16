@@ -113,7 +113,7 @@
     return ($a_ < $b_) ? -1 : 1;
 	});
 
-	// $csv = array_slice($csv, 0, 100); # +#+#+# DEBUG
+	$csv = array_slice($csv, 0, 100); # +#+#+# DEBUG
 	// print_r($csv);
 
 	$alreadyCreated = array();

@@ -113,7 +113,7 @@
     return ($a_ < $b_) ? -1 : 1;
 	});
 
-	// $csv = array_slice($csv, 0, 100); # +#+#+# DEBUG
+	$csv = array_slice($csv, 0, 100); # +#+#+# DEBUG
 	// print_r($csv);
 
 	$alreadyCreated = array();
@@ -169,7 +169,7 @@
 
 		$shortName = $line[$headers["ShortName"]];
 
-		if ($shortName == "Schuetting") {
+		if ($shortName == "BrGe") {
 			# Step 0: Don't import "Schuetting", but calculate its item ID -- which is #????
 			$sql = "
 				SELECT record_id FROM `$db->ElementTexts`
