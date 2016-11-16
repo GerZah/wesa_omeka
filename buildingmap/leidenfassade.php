@@ -1,5 +1,7 @@
-<html>
+<!DOCTYPE html>
+<html lang="de-DE">
 	<head>
+		<meta charset="utf-8">
 		<title>Rathaus Leiden - Fassade</title>
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 

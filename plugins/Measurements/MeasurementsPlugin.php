@@ -135,6 +135,9 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $regEx = "THL_TR_ID\d+_\d+"; // Leiden Stairs building blocks
     if (preg_match_all("/$regEx/", $text, $allMatches)) { SELF::_linkUrl($text, $allMatches, "leidentreppe"); }
 
+    $regEx = "SchB_ID\d+_\d+"; // Bremen Schüttinbg building blocks
+    if (preg_match_all("/$regEx/", $text, $allMatches)) { SELF::_linkUrl($text, $allMatches, "bremenschuetting"); }
+
     return $text;
   }
 
