@@ -264,8 +264,8 @@
 				$measurements["vd"] = array($l1 * $l2 * $l3, 0, 0, 0);
 
 				foreach(array("f1d" => 2, "f2d" => 2, "f3d" => 2, "vd" => 3) as $comp => $exp) {
-					$fact3 = pow(2, $exp);
-					$fact2 = pow(12, $exp);
+					$fact3 = pow(100, $exp);
+					$fact2 = pow(10, $exp);
 					$fact23 = $fact2*$fact3;
 					$curr = $measurements[$comp][0];
 					$measurements[$comp][1] = intval($curr / $fact23);
