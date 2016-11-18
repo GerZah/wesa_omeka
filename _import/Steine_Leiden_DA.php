@@ -90,7 +90,7 @@
 	// -----------------------------------------------
 
 	$csv=array();
-	$file = fopen('leiden_omeka_20161115.csv', 'r');
+	$file = fopen('leiden_omeka_20161117.csv', 'r');
 	if (!$file) { die("File error."); }
 	while (($line = fgetcsv($file, 0, ",")) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
@@ -112,7 +112,7 @@
     return ($a_ < $b_) ? -1 : 1;
 	});
 
-	$csv = array_slice($csv, 0, 100); # +#+#+# DEBUG
+	// $csv = array_slice($csv, 0, 100); # +#+#+# DEBUG
 	// print_r($csv);
 
 	$alreadyCreated = array();
@@ -187,8 +187,8 @@
 			# Step 1: Construct title (array) from ShortName, LongName, and Name
 			$titles = array(
 				array('text' => $shortName, 'html' => false),
-				// array('text' => $line[$headers["Longname"]], 'html' => false),
-				// array('text' => $line[$headers["Name"]], 'html' => false),
+				array('text' => $line[$headers["Longname"]], 'html' => false),
+				array('text' => $line[$headers["Name"]], 'html' => false),
 			);
 			// print_r($titles);
 
@@ -200,7 +200,10 @@
 			$anmerkungen = $line[ $headers["ID"] ];
 
 			$itemTypeMetaData = array(
-				"Anmerkungen" => array( array('text' => $anmerkungen, 'html' => false) )
+				"Anmerkungen" => array(
+					array('text' => $line[ $headers["Annotation"] ], 'html' => false),
+					array('text' => $anmerkungen, 'html' => false)
+				)
 			);
 
 			echo "------- $anmerkungen - ".$importItemType["name"].": $shortName\n";
