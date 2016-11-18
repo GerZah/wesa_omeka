@@ -24,7 +24,7 @@
 
 			$csv=array();
 
-			$file = fopen('BremenSchuetting-edited.csv', 'r');
+			$file = fopen('BremenSchuetting.csv', 'r');
 			while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 			fclose($file);
 

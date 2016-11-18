@@ -90,7 +90,7 @@
 	// -----------------------------------------------
 
 	$csv=array();
-	$file = fopen('Bremen_Schuetting_omeka_20161106.csv', 'r');
+	$file = fopen('Bremen_Schuetting_omeka_20161117.csv', 'r');
 	if (!$file) { die("File error."); }
 	while (($line = fgetcsv($file, 0, ",")) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
@@ -98,7 +98,7 @@
 
 	$headers=array_flip($csv[0]); // Store Headers array for later use ...
 	unset($csv[0]); // ... but remove them from the array
-	$headers["Depth"] = 9999; // Q&D fix to compensate for the missing "Depth" column
+	// $headers["Depth"] = 9999; // Q&D fix to compensate for the missing "Depth" column
 	print_r($headers);
 
 	usort($csv, function ($a, $b) {
@@ -113,7 +113,7 @@
     return ($a_ < $b_) ? -1 : 1;
 	});
 
-	$csv = array_slice($csv, 0, 100); # +#+#+# DEBUG
+	// $csv = array_slice($csv, 0, 100); # +#+#+# DEBUG
 	// print_r($csv);
 
 	$alreadyCreated = array();
@@ -188,7 +188,7 @@
 			# Step 1: Construct title (array) from ShortName, LongName, and Name
 			$titles = array(
 				array('text' => $shortName, 'html' => false),
-				array('text' => $line[$headers["LongName"]], 'html' => false),
+				array('text' => $line[$headers["Longname"]], 'html' => false),
 				array('text' => $line[$headers["Name"]], 'html' => false),
 			);
 			// print_r($titles);
