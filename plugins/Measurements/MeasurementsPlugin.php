@@ -126,7 +126,7 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
   * content filter, checking for "RhAMS" IDs via RegEx and linking over to the SVG building map
   */
   public function filterDisplayID($text, $args) {
-    $regEx = "ID1608011245_\d+"; // RhAMS building blocks
+    $regEx = "ID1608011\d+_\d+"; // RhAMS building blocks
     if (preg_match_all("/$regEx/", $text, $allMatches)) { SELF::_linkUrl($text, $allMatches, "rhams"); }
 
     $regEx = "THL_FAS_ID\d+_\d+"; // Leiden Facade building blocks
