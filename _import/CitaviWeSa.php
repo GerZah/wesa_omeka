@@ -3,7 +3,7 @@
 	header('Content-type: text/plain; charset=utf-8');
 	// -----------------------------------------------
 
-	define("importItemType", "Literatur");
+	define("importItemType", "Literatur / Online-Referenz");
 
 	// -----------------------------------------------
 
@@ -34,7 +34,7 @@
 
 	$csv=array();
 
-	$file = fopen('CitaviWeSa_3.csv', 'r');
+	$file = fopen('CitaviWeSa_4.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
@@ -64,6 +64,9 @@
 			$titel = $line[$headers["Titel"]];
 			$untertitel = $line[$headers["Untertitel"]];
 			$jahr = $line[$headers["Jahr ermittelt"]];
+			$url = trim($line[$headers["URL"]]);
+
+			$litTyp = ( $url ? "Online-Referenz" : "Gedruckte Ausgabe" );
 
 			$kurztitel = shortenString($autor, 20)." / " . $jahr . " (" . shortenString("$titel - $untertitel", 30) . ")";
 
@@ -85,6 +88,8 @@
   				'Band' => array( array('text' => $line[$headers["Band"]], 'html' => false) ),
   				'Nummer' => array( array('text' => $line[$headers["Nummer"]], 'html' => false) ),
   				'Seiten von-bis' => array( array('text' => $line[$headers["Seiten von–bis"]], 'html' => false) ),
+					'Literaturtyp' => array( array('text' => $litTyp, 'html' => false) ),
+					'Online-Referenz' => array( array('text' => $url, 'html' => false) ),
 				)
 			);
 			print_r($elementTexts);
