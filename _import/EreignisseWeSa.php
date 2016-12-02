@@ -37,7 +37,7 @@
 
 	$csv=array();
 
-	$file = fopen('EreignisseWeSa.csv', 'r');
+	$file = fopen('EreignisseWesa.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
