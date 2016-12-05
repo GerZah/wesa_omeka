@@ -27,4 +27,10 @@ h5 { font-size: 110%; }
   stroke-width: 0.05px;
 }
 
+.backgroundBlock {
+  fill: #ffe;
+  stroke: blue;
+  stroke-width: 0.01px;
+}
+
 .hlBlock { fill: #ffff80; }

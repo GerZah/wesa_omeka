@@ -2,7 +2,7 @@
 <html lang="de-DE">
 	<head>
 		<meta charset="utf-8">
-		<title>Rathaus Amsterdam</title>
+		<title>Rathaus Antwerpen</title>
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
@@ -14,7 +14,7 @@
 		<link href="buildingmap.css" rel="stylesheet" type="text/css" >
 	</head>
 	<body>
-		<h2>Rathaus Amsterdam</h2>
+		<h2>Rathaus Antwerpen</h2>
 		<?php
 
 			$polygons = array(); # Sanity
@@ -22,15 +22,37 @@
 
 			# ------------
 
-			$csv=array();
+			$csv = array();
+			$headers = array_flip(array( "ID", "Hierarchy", "Object", "ShortName", "Link" ));
+			$backgroundPolygons = 0;
 
-			$file = fopen('RhAMS.csv', 'r');
-			while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
+			// First load the background polygons
+			$file = fopen('antwerpen_html_background.csv', 'r');
+			$firstLine = true;
+			while (($line = fgetcsv($file)) !== FALSE) {
+				if ($line) {
+					if ($firstLine) { $firstLine = false; }
+					else {
+						array_splice( $line, 2, 0, array( false, false, false ) );
+						$csv[] = $line;
+					}
+				}
+			}
+			fclose($file);
+			$backgroundPolygons = count($csv);
+
+			// Now load the regular stone polygons
+			$file = fopen('BremenSchuetting.csv', 'r');
+			$firstLine = true;
+			while (($line = fgetcsv($file)) !== FALSE) {
+				if ($line) {
+					if ($firstLine) { $firstLine = false; }
+					else { $csv[]=$line; }
+				}
+			}
 			fclose($file);
 
 			if ($csv) {
-
-				$headers=array_flip(array_shift($csv));
 
 				$minX = false; $maxX = false;
 				$minY = false; $maxY = false;
@@ -90,7 +112,7 @@
 				viewbox="<?php echo "$minX $minY $maxX $maxY"; ?>"
 			>
 				<?php
-					foreach($polygons as $polygon) {
+					foreach($polygons as $cnt => $polygon) {
 						$points = array();
 						foreach($polygon["coords"] as $coord) {
 							$points[] = implode(",", $coord);
@@ -99,15 +121,18 @@
 						$id = $polygon["id"];
 						$shortName = $polygon["shortName"];
 						$highlight = ( in_array($id, $highlights) ? "hlBlock" : "" );
+
+						$clickable = ($cnt >= $backgroundPolygons);
+						$class = ( $clickable ? "buildingBlock" : "backgroundBlock" );
+
 						echo
-							"<a xlink:href='#'"
-							. " class='buildingBlockLink'"
-							. ">"
-							. "<polygon points='$points' class='buildingBlock $highlight' id='$id'>"
-							. "<title>$shortName</title>"
-							."</polygon>"
-							."</a>"
+							($clickable ? "<a xlink:href='#' class='buildingBlockLink'>" : "" )
+							. "<polygon points='$points' class='$class $highlight' id='$id'>"
+							.  "<title>$shortName</title>"
+							. "</polygon>"
+							. ($clickable ? "</a>" : "" )
 						;
+
 					}
 				?>
 			</svg>

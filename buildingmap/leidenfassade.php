@@ -63,7 +63,7 @@
 				foreach(array_keys($polygons) as $idx) {
 					foreach(array_keys($polygons[$idx]["coords"]) as $cidx) {
 						$polygons[$idx]["coords"][$cidx]["x"] = $polygons[$idx]["coords"][$cidx]["x"] - $minX;
-						$polygons[$idx]["coords"][$cidx]["y"] = $maxY + $minY - $polygons[$idx]["coords"][$cidx]["y"];
+						$polygons[$idx]["coords"][$cidx]["y"] = $maxY - $polygons[$idx]["coords"][$cidx]["y"];
 					}
 				}
 
