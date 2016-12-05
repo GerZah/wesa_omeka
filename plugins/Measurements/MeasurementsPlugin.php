@@ -138,6 +138,9 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $regEx = "SchB_ID\d+_\d+"; // Bremen Schüttinbg building blocks
     if (preg_match_all("/$regEx/", $text, $allMatches)) { SELF::_linkUrl($text, $allMatches, "bremenschuetting"); }
 
+    $regEx = "THAnt_ID\d+_\d+"; // RhAnt building blocks
+    if (preg_match_all("/$regEx/", $text, $allMatches)) { SELF::_linkUrl($text, $allMatches, "antwerpen"); }
+
     return $text;
   }
 

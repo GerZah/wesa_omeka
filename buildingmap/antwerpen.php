@@ -42,7 +42,7 @@
 			$backgroundPolygons = count($csv);
 
 			// Now load the regular stone polygons
-			$file = fopen('BremenSchuetting.csv', 'r');
+			$file = fopen('RhAnt.csv', 'r');
 			$firstLine = true;
 			while (($line = fgetcsv($file)) !== FALSE) {
 				if ($line) {
