@@ -4,16 +4,14 @@
 	// -----------------------------------------------
 
 	define("importItemType", "Quelle");
-	define("importBelongsRelationTitle", "gehört zu");
+	define("importMentionedRelationTitle", "wird erwähnt in Quelle");
 
 	// -----------------------------------------------
 	// Useful IDs to link to
 	// -----------------------------------------------
 
 	$linkTargets = array(
-		"Rathaus Antwerpen" => "(ID #10402)",
-		"Hameln" => "(ID #1298)",
-		"Bückeburg" => "(ID #747)",
+		"Bremer Börse" => "(ID #11771)",
 	);
 
 	// -----------------------------------------------
@@ -48,7 +46,7 @@
 
 	$csv=array();
 
-	$file = fopen('ChronologieWeSa3.csv', 'r');
+	$file = fopen('ChronologieWeSa4.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
@@ -59,7 +57,7 @@
 	// Find item relations to be established
 	// -----------------------------------------------
 
-	$relationshipTitles = array( importBelongsRelationTitle => 0);
+	$relationshipTitles = array( importMentionedRelationTitle => 0);
 
 	foreach(array_keys($relationshipTitles) as $title) {
 		$sqlTitle = addcslashes($title, '%_');
@@ -108,11 +106,12 @@
 		}
 		$linkRequest = preg_replace("/$erRegEx/", "", $linkRequest);
 
-		$fundort = trim($line[$headers["Archiv"]]);
+		$fundort = trim($line[$headers["Archiv"]], " .");
 		switch ($fundort) {
 			case "BE SA" : $fundort = "BE SA (Belgien, Stadsarchief Antwerpen)"; break;
 			case "NLA Bü" : $fundort = "NLA Bü (Niedersächsisches Landesarchiv, Abt. Bückeburg)"; break;
 			case "StAB" : $fundort = "StAB (Staatsarchiv Bremen)"; break;
+			case "Fockemuseum" : $fundort = "Focke-Museum Bremen"; break;
 			default: die("*** '$fundort' -- exiting");
 		}
 
@@ -127,9 +126,10 @@
 		Landesamt für Denkmalpflege Bremen
 		BE SA (Belgien, Stadsarchief Antwerpen)
 		HKHB (Archiv der Handelskammer Bremen)
+		Fockemuseum (Focke-Museum Bremen)
 		*/
 
-		$signatur = $line[$headers["Signatur/Inventarnr"]];
+		$signatur = $line[$headers["Sig./Inventarnr"]];
 		$folio = $line[$headers["Folierung"]];
 
 		$personen = $line[$headers["Personen"]];
@@ -164,12 +164,12 @@
 
 		if (($itemId) and ($linkIds)) {
 			foreach($linkIds as $linkId) {
-				$linkRelation = importBelongsRelationTitle;
+				$linkRelation = importMentionedRelationTitle;
 				$linkRelationId = $relationshipTitles[$linkRelation];
-				echo "--- Relation '$linkRelation' ($linkRelationId) from $itemId towards $linkId\n";
+				echo "--- Relation '$linkRelation' ($linkRelationId) from $linkId towards $itemId\n";
 				$sql="
 					INSERT INTO {$db->ItemRelationsRelations}
-						(subject_item_id, property_id, object_item_id)
+						(object_item_id, property_id, subject_item_id)
 						VALUES ($itemId, $linkRelationId, $linkId)
 				";
 				$db->query($sql);
