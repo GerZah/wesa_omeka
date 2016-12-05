@@ -37,11 +37,11 @@
 
 	$csv=array();
 
-	$file = fopen('EreignisseWesa.csv', 'r');
+	$file = fopen('EreignisseWesa2.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
-	// print_r($csv);
+	// print_r($csv); die();
 
 	if (!$csv) { die("CSV file error."); }
 
@@ -87,11 +87,18 @@
 
 		$erRegEx = "\W?\(ID\W?#(\W?\d+)\)";
 		$linkIds = array();
-		if (preg_match_all("/$erRegEx/", $linkRequest, $matches)) {
-			$linkIds = array_unique($matches[1]);
-			echo json_encode($linkIds)."\n";
+
+		$fields = array( "linkRequest", "personen" );
+
+		foreach($fields as $field) {
+			// echo "--- " . $field . " - " . $$field . "\n";
+			if (preg_match_all("/$erRegEx/", $$field, $matches)) {
+				$linkIds = array_unique( array_merge($linkIds, $matches[1]) );
+				$$field = preg_replace("/$erRegEx/", "", $$field);
+				// echo "=== " . $$field . " - " . json_encode($linkIds)."\n";
+			}
 		}
-		$linkRequest = preg_replace("/$erRegEx/", "", $linkRequest);
+		echo json_encode($linkIds)."\n";
 
 		// http://omeka.readthedocs.org/en/eb3/Reference/libraries/globals/insert_item.html
 		$metaData = array("item_type_id" => $importItemTypeID);
@@ -129,15 +136,25 @@
 		if (($itemId) and ($literaturid)) {
 			$linkRelation = importReferencedInLiterature;
 			$linkRelationId = $relationshipTitles[$linkRelation];
-			echo "--- Relation '$linkRelation' ($linkRelationId) from $itemId towards $literaturid\n";
-			$sql="
-				INSERT INTO {$db->ItemRelationsRelations}
-					(subject_item_id, property_id, object_item_id, relation_comment)
-					VALUES ($itemId, $linkRelationId, $literaturid, '$literatur')
-			";
-			$db->query($sql);
+			$erRegEx = "\W?ID\W?#(\W?\d+)";
+			if (preg_match_all("/$erRegEx/", $literaturid, $matches)) {
+				echo "Lit-Matches: "; print_r($matches);
+				$litMatches = $matches[1];
+				$litComments = explode(";", $literatur);
+				// print_r($litMatches);
+				// print_r($litComments);
 
+				foreach($litMatches as $idx => $literaturid) {
+					$literatur = $litComments[$idx];
+					echo "--- Relation '$linkRelation' ($linkRelationId) from $itemId towards $literaturid: '$literatur'\n";
+					$sql="
+						INSERT INTO {$db->ItemRelationsRelations}
+							(subject_item_id, property_id, object_item_id, relation_comment)
+							VALUES ($itemId, $linkRelationId, $literaturid, '$literatur')
+					";
+					$db->query($sql);
+				}
+			}
 		}
-
 	}
 ?>
