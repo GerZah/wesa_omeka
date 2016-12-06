@@ -1,0 +1,49 @@
+# Translation for the Find Orphans plugin for Omeka.
+# Copyright (C) 2016 Gero Zahn
+# This file is distributed under the same license as the Omeka package.
+# Gero Zahn <gero.zahn@upb.de>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Measurements\n"
+"Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-FindOrphans/issues\n"
+"POT-Creation-Date: 2012-01-09 21:49-0500\n"
+"PO-Revision-Date: 2016-12-06 18:10+0100\n"
+"Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>, 2016\n"
+"Language-Team: German (Germany) (https://www.transifex.com/upb/teams/56327/"
+"de_DE/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de_DE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.11\n"
+
+#: FindOrphansPlugin.php:34
+msgid "Select Below"
+msgstr "Unten auswählen"
+
+#: views/admin/plugins/find-orphans-config-form.php:15
+msgid "Item Type"
+msgstr "Objekttyp"
+
+#: views/admin/plugins/find-orphans-config-form.php:18
+msgid "Select item type to search for orphaned items of this type."
+msgstr ""
+"Objekttyp auswählen, um nach verwaisten Objekten dieses Objekttyps zu "
+"suchen."
+
+#: views/admin/plugins/find-orphans-config-form.php:30
+msgid "Please select an item type to search for orphaned items."
+msgstr ""
+"Bitte wählen Sie einen Objekttyp aus, um nach verwaisten Objekten zu suchen."
+
+#: views/admin/plugins/find-orphans-config-form.php:33
+#, php-format
+msgid "No orphaned of item type “%s” found."
+msgstr "Kein verwaistes Objekt des Objekttyps „%s“ gefunden."
+
+#: views/admin/plugins/find-orphans-config-form.php:36
+#, php-format
+msgid "Orphaned items of item type “%s”"
+msgstr "Verwaiste Objekte des Objekttyps „%s“"
