@@ -6,7 +6,7 @@ jQuery(document).ready(function () {
     console.log(curItemType);
 
     if (curItemType!=-1) {
-      var targetUrl = findOrphansTargetUrl + "&item_type_select=" + curItemType;
+      var targetUrl = findOrphansTargetUrl + "?item_type_select=" + curItemType;
       window.location.href = targetUrl;
     }
   });
