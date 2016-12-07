@@ -17,28 +17,32 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: FindOrphansPlugin.php:34
+#: FindOrphansPlugin.php:22 views/admin/index/index.php:2
+msgid "Find Orphans"
+msgstr ""
+
+#: controllers/IndexController.php:24
 msgid "Select Below"
 msgstr ""
 
-#: views/admin/plugins/find-orphans-config-form.php:15
+#: views/admin/index/index.php:13
 msgid "Item Type"
 msgstr ""
 
-#: views/admin/plugins/find-orphans-config-form.php:18
+#: views/admin/index/index.php:15
 msgid "Select item type to search for orphaned items of this type."
 msgstr ""
 
-#: views/admin/plugins/find-orphans-config-form.php:30
+#: views/admin/index/index.php:30
 msgid "Please select an item type to search for orphaned items."
 msgstr ""
 
-#: views/admin/plugins/find-orphans-config-form.php:33
+#: views/admin/index/index.php:33
 #, php-format
 msgid "No orphaned of item type “%s” found."
 msgstr ""
 
-#: views/admin/plugins/find-orphans-config-form.php:36
+#: views/admin/index/index.php:39
 #, php-format
 msgid "Orphaned items of item type “%s”"
 msgstr ""
