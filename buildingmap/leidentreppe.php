@@ -27,7 +27,7 @@
 			$backgroundPolygons = 0;
 
 			// First load the background polygons
-			$file = fopen('leiden_html_background_treppe.csv', 'r');
+			$file = fopen('leiden_html_background_20161207.csv', 'r');
 			$firstLine = true;
 			while (($line = fgetcsv($file)) !== FALSE) {
 				if ($line) {

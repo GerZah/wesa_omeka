@@ -28,8 +28,8 @@ h5 { font-size: 110%; }
 }
 
 .backgroundBlock {
-  /*fill: #ffe;*/
-  fill: none;
+  fill: #ffe;
+  /*fill: none;*/
   stroke: blue;
   stroke-width: 0.02px;
 }
