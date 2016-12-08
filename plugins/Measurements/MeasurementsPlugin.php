@@ -141,6 +141,9 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $regEx = "THAnt_ID\d+_\d+"; // RhAnt building blocks
     if (preg_match_all("/$regEx/", $text, $allMatches)) { SELF::_linkUrl($text, $allMatches, "antwerpen"); }
 
+    $regEx = "GewB_ID\d+_\d+"; // Bremen Gewerbehaus building blocks
+    if (preg_match_all("/$regEx/", $text, $allMatches)) { SELF::_linkUrl($text, $allMatches, "bremengewerbehaus"); }
+
     return $text;
   }
 

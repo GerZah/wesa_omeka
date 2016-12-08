@@ -2,7 +2,7 @@
 <html lang="de-DE">
 	<head>
 		<meta charset="utf-8">
-		<title>Rathaus Amsterdam</title>
+		<title>Bremen – Gewerbehaus</title>
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
@@ -14,7 +14,7 @@
 		<link href="buildingmap.css" rel="stylesheet" type="text/css" >
 	</head>
 	<body>
-		<h2>Rathaus Amsterdam</h2>
+		<h2>Bremen – Gewerbehaus</h2>
 		<?php
 
 			$polygons = array(); # Sanity
@@ -27,7 +27,7 @@
 			$backgroundPolygons = 0;
 
 			// First load the background polygons
-			$file = fopen('amsterdam_html_background_20161208.csv', 'r');
+			$file = fopen('gewerbehaus_html_background.csv', 'r');
 			$firstLine = true;
 			while (($line = fgetcsv($file)) !== FALSE) {
 				if ($line) {
@@ -42,7 +42,7 @@
 			$backgroundPolygons = count($csv);
 
 			// Now load the regular stone polygons
-			$file = fopen('RhAMS.csv', 'r');
+			$file = fopen('bremen-gewerbehaus.csv', 'r');
 			$firstLine = true;
 			while (($line = fgetcsv($file)) !== FALSE) {
 				if ($line) {
