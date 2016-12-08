@@ -11,7 +11,7 @@
 	// -----------------------------------------------
 
 	$linkTargets = array(
-		"Bremer Börse" => "(ID #11771)",
+		// "Bremer Börse" => "(ID #11771)",
 	);
 
 	// -----------------------------------------------
@@ -46,7 +46,7 @@
 
 	$csv=array();
 
-	$file = fopen('ChronologieWeSa4.csv', 'r');
+	$file = fopen('ChronologieWeSa5.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
@@ -82,10 +82,12 @@
 		$datum = $line[$headers["Datum"]];
 		// $datum = preg_replace("/(\[(?:J|G)\])(\d{4})(\d{2})(\d{2})/", "$1 $2-$3-$4", $datum);
 
-		$ereignis = $line[$headers["Kommentar"]];
+		$personen = $line[$headers["Personen"]];
+
+		$ereignis = $line[$headers["Ereignis"]];
 		$linkRequest = "";
 
-		$linkRequestPos = strpos($ereignis, "Verknüpfungswunsch: ");
+		$linkRequestPos = strpos($ereignis, "Verknüpfungswunsch:");
 		if ($linkRequestPos) {
 			$linkRequest = substr($ereignis, $linkRequestPos);
 			$ereignis = trim(substr($ereignis, 0, $linkRequestPos), "\n");
@@ -98,19 +100,27 @@
 			// die("*$ereignis*\n*$linkRequest*");
 		}
 
-		$erRegEx = "\W?\(ID\W?#(\W?\d+)\)";
+		$erRegEx = "\W*?ID\W*?#(\W*?\d+)";
 		$linkIds = array();
-		if (preg_match_all("/$erRegEx/", $linkRequest, $matches)) {
-			$linkIds = array_unique($matches[1]);
-			// echo json_encode($linkIds)."\n";
+		$fields = array( "linkRequest", "personen" );
+
+		foreach($fields as $field) {
+			// echo "--- " . $field . " - " . $$field . "\n";
+			if (preg_match_all("/$erRegEx/", $$field, $matches)) {
+				$linkIds = array_unique( array_merge($linkIds, $matches[1]) );
+				$$field = preg_replace("/$erRegEx/", "", $$field);
+				// echo "=== " . $$field . " - " . json_encode($linkIds)."\n";
+			}
 		}
-		$linkRequest = preg_replace("/$erRegEx/", "", $linkRequest);
+		echo json_encode($linkIds)."\n";
 
 		$fundort = trim($line[$headers["Archiv"]], " .");
 		switch ($fundort) {
 			case "BE SA" : $fundort = "BE SA (Belgien, Stadsarchief Antwerpen)"; break;
 			case "NLA Bü" : $fundort = "NLA Bü (Niedersächsisches Landesarchiv, Abt. Bückeburg)"; break;
+			case "StAB  Verschiedenes unfoliert, (Scan S. 10 – 11 links)":
 			case "StAB" : $fundort = "StAB (Staatsarchiv Bremen)"; break;
+			case "SAA" : $fundort = "Stadsarchief Amsterdam"; break;
 			case "Fockemuseum" : $fundort = "Focke-Museum Bremen"; break;
 			default: die("*** '$fundort' -- exiting");
 		}
@@ -129,10 +139,8 @@
 		Fockemuseum (Focke-Museum Bremen)
 		*/
 
-		$signatur = $line[$headers["Sig./Inventarnr"]];
+		$signatur = $line[$headers["Sig./Inv."]];
 		$folio = $line[$headers["Folierung"]];
-
-		$personen = $line[$headers["Personen"]];
 
 		$quelltyp = "Textquelle";
 

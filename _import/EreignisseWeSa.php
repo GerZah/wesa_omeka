@@ -37,7 +37,7 @@
 
 	$csv=array();
 
-	$file = fopen('EreignisseWesa2.csv', 'r');
+	$file = fopen('EreignisseWesa3.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
@@ -85,7 +85,7 @@
 			echo "-> $linkRequest\n";
 		}
 
-		$erRegEx = "\W?\(ID\W?#(\W?\d+)\)";
+		$erRegEx = "\W?ID\W?#(\W?\d+)";
 		$linkIds = array();
 
 		$fields = array( "linkRequest", "personen" );
