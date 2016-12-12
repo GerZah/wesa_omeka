@@ -82,8 +82,18 @@ jQuery(document).ready(function () {
         var name = this.data.name;
         var color = this.data.color;
         var itemUrl = cytoBaseUrl + "/items/show/" + this.data.id;
+        var withUrl = ( (this.data.public) || (seesNonPublic) );
+        if ( (!withUrl) && (nonPublicItems==1) ) {
+          withUrl = true;
+          itemUrl = omekaBaseUrl;
+        }
+        var curContent = ( withUrl
+          ? "<a href='"+itemUrl+"' target='_blank'>" + name +  "</a>"
+          : name
+        );
+        console.log(this.data, withUrl);
         cy.$("#"+id).qtip({
-          content: "<a href='"+itemUrl+"' target='_blank'>" + name +  "</a>",
+          content: curContent,
             position: {
               my: 'top center',
               at: 'bottom center'

@@ -16,6 +16,7 @@ class NetworkExhibit extends Network_Row_Expandable
     public $added;
     public $modified;
     public $published;
+    public $nonpublic_items;
     public $item_query;
     public $title;
     public $graph_structure;

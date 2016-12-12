@@ -43,77 +43,109 @@ class Network_Form_Exhibit extends Omeka_Form
 
         // Title:
         $this->addElement('text', 'title', array(
-            'label'         => __('Title'),
-            'description'   => __('A top-level heading for the exhibit, displayed in the '.
-                                  'page header in the public view for the exhibit.'),
-            'value'         => $this->exhibit->title,
-            'required'      => true,
-            'size'          => 40,
-            'validators'    => array(
-                array('validator' => 'NotEmpty', 'breakChainOnFailure' => true, 'options' =>
-                    array(
-                        'messages' => array(
-                            Zend_Validate_NotEmpty::IS_EMPTY => __('Enter a title.')
-                        )
-                    )
+          'label'         => __('Title'),
+          'description'   => __(
+            'A top-level heading for the exhibit, displayed in the '.
+            'page header in the public view for the exhibit.'
+          ),
+          'value'         => $this->exhibit->title,
+          'required'      => true,
+          'size'          => 40,
+          'validators'    => array(
+            array('validator' => 'NotEmpty', 'breakChainOnFailure' => true, 'options' =>
+              array(
+                'messages' => array(
+                  Zend_Validate_NotEmpty::IS_EMPTY => __('Enter a title.')
                 )
+              )
             )
+          )
         ));
 
         // Public:
         $this->addElement('checkbox', 'public', array(
-            'label'         => __('Public'),
-            'description'   => __('By default, exhibits are visible only to site administrators. '.
-                                  'Check here to publish the exhibit to the public site.'),
-            'value'         => $this->exhibit->public
+          'label'         => __('Public'),
+          'description'   => __(
+            'By default, exhibits are visible only to site administrators. '.
+            'Check here to publish the exhibit to the public site.'
+          ),
+          'value'         => $this->exhibit->public
+        ));
+
+        // Public Items:
+        $this->addElement('select', 'nonpublic_items', array(
+          'label'         => __('Non-public Items'),
+          'description'   => __(
+            'When an exhibit is published to the public site, you may decide how enclosed non-public '.
+            'items should be disyplayed. By default, they will be displayed, but without clickable links '.
+            '(as they would not work, due to the items not being published). If you wish, their links '.
+            'could be re-directed to the website\'s frontpage. Or you could decide to hide unpublished '.
+            'nodes from the network altogether.'
+          ),
+          'multiOptions'  => array(
+            0 => __("Shown, but unlinked"),
+            1 => __("Shown, linked to site frontpage"),
+            2 => __("Hidden altogether"),
+          ),
+          'value'         => $this->exhibit->nonpublic_items
         ));
 
         // Graph Structure:
         $this->addElement('select', 'graph_structure', array(
-            'label'         => __('Graph Structure'),
-            'description'   => __('The network graph supports multiple graph structuring heuristics: '.
-                                  'While "Grid" is the default, "Spread" provides an always different, '.
-                                  'more organic presentation, which might require significantly more '.
-                                  'browser resources to initially balance the graph.'),
-            'multiOptions'  => array( 0 => __("Grid"), 1 => __("Spread" )),
-            'value'         => $this->exhibit->graph_structure
+          'label'         => __('Graph Structure'),
+          'description'   => __(
+            'The network graph supports multiple graph structuring heuristics: '.
+            'While "Grid" is the default, "Spread" provides an always different, '.
+            'more organic presentation, which might require significantly more '.
+            'browser resources to initially balance the graph.'
+          ),
+          'multiOptions'  => array( 0 => __("Grid"), 1 => __("Spread" )),
+          'value'         => $this->exhibit->graph_structure
         ));
 
         // Sticky node selection:
         $this->addElement('checkbox', 'sticky_node_selection', array(
-            'label'         => __('Sticky Item Selection'),
-            'description'   => __('By default, when clicking an item, this item and all its neighors are '.
-                                  'being highlighted, while all the other items are being greyed out. '.
-                                  'If you check this box, formerly highlighted items will remain highlighed '.
-                                  'until clicking the background. This may help exploring higher-level '.
-                                  'neighborhood contexts by clicking from item to item.'),
-            'value'         => $this->exhibit->sticky_node_selection
+          'label'         => __('Sticky Item Selection'),
+          'description'   => __(
+            'By default, when clicking an item, this item and all its neighors are '.
+            'being highlighted, while all the other items are being greyed out. '.
+            'If you check this box, formerly highlighted items will remain highlighed '.
+            'until clicking the background. This may help exploring higher-level '.
+            'neighborhood contexts by clicking from item to item.'
+          ),
+          'value'         => $this->exhibit->sticky_node_selection
         ));
 
         // Color item types:
         $this->addElement('checkbox', 'color_item_types', array(
-            'label'         => __('Color Item Types'),
-            'description'   => __('By default, items from different item types will be displayed '.
-                                  'in different colors. Uncheck this box if you want all of them '.
-                                  'to remain black/grey.'),
-            'value'         => $this->exhibit->color_item_types
+          'label'         => __('Color Item Types'),
+          'description'   => __(
+            'By default, items from different item types will be displayed '.
+            'in different colors. Uncheck this box if you want all of them '.
+            'to remain black/grey.'
+          ),
+          'value'         => $this->exhibit->color_item_types
         ));
 
         // All Items:
         $this->addElement('checkbox', 'all_items', array(
-            'label'         => __('All Items'),
-            'description'   => __('By default, the network will display only those items that have '.
-                                  'at least one connection to one other item. Check this box to '.
-                                  'force displaying all imported items.'),
-            'value'         => $this->exhibit->all_items
+          'label'         => __('All Items'),
+          'description'   => __(
+            'By default, the network will display only those items that have '.
+            'at least one connection to one other item. Check this box to '.
+            'force displaying all imported items.'
+          ),
+          'value'         => $this->exhibit->all_items
         ));
 
         // All Relations
         $this->addElement('checkbox', 'all_relations', array(
-            'label'         => __('All Item Relations'),
-            'description'   => __('By default, all relations will be displayed. '.
-                                  'Uncheck this box to limit the displayed relations.'),
-            'value'         => $this->exhibit->all_relations
+          'label'         => __('All Item Relations'),
+          'description'   => __(
+            'By default, all relations will be displayed. '.
+            'Uncheck this box to limit the displayed relations.'
+          ),
+          'value'         => $this->exhibit->all_relations
         ));
 
         //select item relations
@@ -122,26 +154,30 @@ class Network_Form_Exhibit extends Omeka_Form
         unset($itemRelationValues[""]); // remove "Select below"
 
         $this->addElement('multiselect', 'selected_relations', array(
-            'label' => __('Item Relations'),
-            'description' => __('Please select all relations that you would like to display. '.
-                                'If you do not want to display any relations, deselect all.'),
-            'value'  => explode(",", $this->exhibit->selected_relations),
-            'multiOptions' => $itemRelationValues,
-            'size' => 10
+          'label' => __('Item Relations'),
+          'description' => __(
+            'Please select all relations that you would like to display. '.
+            'If you do not want to display any relations, deselect all.'
+          ),
+          'value'  => explode(",", $this->exhibit->selected_relations),
+          'multiOptions' => $itemRelationValues,
+          'size' => 10
         ));
         $this->addElement('button', 'unselect_relations', array(
-            'label' => __('Unselect'),
-            'class' => "red button"
+          'label' => __('Unselect'),
+          'class' => "red button"
         ));
 
         // select item references
         if (NetworkPlugin::itemReferencesActive()) {
           // All References
           $this->addElement('checkbox', 'all_references', array(
-              'label'         => __('All Item References'),
-              'description'   => __('By default, all reference elements will be displayed. '.
-                                    'Uncheck this box to limit the displayed element types.'),
-              'value'         => $this->exhibit->all_references
+            'label'         => __('All Item References'),
+            'description'   => __(
+              'By default, all reference elements will be displayed. '.
+              'Uncheck this box to limit the displayed element types.'
+            ),
+            'value'         => $this->exhibit->all_references
           ));
 
           // Selected References:
@@ -153,16 +189,18 @@ class Network_Form_Exhibit extends Omeka_Form
           $referenceElementTitles = NetworkPlugin::referenceElementTitles($referenceElements);
 
           $this->addElement('multiselect', 'selected_references', array(
-              'label'         => __('Item References'),
-              'description' => __('Please select all reference elements that you would like to display. '.
-                                  'If you do not want to display any reference elements, deselect all.'),
-              'multiOptions'  => $referenceElementTitles,
-              'value'         => explode(",", $this->exhibit->selected_references),
-              'size' => 10
+            'label'         => __('Item References'),
+            'description' => __(
+              'Please select all reference elements that you would like to display. '.
+              'If you do not want to display any reference elements, deselect all.'
+            ),
+            'multiOptions'  => $referenceElementTitles,
+            'value'         => explode(",", $this->exhibit->selected_references),
+            'size' => 10
           ));
           $this->addElement('button', 'unselect_references', array(
-              'label' => __('Unselect'),
-              'class' => "red button"
+            'label' => __('Unselect'),
+            'class' => "red button"
           ));
         }
 
@@ -172,22 +210,23 @@ class Network_Form_Exhibit extends Omeka_Form
         ));
 
         $this->addDisplayGroup(array(
-            'title',
-            'graph_structure',
-            'sticky_node_selection',
-            'color_item_types',
-            'public',
-            'all_items',
-            'all_relations',
-            'selected_relations',
-            'unselect_relations',
-            'all_references',
-            'selected_references',
-            'unselect_references',
+          'title',
+          'graph_structure',
+          'sticky_node_selection',
+          'color_item_types',
+          'public',
+          'nonpublic_items',
+          'all_items',
+          'all_relations',
+          'selected_relations',
+          'unselect_relations',
+          'all_references',
+          'selected_references',
+          'unselect_references',
         ), 'fields');
 
         $this->addDisplayGroup(array(
-            'submit'
+          'submit'
         ), 'submit_button');
 
     }

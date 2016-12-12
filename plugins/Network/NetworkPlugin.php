@@ -15,6 +15,7 @@ class NetworkPlugin extends Omeka_Plugin_AbstractPlugin
     protected $_hooks = array(
         'install',
         'uninstall',
+        'upgrade',
         'define_acl',
         'initialize',
         'define_routes',
@@ -56,6 +57,23 @@ class NetworkPlugin extends Omeka_Plugin_AbstractPlugin
       $db_record = $this->_db;
       $sql_record = "DROP TABLE IF EXISTS `$db_record->NetworkRecord`";
       $db_record->query($sql_record);
+
+    }
+
+    public function hookUpgrade()
+    {
+
+      $oldVersion = $args['old_version'];
+      $newVersion = $args['new_version'];
+      $db = $this->_db;
+
+      if ($oldVersion < '1.1') {
+          $sql = "
+            ALTER TABLE `$db->NetworkExhibits`
+            ADD `nonpublic_items` TINYINT(1) NOT NULL DEFAULT 0 AFTER `published`
+          ";
+          $db->query($sql);
+      }
 
     }
 

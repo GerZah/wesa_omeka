@@ -19,6 +19,7 @@ function in_schema()
         added                   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         modified                TIMESTAMP NULL,
         published               TIMESTAMP NULL,
+        nonpublic_items         TINYINT(1) NOT NULL,
         item_query              TEXT NULL,
         title                   TEXT NULL,
         public                  TINYINT(1) NOT NULL,
