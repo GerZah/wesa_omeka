@@ -92,7 +92,7 @@ jQuery(document).ready(function () {
           ? "<a href='"+itemUrl+"' target='_blank'>" + name +  "</a>"
           : name
         );
-        console.log(this.data, withUrl);
+        // console.log(this.data, withUrl);
         cy.$("#"+id).qtip({
           content: curContent,
             position: {
