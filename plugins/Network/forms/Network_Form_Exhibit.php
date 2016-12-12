@@ -76,16 +76,17 @@ class Network_Form_Exhibit extends Omeka_Form
         $this->addElement('select', 'nonpublic_items', array(
           'label'         => __('Non-public Items'),
           'description'   => __(
-            'When an exhibit is published to the public site, you may decide how enclosed non-public '.
-            'items should be disyplayed. By default, they will be displayed, but without clickable links '.
-            '(as they would not work, due to the items not being published). If you wish, their links '.
-            'could be re-directed to the website\'s frontpage. Or you could decide to hide unpublished '.
-            'nodes from the network altogether.'
+            "When an exhibit is published to the public site, you may decide how enclosed non-public ".
+            "items should be displayed. By default, they will be visible, but without clickable links ".
+            "(as those would not work, due to the items not being published). If you wish, their links ".
+            "could be re-directed to the website's frontpage. Other than that, you may decide to show ".
+            "the non-public items as unnamed nodes without their item titles, or to hide them altogether."
           ),
           'multiOptions'  => array(
-            0 => __("Shown, but unlinked"),
-            1 => __("Shown, linked to site frontpage"),
-            2 => __("Hidden altogether"),
+            0 => __("Visible, but unlinked"),
+            1 => __("Visible, linked to site's frontpage"),
+            2 => __("Visible, but without item title"),
+            3 => __("Hidden altogether"),
           ),
           'value'         => $this->exhibit->nonpublic_items
         ));

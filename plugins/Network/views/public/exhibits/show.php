@@ -224,12 +224,14 @@
       // echo "<pre>" . print_r($itemDetails,true) . "</pre>"; die();
       $itemTypes = array();
       foreach($itemDetails as $itemDetail) {
-        if ((!$itemDetail["public"]) and (!$seesNonPublic) and ($nonPublicItems == 2) ) {
+        if ( (!$itemDetail["public"]) and (!$seesNonPublic) and ($nonPublicItems == 3) ) {
           unset($items[$itemDetail["item_id"]]);
         }
         else {
-          $items[$itemDetail["item_id"]]["item_title"] = $itemDetail["item_title"]; // store item title
-          $items[$itemDetail["item_id"]]["item_type_id"] = $itemDetail["item_type_id"]; // store full item type ID
+          if ( ($itemDetail["public"]) or ($seesNonPublic) or ($nonPublicItems != 2) ) {
+            $items[$itemDetail["item_id"]]["item_title"] = $itemDetail["item_title"]; // store item title
+            $items[$itemDetail["item_id"]]["item_type_id"] = $itemDetail["item_type_id"]; // store full item type ID
+          }
           $items[$itemDetail["item_id"]]["public"] = $itemDetail["public"]; // store if whether or not item is public
           $itemTypes[$itemDetail["item_type_id"]] = $itemDetail["item_type_id"]; // collect all item type IDs
         }

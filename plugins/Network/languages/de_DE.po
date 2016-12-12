@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Network/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-07-07 15:01+0200\n"
+"PO-Revision-Date: 2016-12-12 16:53+0100\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -17,9 +17,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 1.8.11\n"
 
-#: NetworkPlugin.php:118 NetworkPlugin.php:131 views/admin/exhibits/add.php:14 views/admin/exhibits/browse.php:14 views/admin/exhibits/confirm.php:14 views/admin/exhibits/edit.php:14 views/admin/exhibits/import.php:14 views/admin/exhibits/remove.php:3 views/admin/exhibits/view.php:14 views/public/exhibits/browse.php:13 views/public/exhibits/browse.php:20
+#: NetworkPlugin.php:136 NetworkPlugin.php:149 views/admin/exhibits/add.php:14 views/admin/exhibits/browse.php:14 views/admin/exhibits/confirm.php:14 views/admin/exhibits/edit.php:14 views/admin/exhibits/import.php:14 views/admin/exhibits/remove.php:3 views/admin/exhibits/view.php:14 views/public/exhibits/browse.php:13 views/public/exhibits/browse.php:20
 msgid "Network"
 msgstr "Netzwerk"
 
@@ -41,99 +41,123 @@ msgstr "Der Objekt-Import wurde erfolgreich gestartet."
 msgid "Title"
 msgstr "Titel"
 
-#: forms/Network_Form_Exhibit.php:47
+#: forms/Network_Form_Exhibit.php:48
 msgid "A top-level heading for the exhibit, displayed in the page header in the public view for the exhibit."
 msgstr "Die oberste Überschrift für die Ausstellung, die im Seitenkopf in der öffentlichen Ansicht der Ausstellung angezeigt werden soll."
 
-#: forms/Network_Form_Exhibit.php:56
+#: forms/Network_Form_Exhibit.php:58
 msgid "Enter a title."
 msgstr "Geben Sie einen Titel ein."
 
-#: forms/Network_Form_Exhibit.php:65 views/admin/exhibits/browse.php:36
+#: forms/Network_Form_Exhibit.php:67 views/admin/exhibits/browse.php:36
 msgid "Public"
 msgstr "Öffentlich"
 
-#: forms/Network_Form_Exhibit.php:66
+#: forms/Network_Form_Exhibit.php:69
 msgid "By default, exhibits are visible only to site administrators. Check here to publish the exhibit to the public site."
 msgstr "Standardmäßig sind Ausstellungen nur für Administratoren sichtbar. Wählen Sie dies aus, um die Ausstellung auf der öffentlichen Seite sichtbar zu machen."
 
-#: forms/Network_Form_Exhibit.php:73
+#: forms/Network_Form_Exhibit.php:77
+msgid "Non-public Items"
+msgstr "Nicht-öffentliche Objekte"
+
+#: forms/Network_Form_Exhibit.php:79
+msgid "When an exhibit is published to the public site, you may decide how enclosed non-public items should be displayed. By default, they will be visible, but without clickable links (as those would not work, due to the items not being published). If you wish, their links could be re-directed to the website's frontpage. Other than that, you may decide to show the non-public items as unnamed nodes without their item titles, or to hide them altogether."
+msgstr "Wenn eine Ausstellung für die öffentliche Website veröffentlicht worden ist, können Sie entscheiden, wie darin enthaltene, nicht-veröffentlichte Objekte dargestellt werden sollen. Standardmäßig sind sie sichtbar, aber ohne anklickbare Links (die für nicht-veröffentlichte Objekte nicht funktionieren würden). Wenn Sie es wünschen, können deren Links zur Startseite der Website umgelenkt werden. Darüber hinaus können Sie entscheiden, die nicht-öffentlichen Objekte als unbenannte Knoten ohne Objekttitel darzustellen, oder sie vollständig zu entfernen."
+
+#: forms/Network_Form_Exhibit.php:86
+msgid "Visible, but unlinked"
+msgstr "Sichtbar, aber nicht verlinkt"
+
+#: forms/Network_Form_Exhibit.php:87
+msgid "Visible, linked to site's frontpage"
+msgstr "Sichtbar, zur Website-Startseite verlinkt"
+
+#: forms/Network_Form_Exhibit.php:88
+msgid "Visible, but without item title"
+msgstr "Sichtbar, aber ohne Objekttitel"
+
+#: forms/Network_Form_Exhibit.php:89
+msgid "Hidden altogether"
+msgstr "Vollständig entfernt"
+
+#: forms/Network_Form_Exhibit.php:96
 msgid "Graph Structure"
 msgstr "Graph-Struktur"
 
-#: forms/Network_Form_Exhibit.php:74
+#: forms/Network_Form_Exhibit.php:98
 msgid "The network graph supports multiple graph structuring heuristics: While \"Grid\" is the default, \"Spread\" provides an always different, more organic presentation, which might require significantly more browser resources to initially balance the graph."
 msgstr "Der Netzwerk-Graph unterstützt mehrere Heuristiken zur Graphen-Strukturierung: Während \"Raster\" die Standardeinstellung darstellt, bietet \"Verteilt\" eine bei jedem Aufruf andere, eher organische Repräsentation, obwohl diese möglicherweise deutlich mehr Browser-Ressourcen bei der ursprünglichen Balancierung des Graphen erfordert."
 
-#: forms/Network_Form_Exhibit.php:78
+#: forms/Network_Form_Exhibit.php:103
 msgid "Grid"
 msgstr "Raster"
 
-#: forms/Network_Form_Exhibit.php:78
+#: forms/Network_Form_Exhibit.php:103
 msgid "Spread"
 msgstr "Verteilt"
 
-#: forms/Network_Form_Exhibit.php:84
+#: forms/Network_Form_Exhibit.php:109
 msgid "Sticky Item Selection"
 msgstr "Bleibende Objektselektion"
 
-#: forms/Network_Form_Exhibit.php:85
+#: forms/Network_Form_Exhibit.php:111
 msgid "By default, when clicking an item, this item and all its neighors are being highlighted, while all the other items are being greyed out. If you check this box, formerly highlighted items will remain highlighed until clicking the background. This may help exploring higher-level neighborhood contexts by clicking from item to item."
 msgstr "Standardmäßig werden beim Anklicken eines Objekts eben dieses Objekt und seine Nachbarn hervorgehoben, während alle anderen Objekte ausgegraut werden. Wenn Sie diese Einstellung aktivieren, bleiben zuvor hervorgehobene Objekte hervorgehoben, bis Sie auf den Hintergrund klicken. Dies kann helfen, um Nachbarschafts-Kontexte höherer Ordnung zu erforschen, indem Sie von Objekt zu Objekt klicken."
 
-#: forms/Network_Form_Exhibit.php:95
+#: forms/Network_Form_Exhibit.php:122
 msgid "Color Item Types"
 msgstr "Objekttypen färben"
 
-#: forms/Network_Form_Exhibit.php:96
+#: forms/Network_Form_Exhibit.php:124
 msgid "By default, items from different item types will be displayed in different colors. Uncheck this box if you want all of them to remain black/grey."
 msgstr "Standardmäßig werden Objekte unterschiedlicher Objekttypen in unterschiedlichen Farben eingefärbt. Entfernen Sie diese Markierung, um alle Objekte in derselben Farbe darzustellen."
 
-#: forms/Network_Form_Exhibit.php:104
+#: forms/Network_Form_Exhibit.php:133
 msgid "All Items"
 msgstr "Alle Objekte"
 
-#: forms/Network_Form_Exhibit.php:105
+#: forms/Network_Form_Exhibit.php:135
 msgid "By default, the network will display only those items that have at least one connection to one other item. Check this box to force displaying all imported items."
 msgstr "Standardmäßig wird das Netzwerk nur die Objekte enthalten, die mindestens eine Verbindung zu einem anderen Objekt besitzen. Wählen Sie dies aus, um die Darstellung aller importierter Objekte zu erzwingen."
 
-#: forms/Network_Form_Exhibit.php:113
+#: forms/Network_Form_Exhibit.php:144
 msgid "All Item Relations"
 msgstr "Alle Objektbeziehungen"
 
-#: forms/Network_Form_Exhibit.php:114
+#: forms/Network_Form_Exhibit.php:146
 msgid "By default, all relations will be displayed. Uncheck this box to limit the displayed relations."
 msgstr "Standardmäßig werden alle Objektbeziehungen dargestellt. Entfernen Sie diese Markierung, um die dargestellten Beziehungen zu begrenzen."
 
-#: forms/Network_Form_Exhibit.php:125
+#: forms/Network_Form_Exhibit.php:158
 msgid "Item Relations"
 msgstr "Objekt-Beziehungen"
 
-#: forms/Network_Form_Exhibit.php:126
+#: forms/Network_Form_Exhibit.php:160
 msgid "Please select all relations that you would like to display. If you do not want to display any relations, deselect all."
 msgstr "Bitte wählen Sie alle Beziehungen, die Sie darstellen wollen. Wenn Sie keine Beziehungen darstellen wollen, entfernen Sie alle Markierungen."
 
-#: forms/Network_Form_Exhibit.php:133 forms/Network_Form_Exhibit.php:164
+#: forms/Network_Form_Exhibit.php:168 forms/Network_Form_Exhibit.php:203
 msgid "Unselect"
 msgstr "Deselektieren"
 
-#: forms/Network_Form_Exhibit.php:141
+#: forms/Network_Form_Exhibit.php:176
 msgid "All Item References"
 msgstr "Alle Objektreferenzen"
 
-#: forms/Network_Form_Exhibit.php:142
+#: forms/Network_Form_Exhibit.php:178
 msgid "By default, all reference elements will be displayed. Uncheck this box to limit the displayed element types."
 msgstr "Standardmäßig werden alle Referenz-Elemente dargestellt. Entfernen Sie diese Markierung, um die dargestellten Elemente zu begrenzen."
 
-#: forms/Network_Form_Exhibit.php:156
+#: forms/Network_Form_Exhibit.php:193
 msgid "Item References"
 msgstr "Objektreferenzen"
 
-#: forms/Network_Form_Exhibit.php:157
+#: forms/Network_Form_Exhibit.php:195
 msgid "Please select all reference elements that you would like to display. If you do not want to display any reference elements, deselect all."
 msgstr "Bitte wählen Sie alle Referenz-Elemente, die Sie darstellen wollen. Wenn Sie keine Referenzen darstellen wollen, entfernen Sie alle Markierungen."
 
-#: forms/Network_Form_Exhibit.php:171
+#: forms/Network_Form_Exhibit.php:210
 msgid "Save Exhibit"
 msgstr "Ausstellung speichern"
 

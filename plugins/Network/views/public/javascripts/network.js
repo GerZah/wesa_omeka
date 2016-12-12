@@ -80,6 +80,7 @@ jQuery(document).ready(function () {
       $(nodeData).each(function(){
         var id = this.data.id;
         var name = this.data.name;
+        if (!name) { return; }
         var color = this.data.color;
         var itemUrl = cytoBaseUrl + "/items/show/" + this.data.id;
         var withUrl = ( (this.data.public) || (seesNonPublic) );
