@@ -104,5 +104,14 @@ function in_defineAcl($acl)
     $acl->allow(array('super', 'admin'), 'Network_Exhibits');
     $acl->allow(array('super', 'admin'), 'Network_Records');
 
+    // Researchers and Contributors:
+    // ------------------------------------------------------------------------
+
+    // Researchers and Contributors should be able to see and view unpublished content
+    $acl->allow(
+      array('researcher', 'contributor'),
+      array('Network_Exhibits', 'Network_Records'),
+      array('show', 'showNotPublic')
+    );
 
 }

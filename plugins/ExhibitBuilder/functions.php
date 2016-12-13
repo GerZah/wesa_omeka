@@ -332,6 +332,16 @@ function exhibit_builder_define_acl($args)
         'attachment', 'attachment-item-options', 'theme-config',
         'editSelf', 'deleteSelf', 'showSelfNotPublic', 'block-form'));
 
+    // ------- ### WeSa Omeka Add-on -- START ###
+    // Allow logged-in researchers and contributors to browser ans show
+    // un-published exhibits
+    $acl->allow(
+      array('researcher', 'contributor'),
+      'ExhibitBuilder_Exhibits',
+      array('show', 'showNotPublic')
+    );
+    // ------- ### WeSa Omeka Add-on -- END ###
+
     $acl->allow(null, 'ExhibitBuilder_Exhibits', array('edit', 'delete'),
         new Omeka_Acl_Assert_Ownership);
 }
