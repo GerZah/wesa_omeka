@@ -127,8 +127,8 @@
 			case "StAB" : $fundort = "StAB (Staatsarchiv Bremen)"; break;
 			case "SAA" : $fundort = "Stadsarchief Amsterdam"; break;
 			case "Fockemuseum" : $fundort = "Focke-Museum Bremen"; break;
-			case "HKHB" : $fundort = "HKHB"; break;
-			case "HStAM" : $fundort = "HStAM"; break;
+			case "HKHB" : $fundort = "HKHB (Archiv der Handelskammer Bremen)"; break;
+			case "HStAM" : $fundort = "HStAM (Hessisches Staatsarchiv Marburg)"; break;
 			default: die("*** '$fundort' -- exiting");
 		}
 
@@ -144,8 +144,8 @@
 		BE SA (Belgien, Stadsarchief Antwerpen)
 		HKHB (Archiv der Handelskammer Bremen)
 		Fockemuseum (Focke-Museum Bremen)
-		HKHB (???)
-		HStAM (???)
+		HKHB (Archiv der Handelskammer Bremen)
+		HStAM (Hessisches Staatsarchiv Marburg)
 		*/
 
 		$signatur = $line[$headers["Signatur/Inventarnr."]];
