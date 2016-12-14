@@ -144,6 +144,9 @@ class MeasurementsPlugin extends Omeka_Plugin_AbstractPlugin {
     $regEx = "GewB_ID\d+_\d+"; // Bremen Gewerbehaus building blocks
     if (preg_match_all("/$regEx/", $text, $allMatches)) { SELF::_linkUrl($text, $allMatches, "bremengewerbehaus"); }
 
+    $regEx = "ID161213152328_\d+"; // Batavia Gate building blocks
+    if (preg_match_all("/$regEx/", $text, $allMatches)) { SELF::_linkUrl($text, $allMatches, "batavia"); }
+
     return $text;
   }
 

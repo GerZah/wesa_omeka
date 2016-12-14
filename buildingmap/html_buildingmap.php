@@ -27,18 +27,20 @@
 			$backgroundPolygons = 0;
 
 			// First load the background polygons
-			$file = fopen(htmlBackgroundCsv, 'r');
-			$firstLine = true;
-			while (($line = fgetcsv($file)) !== FALSE) {
-				if ($line) {
-					if ($firstLine) { $firstLine = false; }
-					else {
-						array_splice( $line, 2, 0, array( false, false, false ) );
-						$csv[] = $line;
+			$file = @fopen(htmlBackgroundCsv, 'r');
+			if ($file) {
+				$firstLine = true;
+				while (($line = fgetcsv($file)) !== FALSE) {
+					if ($line) {
+						if ($firstLine) { $firstLine = false; }
+						else {
+							array_splice( $line, 2, 0, array( false, false, false ) );
+							$csv[] = $line;
+						}
 					}
 				}
+				fclose($file);
 			}
-			fclose($file);
 			$backgroundPolygons = count($csv);
 
 			// Now load the regular stone polygons
