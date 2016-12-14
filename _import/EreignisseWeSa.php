@@ -37,7 +37,7 @@
 
 	$csv=array();
 
-	$file = fopen('EreignisseWesa3.csv', 'r');
+	$file = fopen('EreignisseWesa4.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
@@ -108,7 +108,7 @@
 				'Description' => array( array('text' => $kommentar, 'html' => false) ),
 			),
 			'Item Type Metadata' => array(
-				'Datum' => array( array('text' => $datum, 'html' => false) ),
+				'Datum' => array( array('text' => $jahr, 'html' => false) ),
   			'Anmerkungen' => array(
 					array('text' => $personen, 'html' => false),
 					array('text' => $linkRequest, 'html' => false),

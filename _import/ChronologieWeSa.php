@@ -5,6 +5,7 @@
 
 	define("importItemType", "Quelle");
 	define("importMentionedRelationTitle", "wird erwähnt in Quelle");
+	define("importReferencedInLiterature", "wird referenziert in Literatur");
 
 	// -----------------------------------------------
 	// Useful IDs to link to
@@ -46,7 +47,7 @@
 
 	$csv=array();
 
-	$file = fopen('ChronologieWeSa5.csv', 'r');
+	$file = fopen('ChronologieWeSa6.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
@@ -57,7 +58,10 @@
 	// Find item relations to be established
 	// -----------------------------------------------
 
-	$relationshipTitles = array( importMentionedRelationTitle => 0);
+	$relationshipTitles = array(
+		importMentionedRelationTitle => 0,
+		importReferencedInLiterature => 0
+	);
 
 	foreach(array_keys($relationshipTitles) as $title) {
 		$sqlTitle = addcslashes($title, '%_');
@@ -117,11 +121,14 @@
 		$fundort = trim($line[$headers["Archiv"]], " .");
 		switch ($fundort) {
 			case "BE SA" : $fundort = "BE SA (Belgien, Stadsarchief Antwerpen)"; break;
-			case "NLA Bü" : $fundort = "NLA Bü (Niedersächsisches Landesarchiv, Abt. Bückeburg)"; break;
+			case "NLA Bü" :
+			case "NLA BÜ" : $fundort = "NLA Bü (Niedersächsisches Landesarchiv, Abt. Bückeburg)"; break;
 			case "StAB  Verschiedenes unfoliert, (Scan S. 10 – 11 links)":
 			case "StAB" : $fundort = "StAB (Staatsarchiv Bremen)"; break;
 			case "SAA" : $fundort = "Stadsarchief Amsterdam"; break;
 			case "Fockemuseum" : $fundort = "Focke-Museum Bremen"; break;
+			case "HKHB" : $fundort = "HKHB"; break;
+			case "HStAM" : $fundort = "HStAM"; break;
 			default: die("*** '$fundort' -- exiting");
 		}
 
@@ -137,9 +144,11 @@
 		BE SA (Belgien, Stadsarchief Antwerpen)
 		HKHB (Archiv der Handelskammer Bremen)
 		Fockemuseum (Focke-Museum Bremen)
+		HKHB (???)
+		HStAM (???)
 		*/
 
-		$signatur = $line[$headers["Sig./Inv."]];
+		$signatur = $line[$headers["Signatur/Inventarnr."]];
 		$folio = $line[$headers["Folierung"]];
 
 		$quelltyp = "Textquelle";
@@ -182,6 +191,29 @@
 				";
 				$db->query($sql);
 			}
+		}
+
+		$literatur = $line[$headers["Literatur"]];
+
+		if ($literatur) {
+			$literatur = explode(",", $literatur);
+			preg_match("/$erRegEx/", $literatur[0], $literatur[0]);
+
+			$literaturid = $literatur[0][1];
+			$litComment = trim($literatur[1]);
+
+			echo "Literatur: $literaturid / $litComment\n";
+
+			$linkRelation = importReferencedInLiterature;
+			$linkRelationId = $relationshipTitles[$linkRelation];
+
+			echo "--- Relation '$linkRelation' ($linkRelationId) from $itemId towards $literaturid: '$litComment'\n";
+			$sql="
+				INSERT INTO {$db->ItemRelationsRelations}
+					(subject_item_id, property_id, object_item_id, relation_comment)
+					VALUES ($itemId, $linkRelationId, $literaturid, '$litComment')
+			";
+			$db->query($sql);
 		}
 
 	}
