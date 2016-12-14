@@ -209,6 +209,26 @@
 
     </div>
 </div>
+<div class="field">
+    <div class="two columns alpha">
+      <label for="geolocation_restricted_map_overlays"><?php echo __('Restricted Map Overlays'); ?></label>
+    </div>
+    <div class="inputs five columns omega">
+      <p class="explanation">
+        <?php
+          echo __(
+            'Under some circumstances, some map overlays should not be available for the '
+            . 'general audience of website visitors due to legal complications (in case you '
+            . 'used images overlays without proper publication permission), which would still '
+            . 'be OK for registered users, i.e. acquainted reseach fellows.<br>'
+            . 'In such a case, please specify the idx# numbers of those maps that should be hidden '
+            . 'for non-logged in users, separated by semicolons, e.g. “1;3;8”.'
+          );
+        ?>
+      </p>
+      <?php echo $view->formText('geolocation_restricted_map_overlays', get_option('geolocation_restricted_map_overlays')); ?>
+    </div>
+</div>
 </fieldset>
 
 <script type="text/javascript">

@@ -66,6 +66,7 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
         set_option('geolocation_default_radius', 10);
         set_option('geolocation_use_metric_distances', '0');
         set_option('geolocation_map_overlays', '');
+        set_option('geolocation_restricted_map_overlays', '');
     }
 
     public function hookUninstall()
@@ -79,6 +80,7 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
         delete_option('geolocation_add_map_to_contribution_form');
         delete_option('geolocation_use_metric_distances');
         delete_option('geolocation_map_overlays');
+        delete_option('geolocation_restricted_map_overlays');
 
         // This is for older versions of Geolocation, which used to store a Google Map API key.
         delete_option('geolocation_gmaps_key');
@@ -143,6 +145,7 @@ class GeolocationPlugin extends Omeka_Plugin_AbstractPlugin
 
 				$jsonMapOverlays = SELF::GeolocationConvertOverlayFormToJson();
 				set_option('geolocation_map_overlays', $jsonMapOverlays);
+        set_option('geolocation_restricted_map_overlays', $_POST['geolocation_restricted_map_overlays']);
     }
 
     public function hookDefineAcl($args)
@@ -739,6 +742,7 @@ SQL
 
   		if (!$jsonMapOverlays) { $jsonMapOverlays = "[]"; }
   		$mapOverlays = json_decode($jsonMapOverlays);
+      if (!$mapOverlays) { $mapOverlays = array(); }
 
   		$txtOverlays = array();
   		foreach($mapOverlays as $mapOverlay) {
@@ -762,6 +766,15 @@ SQL
   		$regExLatLng = "^(?:\+|-)?\d+(?:.\d+)?$"; // (+|-)1234(.1234) as latitude or longitude coordinate
   		$regExProtoUrl = "^[a-z]+(?:s)?://.*$"; // image URL starts with a protocol, like http://, https:// etc.
 
+      // Find restricted overlays that should be hidden in a public context
+      $restrictedOverlays = array();
+      $isLoggedOn = !!(current_user());
+      if (!$isLoggedOn) {
+        $restrictedOverlaysRaw = explode(";", get_option('geolocation_restricted_map_overlays'));
+        foreach($restrictedOverlaysRaw as $raw) { if (intval($raw)>0) { $restrictedOverlays[] = $raw; } }
+        // echo "<pre>" . print_r($restrictedOverlays,true) . "</pre>";
+      }
+
   		foreach($mapOverlays as $mapOverlay) {
 
   			$idx = $identifier = $imgUrl = $latNorth = $latSouth = $lngEast = $lngWest = $groupTitle = false;
@@ -770,24 +783,25 @@ SQL
 
   			if ( (isset($mapOverlay[0])) and ( preg_match( "($regExIdx)", $mapOverlay[0] ) ) ) { // 1st: numerical index
   				$idx = intval($mapOverlay[0]);
-  			} else { break; }
-  			if ( (isset($mapOverlay[1])) and ($mapOverlay[1]) ) { $identifier = $mapOverlay[1]; } else { break; } // 2nd element: identifier string
-  			if ( (isset($mapOverlay[2])) and ($mapOverlay[2]) ) { $imgUrl = $mapOverlay[2]; } else { break; } // 3rd element: image URL string
+  			} else { continue; }
+        if (in_array($idx, $restrictedOverlays)) { continue; }
+  			if ( (isset($mapOverlay[1])) and ($mapOverlay[1]) ) { $identifier = $mapOverlay[1]; } else { continue; } // 2nd element: identifier string
+  			if ( (isset($mapOverlay[2])) and ($mapOverlay[2]) ) { $imgUrl = $mapOverlay[2]; } else { continue; } // 3rd element: image URL string
   			if ( ( isset($mapOverlay[3]) ) and ( preg_match( "($regExLatLng)", trim($mapOverlay[3]) ) ) ) { // 4th element: northern latitude
   				$latNorth = trim($mapOverlay[3]);
-  			} else { break; }
+  			} else { continue; }
   			if ( ( isset($mapOverlay[4]) ) and ( preg_match( "($regExLatLng)", trim($mapOverlay[4]) ) ) ) { // 5th element: southern latitude
   				$latSouth = trim($mapOverlay[4]);
-  			} else { break; }
+  			} else { continue; }
   			if ( ( isset($mapOverlay[5]) ) and ( preg_match( "($regExLatLng)", trim($mapOverlay[5]) ) ) ) { // 5th element: eastern longitude
   				$lngEast = trim($mapOverlay[5]);
-  			} else { break; }
+  			} else { continue; }
   			if ( ( isset($mapOverlay[6]) ) and ( preg_match( "($regExLatLng)", trim($mapOverlay[6]) ) ) ) { // 7th element: western longitude
   				$lngWest = trim($mapOverlay[6]);
-  			} else { break; }
+  			} else { continue; }
   			if ( isset($mapOverlay[7]) ) { $groupTitle = trim($mapOverlay[7]); }
 
-  			if ( (floatval($latNorth) <= floatval($latSouth)) or (floatval($lngWest) >= floatval($lngEast)) ) { break; }
+  			if ( (floatval($latNorth) <= floatval($latSouth)) or (floatval($lngWest) >= floatval($lngEast)) ) { continue; }
 
         if ( !preg_match( "($regExProtoUrl)",$imgUrl) ) {
           $imgUrl = ltrim($imgUrl, "/");

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Geolocation/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-10-24 17:27+0200\n"
+"PO-Revision-Date: 2016-12-14 19:54+0100\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -19,85 +19,85 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.11\n"
 
-#: GeolocationPlugin.php:254
+#: GeolocationPlugin.php:257
 msgid "Geolocation"
 msgstr "Geolokalisierung"
 
-#: GeolocationPlugin.php:263 GeolocationPlugin.php:292 GeolocationPlugin.php:666 views/admin/map/browse.php:19 views/public/map/browse.php:28
+#: GeolocationPlugin.php:266 GeolocationPlugin.php:295 GeolocationPlugin.php:669 views/admin/map/browse.php:19 views/public/map/browse.php:28
 msgid "Select Map Overlay:"
 msgstr "Kartenüberlagerung auswählen:"
 
-#: GeolocationPlugin.php:395
+#: GeolocationPlugin.php:398
 msgid "kilometers"
 msgstr "Kilometer"
 
-#: GeolocationPlugin.php:397
+#: GeolocationPlugin.php:400
 msgid "miles"
 msgstr "Meilen"
 
-#: GeolocationPlugin.php:399
+#: GeolocationPlugin.php:402
 #, php-format
 msgid "within %1$s %2$s of \"%3$s\""
 msgstr "im Abstand von %1$s %2$s von „%3$s“"
 
-#: GeolocationPlugin.php:419 GeolocationPlugin.php:425
+#: GeolocationPlugin.php:422 GeolocationPlugin.php:428
 msgid "Map"
 msgstr "Karte"
 
-#: GeolocationPlugin.php:458
+#: GeolocationPlugin.php:461
 msgid "Browse Map"
 msgstr "Durchsuchen der Karte"
 
-#: GeolocationPlugin.php:507
+#: GeolocationPlugin.php:510
 msgid "Find A Geographic Location For The "
 msgstr "Finde einen geographischen Standort für die"
 
-#: GeolocationPlugin.php:519
+#: GeolocationPlugin.php:522
 msgid "Geolocation Map"
 msgstr "Geolokalisierungs-Karte"
 
-#: GeolocationPlugin.php:520
+#: GeolocationPlugin.php:523
 msgid "Show attached items on a map"
 msgstr "Angefügte Elemente auf einer Karte anzeigen"
 
-#: GeolocationPlugin.php:608
+#: GeolocationPlugin.php:611
 msgid "Find a Location by Address:"
 msgstr "Finden Sie einen Ort anhand der Adresse:"
 
-#: GeolocationPlugin.php:675
+#: GeolocationPlugin.php:678
 msgid "Latitude:"
 msgstr "Breitengrad:"
 
-#: GeolocationPlugin.php:679
+#: GeolocationPlugin.php:682
 msgid "Find a Location by Coordinates"
 msgstr "Finden Sie einen Ort anhand der Koordinaten"
 
-#: GeolocationPlugin.php:684
+#: GeolocationPlugin.php:687
 msgid "Longitude:"
 msgstr "Längengrad:"
 
-#: GeolocationPlugin.php:708
+#: GeolocationPlugin.php:711
 msgid "Are you sure you want to change the location of the item?"
 msgstr "Sind Sie sicher, dass Sie den Ort des Objektes ändern wollen?"
 
-#: GeolocationPlugin.php:709
+#: GeolocationPlugin.php:712
 msgid "Error: The center of the map has not been set!"
 msgstr "Fehler: Das Zentrum der Karte wurde nicht definiert!"
 
-#: GeolocationPlugin.php:710
+#: GeolocationPlugin.php:713
 msgid "Error: You have no map links div!"
 msgstr "Fehler: Sie haben keinen Karten-Link div!"
 
-#: GeolocationPlugin.php:711
+#: GeolocationPlugin.php:714
 #, php-format
 msgid "Error: \"%s\" was not found!"
 msgstr "Fehler „%s“ wurde nicht gefunden!"
 
-#: GeolocationPlugin.php:811
+#: GeolocationPlugin.php:825
 msgid "Select Below"
 msgstr "Unten auswählen"
 
-#: GeolocationPlugin.php:814
+#: GeolocationPlugin.php:828
 msgid "[n/a]"
 msgstr "[n.v.]"
 
@@ -252,6 +252,14 @@ msgstr "Hiermit können Sie eines oder mehrere Überlagerungen definieren, die �
 #: config_form.php:202
 msgid "If you wish, you may append a group title, like this:<br><em>idx#;identifier;imgURL;LATn;LATs;LNGe;LNGw;grouptitle</em><br>Overlays with the same group title will be grouped in the overlay select box for improved overview."
 msgstr "Wenn Sie wünschen, können Sie wie folgt einen Gruppentitel hinzufügen:<br><em>idx#;Bezeichner;BildURL;NBr;SBr;ÖLng;WLng;Gruppentitel</em><br>Überlagerungen mit identischem Gruppentitel werden in der Überlagerungs-Auswahlbox gruppiert, um die Übersichtlichkeit zu erhöhen."
+
+#: config_form.php:214
+msgid "Restricted Map Overlays"
+msgstr "Eingeschränkte Kartenüberlagerungen"
+
+#: config_form.php:220
+msgid "Under some circumstances, some map overlays should not be available for the general audience of website visitors due to legal complications (in case you used images overlays without proper publication permission), which would still be OK for registered users, i.e. acquainted reseach fellows.<br>In such a case, please specify the idx# numbers of those maps that should be hidden for non-logged in users, separated by semicolons, e.g. “1;3;8”."
+msgstr "Unter bestimmten Voraussetzungen sollten manche Kartenüberlagerungen aus rechtlichen Gründen nicht für das allgemeine Publikum von Website-Besuchern verfügbar sein (z.B. wenn Sie Kartenüberlagerungen ohne umfassende Veröffentlichungsrechte verwendet haben), die aber für registrierte Benutzer, etwa bekannte Forscher-Kollegen, vollkommen in Ordnung sind.<br>In solch einem Fall spezifizieren Sie bitte die idx#-Nummern derjenigen Überlagerungen, die für nicht-eingeloggte Benutzer versteckt werden sollen, getrennt durch Semikolons, beispielsweise „1;3;8“."
 
 #: models/Location.php:23
 msgid "Location requires an item ID."

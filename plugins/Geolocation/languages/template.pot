@@ -17,87 +17,87 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: GeolocationPlugin.php:254
+#: GeolocationPlugin.php:257
 msgid "Geolocation"
 msgstr ""
 
-#: GeolocationPlugin.php:263 GeolocationPlugin.php:292
-#: GeolocationPlugin.php:666 views/admin/map/browse.php:19
+#: GeolocationPlugin.php:266 GeolocationPlugin.php:295
+#: GeolocationPlugin.php:669 views/admin/map/browse.php:19
 #: views/public/map/browse.php:28
 msgid "Select Map Overlay:"
 msgstr ""
 
-#: GeolocationPlugin.php:395
+#: GeolocationPlugin.php:398
 msgid "kilometers"
 msgstr ""
 
-#: GeolocationPlugin.php:397
+#: GeolocationPlugin.php:400
 msgid "miles"
 msgstr ""
 
-#: GeolocationPlugin.php:399
+#: GeolocationPlugin.php:402
 #, php-format
 msgid "within %1$s %2$s of \"%3$s\""
 msgstr ""
 
-#: GeolocationPlugin.php:419 GeolocationPlugin.php:425
+#: GeolocationPlugin.php:422 GeolocationPlugin.php:428
 msgid "Map"
 msgstr ""
 
-#: GeolocationPlugin.php:458
+#: GeolocationPlugin.php:461
 msgid "Browse Map"
 msgstr ""
 
-#: GeolocationPlugin.php:507
+#: GeolocationPlugin.php:510
 msgid "Find A Geographic Location For The "
 msgstr ""
 
-#: GeolocationPlugin.php:519
+#: GeolocationPlugin.php:522
 msgid "Geolocation Map"
 msgstr ""
 
-#: GeolocationPlugin.php:520
+#: GeolocationPlugin.php:523
 msgid "Show attached items on a map"
 msgstr ""
 
-#: GeolocationPlugin.php:608
+#: GeolocationPlugin.php:611
 msgid "Find a Location by Address:"
 msgstr ""
 
-#: GeolocationPlugin.php:675
+#: GeolocationPlugin.php:678
 msgid "Latitude:"
 msgstr ""
 
-#: GeolocationPlugin.php:679
+#: GeolocationPlugin.php:682
 msgid "Find a Location by Coordinates"
 msgstr ""
 
-#: GeolocationPlugin.php:684
+#: GeolocationPlugin.php:687
 msgid "Longitude:"
 msgstr ""
 
-#: GeolocationPlugin.php:708
+#: GeolocationPlugin.php:711
 msgid "Are you sure you want to change the location of the item?"
 msgstr ""
 
-#: GeolocationPlugin.php:709
+#: GeolocationPlugin.php:712
 msgid "Error: The center of the map has not been set!"
 msgstr ""
 
-#: GeolocationPlugin.php:710
+#: GeolocationPlugin.php:713
 msgid "Error: You have no map links div!"
 msgstr ""
 
-#: GeolocationPlugin.php:711
+#: GeolocationPlugin.php:714
 #, php-format
 msgid "Error: \"%s\" was not found!"
 msgstr ""
 
-#: GeolocationPlugin.php:811
+#: GeolocationPlugin.php:825
 msgid "Select Below"
 msgstr ""
 
-#: GeolocationPlugin.php:814
+#: GeolocationPlugin.php:828
 msgid "[n/a]"
 msgstr ""
 
@@ -286,6 +286,20 @@ msgid ""
 "If you wish, you may append a group title, like this:<br><em>idx#;identifier;"
 "imgURL;LATn;LATs;LNGe;LNGw;grouptitle</em><br>Overlays with the same group "
 "title will be grouped in the overlay select box for improved overview."
+msgstr ""
+
+#: config_form.php:214
+msgid "Restricted Map Overlays"
+msgstr ""
+
+#: config_form.php:220
+msgid ""
+"Under some circumstances, some map overlays should not be available for the "
+"general audience of website visitors due to legal complications (in case you "
+"used images overlays without proper publication permission), which would "
+"still be OK for registered users, i.e. acquainted reseach fellows.<br>In "
+"such a case, please specify the idx# numbers of those maps that should be "
+"hidden for non-logged in users, separated by semicolons, e.g. “1;3;8”."
 msgstr ""
 
 #: models/Location.php:23
