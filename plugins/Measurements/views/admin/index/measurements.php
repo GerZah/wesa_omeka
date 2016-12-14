@@ -34,6 +34,16 @@
     "v"  => __("vol"),
   );
 
+  // Figure out whether or not the user should see the "Add Relation" button AddRelBtn
+  $currentUser = current_user();
+  $isLoggedOn = !!($currentUser);
+  $userRole = ( $isLoggedOn ? $currentUser["role"] : false );
+  $seesAddRelBtn = (
+    $userRole
+    ? in_array( $userRole, array("super", "admin", "contributor" ) ) // , "researcher"
+    : false
+  );
+
 ?>
 
 <div class="measurementCenter">
@@ -109,11 +119,13 @@
       echo $view->formCheckbox('measurementsBreakdownNumbers', null, array('checked' => false));
     ?>
   </div>
+  <?php if ($seesAddRelBtn) { ?>
   <div class="addRelDiv">
     <button type="button" id="addRelBtn" class="green button">
       <?php echo __("Add Relation"); ?>
     </button>
   </div>
+  <?php } ?>
   <a href="#" class="paginateFirstLast" data-pagstep="first">|«</a>
   <a href="#" class="paginateTho" data-pagstep="-1000">«<sub>1000</sub></a>
   <a href="#" class="paginateHun" data-pagstep="-100">«<sub>100</sub></a>
