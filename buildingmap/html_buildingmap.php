@@ -70,8 +70,10 @@
 
 					$idx = 5;
 					while (isset($element[$idx])) {
-						$x = $element[$idx++];
-						$y = $element[$idx++];
+						$x = trim($element[$idx++]);
+						$y = trim($element[$idx++]);
+						if ((!$x) or (!$y)) { break; }
+
 						$polygon["coords"][] = array("x" => $x, "y" => $y);
 
 						if ($minX === false) { $minX = $x ;} else { if ($x < $minX) { $minX = $x; } }
@@ -83,6 +85,7 @@
 					}
 					$polygons[] = $polygon;
 				}
+				// echo "<pre>" . print_r($polygons,true) . "</pre>";
 
 				foreach(array_keys($polygons) as $idx) {
 					foreach(array_keys($polygons[$idx]["coords"]) as $cidx) {

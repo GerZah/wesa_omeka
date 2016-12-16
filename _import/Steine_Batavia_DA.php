@@ -90,7 +90,7 @@
 	// -----------------------------------------------
 
 	$csv=array();
-	$file = fopen('Geraldton_Portal_omeka_20161212-cropped.csv', 'r');
+	$file = fopen('Geraldton_Portal_omeka_20161215.csv', 'r');
 	if (!$file) { die("File error."); }
 	while (($line = fgetcsv($file, 0, ",")) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
