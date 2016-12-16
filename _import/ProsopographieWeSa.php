@@ -4,6 +4,7 @@
 	// -----------------------------------------------
 
 	define("importItemType", "Akteur");
+	define("importMentionedRelationTitle", "wird erwähnt in Quelle");
 
 	// -----------------------------------------------
 	// Bootstrap the Omeka application.
@@ -37,13 +38,29 @@
 
 	$csv=array();
 
-	$file = fopen('ProsopographieWeSa6.csv', 'r');
+	$file = fopen('ProsopographieWeSa7.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
-	print_r($csv);
+	// print_r($csv);
+	if (!$csv) { die("CSV file error."); }
 
-	#if (!$csv) { die("CSV file error."); }
+	// -----------------------------------------------
+	// Find item relations to be established
+	// -----------------------------------------------
+
+	$relationshipTitles = array(
+		importMentionedRelationTitle => 0,
+	);
+
+	foreach(array_keys($relationshipTitles) as $title) {
+		$sqlTitle = addcslashes($title, '%_');
+		$sql = "SELECT id FROM {$db->ItemRelationsProperty} WHERE label='".$sqlTitle."'";
+		$titleId	 = $db->fetchOne($sql);
+		if ($titleId) { $relationshipTitles[$title] = $titleId;  }
+	}
+
+	print_r($relationshipTitles);
 
 	// -----------------------------------------------
 
@@ -64,11 +81,12 @@
 			# print_r($line);
 
 			$name = $line[$headers["Name"]];
-			$andereSchreibweisen = $line[$headers["andere Schreibweisen"]];
+			$andereSchreibweisen = $line[$headers["andere Schreibweise"]];
 			$geburtszeitpunkt = @$line[$headers["Geburtszeitpunkt"]];
 			$sterbezeitpunkt = @$line[$headers["Sterbezeitpunkt"]];
 			$kommentar = $line[$headers["Kommentar"]];
 			$kommentar2 = @$line[$headers["Kommentar 2"]];
+			$verknuepfung = @$line[$headers['Verknüpfung: "[Akteur] wird erwähnt in Quelle…" (ID)']];
 
 			// Process main name plus alternative spellings
 			$namen = array( trim($name) );
@@ -118,8 +136,39 @@
 			$metaData = array("item_type_id" => $importItemTypeID);
 			$elementTexts = array( 'Dublin Core' => array( 'Title' => $title ) );
 			if ($metadata) { $elementTexts['Item Type Metadata'] = $metadata; }
+
 			print_r($elementTexts);
-			insert_item($metaData, $elementTexts);
+			// $itemId = 0;
+			$item = insert_item($metaData, $elementTexts);
+			$itemId = $item["id"];
+
+			$erRegEx = "#(\d+)";
+			$linkIds = array();
+			$fields = array( "verknuepfung" );
+
+			foreach($fields as $field) {
+				echo "--- " . $field . " - " . $$field . "\n";
+				if (preg_match_all("/$erRegEx/", $$field, $matches)) {
+					$linkIds = array_unique( array_merge($linkIds, $matches[1]) );
+					$$field = preg_replace("/$erRegEx/", "", $$field);
+					// echo "=== " . $$field . " - " . json_encode($linkIds)."\n";
+				}
+			}
+			echo json_encode($linkIds)."\n";
+
+			if (($itemId) and ($linkIds)) {
+				foreach($linkIds as $linkId) {
+					$linkRelation = importMentionedRelationTitle;
+					$linkRelationId = $relationshipTitles[$linkRelation];
+					echo "--- Relation '$linkRelation' ($linkRelationId) from $linkId towards $itemId\n";
+					$sql="
+						INSERT INTO {$db->ItemRelationsRelations}
+							(object_item_id, property_id, subject_item_id)
+							VALUES ($linkId, $linkRelationId, $itemId)
+					";
+					$db->query($sql);
+				}
+			}
 
 		}
 	}
