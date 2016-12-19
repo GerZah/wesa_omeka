@@ -5,6 +5,7 @@
 
 	define("importItemType", "Akteur");
 	define("importMentionedRelationTitle", "wird erwähnt in Quelle");
+	define("importReferencedInLiterature", "wird referenziert in Literatur");
 
 	// -----------------------------------------------
 	// Bootstrap the Omeka application.
@@ -38,7 +39,7 @@
 
 	$csv=array();
 
-	$file = fopen('ProsopographieWeSa7.csv', 'r');
+	$file = fopen('ProsopographieWeSa8.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
@@ -51,6 +52,7 @@
 
 	$relationshipTitles = array(
 		importMentionedRelationTitle => 0,
+		importReferencedInLiterature => 0
 	);
 
 	foreach(array_keys($relationshipTitles) as $title) {
@@ -81,12 +83,12 @@
 			# print_r($line);
 
 			$name = $line[$headers["Name"]];
-			$andereSchreibweisen = $line[$headers["andere Schreibweise"]];
+			$andereSchreibweisen = $line[$headers["andere Schreibweisen"]];
 			$geburtszeitpunkt = @$line[$headers["Geburtszeitpunkt"]];
 			$sterbezeitpunkt = @$line[$headers["Sterbezeitpunkt"]];
-			$kommentar = $line[$headers["Kommentar"]];
+			$kommentar = $line[$headers["Anmerkungen"]];
 			$kommentar2 = @$line[$headers["Kommentar 2"]];
-			$verknuepfung = @$line[$headers['Verknüpfung: "[Akteur] wird erwähnt in Quelle…" (ID)']];
+			$verknuepfung = @$line[$headers['Quelle']];
 
 			// Process main name plus alternative spellings
 			$namen = array( trim($name) );
@@ -167,6 +169,33 @@
 							VALUES ($linkId, $linkRelationId, $itemId)
 					";
 					$db->query($sql);
+				}
+			}
+
+			$literaturid = $line[$headers["Literatur"]];
+			$literatur = $line[$headers["Seite in Literatur"]];
+
+			if (($itemId) and ($literaturid)) {
+				$linkRelation = importReferencedInLiterature;
+				$linkRelationId = $relationshipTitles[$linkRelation];
+				$erRegEx = "#(\d+)";
+				if (preg_match_all("/$erRegEx/", $literaturid, $matches)) {
+					echo "Lit-Matches: "; print_r($matches);
+					$litMatches = $matches[1];
+					$litComments = explode(";", $literatur);
+					// print_r($litMatches);
+					// print_r($litComments);
+
+					foreach($litMatches as $idx => $literaturid) {
+						$literatur = trim(@$litComments[$idx]);
+						echo "--- Relation '$linkRelation' ($linkRelationId) from $itemId towards $literaturid: '$literatur'\n";
+						$sql="
+							INSERT INTO {$db->ItemRelationsRelations}
+								(subject_item_id, property_id, object_item_id, relation_comment)
+								VALUES ($itemId, $linkRelationId, $literaturid, '$literatur')
+						";
+						$db->query($sql);
+					}
 				}
 			}
 
