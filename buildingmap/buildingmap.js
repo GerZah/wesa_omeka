@@ -14,8 +14,8 @@ $(document).ready(function() {
   $(".buildingBlockLink")
   .mousedown(function(){ isDragging=false; })
   .mousemove(function(){ isDragging=true; })
-  .click(function(e){
-    event.preventDefault();
+  .click(function(evt){
+    evt.preventDefault();
     var verb = $(this).find("polygon").attr("id");
     if (!isDragging) {
       $(this).find("polygon").addClass("hlBlock");
