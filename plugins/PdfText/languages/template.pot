@@ -38,6 +38,14 @@ msgid ""
 "element set to install this plugin."
 msgstr ""
 
+#: PdfTextPlugin.php:89
+msgid "Click to reveal automatically extracted PDF text"
+msgstr ""
+
+#: PdfTextPlugin.php:93
+msgid "Click to hide automatically extracted PDF text"
+msgstr ""
+
 #: views/admin/plugins/pdf-text-config-form.php:3
 msgid "Process existing PDF files"
 msgstr ""

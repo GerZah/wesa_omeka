@@ -1,14 +1,14 @@
 <?php
 /**
  * PDF Text
- * 
+ *
  * @copyright Copyright 2007-2012 Roy Rosenzweig Center for History and New Media
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GNU GPLv3
  */
 
 /**
  * The PDF Text plugin.
- * 
+ *
  * @package Omeka\Plugins\PdfText
  */
 class PdfTextPlugin extends Omeka_Plugin_AbstractPlugin
@@ -42,12 +42,12 @@ class PdfTextPlugin extends Omeka_Plugin_AbstractPlugin
         // Don't install if the pdftotext command doesn't exist.
         // See: http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
         if ((int) shell_exec('hash pdftotext 2>&- || echo 1')) {
-            throw new Omeka_Plugin_Installer_Exception(__('The pdftotext command-line utility ' 
+            throw new Omeka_Plugin_Installer_Exception(__('The pdftotext command-line utility '
             . 'is not installed. pdftotext must be installed to install this plugin.'));
         }
         // Don't install if a PDF element set already exists.
         if ($this->_db->getTable('ElementSet')->findByName(self::ELEMENT_SET_NAME)) {
-            throw new Omeka_Plugin_Installer_Exception(__('An element set by the name "%s" already ' 
+            throw new Omeka_Plugin_Installer_Exception(__('An element set by the name "%s" already '
             . 'exists. You must delete that element set to install this plugin.', self::ELEMENT_SET_NAME));
         }
         insert_element_set(
@@ -72,6 +72,30 @@ class PdfTextPlugin extends Omeka_Plugin_AbstractPlugin
     {
         // Add translation.
         add_translation_source(dirname(__FILE__) . '/languages');
+
+        add_filter(
+            array("Display", 'File', 'PDF Text', 'Text'),
+            array($this, "filterTextDisplay")
+        );
+
+    }
+
+    public function filterTextDisplay($text, $args) {
+
+      $result = ""
+        . '<link href="' . css_src('revealPdfText') . '" rel="stylesheet">'
+        . js_tag("revealPdfText")
+        . "<p><a href='#' id='revealPdfTextLink'>["
+        . __("Click to reveal automatically extracted PDF text")
+        . "]</a></p>"
+        . "<div id='unrevealedPdfText'>"
+        . "<p><a href='#' id='unrevealPdfTextLink'>["
+        . __("Click to hide automatically extracted PDF text")
+        . "]</a></p>"
+        . $text
+        . "</div>"
+      ;
+      return $result;
     }
 
     /**
@@ -80,7 +104,7 @@ class PdfTextPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookConfigForm()
     {
         echo get_view()->partial(
-            'plugins/pdf-text-config-form.php', 
+            'plugins/pdf-text-config-form.php',
             array('valid_storage_adapter' => $this->isValidStorageAdapter())
         );
     }
@@ -99,7 +123,7 @@ class PdfTextPlugin extends Omeka_Plugin_AbstractPlugin
 
     /**
      * Add the PDF text to the file record.
-     * 
+     *
      * This has a secondary effect of including the text in the search index.
      */
     public function hookBeforeSaveFile($args)
@@ -124,7 +148,7 @@ class PdfTextPlugin extends Omeka_Plugin_AbstractPlugin
 
     /**
      * Extract the text from a PDF file.
-     * 
+     *
      * @param string $path
      * @return string
      */
@@ -136,10 +160,10 @@ class PdfTextPlugin extends Omeka_Plugin_AbstractPlugin
 
     /**
      * Determine if the plugin supports the storage adapter.
-     * 
-     * pdftotext cannot be used on remote files, so only support the default 
+     *
+     * pdftotext cannot be used on remote files, so only support the default
      * Filesystem adapter, which stores files locally.
-     * 
+     *
      * @return bool
      */
     public function isValidStorageAdapter()
@@ -154,7 +178,7 @@ class PdfTextPlugin extends Omeka_Plugin_AbstractPlugin
 
     /**
      * Get the PDF MIME types.
-     * 
+     *
      * @return array
      */
     public function getPdfMimeTypes()

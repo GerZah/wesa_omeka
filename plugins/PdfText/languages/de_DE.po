@@ -3,20 +3,21 @@
 # This file is distributed under the same license as the Omeka package.
 #
 # Translators:
+# Gero Zahn <gerozahn@campus.uni-paderborn.de>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-PdfText/issues\n"
 "POT-Creation-Date: 2013-02-04 21:49-0500\n"
-"PO-Revision-Date: 2015-11-23 11:44+0100\n"
-"Last-Translator: githanjalli <anjallinhere@gmail.com>\n"
+"PO-Revision-Date: 2016-12-20 14:02+0100\n"
+"Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #. PDF Text element set name
 msgid "PDF Text"
@@ -34,6 +35,14 @@ msgstr "Das pdftotext Befehlszeilen-Dienstprogramm ist nicht installiert. pdftot
 #, php-format
 msgid "An element set by the name \"%s\" already exists. You must delete that element set to install this plugin."
 msgstr "Ein Element mit dem Namen \"%s\" existiert bereits. Sie müssen dieses Element löschen, um dieses Plugin zu installieren. "
+
+#: PdfTextPlugin.php:89
+msgid "Click to reveal automatically extracted PDF text"
+msgstr "Klicken, um automatisch extrahierten PDF-Texte einzublenden"
+
+#: PdfTextPlugin.php:93
+msgid "Click to hide automatically extracted PDF text"
+msgstr "Klicken, um automatisch extrahierten PDF-Date auszublenden"
 
 #: views/admin/plugins/pdf-text-config-form.php:3
 msgid "Process existing PDF files"
