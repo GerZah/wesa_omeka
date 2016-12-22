@@ -18,16 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: NetworkPlugin.php:136 NetworkPlugin.php:149 views/admin/exhibits/add.php:14
-#: views/admin/exhibits/browse.php:14 views/admin/exhibits/confirm.php:14
-#: views/admin/exhibits/edit.php:14 views/admin/exhibits/import.php:14
-#: views/admin/exhibits/remove.php:3 views/admin/exhibits/view.php:14
-#: views/public/exhibits/browse.php:13 views/public/exhibits/browse.php:20
+#: views/admin/exhibits/browse.php:14 views/admin/exhibits/browse.php:33
+#: views/admin/exhibits/confirm.php:14 views/admin/exhibits/edit.php:14
+#: views/admin/exhibits/import.php:14 views/admin/exhibits/remove.php:3
+#: views/admin/exhibits/view.php:14 views/public/exhibits/browse.php:13
+#: views/public/exhibits/browse.php:20
 msgid "Network"
 msgstr ""
 
 #: controllers/ExhibitsController.php:278
 #, php-format
-msgid "The exhibit \"%s\" was successfully deleted!"
+msgid "The network \"%s\" was successfully deleted!"
 msgstr ""
 
 #: controllers/ExhibitsController.php:291
@@ -45,8 +46,8 @@ msgstr ""
 
 #: forms/Network_Form_Exhibit.php:48
 msgid ""
-"A top-level heading for the exhibit, displayed in the page header in the "
-"public view for the exhibit."
+"A top-level heading for the network, displayed in the page header in the "
+"public view for the network."
 msgstr ""
 
 #: forms/Network_Form_Exhibit.php:58
@@ -59,8 +60,8 @@ msgstr ""
 
 #: forms/Network_Form_Exhibit.php:69
 msgid ""
-"By default, exhibits are visible only to site administrators. Check here to "
-"publish the exhibit to the public site."
+"By default, networks are visible only to site administrators. Check here to "
+"publish the network to the public site."
 msgstr ""
 
 #: forms/Network_Form_Exhibit.php:77
@@ -69,7 +70,7 @@ msgstr ""
 
 #: forms/Network_Form_Exhibit.php:79
 msgid ""
-"When an exhibit is published to the public site, you may decide how enclosed "
+"When a network is published to the public site, you may decide how enclosed "
 "non-public items should be displayed. By default, they will be visible, but "
 "without clickable links (as those would not work, due to the items not being "
 "published). If you wish, their links could be re-directed to the website's "
@@ -192,21 +193,17 @@ msgid ""
 msgstr ""
 
 #: forms/Network_Form_Exhibit.php:210
-msgid "Save Exhibit"
+msgid "Save Network"
 msgstr ""
 
 #: views/admin/exhibits/add.php:14 views/admin/exhibits/browse.php:25
 #: views/admin/exhibits/browse.php:149
-msgid "Create an Exhibit"
+msgid "Create a Network"
 msgstr ""
 
 #: views/admin/exhibits/browse.php:14 views/public/exhibits/browse.php:13
 #: views/public/exhibits/browse.php:20
-msgid "Browse Exhibits"
-msgstr ""
-
-#: views/admin/exhibits/browse.php:33
-msgid "Exhibit"
+msgid "Browse Networks"
 msgstr ""
 
 #: views/admin/exhibits/browse.php:34
@@ -246,7 +243,7 @@ msgid "No"
 msgstr ""
 
 #: views/admin/exhibits/browse.php:144
-msgid "You have no exhibits."
+msgid "You do not have any networks."
 msgstr ""
 
 #: views/admin/exhibits/browse.php:145
@@ -288,11 +285,11 @@ msgid "Preview and Import Items"
 msgstr ""
 
 #: views/admin/exhibits/remove.php:3
-msgid "Remove Items from Exhibit"
+msgid "Remove Items from Network"
 msgstr ""
 
 #: views/admin/exhibits/remove.php:60
-msgid "You have successfully removed the item from exhibit."
+msgid "You have successfully removed the item from network."
 msgstr ""
 
 #: views/admin/exhibits/remove.php:66
@@ -304,11 +301,11 @@ msgid "Back"
 msgstr ""
 
 #: views/admin/exhibits/undo.php:2
-msgid "Re-add deleted item to Exhibit"
+msgid "Re-add Deleted Item to Network"
 msgstr ""
 
 #: views/admin/exhibits/undo.php:28
-msgid "You have successfully readded the item to exhibit."
+msgid "You have successfully re-added the item to network."
 msgstr ""
 
 #: views/admin/exhibits/view.php:14

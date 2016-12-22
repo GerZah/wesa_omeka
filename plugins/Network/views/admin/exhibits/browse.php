@@ -11,7 +11,7 @@
 
 <?php
   echo head(array(
-    'title' => __('Network') . " | " . __('Browse Exhibits')
+    'title' => __('Network') . " | " . __('Browse Networks')
   ));
   echo flash();
 ?>
@@ -22,7 +22,7 @@
 
   <a class="add small green button"
     href="<?php echo url('network/add'); ?>">
-    <?php echo __('Create an Exhibit'); ?>
+    <?php echo __('Create a Network'); ?>
   </a>
 
   <table class="network">
@@ -30,7 +30,7 @@
     <thead>
       <tr>
         <?php echo browse_sort_links(array(
-          __('Exhibit') => 'title',
+          __('Network') => 'title',
           __('Created') => 'added',
           __('# Items') => null,
           __('Public')  => null
@@ -141,12 +141,12 @@
 
   <?php else: ?>
 
-    <h2><?php echo __('You have no exhibits.'); ?></h2>
+    <h2><?php echo __('You do not have any networks.'); ?></h2>
     <p><?php echo __('Get started by creating a new one!'); ?></p>
 
     <a class="add big green button"
       href="<?php echo url('network/add'); ?>">
-      <?php echo __('Create an Exhibit'); ?>
+      <?php echo __('Create a Network'); ?>
     </a>
 
   <?php endif; ?>

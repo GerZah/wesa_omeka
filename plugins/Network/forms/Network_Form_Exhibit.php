@@ -45,8 +45,8 @@ class Network_Form_Exhibit extends Omeka_Form
         $this->addElement('text', 'title', array(
           'label'         => __('Title'),
           'description'   => __(
-            'A top-level heading for the exhibit, displayed in the '.
-            'page header in the public view for the exhibit.'
+            'A top-level heading for the network, displayed in the '.
+            'page header in the public view for the network.'
           ),
           'value'         => $this->exhibit->title,
           'required'      => true,
@@ -66,8 +66,8 @@ class Network_Form_Exhibit extends Omeka_Form
         $this->addElement('checkbox', 'public', array(
           'label'         => __('Public'),
           'description'   => __(
-            'By default, exhibits are visible only to site administrators. '.
-            'Check here to publish the exhibit to the public site.'
+            'By default, networks are visible only to site administrators. '.
+            'Check here to publish the network to the public site.'
           ),
           'value'         => $this->exhibit->public
         ));
@@ -76,7 +76,7 @@ class Network_Form_Exhibit extends Omeka_Form
         $this->addElement('select', 'nonpublic_items', array(
           'label'         => __('Non-public Items'),
           'description'   => __(
-            "When an exhibit is published to the public site, you may decide how enclosed non-public ".
+            "When a network is published to the public site, you may decide how enclosed non-public ".
             "items should be displayed. By default, they will be visible, but without clickable links ".
             "(as those would not work, due to the items not being published). If you wish, their links ".
             "could be re-directed to the website's frontpage. Other than that, you may decide to show ".
@@ -207,7 +207,7 @@ class Network_Form_Exhibit extends Omeka_Form
 
         // Submit:
         $this->addElement('submit', 'submit', array(
-            'label' => __('Save Exhibit')
+            'label' => __('Save Network')
         ));
 
         $this->addDisplayGroup(array(

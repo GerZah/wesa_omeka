@@ -275,7 +275,7 @@ protected function _getExhibitForm($exhibit)
 */
 protected function _getDeleteSuccessMessage($exhibit)
 {
-  return __('The exhibit "%s" was successfully deleted!',
+  return __('The network "%s" was successfully deleted!',
   $exhibit->title
 );
 }

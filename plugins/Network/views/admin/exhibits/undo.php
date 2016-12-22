@@ -1,5 +1,5 @@
 <?php
-$pageTitle = __('Re-add deleted item to Exhibit');
+$pageTitle = __('Re-add Deleted Item to Network');
 echo head(array('title'=>$pageTitle));
 echo flash();
 if (isset($_POST['id'])) { $id = !empty($_POST['id']) ? intval($_POST['id']) : "NULL";}
@@ -25,7 +25,7 @@ if (isset($_POST['before_date'])) { $before_date = !empty($_POST['before_date'])
       array($id, $owner_id, $item_id,$item_type_id,$exhibit_id,$added,$modified,$title,$item_title,$body,$start_date,$end_date,$after_date,$before_date));
     ?>
     <div class="field">
-        <h2><?php echo __("You have successfully readded the item to exhibit."); ?></h2>
+        <h2><?php echo __("You have successfully re-added the item to network."); ?></h2>
     </div>
 </form>
     </fieldset>

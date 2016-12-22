@@ -1,6 +1,6 @@
 <?php
   echo head(array(
-    'title' => __('Network') . " | " . __('Remove Items from Exhibit'),
+    'title' => __('Network') . " | " . __('Remove Items from Network'),
   ));
   echo flash();
   $record_id = null;
@@ -57,7 +57,7 @@
                 }
             }
         ?>
-        <h2><?php echo __("You have successfully removed the item from exhibit."); ?></h2>
+        <h2><?php echo __("You have successfully removed the item from network."); ?></h2>
         </div>
     </fieldset>
   </section>
