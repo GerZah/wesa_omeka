@@ -17,12 +17,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: NetworkPlugin.php:136 NetworkPlugin.php:149 views/admin/exhibits/add.php:14
-#: views/admin/exhibits/browse.php:14 views/admin/exhibits/browse.php:33
-#: views/admin/exhibits/confirm.php:14 views/admin/exhibits/edit.php:14
-#: views/admin/exhibits/import.php:14 views/admin/exhibits/remove.php:3
-#: views/admin/exhibits/view.php:14 views/public/exhibits/browse.php:13
-#: views/public/exhibits/browse.php:20
+#: NetworkPlugin.php:136 NetworkPlugin.php:149
+#: views/admin/exhibits/browse.php:33 views/admin/exhibits/confirm.php:14
+#: views/admin/exhibits/edit.php:14 views/admin/exhibits/import.php:14
+#: views/admin/exhibits/view.php:14
 msgid "Network"
 msgstr ""
 

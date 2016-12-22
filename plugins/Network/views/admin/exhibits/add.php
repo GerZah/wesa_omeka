@@ -11,7 +11,7 @@
 
 <?php
   echo head(array(
-    'title' => __('Network') . " | " . __('Create a Network')
+    'title' => __('Create a Network')
   ));
 ?>
 

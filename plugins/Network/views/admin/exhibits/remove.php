@@ -1,6 +1,6 @@
 <?php
   echo head(array(
-    'title' => __('Network') . " | " . __('Remove Items from Network'),
+    'title' => __('Remove Items from Network'),
   ));
   echo flash();
   $record_id = null;
