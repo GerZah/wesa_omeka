@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WeSa Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Network/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-12-12 16:53+0100\n"
+"PO-Revision-Date: 2016-12-22 12:16+0100\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/upb/wesa-omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr "Netzwerk"
 #: controllers/ExhibitsController.php:278
 #, php-format
 msgid "The exhibit \"%s\" was successfully deleted!"
-msgstr "Die Ausstellung \"%s\" wurde erfolgreich gelöscht!"
+msgstr "Die Dokumentation \"%s\" wurde erfolgreich gelöscht!"
 
 #: controllers/ExhibitsController.php:291
 #, php-format
@@ -43,7 +43,7 @@ msgstr "Titel"
 
 #: forms/Network_Form_Exhibit.php:48
 msgid "A top-level heading for the exhibit, displayed in the page header in the public view for the exhibit."
-msgstr "Die oberste Überschrift für die Ausstellung, die im Seitenkopf in der öffentlichen Ansicht der Ausstellung angezeigt werden soll."
+msgstr "Die oberste Überschrift für die Dokumentation, die im Seitenkopf in der öffentlichen Ansicht der Dokumentation angezeigt werden soll."
 
 #: forms/Network_Form_Exhibit.php:58
 msgid "Enter a title."
@@ -55,7 +55,7 @@ msgstr "Öffentlich"
 
 #: forms/Network_Form_Exhibit.php:69
 msgid "By default, exhibits are visible only to site administrators. Check here to publish the exhibit to the public site."
-msgstr "Standardmäßig sind Ausstellungen nur für Administratoren sichtbar. Wählen Sie dies aus, um die Ausstellung auf der öffentlichen Seite sichtbar zu machen."
+msgstr "Standardmäßig sind Dokumentationen nur für Administratoren sichtbar. Wählen Sie dies aus, um die Dokumentation auf der öffentlichen Seite sichtbar zu machen."
 
 #: forms/Network_Form_Exhibit.php:77
 msgid "Non-public Items"
@@ -63,7 +63,7 @@ msgstr "Nicht-öffentliche Objekte"
 
 #: forms/Network_Form_Exhibit.php:79
 msgid "When an exhibit is published to the public site, you may decide how enclosed non-public items should be displayed. By default, they will be visible, but without clickable links (as those would not work, due to the items not being published). If you wish, their links could be re-directed to the website's frontpage. Other than that, you may decide to show the non-public items as unnamed nodes without their item titles, or to hide them altogether."
-msgstr "Wenn eine Ausstellung für die öffentliche Website veröffentlicht worden ist, können Sie entscheiden, wie darin enthaltene, nicht-veröffentlichte Objekte dargestellt werden sollen. Standardmäßig sind sie sichtbar, aber ohne anklickbare Links (die für nicht-veröffentlichte Objekte nicht funktionieren würden). Wenn Sie es wünschen, können deren Links zur Startseite der Website umgelenkt werden. Darüber hinaus können Sie entscheiden, die nicht-öffentlichen Objekte als unbenannte Knoten ohne Objekttitel darzustellen, oder sie vollständig zu entfernen."
+msgstr "Wenn eine Dokumentation für die öffentliche Website veröffentlicht worden ist, können Sie entscheiden, wie darin enthaltene, nicht-veröffentlichte Objekte dargestellt werden sollen. Standardmäßig sind sie sichtbar, aber ohne anklickbare Links (die für nicht-veröffentlichte Objekte nicht funktionieren würden). Wenn Sie es wünschen, können deren Links zur Startseite der Website umgelenkt werden. Darüber hinaus können Sie entscheiden, die nicht-öffentlichen Objekte als unbenannte Knoten ohne Objekttitel darzustellen, oder sie vollständig zu entfernen."
 
 #: forms/Network_Form_Exhibit.php:86
 msgid "Visible, but unlinked"
@@ -159,19 +159,19 @@ msgstr "Bitte wählen Sie alle Referenz-Elemente, die Sie darstellen wollen. Wen
 
 #: forms/Network_Form_Exhibit.php:210
 msgid "Save Exhibit"
-msgstr "Ausstellung speichern"
+msgstr "Dokumentation speichern"
 
 #: views/admin/exhibits/add.php:14 views/admin/exhibits/browse.php:25 views/admin/exhibits/browse.php:149
 msgid "Create an Exhibit"
-msgstr "Ausstellung erstellen"
+msgstr "Dokumentation erstellen"
 
 #: views/admin/exhibits/browse.php:14 views/public/exhibits/browse.php:13 views/public/exhibits/browse.php:20
 msgid "Browse Exhibits"
-msgstr "Ausstellungen durchstöbern"
+msgstr "Dokumentationen durchstöbern"
 
 #: views/admin/exhibits/browse.php:33
 msgid "Exhibit"
-msgstr "Ausstellung"
+msgstr "Dokumentation"
 
 #: views/admin/exhibits/browse.php:34
 msgid "Created"
@@ -211,7 +211,7 @@ msgstr "Nein"
 
 #: views/admin/exhibits/browse.php:144
 msgid "You have no exhibits."
-msgstr "Sie haben keine Ausstellungen."
+msgstr "Sie haben keine Dokumentationen."
 
 #: views/admin/exhibits/browse.php:145
 msgid "Get started by creating a new one!"
@@ -252,11 +252,11 @@ msgstr "Voransicht und Objekte importieren"
 
 #: views/admin/exhibits/remove.php:3
 msgid "Remove Items from Exhibit"
-msgstr "Objekte aus der Ausstellung entfernen"
+msgstr "Objekte aus der Dokumentation entfernen"
 
 #: views/admin/exhibits/remove.php:60
 msgid "You have successfully removed the item from exhibit."
-msgstr "Sie haben erfolgreich ein Objekt aus der Ausstellung entfernt"
+msgstr "Sie haben erfolgreich ein Objekt aus der Dokumentation entfernt"
 
 #: views/admin/exhibits/remove.php:66
 msgid "Undo"
@@ -268,11 +268,11 @@ msgstr "Zurück"
 
 #: views/admin/exhibits/undo.php:2
 msgid "Re-add deleted item to Exhibit"
-msgstr "Gelöschtes Objekt wieder zur Ausstellung hinzufügen"
+msgstr "Gelöschtes Objekt wieder zur Dokumentation hinzufügen"
 
 #: views/admin/exhibits/undo.php:28
 msgid "You have successfully readded the item to exhibit."
-msgstr "Sie haben das Objekt erfolgreich erneut zur Ausstellung hinzugefügt."
+msgstr "Sie haben das Objekt erfolgreich erneut zur Dokumentation hinzugefügt."
 
 #: views/admin/exhibits/view.php:14
 #, php-format
