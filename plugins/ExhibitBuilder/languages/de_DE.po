@@ -1,35 +1,34 @@
 # Translation for the Exhibit Builder plugin for Omeka.
 # Copyright (C) 2013 Roy Rosenzweig Center for History and New Media
 # This file is distributed under the same license as the Omeka package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Translators:
+# Martin Sauter <martin.sauter@gmx.ch>, 2012
+# Martin Sauter <martin.sauter@gmx.ch>, 2013
+# Roland Keck <roland.keck@web.de>, 2014-2016
 msgid ""
 msgstr ""
-"Project-Id-Version: Exhibit Builder\n"
+"Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-ExhibitBuilder/issues\n"
 "POT-Creation-Date: 2013-01-23 21:49-0500\n"
-"PO-Revision-Date: 2016-12-22 12:13+0100\n"
-"Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>, 2016\n"
-"Language-Team: German (Germany) (https://www.transifex.com/upb/teams/56327/"
-"de_DE/)\n"
+"PO-Revision-Date: 2016-01-25 18:08+0000\n"
+"Last-Translator: Roland Keck <roland.keck@web.de>\n"
+"Language-Team: German (Germany) (http://www.transifex.com/omeka/omeka/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.11\n"
 
 #: config_form.php:3
 msgid "Sorting Exhibits"
-msgstr "Dokumentationen sortieren"
+msgstr "Ausstellungen sortieren"
 
 #: config_form.php:7
 msgid ""
 "The default method by which you wish to sort the listing of exhibits on the "
 "exhibits/browse page. Default is 'Date Added'."
-msgstr ""
-"Die Sortiermethode für die Liste der Dokumentationen auf der Seite \"Exhibits/"
-"Browse\". Die Standardeinstellung ist \"Datum hinzugefügt\"."
+msgstr "Die Sortiermethode für die Liste der Ausstellungen auf der Seite \"Exhibits/Browse\". Die Standardeinstellung ist \"Datum hinzugefügt\"."
 
 #: controllers/ExhibitsController.php:53
 #, php-format
@@ -38,57 +37,49 @@ msgstr "Sie werden die Austellung \"%s\" und alle Seiten hiermit löschen."
 
 #: controllers/ExhibitsController.php:102
 msgid "This item is not used within this exhibit."
-msgstr "Dieses Objekt wird in dieser Dokumentation nicht verwendet."
+msgstr "Dieses Objekt wird in dieser Ausstellung nicht verwendet."
 
 #: controllers/ExhibitsController.php:214
 msgid "You must specifically select a theme in order to configure it."
 msgstr "Sie müssen explizit ein Theme auswählen um es konfigurieren zu können."
 
-#: controllers/ExhibitsController.php:255
-msgid "The theme settings were successfully saved!"
-msgstr "Die Themen-Einstellungen wurden erfolgreich gespeichert."
-
-#: controllers/ExhibitsController.php:258 controllers/ExhibitsController.php:355
-msgid "There was an error on the form. Please try again."
-msgstr "Fehler im Formular aufgetreten. Bitte versuchen Sie es erneut."
-
-#: functions.php:419
+#: functions.php:409
 msgid "exhibits"
-msgstr "Dokumentationen"
+msgstr "Ausstellungen"
 
-#: functions.php:433 views/admin/exhibits/browse.php:2
+#: functions.php:423 views/admin/exhibits/browse.php:2
 #: views/public/exhibits/browse.php:2
 msgid "Browse Exhibits"
-msgstr "Dokumentationen durchstöbern"
+msgstr "Ausstellungen durchstöbern"
 
-#: functions.php:449 views/admin/exhibits/add.php:6
+#: functions.php:439 views/admin/exhibits/add.php:6
 #: views/admin/exhibits/edit.php:8 views/admin/exhibits/page-form.php:6
 msgid "Exhibits"
-msgstr "Dokumentationen"
+msgstr "Ausstellungen"
+
+#: functions.php:605
+msgid "Search by Exhibit"
+msgstr "Suche nach Ausstellungen"
+
+#: functions.php:614
+msgid "Exhibit"
+msgstr "Ausstellung"
 
 #: functions.php:615
-msgid "Search by Exhibit"
-msgstr "Suche nach Dokumentationen"
-
-#: functions.php:624
-msgid "Exhibit"
-msgstr "Dokumentation"
-
-#: functions.php:625
 msgid "Exhibit Page"
-msgstr "Dokumentationsseite"
+msgstr "Ausstellungsseite"
 
 #: helpers/ExhibitFunctions.php:151
 msgid "Featured Exhibit"
-msgstr "Hervorgehobene Dokumentation"
+msgstr "Hervorgehobene Ausstellung"
 
 #: helpers/ExhibitFunctions.php:155
 msgid "You have no featured exhibits."
-msgstr "Sie haben keine hervorgehobenen Dokumentationen."
+msgstr "Sie haben keine hervorgehobenen Ausstellungen."
 
 #: models/Exhibit.php:127
 msgid "Exhibits must be given a valid slug."
-msgstr "Dokumentationen benötigen einen gültigen Slug."
+msgstr "Ausstellungen benötigen einen gültigen Slug."
 
 #: models/Exhibit.php:128 models/ExhibitPage.php:75
 msgid "A slug must be 30 characters or less."
@@ -97,17 +88,15 @@ msgstr "Ein Slug darf höchstens 30 Zeichen lang sein."
 #: models/Exhibit.php:129
 msgid ""
 "Your URL slug is already in use by another exhibit.  Please choose another."
-msgstr ""
-"Ihr URL Slug wird bereits für eine andere Dokumentation benutzt. Bitte wählen "
-"Sie einen anderen Slug."
+msgstr "Ihr URL Slug wird bereits für eine andere Ausstellung benutzt. Bitte wählen Sie einen anderen Slug."
 
 #: models/Exhibit.php:142
 msgid "An exhibit must be given a title."
-msgstr "Eine Dokumentation benötigt einen Titel."
+msgstr "Eine Ausstellung benötigt einen Titel."
 
 #: models/Exhibit.php:146
 msgid "The title for an exhibit must be 255 characters or less."
-msgstr "Der Titel für eine Dokumentation darf höchstens 255 Zeichen lang sein."
+msgstr "Der Titel für eine Ausstellung darf höchstens 255 Zeichen lang sein."
 
 #: models/Exhibit.php:150
 msgid "The name of your theme must be 30 characters or less."
@@ -119,11 +108,9 @@ msgstr "Textdatei"
 
 #: models/ExhibitLayout.php:144
 msgid ""
-"Default layout features files justified to left or right with text displaying "
-"to the opposite side"
-msgstr ""
-"Standard Layout. Dateien werden rechts- oder linksbündig angezeigt. Der Text "
-"wird auf der gegenüberliegenden Seite angezeigt."
+"Default layout features files justified to left or right with text "
+"displaying to the opposite side"
+msgstr "Standard Layout. Dateien werden rechts- oder linksbündig angezeigt. Der Text wird auf der gegenüberliegenden Seite angezeigt."
 
 #: models/ExhibitLayout.php:147
 msgid "Gallery"
@@ -144,39 +131,27 @@ msgstr "Text"
 msgid "Layout featuring a block of text without files"
 msgstr "Layout, das einen Textblock aber keine Dateien anzeigt"
 
-#: models/ExhibitLayout.php:155
-msgid "File"
-msgstr "Datei"
-
 #: models/ExhibitLayout.php:156
 msgid "Layout featuring a standalone file"
 msgstr "Layout für eine einzelne Datei"
 
 #: models/ExhibitPage.php:74
 msgid "A slug must be given for each page of an exhibit."
-msgstr "Jede Seite einer Dokumentation benötigt einen Slug."
+msgstr "Jede Seite einer Ausstellung benötigt einen Slug."
 
 #: models/ExhibitPage.php:76
 msgid ""
 "This page slug has already been used.  Please modify the slug so that it is "
 "unique."
-msgstr ""
-"Dieser Slug wird bereits für eine andere Seite verwendet. Bitte ändern Sie den "
-"Slug, damit er eindeutig ist."
+msgstr "Dieser Slug wird bereits für eine andere Seite verwendet. Bitte ändern Sie den Slug, damit er eindeutig ist."
 
 #: models/ExhibitPage.php:86
 msgid "Exhibit pages must be given a title."
-msgstr "Dokumentationsseiten benötigen einen Titel."
+msgstr "Ausstellungsseiten benötigen einen Titel."
 
 #: views/admin/exhibits/add.php:2
 msgid "Add Exhibit"
-msgstr "Dokumentation hinzufügen"
-
-#: views/admin/exhibits/attachment-item-options.php:10
-#: views/admin/exhibits/attachment.php:21 views/admin/exhibits/browse.php:47
-#: views/admin/files/cover-image.php:16 views/helpers/ExhibitItemListing.php:30
-msgid "(Private)"
-msgstr "(Privat)"
+msgstr "Ausstellung hinzufügen"
 
 #: views/admin/exhibits/attachment-item-options.php:16
 #, php-format
@@ -187,13 +162,10 @@ msgstr "Ausgewähltes Objekt: %s"
 msgid "Select a file to use."
 msgstr "Datei zur weiteren Verwendung auswählen."
 
-#: views/admin/exhibits/attachment.php:12 views/admin/exhibits/block-form.php:9
+#: views/admin/exhibits/attachment.php:12
+#: views/admin/exhibits/block-form.php:9
 msgid "Remove/Restore"
 msgstr "Löschen/ Wiederherstellen"
-
-#: views/admin/exhibits/attachment.php:33 views/admin/exhibits/browse.php:52
-msgid "Edit"
-msgstr "Editieren"
 
 #: views/admin/exhibits/block-form.php:8
 msgid "Block"
@@ -203,41 +175,18 @@ msgstr "Blockieren"
 msgid "Expand/Collapse"
 msgstr "Ausweiten/ Zusammenklappen"
 
-#: views/admin/exhibits/browse.php:2 views/public/exhibits/browse.php:5
-#, php-format
-msgid "(%s total)"
-msgstr "(%s insgesamt)"
-
 #: views/admin/exhibits/browse.php:8
 msgid "There are no exhibits yet."
-msgstr "Es sind keine Dokumentationen vorhanden."
+msgstr "Es sind keine Ausstellungen vorhanden."
 
 #: views/admin/exhibits/browse.php:11 views/admin/exhibits/browse.php:19
 msgid "Add an Exhibit"
-msgstr "Dokumentation hinzufügen"
-
-#: views/admin/exhibits/browse.php:29
-#: views/admin/exhibits/exhibit-metadata-form.php:7
-msgid "Title"
-msgstr "Titel"
-
-#: views/admin/exhibits/browse.php:30
-#: views/admin/exhibits/exhibit-metadata-form.php:40
-msgid "Tags"
-msgstr "Schlagwörter"
+msgstr "Ausstellung hinzufügen"
 
 #: views/admin/exhibits/browse.php:31
 #: views/admin/exhibits/exhibit-metadata-form.php:49
 msgid "Theme"
 msgstr "Theme"
-
-#: views/admin/exhibits/browse.php:32
-msgid "Date Added"
-msgstr "Hinzugefügt am"
-
-#: views/admin/exhibits/browse.php:55 views/helpers/ExhibitPageEditTree.php:54
-msgid "Delete"
-msgstr "Löschen"
 
 #: views/admin/exhibits/browse.php:62
 #: views/admin/exhibits/exhibit-metadata-form.php:52
@@ -247,11 +196,11 @@ msgstr "Aktuelles öffentliches Theme"
 #: views/admin/exhibits/edit.php:3
 #, php-format
 msgid "Edit Exhibit \"%s\""
-msgstr "Dokumentation \"%s\" bearbeiten"
+msgstr "Ausstellung \"%s\" bearbeiten"
 
 #: views/admin/exhibits/exhibit-metadata-form.php:4
 msgid "Exhibit Metadata"
-msgstr "Metadaten der Dokumentation"
+msgstr "Metadaten der Ausstellung"
 
 #: views/admin/exhibits/exhibit-metadata-form.php:15
 msgid "Slug"
@@ -267,14 +216,6 @@ msgstr "Es sind keine Leerzeichen oder Sonderzeichen erlaubt"
 msgid "Credits"
 msgstr "Credits"
 
-#: views/admin/exhibits/exhibit-metadata-form.php:32
-msgid "Description"
-msgstr "Beschreibung"
-
-#: views/admin/exhibits/exhibit-metadata-form.php:54
-msgid "Configure"
-msgstr "Konfigurieren"
-
 #: views/admin/exhibits/exhibit-metadata-form.php:59
 msgid "Use Summary Page?"
 msgstr "Übersichtsseite verwenden?"
@@ -283,9 +224,7 @@ msgstr "Übersichtsseite verwenden?"
 msgid ""
 "Start the exhibit on the summary page. If unchecked, start on the first "
 "exhibit page if it exists."
-msgstr ""
-"Starten Sie die Dokumentation auf der Übersichtsseite. Falls nicht markiert "
-"wird die Dokumentation aud er ersten Seite gestartet, sofern diese existiert"
+msgstr "Starten Sie die Ausstellung auf der Übersichtsseite. Falls nicht markiert wird die Ausstellung aud er ersten Seite gestartet, sofern diese existiert"
 
 #: views/admin/exhibits/exhibit-metadata-form.php:68
 msgid "Cover Image"
@@ -293,11 +232,9 @@ msgstr "Totelbild"
 
 #: views/admin/exhibits/exhibit-metadata-form.php:72
 msgid ""
-"Choose a file to represent this exhibit. The selected file will serve as the "
-"thumbnail for the exhibit."
-msgstr ""
-"Wählen Sie eine Datei aus, die typisch für diese Dokumentation ist. Die "
-"ausgewählte Datei wird als Vorschaubild verwendet."
+"Choose a file to represent this exhibit. The selected file will serve as the"
+" thumbnail for the exhibit."
+msgstr "Wählen Sie eine Datei aus, die typisch für diese Ausstellung ist. Die ausgewählte Datei wird als Vorschaubild verwendet."
 
 #: views/admin/exhibits/exhibit-metadata-form.php:79
 msgid "Pages"
@@ -310,36 +247,16 @@ msgstr "Es existieren keine Seiten."
 #: views/admin/exhibits/exhibit-metadata-form.php:84
 msgid ""
 "To reorder or nest pages, click and drag a page to the preferred location."
-msgstr ""
-"Um Seiten umzusortieren oder zu verschachteln klicken und die Seite zu der "
-"gewählten Position verschieben."
+msgstr "Um Seiten umzusortieren oder zu verschachteln klicken und die Seite zu der gewählten Position verschieben."
 
 #: views/admin/exhibits/exhibit-metadata-form.php:89
 #: views/admin/exhibits/page-form.php:2
 msgid "Add Page"
 msgstr "Seite hinzufügen"
 
-#: views/admin/exhibits/exhibit-metadata-form.php:96
-#: views/admin/exhibits/page-form.php:73 views/admin/exhibits/theme-config.php:22
-msgid "Save Changes"
-msgstr "Änderungen speichern"
-
-#: views/admin/exhibits/exhibit-metadata-form.php:98
-#: views/admin/exhibits/page-form.php:76
-msgid "View Public Page"
-msgstr "Öffentliche Seite ansehen"
-
 #: views/admin/exhibits/exhibit-metadata-form.php:100
 msgid "Delete Exhibit"
-msgstr "Dokumentation löschen"
-
-#: views/admin/exhibits/exhibit-metadata-form.php:105
-msgid "Public"
-msgstr "Öffentlich"
-
-#: views/admin/exhibits/exhibit-metadata-form.php:109
-msgid "Featured"
-msgstr "Hervorgehoben"
+msgstr "Ausstellung löschen"
 
 #: views/admin/exhibits/exhibit-metadata-form.php:116
 msgid "Choose a Cover Image"
@@ -354,11 +271,6 @@ msgstr "Suchformular anzeigen"
 #: views/admin/exhibits/page-form.php:87
 msgid "Hide Search Form"
 msgstr "Suchfomular verbergen"
-
-#: views/admin/exhibits/exhibit-metadata-form.php:123
-#: views/admin/exhibits/page-form.php:89
-msgid "View All Items"
-msgstr "Alle Objekte ansehen"
 
 #: views/admin/exhibits/exhibit-metadata-form.php:134
 #: views/admin/exhibits/page-form.php:100
@@ -397,9 +309,7 @@ msgstr "Alle auseinanderklappen"
 #: views/admin/exhibits/page-form.php:36
 msgid ""
 "To reorder blocks and items, click and drag them to the preferred location."
-msgstr ""
-"Um die Anordnung von Blöcken oder Objekten zu ändern, klicken Sie und ziehen "
-"Sie sie  auf die gewünschte Position."
+msgstr "Um die Anordnung von Blöcken oder Objekten zu ändern, klicken Sie und ziehen Sie sie  auf die gewünschte Position."
 
 #: views/admin/exhibits/page-form.php:44
 msgid "New Block"
@@ -417,6 +327,7 @@ msgstr "Neuen Block hinzufügen"
 msgid "Save and Add Another Page"
 msgstr "Speichern und Seite hinzufügen"
 
+#. /c IE7 can't handle nested form tags.
 #: views/admin/exhibits/page-form.php:82
 msgid "Attach an Item"
 msgstr "Objekt hinzufügen"
@@ -435,22 +346,16 @@ msgstr "Anwenden"
 
 #: views/admin/exhibits/tags.php:2 views/public/exhibits/tags.php:2
 msgid "Browse Exhibits by Tag"
-msgstr "Dokumentationen nach Schlagwörtern durchsuchen"
+msgstr "Ausstellungen nach Schlagwörtern durchsuchen"
 
 #: views/admin/exhibits/tags.php:12
 msgid "There are no tags to display. You must first tag some exhibits."
-msgstr ""
-"Es können keine Schlagwörter angezeigt werden. Bitte weisen Sie zuerst den "
-"Dokumentationen Schlagwörter zu."
+msgstr "Es können keine Schlagwörter angezeigt werden. Bitte weisen Sie zuerst den Ausstellungen Schlagwörter zu."
 
 #: views/admin/exhibits/theme-config.php:16
 #, php-format
 msgid "Configure the &#8220;%s&#8221; Theme"
 msgstr "Das Theme &#8220;%s&#8221; konfigurieren"
-
-#: views/admin/exhibits/theme-config.php:17
-msgid "Configurations apply to this theme only."
-msgstr "Einstellungen beziehen sich nur auf dieses Theme."
 
 #: views/admin/files/cover-image.php:3
 msgid "Omeka will use the first attached file as the cover image."
@@ -467,30 +372,15 @@ msgstr "fügen Sie einige Objekte hinzu"
 #: views/admin/items/browse.php:8
 #, php-format
 msgid "There are no items to choose from.  Please refine your search or %s."
-msgstr ""
-"Es stehen keine Objekte zur Auswahl. Bitte verfeinern Sie Ihre Suche oder %s."
+msgstr "Es stehen keine Objekte zur Auswahl. Bitte verfeinern Sie Ihre Suche oder %s."
 
 #: views/helpers/ExhibitItemListing.php:36
 msgid "Select Item"
 msgstr "Objekt auswählen"
 
-#: views/public/exhibits/browse.php:11 views/public/exhibits/tags.php:10
-msgid "Browse All"
-msgstr "Alle durchsuchen"
-
-#: views/public/exhibits/browse.php:15 views/public/exhibits/tags.php:14
-msgid "Browse by Tag"
-msgstr "Durchsuchen nach Schlagwort"
-
 #: views/public/exhibits/browse.php:43
 msgid "There are no exhibits available yet."
-msgstr "Es sind keine Dokumentationen vorhanden."
-
-#: views/shared/exhibit_layouts/file-text/form.php:6
-#: views/shared/exhibit_layouts/file/form.php:6
-#: views/shared/exhibit_layouts/gallery/form.php:6
-msgid "Items"
-msgstr "Objekte"
+msgstr "Es sind keine Ausstellungen vorhanden."
 
 #: views/shared/exhibit_layouts/file-text/form.php:17
 #: views/shared/exhibit_layouts/file/form.php:12
@@ -528,23 +418,6 @@ msgstr "Rechts"
 msgid "File size"
 msgstr "Dateigröße"
 
-#: views/shared/exhibit_layouts/file-text/form.php:36
-#: views/shared/exhibit_layouts/file/form.php:31
-msgid "Fullsize"
-msgstr "Vollständige Größe"
-
-#: views/shared/exhibit_layouts/file-text/form.php:37
-#: views/shared/exhibit_layouts/file/form.php:32
-#: views/shared/exhibit_layouts/gallery/form.php:56
-msgid "Thumbnail"
-msgstr "Vorschaubild"
-
-#: views/shared/exhibit_layouts/file-text/form.php:38
-#: views/shared/exhibit_layouts/file/form.php:33
-#: views/shared/exhibit_layouts/gallery/form.php:55
-msgid "Square Thumbnail"
-msgstr "Quadratische Vorschau"
-
 #: views/shared/exhibit_layouts/file-text/form.php:44
 #: views/shared/exhibit_layouts/file/form.php:39
 #: views/shared/exhibit_layouts/gallery/form.php:62
@@ -572,11 +445,9 @@ msgstr "Position der Galerie"
 
 #: views/shared/exhibit_layouts/gallery/form.php:46
 msgid ""
-"If there is no showcase file or text, the gallery will use the full width of "
-"the page."
-msgstr ""
-"Wenn keine Datei oder kein text zur Präsentatin vorhanden ist, wird die "
-"Galerie die gesamte Seitenbreite nutzen."
+"If there is no showcase file or text, the gallery will use the full width of"
+" the page."
+msgstr "Wenn keine Datei oder kein text zur Präsentatin vorhanden ist, wird die Galerie die gesamte Seitenbreite nutzen."
 
 #: views/shared/exhibit_layouts/gallery/form.php:50
 msgid "Gallery file size"

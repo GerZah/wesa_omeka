@@ -41,38 +41,29 @@ msgstr ""
 msgid "You must specifically select a theme in order to configure it."
 msgstr ""
 
-#: controllers/ExhibitsController.php:255
-msgid "The theme settings were successfully saved!"
-msgstr ""
-
-#: controllers/ExhibitsController.php:258
-#: controllers/ExhibitsController.php:355
-msgid "There was an error on the form. Please try again."
-msgstr ""
-
-#: functions.php:419
+#: functions.php:409
 msgid "exhibits"
 msgstr ""
 
-#: functions.php:433 views/admin/exhibits/browse.php:2
+#: functions.php:423 views/admin/exhibits/browse.php:2
 #: views/public/exhibits/browse.php:2
 msgid "Browse Exhibits"
 msgstr ""
 
-#: functions.php:449 views/admin/exhibits/add.php:6
+#: functions.php:439 views/admin/exhibits/add.php:6
 #: views/admin/exhibits/edit.php:8 views/admin/exhibits/page-form.php:6
 msgid "Exhibits"
 msgstr ""
 
-#: functions.php:615
+#: functions.php:605
 msgid "Search by Exhibit"
 msgstr ""
 
-#: functions.php:624
+#: functions.php:614
 msgid "Exhibit"
 msgstr ""
 
-#: functions.php:625
+#: functions.php:615
 msgid "Exhibit Page"
 msgstr ""
 
@@ -138,10 +129,6 @@ msgstr ""
 msgid "Layout featuring a block of text without files"
 msgstr ""
 
-#: models/ExhibitLayout.php:155
-msgid "File"
-msgstr ""
-
 #: models/ExhibitLayout.php:156
 msgid "Layout featuring a standalone file"
 msgstr ""
@@ -164,13 +151,6 @@ msgstr ""
 msgid "Add Exhibit"
 msgstr ""
 
-#: views/admin/exhibits/attachment-item-options.php:10
-#: views/admin/exhibits/attachment.php:21 views/admin/exhibits/browse.php:47
-#: views/admin/files/cover-image.php:16
-#: views/helpers/ExhibitItemListing.php:30
-msgid "(Private)"
-msgstr ""
-
 #: views/admin/exhibits/attachment-item-options.php:16
 #, php-format
 msgid "Selected Item: %s"
@@ -180,13 +160,8 @@ msgstr ""
 msgid "Select a file to use."
 msgstr ""
 
-#: views/admin/exhibits/attachment.php:12
-#: views/admin/exhibits/block-form.php:9
+#: views/admin/exhibits/attachment.php:12 views/admin/exhibits/block-form.php:9
 msgid "Remove/Restore"
-msgstr ""
-
-#: views/admin/exhibits/attachment.php:33 views/admin/exhibits/browse.php:52
-msgid "Edit"
 msgstr ""
 
 #: views/admin/exhibits/block-form.php:8
@@ -197,11 +172,6 @@ msgstr ""
 msgid "Expand/Collapse"
 msgstr ""
 
-#: views/admin/exhibits/browse.php:2 views/public/exhibits/browse.php:5
-#, php-format
-msgid "(%s total)"
-msgstr ""
-
 #: views/admin/exhibits/browse.php:8
 msgid "There are no exhibits yet."
 msgstr ""
@@ -210,27 +180,9 @@ msgstr ""
 msgid "Add an Exhibit"
 msgstr ""
 
-#: views/admin/exhibits/browse.php:29
-#: views/admin/exhibits/exhibit-metadata-form.php:7
-msgid "Title"
-msgstr ""
-
-#: views/admin/exhibits/browse.php:30
-#: views/admin/exhibits/exhibit-metadata-form.php:40
-msgid "Tags"
-msgstr ""
-
 #: views/admin/exhibits/browse.php:31
 #: views/admin/exhibits/exhibit-metadata-form.php:49
 msgid "Theme"
-msgstr ""
-
-#: views/admin/exhibits/browse.php:32
-msgid "Date Added"
-msgstr ""
-
-#: views/admin/exhibits/browse.php:55 views/helpers/ExhibitPageEditTree.php:54
-msgid "Delete"
 msgstr ""
 
 #: views/admin/exhibits/browse.php:62
@@ -259,14 +211,6 @@ msgstr ""
 #: views/admin/exhibits/exhibit-metadata-form.php:24
 #: views/public/exhibits/summary.php:15
 msgid "Credits"
-msgstr ""
-
-#: views/admin/exhibits/exhibit-metadata-form.php:32
-msgid "Description"
-msgstr ""
-
-#: views/admin/exhibits/exhibit-metadata-form.php:54
-msgid "Configure"
 msgstr ""
 
 #: views/admin/exhibits/exhibit-metadata-form.php:59
@@ -307,27 +251,8 @@ msgstr ""
 msgid "Add Page"
 msgstr ""
 
-#: views/admin/exhibits/exhibit-metadata-form.php:96
-#: views/admin/exhibits/page-form.php:73
-#: views/admin/exhibits/theme-config.php:22
-msgid "Save Changes"
-msgstr ""
-
-#: views/admin/exhibits/exhibit-metadata-form.php:98
-#: views/admin/exhibits/page-form.php:76
-msgid "View Public Page"
-msgstr ""
-
 #: views/admin/exhibits/exhibit-metadata-form.php:100
 msgid "Delete Exhibit"
-msgstr ""
-
-#: views/admin/exhibits/exhibit-metadata-form.php:105
-msgid "Public"
-msgstr ""
-
-#: views/admin/exhibits/exhibit-metadata-form.php:109
-msgid "Featured"
 msgstr ""
 
 #: views/admin/exhibits/exhibit-metadata-form.php:116
@@ -342,11 +267,6 @@ msgstr ""
 #: views/admin/exhibits/exhibit-metadata-form.php:121
 #: views/admin/exhibits/page-form.php:87
 msgid "Hide Search Form"
-msgstr ""
-
-#: views/admin/exhibits/exhibit-metadata-form.php:123
-#: views/admin/exhibits/page-form.php:89
-msgid "View All Items"
 msgstr ""
 
 #: views/admin/exhibits/exhibit-metadata-form.php:134
@@ -404,6 +324,7 @@ msgstr ""
 msgid "Save and Add Another Page"
 msgstr ""
 
+#. /c IE7 can't handle nested form tags.
 #: views/admin/exhibits/page-form.php:82
 msgid "Attach an Item"
 msgstr ""
@@ -433,10 +354,6 @@ msgstr ""
 msgid "Configure the &#8220;%s&#8221; Theme"
 msgstr ""
 
-#: views/admin/exhibits/theme-config.php:17
-msgid "Configurations apply to this theme only."
-msgstr ""
-
 #: views/admin/files/cover-image.php:3
 msgid "Omeka will use the first attached file as the cover image."
 msgstr ""
@@ -458,22 +375,8 @@ msgstr ""
 msgid "Select Item"
 msgstr ""
 
-#: views/public/exhibits/browse.php:11 views/public/exhibits/tags.php:10
-msgid "Browse All"
-msgstr ""
-
-#: views/public/exhibits/browse.php:15 views/public/exhibits/tags.php:14
-msgid "Browse by Tag"
-msgstr ""
-
 #: views/public/exhibits/browse.php:43
 msgid "There are no exhibits available yet."
-msgstr ""
-
-#: views/shared/exhibit_layouts/file-text/form.php:6
-#: views/shared/exhibit_layouts/file/form.php:6
-#: views/shared/exhibit_layouts/gallery/form.php:6
-msgid "Items"
 msgstr ""
 
 #: views/shared/exhibit_layouts/file-text/form.php:17
@@ -510,23 +413,6 @@ msgstr ""
 #: views/shared/exhibit_layouts/file-text/form.php:31
 #: views/shared/exhibit_layouts/file/form.php:26
 msgid "File size"
-msgstr ""
-
-#: views/shared/exhibit_layouts/file-text/form.php:36
-#: views/shared/exhibit_layouts/file/form.php:31
-msgid "Fullsize"
-msgstr ""
-
-#: views/shared/exhibit_layouts/file-text/form.php:37
-#: views/shared/exhibit_layouts/file/form.php:32
-#: views/shared/exhibit_layouts/gallery/form.php:56
-msgid "Thumbnail"
-msgstr ""
-
-#: views/shared/exhibit_layouts/file-text/form.php:38
-#: views/shared/exhibit_layouts/file/form.php:33
-#: views/shared/exhibit_layouts/gallery/form.php:55
-msgid "Square Thumbnail"
 msgstr ""
 
 #: views/shared/exhibit_layouts/file-text/form.php:44
