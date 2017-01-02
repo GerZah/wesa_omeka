@@ -21,3 +21,6 @@
 
 # --- Omeka WebDAV-Verzeichnis
 /plugins/Dropbox/files/*
+
+# --- Wesa-Wiki
+/wiki
