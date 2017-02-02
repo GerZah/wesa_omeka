@@ -27,6 +27,18 @@ msgid ""
 "exhibits/browse page. Default is 'Date Added'."
 msgstr ""
 
+#: config_form.php:9 views/admin/exhibits/browse.php:32
+msgid "Date Added"
+msgstr ""
+
+#: config_form.php:9
+msgid "Alphabetical"
+msgstr ""
+
+#: config_form.php:9
+msgid "Recent"
+msgstr ""
+
 #: controllers/ExhibitsController.php:53
 #, php-format
 msgid ""
@@ -41,29 +53,38 @@ msgstr ""
 msgid "You must specifically select a theme in order to configure it."
 msgstr ""
 
-#: functions.php:409
+#: controllers/ExhibitsController.php:256
+msgid "The theme settings were successfully saved!"
+msgstr ""
+
+#: controllers/ExhibitsController.php:259
+#: controllers/ExhibitsController.php:358
+msgid "There was an error on the form. Please try again."
+msgstr ""
+
+#: functions.php:432
 msgid "exhibits"
 msgstr ""
 
-#: functions.php:423 views/admin/exhibits/browse.php:2
+#: functions.php:446 views/admin/exhibits/browse.php:2
 #: views/public/exhibits/browse.php:2
 msgid "Browse Exhibits"
 msgstr ""
 
-#: functions.php:439 views/admin/exhibits/add.php:6
+#: functions.php:462 views/admin/exhibits/add.php:6
 #: views/admin/exhibits/edit.php:8 views/admin/exhibits/page-form.php:6
 msgid "Exhibits"
 msgstr ""
 
-#: functions.php:605
+#: functions.php:629
 msgid "Search by Exhibit"
 msgstr ""
 
-#: functions.php:614
+#: functions.php:638
 msgid "Exhibit"
 msgstr ""
 
-#: functions.php:615
+#: functions.php:639
 msgid "Exhibit Page"
 msgstr ""
 
@@ -79,7 +100,7 @@ msgstr ""
 msgid "Exhibits must be given a valid slug."
 msgstr ""
 
-#: models/Exhibit.php:128 models/ExhibitPage.php:75
+#: models/Exhibit.php:128 models/ExhibitPage.php:92
 msgid "A slug must be 30 characters or less."
 msgstr ""
 
@@ -129,26 +150,43 @@ msgstr ""
 msgid "Layout featuring a block of text without files"
 msgstr ""
 
+#: models/ExhibitLayout.php:155
+msgid "File"
+msgstr ""
+
 #: models/ExhibitLayout.php:156
 msgid "Layout featuring a standalone file"
 msgstr ""
 
-#: models/ExhibitPage.php:74
+#: models/ExhibitPage.php:91
 msgid "A slug must be given for each page of an exhibit."
 msgstr ""
 
-#: models/ExhibitPage.php:76
+#: models/ExhibitPage.php:93
 msgid ""
 "This page slug has already been used.  Please modify the slug so that it is "
 "unique."
 msgstr ""
 
-#: models/ExhibitPage.php:86
+#: models/ExhibitPage.php:104
 msgid "Exhibit pages must be given a title."
+msgstr ""
+
+#: models/ExhibitPage.php:154
+msgid ""
+"Someone has edited the page while you were working on it. Your changes have "
+"been discarded to prevent losing their changes."
 msgstr ""
 
 #: views/admin/exhibits/add.php:2
 msgid "Add Exhibit"
+msgstr ""
+
+#: views/admin/exhibits/attachment-item-options.php:10
+#: views/admin/exhibits/attachment.php:21 views/admin/exhibits/browse.php:48
+#: views/admin/files/cover-image.php:16
+#: views/helpers/ExhibitItemListing.php:30
+msgid "(Private)"
 msgstr ""
 
 #: views/admin/exhibits/attachment-item-options.php:16
@@ -160,8 +198,13 @@ msgstr ""
 msgid "Select a file to use."
 msgstr ""
 
-#: views/admin/exhibits/attachment.php:12 views/admin/exhibits/block-form.php:9
+#: views/admin/exhibits/attachment.php:12
+#: views/admin/exhibits/block-form.php:9
 msgid "Remove/Restore"
+msgstr ""
+
+#: views/admin/exhibits/attachment.php:33 views/admin/exhibits/browse.php:53
+msgid "Edit"
 msgstr ""
 
 #: views/admin/exhibits/block-form.php:8
@@ -172,6 +215,11 @@ msgstr ""
 msgid "Expand/Collapse"
 msgstr ""
 
+#: views/admin/exhibits/browse.php:2 views/public/exhibits/browse.php:5
+#, php-format
+msgid "(%s total)"
+msgstr ""
+
 #: views/admin/exhibits/browse.php:8
 msgid "There are no exhibits yet."
 msgstr ""
@@ -180,12 +228,26 @@ msgstr ""
 msgid "Add an Exhibit"
 msgstr ""
 
+#: views/admin/exhibits/browse.php:29
+#: views/admin/exhibits/exhibit-metadata-form.php:7
+msgid "Title"
+msgstr ""
+
+#: views/admin/exhibits/browse.php:30
+#: views/admin/exhibits/exhibit-metadata-form.php:40
+msgid "Tags"
+msgstr ""
+
 #: views/admin/exhibits/browse.php:31
 #: views/admin/exhibits/exhibit-metadata-form.php:49
 msgid "Theme"
 msgstr ""
 
-#: views/admin/exhibits/browse.php:62
+#: views/admin/exhibits/browse.php:56 views/helpers/ExhibitPageEditTree.php:54
+msgid "Delete"
+msgstr ""
+
+#: views/admin/exhibits/browse.php:63
 #: views/admin/exhibits/exhibit-metadata-form.php:52
 msgid "Current Public Theme"
 msgstr ""
@@ -204,13 +266,21 @@ msgid "Slug"
 msgstr ""
 
 #: views/admin/exhibits/exhibit-metadata-form.php:18
-#: views/admin/exhibits/page-form.php:27
+#: views/admin/exhibits/page-form.php:30
 msgid "No spaces or special characters allowed"
 msgstr ""
 
 #: views/admin/exhibits/exhibit-metadata-form.php:24
 #: views/public/exhibits/summary.php:15
 msgid "Credits"
+msgstr ""
+
+#: views/admin/exhibits/exhibit-metadata-form.php:32
+msgid "Description"
+msgstr ""
+
+#: views/admin/exhibits/exhibit-metadata-form.php:54
+msgid "Configure"
 msgstr ""
 
 #: views/admin/exhibits/exhibit-metadata-form.php:59
@@ -251,8 +321,27 @@ msgstr ""
 msgid "Add Page"
 msgstr ""
 
+#: views/admin/exhibits/exhibit-metadata-form.php:96
+#: views/admin/exhibits/page-form.php:76
+#: views/admin/exhibits/theme-config.php:22
+msgid "Save Changes"
+msgstr ""
+
+#: views/admin/exhibits/exhibit-metadata-form.php:98
+#: views/admin/exhibits/page-form.php:79
+msgid "View Public Page"
+msgstr ""
+
 #: views/admin/exhibits/exhibit-metadata-form.php:100
 msgid "Delete Exhibit"
+msgstr ""
+
+#: views/admin/exhibits/exhibit-metadata-form.php:105
+msgid "Public"
+msgstr ""
+
+#: views/admin/exhibits/exhibit-metadata-form.php:109
+msgid "Featured"
 msgstr ""
 
 #: views/admin/exhibits/exhibit-metadata-form.php:116
@@ -260,17 +349,22 @@ msgid "Choose a Cover Image"
 msgstr ""
 
 #: views/admin/exhibits/exhibit-metadata-form.php:120
-#: views/admin/exhibits/page-form.php:86
+#: views/admin/exhibits/page-form.php:89
 msgid "Show Search Form"
 msgstr ""
 
 #: views/admin/exhibits/exhibit-metadata-form.php:121
-#: views/admin/exhibits/page-form.php:87
+#: views/admin/exhibits/page-form.php:90
 msgid "Hide Search Form"
 msgstr ""
 
+#: views/admin/exhibits/exhibit-metadata-form.php:123
+#: views/admin/exhibits/page-form.php:92
+msgid "View All Items"
+msgstr ""
+
 #: views/admin/exhibits/exhibit-metadata-form.php:134
-#: views/admin/exhibits/page-form.php:100
+#: views/admin/exhibits/page-form.php:103
 msgid "Change Selected Item"
 msgstr ""
 
@@ -283,61 +377,60 @@ msgstr ""
 msgid "Edit Page \"%s\""
 msgstr ""
 
-#: views/admin/exhibits/page-form.php:16
+#: views/admin/exhibits/page-form.php:19
 msgid "Page Title"
 msgstr ""
 
-#: views/admin/exhibits/page-form.php:24
+#: views/admin/exhibits/page-form.php:27
 msgid "Page Slug"
 msgstr ""
 
-#: views/admin/exhibits/page-form.php:33
+#: views/admin/exhibits/page-form.php:36
 msgid "Content"
 msgstr ""
 
-#: views/admin/exhibits/page-form.php:34
+#: views/admin/exhibits/page-form.php:37
 msgid "Collapse All"
 msgstr ""
 
-#: views/admin/exhibits/page-form.php:35
+#: views/admin/exhibits/page-form.php:38
 msgid "Expand All"
 msgstr ""
 
-#: views/admin/exhibits/page-form.php:36
+#: views/admin/exhibits/page-form.php:39
 msgid ""
 "To reorder blocks and items, click and drag them to the preferred location."
 msgstr ""
 
-#: views/admin/exhibits/page-form.php:44
+#: views/admin/exhibits/page-form.php:47
 msgid "New Block"
 msgstr ""
 
-#: views/admin/exhibits/page-form.php:46
+#: views/admin/exhibits/page-form.php:49
 msgid "Select layout"
 msgstr ""
 
-#: views/admin/exhibits/page-form.php:64
+#: views/admin/exhibits/page-form.php:67
 msgid "Add new content block"
 msgstr ""
 
-#: views/admin/exhibits/page-form.php:74
+#: views/admin/exhibits/page-form.php:77
 msgid "Save and Add Another Page"
 msgstr ""
 
-#. /c IE7 can't handle nested form tags.
-#: views/admin/exhibits/page-form.php:82
+#: views/admin/exhibits/page-form.php:85
 msgid "Attach an Item"
 msgstr ""
 
-#: views/admin/exhibits/page-form.php:84
+#: views/admin/exhibits/page-form.php:87
 msgid "Revert to Selected Item"
 msgstr ""
 
-#: views/admin/exhibits/page-form.php:104
+#: views/admin/exhibits/page-form.php:107
 msgid "Provide a caption."
 msgstr ""
 
-#: views/admin/exhibits/page-form.php:111
+#: views/admin/exhibits/page-form.php:114
 msgid "Apply"
 msgstr ""
 
@@ -352,6 +445,10 @@ msgstr ""
 #: views/admin/exhibits/theme-config.php:16
 #, php-format
 msgid "Configure the &#8220;%s&#8221; Theme"
+msgstr ""
+
+#: views/admin/exhibits/theme-config.php:17
+msgid "Configurations apply to this theme only."
 msgstr ""
 
 #: views/admin/files/cover-image.php:3
@@ -375,8 +472,22 @@ msgstr ""
 msgid "Select Item"
 msgstr ""
 
+#: views/public/exhibits/browse.php:11 views/public/exhibits/tags.php:10
+msgid "Browse All"
+msgstr ""
+
+#: views/public/exhibits/browse.php:15 views/public/exhibits/tags.php:14
+msgid "Browse by Tag"
+msgstr ""
+
 #: views/public/exhibits/browse.php:43
 msgid "There are no exhibits available yet."
+msgstr ""
+
+#: views/shared/exhibit_layouts/file-text/form.php:6
+#: views/shared/exhibit_layouts/file/form.php:6
+#: views/shared/exhibit_layouts/gallery/form.php:6
+msgid "Items"
 msgstr ""
 
 #: views/shared/exhibit_layouts/file-text/form.php:17
@@ -396,7 +507,7 @@ msgstr ""
 #: views/shared/exhibit_layouts/file/form.php:45
 #: views/shared/exhibit_layouts/gallery/form.php:28
 #: views/shared/exhibit_layouts/gallery/form.php:41
-#: views/shared/exhibit_layouts/gallery/form.php:68
+#: views/shared/exhibit_layouts/gallery/form.php:70
 msgid "Left"
 msgstr ""
 
@@ -406,7 +517,7 @@ msgstr ""
 #: views/shared/exhibit_layouts/file/form.php:46
 #: views/shared/exhibit_layouts/gallery/form.php:29
 #: views/shared/exhibit_layouts/gallery/form.php:42
-#: views/shared/exhibit_layouts/gallery/form.php:69
+#: views/shared/exhibit_layouts/gallery/form.php:71
 msgid "Right"
 msgstr ""
 
@@ -415,16 +526,33 @@ msgstr ""
 msgid "File size"
 msgstr ""
 
+#: views/shared/exhibit_layouts/file-text/form.php:36
+#: views/shared/exhibit_layouts/file/form.php:31
+msgid "Fullsize"
+msgstr ""
+
+#: views/shared/exhibit_layouts/file-text/form.php:37
+#: views/shared/exhibit_layouts/file/form.php:32
+#: views/shared/exhibit_layouts/gallery/form.php:57
+msgid "Thumbnail"
+msgstr ""
+
+#: views/shared/exhibit_layouts/file-text/form.php:38
+#: views/shared/exhibit_layouts/file/form.php:33
+#: views/shared/exhibit_layouts/gallery/form.php:56
+msgid "Square Thumbnail"
+msgstr ""
+
 #: views/shared/exhibit_layouts/file-text/form.php:44
 #: views/shared/exhibit_layouts/file/form.php:39
-#: views/shared/exhibit_layouts/gallery/form.php:62
+#: views/shared/exhibit_layouts/gallery/form.php:64
 msgid "Captions position"
 msgstr ""
 
 #: views/shared/exhibit_layouts/file-text/form.php:49
 #: views/shared/exhibit_layouts/file/form.php:21
 #: views/shared/exhibit_layouts/file/form.php:44
-#: views/shared/exhibit_layouts/gallery/form.php:67
+#: views/shared/exhibit_layouts/gallery/form.php:69
 msgid "Center"
 msgstr ""
 
