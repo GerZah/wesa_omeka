@@ -47,7 +47,7 @@
 
 	$csv=array();
 
-	$file = fopen('ChronologieWeSa6.csv', 'r');
+	$file = fopen('ChronologieWeSa7.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
@@ -104,7 +104,7 @@
 			// die("*$ereignis*\n*$linkRequest*");
 		}
 
-		$erRegEx = "\W*?ID\W*?#(\W*?\d+)";
+		$erRegEx = "\W*?#(\W*?\d+)(?:;|,)?";
 		$linkIds = array();
 		$fields = array( "linkRequest", "personen" );
 
@@ -129,6 +129,10 @@
 			case "Fockemuseum" : $fundort = "Focke-Museum Bremen"; break;
 			case "HKHB" : $fundort = "HKHB (Archiv der Handelskammer Bremen)"; break;
 			case "HStAM" : $fundort = "HStAM (Hessisches Staatsarchiv Marburg)"; break;
+			case "ZWHCO," :
+			case "ZWHCO" : $fundort = "ZWHCO (???)"; break;
+			case "FAB" :
+			case "Fa Bur" : $fundort = "FAB (???)"; break;
 			default: die("*** '$fundort' -- exiting");
 		}
 
@@ -148,7 +152,7 @@
 		HStAM (Hessisches Staatsarchiv Marburg)
 		*/
 
-		$signatur = $line[$headers["Signatur/Inventarnr."]];
+		$signatur = $line[$headers["Sign./Inv."]];
 		$folio = $line[$headers["Folierung"]];
 
 		$quelltyp = "Textquelle";

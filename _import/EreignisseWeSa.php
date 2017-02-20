@@ -37,7 +37,7 @@
 
 	$csv=array();
 
-	$file = fopen('EreignisseWesa4.csv', 'r');
+	$file = fopen('EreignisseWesa5.csv', 'r');
 	while (($line = fgetcsv($file)) !== FALSE) { if ($line) { $csv[]=$line; } }
 	fclose($file);
 
@@ -85,7 +85,7 @@
 			echo "-> $linkRequest\n";
 		}
 
-		$erRegEx = "\W?ID\W?#(\W?\d+)";
+		$erRegEx = "\W?#(\W?\d+)(?:;|,)?";
 		$linkIds = array();
 
 		$fields = array( "linkRequest", "personen" );
@@ -108,7 +108,7 @@
 				'Description' => array( array('text' => $kommentar, 'html' => false) ),
 			),
 			'Item Type Metadata' => array(
-				'Datum' => array( array('text' => $jahr, 'html' => false) ),
+				'Datum' => array( array('text' => $datum, 'html' => false) ),
   			'Anmerkungen' => array(
 					array('text' => $personen, 'html' => false),
 					array('text' => $linkRequest, 'html' => false),
@@ -136,7 +136,7 @@
 		if (($itemId) and ($literaturid)) {
 			$linkRelation = importReferencedInLiterature;
 			$linkRelationId = $relationshipTitles[$linkRelation];
-			$erRegEx = "\W?ID\W?#(\W?\d+)";
+			$erRegEx = "\W?#(\W?\d+);?";
 			if (preg_match_all("/$erRegEx/", $literaturid, $matches)) {
 				echo "Lit-Matches: "; print_r($matches);
 				$litMatches = $matches[1];
