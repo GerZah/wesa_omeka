@@ -120,19 +120,10 @@
 
 		$fundort = trim($line[$headers["Archiv"]], " .");
 		switch ($fundort) {
-			case "BE SA" : $fundort = "BE SA (Belgien, Stadsarchief Antwerpen)"; break;
-			case "NLA Bü" :
-			case "NLA BÜ" : $fundort = "NLA Bü (Niedersächsisches Landesarchiv, Abt. Bückeburg)"; break;
-			case "StAB  Verschiedenes unfoliert, (Scan S. 10 – 11 links)":
-			case "StAB" : $fundort = "StAB (Staatsarchiv Bremen)"; break;
-			case "SAA" : $fundort = "Stadsarchief Amsterdam"; break;
-			case "Fockemuseum" : $fundort = "Focke-Museum Bremen"; break;
-			case "HKHB" : $fundort = "HKHB (Archiv der Handelskammer Bremen)"; break;
-			case "HStAM" : $fundort = "HStAM (Hessisches Staatsarchiv Marburg)"; break;
 			case "ZWHCO," :
-			case "ZWHCO" : $fundort = "ZWHCO (???)"; break;
+			case "ZWHCO" : $fundort = "HCO (Historisch Centrum Overijssel)"; break;
 			case "FAB" :
-			case "Fa Bur" : $fundort = "FAB (???)"; break;
+			case "Fa Bur" : $fundort = "FA Bur (Fürstliches Archiv Burgsteinfurt)"; break;
 			default: die("*** '$fundort' -- exiting");
 		}
 
