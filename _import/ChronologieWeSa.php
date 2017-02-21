@@ -123,6 +123,7 @@
 			case "ZWHCO," :
 			case "ZWHCO" : $fundort = "HCO (Historisch Centrum Overijssel)"; break;
 			case "FAB" :
+			case "FA Bur" :
 			case "Fa Bur" : $fundort = "FA Bur (Fürstliches Archiv Burgsteinfurt)"; break;
 			default: die("*** '$fundort' -- exiting");
 		}
