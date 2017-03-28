@@ -19,14 +19,18 @@ jQuery(document).bind("omeka:elementformload", function() {
 
 			if (size>1) {
 				var button = $(this).find("input:submit").first();
-				var div = $(button).parent();
 
-				var rawID = $(button).attr("id");
-				var elementId = rawID.substr( rawID.lastIndexOf("_")+1 );
+				var idBearer = $(button).parents().eq(3);
+				var rawID = $(idBearer).attr("id");
 
-				$(div).append("<a href="+reorderElementTextsUrl+"?item="+itemId+"&element="+elementId+
-												" class='blue button'>"+reorderElementTestsButton+
-												"</a>");
+				if (typeof rawID !== "undefined") {
+					var elementId = rawID.substr( rawID.lastIndexOf("-")+1 );
+
+					var div = idBearer.children(":first");
+					$(div).append("<a href="+reorderElementTextsUrl+"?item="+itemId+"&element="+elementId+
+													" class='blue button'>"+reorderElementTestsButton+
+													"</a>");
+				}
 			}
 		} );
 

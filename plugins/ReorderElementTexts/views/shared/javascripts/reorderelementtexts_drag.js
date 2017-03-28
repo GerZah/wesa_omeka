@@ -15,7 +15,7 @@ jQuery(document).ready(function() {
 		$(".dragitems").each( function(index) {
 			itemOrder.push($(this).data("id"));
 		} );
-		console.log(itemOrder);
+		// console.log(itemOrder);
 		$("#reorderElementTextsOrder").val( JSON.stringify(itemOrder) );
 	}
 
