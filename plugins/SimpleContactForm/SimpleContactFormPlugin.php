@@ -15,16 +15,6 @@
  */
 // Define Constants.
 define('SIMPLE_CONTACT_FORM_PAGE_PATH', 'contact/');
-define('SIMPLE_CONTACT_FORM_CONTACT_PAGE_TITLE', __('Contact Us'));
-define('SIMPLE_CONTACT_FORM_CONTACT_PAGE_INSTRUCTIONS', __('Please send us your comments and suggestions.'));
-define('SIMPLE_CONTACT_FORM_THANKYOU_PAGE_TITLE', __('Thank You For Your Feedback'));
-define('SIMPLE_CONTACT_FORM_THANKYOU_PAGE_MESSAGE', __('We appreciate your comments and suggestions.'));
-define('SIMPLE_CONTACT_FORM_ADMIN_NOTIFICATION_EMAIL_SUBJECT', __('A User Has Contacted You'));
-define('SIMPLE_CONTACT_FORM_ADMIN_NOTIFICATION_EMAIL_MESSAGE_HEADER', __('A user has sent you the following message:'));
-define('SIMPLE_CONTACT_FORM_USER_NOTIFICATION_EMAIL_SUBJECT', __('Thank You'));
-define('SIMPLE_CONTACT_FORM_USER_NOTIFICATION_EMAIL_MESSAGE_HEADER', __('Thank you for sending us the following message:'));
-define('SIMPLE_CONTACT_FORM_ADD_TO_MAIN_NAVIGATION', 1);
-
 
 class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
 {
@@ -32,6 +22,7 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
     protected $_hooks = array(
         'install',
         'uninstall',
+        'initialize',
         'define_routes',
         'config_form',
         'config'
@@ -44,6 +35,19 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
 
    public function hookInstall()
     {
+        add_translation_source(dirname(__FILE__).'/languages');
+
+        // Define Constants.
+        define('SIMPLE_CONTACT_FORM_CONTACT_PAGE_TITLE', __('Contact Us'));
+        define('SIMPLE_CONTACT_FORM_CONTACT_PAGE_INSTRUCTIONS', __('Please send us your comments and suggestions.'));
+        define('SIMPLE_CONTACT_FORM_THANKYOU_PAGE_TITLE', __('Thank You For Your Feedback'));
+        define('SIMPLE_CONTACT_FORM_THANKYOU_PAGE_MESSAGE', __('We appreciate your comments and suggestions.'));
+        define('SIMPLE_CONTACT_FORM_ADMIN_NOTIFICATION_EMAIL_SUBJECT', __('A User Has Contacted You'));
+        define('SIMPLE_CONTACT_FORM_ADMIN_NOTIFICATION_EMAIL_MESSAGE_HEADER', __('A user has sent you the following message:'));
+        define('SIMPLE_CONTACT_FORM_USER_NOTIFICATION_EMAIL_SUBJECT', __('Thank You'));
+        define('SIMPLE_CONTACT_FORM_USER_NOTIFICATION_EMAIL_MESSAGE_HEADER', __('Thank you for sending us the following message:'));
+        define('SIMPLE_CONTACT_FORM_ADD_TO_MAIN_NAVIGATION', 1);
+
         set_option('simple_contact_form_reply_from_email', get_option('administrator_email'));
         set_option('simple_contact_form_forward_to_email', get_option('administrator_email'));
         set_option('simple_contact_form_admin_notification_email_subject', SIMPLE_CONTACT_FORM_ADMIN_NOTIFICATION_EMAIL_SUBJECT);
@@ -71,6 +75,13 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
         delete_option('simple_contact_form_add_to_main_navigation');
     }
 
+    /**
+     * Add translation source.
+     */
+    public function hookInitialize()
+    {
+        add_translation_source(dirname(__FILE__).'/languages');
+    }
     /**
      * Adds 2 routes for the form and the thank you page.
      **/
@@ -100,6 +111,7 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function hookConfigForm()
     {
+        add_translation_source(dirname(__FILE__).'/languages');
         include 'config_form.php';
     }
 
