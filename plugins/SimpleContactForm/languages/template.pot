@@ -17,6 +17,38 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: SimpleContactFormPlugin.php:18
+msgid "Contact Us"
+msgstr ""
+
+#: SimpleContactFormPlugin.php:19
+msgid "Please send us your comments and suggestions."
+msgstr ""
+
+#: SimpleContactFormPlugin.php:20
+msgid "Thank You For Your Feedback"
+msgstr ""
+
+#: SimpleContactFormPlugin.php:21
+msgid "We appreciate your comments and suggestions."
+msgstr ""
+
+#: SimpleContactFormPlugin.php:22
+msgid "A User Has Contacted You"
+msgstr ""
+
+#: SimpleContactFormPlugin.php:23
+msgid "A user has sent you the following message:"
+msgstr ""
+
+#: SimpleContactFormPlugin.php:24
+msgid "Thank You"
+msgstr ""
+
+#: SimpleContactFormPlugin.php:25
+msgid "Thank you for sending us the following message:"
+msgstr ""
+
 #: controllers/IndexController.php:54
 msgid "Your CAPTCHA submission was invalid, please try again."
 msgstr ""
