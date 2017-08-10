@@ -17,39 +17,43 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: SimpleContactFormPlugin.php:41
+#: SimpleContactFormPlugin.php:42
 msgid "Contact Us"
 msgstr ""
 
-#: SimpleContactFormPlugin.php:42
+#: SimpleContactFormPlugin.php:43
 msgid "Please send us your comments and suggestions."
 msgstr ""
 
-#: SimpleContactFormPlugin.php:43
+#: SimpleContactFormPlugin.php:44
 msgid "Thank You For Your Feedback"
 msgstr ""
 
-#: SimpleContactFormPlugin.php:44
+#: SimpleContactFormPlugin.php:45
 msgid "We appreciate your comments and suggestions."
 msgstr ""
 
-#: SimpleContactFormPlugin.php:45
+#: SimpleContactFormPlugin.php:46
 msgid "A User Has Contacted You"
 msgstr ""
 
-#: SimpleContactFormPlugin.php:46
+#: SimpleContactFormPlugin.php:47
 msgid "A user has sent you the following message:"
 msgstr ""
 
-#: SimpleContactFormPlugin.php:47
+#: SimpleContactFormPlugin.php:48
 msgid "Thank You"
 msgstr ""
 
-#: SimpleContactFormPlugin.php:48
+#: SimpleContactFormPlugin.php:49
 msgid "Thank you for sending us the following message:"
 msgstr ""
 
-#: config_form.php:31
+#: SimpleContactFormPlugin.php:178
+msgid "Select Below"
+msgstr ""
+
+#: config_form.php:32
 #, php-format
 msgid ""
 "\n"
@@ -61,21 +65,21 @@ msgid ""
 "          "
 msgstr ""
 
-#: config_form.php:43
+#: config_form.php:44
 msgid "Reply-From Email"
 msgstr ""
 
-#: config_form.php:47
+#: config_form.php:48
 msgid ""
 "The address that users can reply to. If blank, your users will not be sent "
 "confirmation emails of their submissions."
 msgstr ""
 
-#: config_form.php:53
+#: config_form.php:54
 msgid "Forward-To Email"
 msgstr ""
 
-#: config_form.php:58
+#: config_form.php:59
 msgid ""
 "\n"
 "            The email address that receives notifications that someone has\n"
@@ -85,93 +89,128 @@ msgid ""
 "          "
 msgstr ""
 
-#: config_form.php:69
+#: config_form.php:70
 msgid "Email Subject (Admin Notification)"
 msgstr ""
 
-#: config_form.php:73
+#: config_form.php:74
 msgid ""
 "The subject line for the email that is sent to the Forward-To email address."
 msgstr ""
 
-#: config_form.php:79
+#: config_form.php:80
 msgid "Email Message (Admin Notification)"
 msgstr ""
 
-#: config_form.php:83
+#: config_form.php:84
 msgid ""
 "The beginning of the message that is sent to the Forward-To email address."
 msgstr ""
 
-#: config_form.php:89
+#: config_form.php:90
 msgid "Email Subject (Public Notification)"
 msgstr ""
 
-#: config_form.php:93
+#: config_form.php:94
 msgid ""
 "The subject line of the confirmation email that is sent to users who post "
 "messages through the form."
 msgstr ""
 
-#: config_form.php:99
+#: config_form.php:100
 msgid "Email Message (Public Notification)"
 msgstr ""
 
-#: config_form.php:103
+#: config_form.php:104
 msgid ""
 "The beginning of the confirmation email that is sent to users who post "
 "messages through the form."
 msgstr ""
 
-#: config_form.php:109
+#: config_form.php:110
 msgid "Contact Page Title"
 msgstr ""
 
-#: config_form.php:113
+#: config_form.php:114
 msgid "The title of the contact form (not HTML)."
 msgstr ""
 
-#: config_form.php:119
+#: config_form.php:120
 msgid "Instructions for Contact Page"
 msgstr ""
 
-#: config_form.php:123
+#: config_form.php:124
 msgid "Any specific instructions to add to the contact form."
 msgstr ""
 
-#: config_form.php:129
+#: config_form.php:130
 msgid "Add to Main Navigation"
 msgstr ""
 
-#: config_form.php:133
+#: config_form.php:134
 msgid "If checked, add a link to the contact form to the main site navigation."
 msgstr ""
 
-#: config_form.php:139
+#: config_form.php:140
 msgid "Thank You Page Title"
 msgstr ""
 
-#: config_form.php:143
+#: config_form.php:144
 msgid "The title of the Thank You page (not HTML)."
 msgstr ""
 
-#: config_form.php:149
+#: config_form.php:150
 msgid "Thank You Page Message"
 msgstr ""
 
-#: config_form.php:153
+#: config_form.php:154
 msgid "The text displayed on the Thank You page."
 msgstr ""
 
-#: controllers/IndexController.php:54
+#: config_form.php:160
+msgid "Additional Fields"
+msgstr ""
+
+#: config_form.php:164
+msgid ""
+"If you wish to add additional fields (besides name, email, and message), you "
+"may specify them here, one per line."
+msgstr ""
+
+#: config_form.php:166
+msgid ""
+"A line usually consists of the field name and the field label, separated by "
+"a semicolon. Like <pre>newfield;Additional Field</pre>"
+msgstr ""
+
+#: config_form.php:167
+msgid ""
+" <em>Please note:</em> Field names may consist only of letters (a-z), "
+"numbers (0-9), underscores (_), dashes (-), or dots (.)."
+msgstr ""
+
+#: config_form.php:169
+msgid ""
+"If you wish to have a multi-line text-field, add 'multi', like this: "
+"<pre>newmultifield;Additional Multi-Line Field;multi</pre>"
+msgstr ""
+
+#: config_form.php:170
+msgid ""
+"If you wish to have a dropdown selection, add 'dropdown', followed by the "
+"possible choices, like this: <pre>newdropdownfield;Additional Dropdown Field;"
+"dropdown;Choice 1;Choice 2;Choice 3</pre>"
+msgstr ""
+
+#: controllers/IndexController.php:55
 msgid "Your CAPTCHA submission was invalid, please try again."
 msgstr ""
 
-#: controllers/IndexController.php:57
+#: controllers/IndexController.php:58
 msgid "Please enter a valid email address."
 msgstr ""
 
-#: controllers/IndexController.php:60
+#: controllers/IndexController.php:61
 msgid "Please enter a message."
 msgstr ""
 
@@ -187,6 +226,6 @@ msgstr ""
 msgid "Your Message: "
 msgstr ""
 
-#: views/public/index/index.php:39
+#: views/public/index/index.php:63
 msgid "Send Message"
 msgstr ""

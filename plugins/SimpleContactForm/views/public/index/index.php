@@ -29,6 +29,30 @@
           </div>
         </div>
 
+          <?php
+            $additionalFields = SimpleContactFormPlugin::prepareAdditionalFields();
+            foreach($additionalFields as $additionalField) {
+          ?>
+
+          <div class="field">
+            <?php echo $this->formLabel($additionalField["fieldName"], $additionalField["fieldLabel"]) . ":"; ?>
+            <div class='inputs'>
+            <?php
+              $fieldName = $additionalField["fieldName"];
+              $fieldValue = $additionalField["fieldValue"];
+              switch ($additionalField["fieldType"]) {
+                case 'multi': echo $this->formTextarea($fieldName, $fieldValue, array('class'=>'textinput', 'rows' => '10')); break;
+                case 'dropdown': echo $this->formSelect($fieldName, $fieldValue, array(), $additionalField["dropDowns"]); break;
+                default: /* 'generic' */ echo $this->formText($fieldName, $fieldValue, array('class'=>'textinput')); break;
+              }
+            ?>
+            </div>
+          </div>
+
+          <?php
+            } // foreach($additionalFields
+          ?>
+
         <?php if ($captcha): ?>
         <div class="field">
             <?php echo $captcha; ?>

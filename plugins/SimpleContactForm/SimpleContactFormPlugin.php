@@ -15,6 +15,7 @@
  */
 // Define Constants.
 define('SIMPLE_CONTACT_FORM_PAGE_PATH', 'contact/');
+define('ALLOWED_FIELDNAME', "/^[a-z|0-9|\_|\-|\.]*$/i");
 
 class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
 {
@@ -47,6 +48,7 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
         define('SIMPLE_CONTACT_FORM_USER_NOTIFICATION_EMAIL_SUBJECT', __('Thank You'));
         define('SIMPLE_CONTACT_FORM_USER_NOTIFICATION_EMAIL_MESSAGE_HEADER', __('Thank you for sending us the following message:'));
         define('SIMPLE_CONTACT_FORM_ADD_TO_MAIN_NAVIGATION', 1);
+        define('SIMPLE_CONTACT_FORM_ADDITIONAL_FIELDS', '');
 
         set_option('simple_contact_form_reply_from_email', get_option('administrator_email'));
         set_option('simple_contact_form_forward_to_email', get_option('administrator_email'));
@@ -59,6 +61,7 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
         set_option('simple_contact_form_thankyou_page_title', SIMPLE_CONTACT_FORM_THANKYOU_PAGE_TITLE);
         set_option('simple_contact_form_thankyou_page_message', SIMPLE_CONTACT_FORM_THANKYOU_PAGE_MESSAGE);
         set_option('simple_contact_form_add_to_main_navigation', SIMPLE_CONTACT_FORM_ADD_TO_MAIN_NAVIGATION);
+        set_option('simple_contact_form_additional_fields', SIMPLE_CONTACT_FORM_ADDITIONAL_FIELDS);
     }
 
     public function hookUninstall()
@@ -73,6 +76,7 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
         delete_option('simple_contact_form_contact_page_instructions');
         delete_option('simple_contact_form_thankyou_page_title');
         delete_option('simple_contact_form_add_to_main_navigation');
+        delete_option('simple_contact_form_additional_fields');
     }
 
     /**
@@ -129,6 +133,7 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
         set_option('simple_contact_form_thankyou_page_title', $post['thankyou_page_title']);
         set_option('simple_contact_form_thankyou_page_message', $post['thankyou_page_message']);
         set_option('simple_contact_form_add_to_main_navigation', $post['add_to_main_navigation']);
+        set_option('simple_contact_form_additional_fields', $post['additional_fields']);
     }
 
     public function filterPublicNavigationMain($nav)
@@ -145,4 +150,58 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
         }
         return $nav;
     }
+
+    public function prepareAdditionalFields() {
+
+      $additional_fields = get_option('simple_contact_form_additional_fields');
+      $lines = explode("\n", $additional_fields);
+
+      $result = array();
+
+      foreach($lines as $line) {
+        $params = explode(";", $line);
+        foreach($params as $key => $val) { $params[$key] = trim($val); }
+
+        $fieldName = (isset($params[0]) ? $params[0] : false);
+        $match = preg_match(ALLOWED_FIELDNAME, $fieldName);
+        $fieldName = ( $match ? $fieldName : false );
+
+        if ($fieldName) {
+          $fieldLabel = (isset($params[1]) ? $params[1] : false);
+
+          if ($fieldLabel) {
+            $multiLine = ((isset($params[2])) and ($params[2] == "multi"));
+            $dropDown = ((isset($params[2])) and ($params[2] == "dropdown") and (isset($params[3])));
+            $dropDowns = array();
+
+            if ($dropDown) {
+              $dropDowns = array( -1 => __("Select Below") );
+              for($i=3; $i<count($params); $i++) {
+                $dropDowns[$params[$i]] = $params[$i];
+                unset($params[$i]);
+              }
+            }
+
+            $fieldType = "generic";
+            if ($multiLine) { $fieldType = "multi"; }
+            if ($dropDown) { $fieldType = "dropdown"; }
+
+            $fieldValue = ( isset($_POST[$fieldName]) ? $_POST[$fieldName] : "" );
+
+            $result[] = array(
+              "fieldName" => $fieldName,
+              "fieldLabel" => $fieldLabel,
+              "fieldType" => $fieldType,
+              "dropDowns" => $dropDowns,
+              "fieldValue" => $fieldValue,
+            );
+
+          }
+        }
+      }
+
+      return $result;
+
+    } // function prepareAdditionalFields()
+
 }
