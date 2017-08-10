@@ -38,30 +38,21 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
     {
         add_translation_source(dirname(__FILE__).'/languages');
 
-        // Define Constants.
-        define('SIMPLE_CONTACT_FORM_CONTACT_PAGE_TITLE', __('Contact Us'));
-        define('SIMPLE_CONTACT_FORM_CONTACT_PAGE_INSTRUCTIONS', __('Please send us your comments and suggestions.'));
-        define('SIMPLE_CONTACT_FORM_THANKYOU_PAGE_TITLE', __('Thank You For Your Feedback'));
-        define('SIMPLE_CONTACT_FORM_THANKYOU_PAGE_MESSAGE', __('We appreciate your comments and suggestions.'));
-        define('SIMPLE_CONTACT_FORM_ADMIN_NOTIFICATION_EMAIL_SUBJECT', __('A User Has Contacted You'));
-        define('SIMPLE_CONTACT_FORM_ADMIN_NOTIFICATION_EMAIL_MESSAGE_HEADER', __('A user has sent you the following message:'));
-        define('SIMPLE_CONTACT_FORM_USER_NOTIFICATION_EMAIL_SUBJECT', __('Thank You'));
-        define('SIMPLE_CONTACT_FORM_USER_NOTIFICATION_EMAIL_MESSAGE_HEADER', __('Thank you for sending us the following message:'));
-        define('SIMPLE_CONTACT_FORM_ADD_TO_MAIN_NAVIGATION', 1);
-        define('SIMPLE_CONTACT_FORM_ADDITIONAL_FIELDS', '');
-
+        // Define Defaults
         set_option('simple_contact_form_reply_from_email', get_option('administrator_email'));
         set_option('simple_contact_form_forward_to_email', get_option('administrator_email'));
-        set_option('simple_contact_form_admin_notification_email_subject', SIMPLE_CONTACT_FORM_ADMIN_NOTIFICATION_EMAIL_SUBJECT);
-        set_option('simple_contact_form_admin_notification_email_message_header', SIMPLE_CONTACT_FORM_ADMIN_NOTIFICATION_EMAIL_MESSAGE_HEADER);
-        set_option('simple_contact_form_user_notification_email_subject', SIMPLE_CONTACT_FORM_USER_NOTIFICATION_EMAIL_SUBJECT);
-        set_option('simple_contact_form_user_notification_email_message_header', SIMPLE_CONTACT_FORM_USER_NOTIFICATION_EMAIL_MESSAGE_HEADER);
-        set_option('simple_contact_form_contact_page_title', SIMPLE_CONTACT_FORM_CONTACT_PAGE_TITLE);
-        set_option('simple_contact_form_contact_page_instructions', SIMPLE_CONTACT_FORM_CONTACT_PAGE_INSTRUCTIONS);
-        set_option('simple_contact_form_thankyou_page_title', SIMPLE_CONTACT_FORM_THANKYOU_PAGE_TITLE);
-        set_option('simple_contact_form_thankyou_page_message', SIMPLE_CONTACT_FORM_THANKYOU_PAGE_MESSAGE);
-        set_option('simple_contact_form_add_to_main_navigation', SIMPLE_CONTACT_FORM_ADD_TO_MAIN_NAVIGATION);
-        set_option('simple_contact_form_additional_fields', SIMPLE_CONTACT_FORM_ADDITIONAL_FIELDS);
+
+        set_option('simple_contact_form_admin_notification_email_subject', __('A User Has Contacted You'));
+        set_option('simple_contact_form_admin_notification_email_message_header', __('A user has sent you the following message:'));
+        set_option('simple_contact_form_user_notification_email_subject', __('Thank You');
+        set_option('simple_contact_form_user_notification_email_message_header', __('Thank you for sending us the following message:'));
+        set_option('simple_contact_form_contact_page_title', __('Contact Us'));
+        set_option('simple_contact_form_contact_page_instructions', __('Please send us your comments and suggestions.'));
+        set_option('simple_contact_form_thankyou_page_title', __('Thank You For Your Feedback'));
+        set_option('simple_contact_form_thankyou_page_message', __('We appreciate your comments and suggestions.'));
+
+        set_option('simple_contact_form_add_to_main_navigation', 1);
+        set_option('simple_contact_form_additional_fields', '');
     }
 
     public function hookUninstall()
