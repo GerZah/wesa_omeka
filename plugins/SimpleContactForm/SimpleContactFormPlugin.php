@@ -44,7 +44,7 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
 
         set_option('simple_contact_form_admin_notification_email_subject', __('A User Has Contacted You'));
         set_option('simple_contact_form_admin_notification_email_message_header', __('A user has sent you the following message:'));
-        set_option('simple_contact_form_user_notification_email_subject', __('Thank You');
+        set_option('simple_contact_form_user_notification_email_subject', __('Thank You'));
         set_option('simple_contact_form_user_notification_email_message_header', __('Thank you for sending us the following message:'));
         set_option('simple_contact_form_contact_page_title', __('Contact Us'));
         set_option('simple_contact_form_contact_page_instructions', __('Please send us your comments and suggestions.'));
