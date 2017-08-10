@@ -53,6 +53,7 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
 
         set_option('simple_contact_form_add_to_main_navigation', 1);
         set_option('simple_contact_form_additional_fields', '');
+        set_option('simple_contact_form_mandatory_additional_fields', '');
     }
 
     public function hookUninstall()
@@ -68,6 +69,7 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
         delete_option('simple_contact_form_thankyou_page_title');
         delete_option('simple_contact_form_add_to_main_navigation');
         delete_option('simple_contact_form_additional_fields');
+        delete_option('simple_contact_form_mandatory_additional_fields');
     }
 
     /**
@@ -125,6 +127,7 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
         set_option('simple_contact_form_thankyou_page_message', $post['thankyou_page_message']);
         set_option('simple_contact_form_add_to_main_navigation', $post['add_to_main_navigation']);
         set_option('simple_contact_form_additional_fields', $post['additional_fields']);
+        set_option('simple_contact_form_mandatory_additional_fields', $post['mandatory_fields']);
     }
 
     public function filterPublicNavigationMain($nav)
@@ -144,6 +147,15 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function prepareAdditionalFields() {
 
+      $mandatory_fields = get_option('simple_contact_form_mandatory_additional_fields');
+      $mandatoryFields = explode(";", $mandatory_fields);
+      foreach(array_keys($mandatoryFields) as $key) {
+        $mandatoryFields[$key] = trim($mandatoryFields[$key]);
+        $match = preg_match(ALLOWED_FIELDNAME, $mandatoryFields[$key]);
+        if (!$match) { unset($mandatoryFields[$key]); }
+      }
+      $mandatoryFields = array_flip($mandatoryFields);
+
       $additional_fields = get_option('simple_contact_form_additional_fields');
       $lines = explode("\n", $additional_fields);
 
@@ -151,7 +163,7 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
 
       foreach($lines as $line) {
         $params = explode(";", $line);
-        foreach($params as $key => $val) { $params[$key] = trim($val); }
+        foreach(array_keys($params) as $key) { $params[$key] = trim($params[$key]); }
 
         $fieldName = (isset($params[0]) ? $params[0] : false);
         $match = preg_match(ALLOWED_FIELDNAME, $fieldName);
@@ -185,6 +197,7 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
               "fieldType" => $fieldType,
               "dropDowns" => $dropDowns,
               "fieldValue" => $fieldValue,
+              "mandatoryField" => intval( isset($mandatoryFields[$fieldName]) ),
             );
 
           }

@@ -9,21 +9,23 @@
     <form name="contact_form" id="contact-form"  method="post" enctype="multipart/form-data" accept-charset="utf-8">
 
         <div class="field">
-        <?php echo $this->formLabel('name', __('Your Name: ')); ?>
+          <?php echo $this->formLabel('name', __('Your Name:')); ?>
             <div class='inputs'>
             <?php echo $this->formText('name', $name, array('class'=>'textinput')); ?>
             </div>
         </div>
 
         <div class="field">
-            <?php echo $this->formLabel('email', __('Your Email: ')); ?>
+            <?php echo $this->formLabel('email', __('Your Email:')); ?>
+            <span style="color: red;">*</span>
             <div class='inputs'>
                 <?php echo $this->formText('email', $email, array('class'=>'textinput'));  ?>
             </div>
         </div>
 
         <div class="field">
-          <?php echo $this->formLabel('message', __('Your Message: ')); ?>
+          <?php echo $this->formLabel('message', __('Your Message:')); ?>
+          <span style="color: red;">*</span>
           <div class='inputs'>
           <?php echo $this->formTextarea('message', $message, array('class'=>'textinput', 'rows' => '10')); ?>
           </div>
@@ -31,11 +33,19 @@
 
           <?php
             $additionalFields = SimpleContactFormPlugin::prepareAdditionalFields();
+            // echo "<pre>" . print_r($additionalFields,true) . "</pre>";
             foreach($additionalFields as $additionalField) {
           ?>
 
           <div class="field">
-            <?php echo $this->formLabel($additionalField["fieldName"], $additionalField["fieldLabel"]) . ":"; ?>
+            <?php
+              echo $this->formLabel($additionalField["fieldName"], $additionalField["fieldLabel"]) . ":";
+              if ($additionalField["mandatoryField"]) {
+            ?>
+              <span style="color: red;">*</span>
+            <?php
+              }
+            ?>
             <div class='inputs'>
             <?php
               $fieldName = $additionalField["fieldName"];

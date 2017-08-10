@@ -21,6 +21,7 @@ $thankyou_page_title                     = get_option('simple_contact_form_thank
 $thankyou_page_message                   = get_option('simple_contact_form_thankyou_page_message');
 $add_to_main_navigation                  = get_option('simple_contact_form_add_to_main_navigation');
 $additional_fields                       = get_option('simple_contact_form_additional_fields');
+$mandatory_fields                        = get_option('simple_contact_form_mandatory_additional_fields');
 
 $view = get_view();
 ?>
@@ -168,6 +169,17 @@ $view = get_view();
          </p>
          <p><?php echo __("If you wish to have a multi-line text-field, add 'multi', like this: <pre>newmultifield;Additional Multi-Line Field;multi</pre>"); ?></p>
          <p><?php echo __("If you wish to have a dropdown selection, add 'dropdown', followed by the possible choices, like this: <pre>newdropdownfield;Additional Dropdown Field;dropdown;Choice 1;Choice 2;Choice 3</pre>"); ?></p>
+       </div>
+   </div>
+</div>
+
+<div class="field">
+   <?php echo $view->formLabel('mandatory_fields', __('Mandatory Fields')); ?>
+   <div class="inputs">
+       <?php echo $view->formText('mandatory_fields', $mandatory_fields, array('class' => 'textinput')); ?>
+       <div class="explanation">
+           <p><?php echo __("If you defined additional fields, you may now specify which of them are mandatory, i.e. which should not be left blank."); ?></p>
+           <p><?php echo __("You may specify them one by one, separated by semicolons, like this: <pre>field1;field2</pre>"); ?></p>
        </div>
    </div>
 </div>

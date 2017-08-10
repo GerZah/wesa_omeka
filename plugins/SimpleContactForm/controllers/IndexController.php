@@ -21,9 +21,9 @@ class SimpleContactForm_IndexController extends Omeka_Controller_AbstractActionC
         $captchaObj = $this->_setupCaptcha();
 
         if ($this->getRequest()->isPost()) {
+            $additionalFields = SimpleContactFormPlugin::prepareAdditionalFields();
             // If the form submission is valid, then send out the email
-            if ($this->_validateFormSubmission($captchaObj)) {
-                $additionalFields = SimpleContactFormPlugin::prepareAdditionalFields();
+            if ($this->_validateFormSubmission($captchaObj, $additionalFields)) {
                 $this->sendEmailNotification($_POST['email'], $_POST['name'], $_POST['message'], $additionalFields);
                 $url = WEB_ROOT."/".SIMPLE_CONTACT_FORM_PAGE_PATH."thankyou";
                     $this->_helper->redirector->goToUrl($url);
@@ -45,7 +45,7 @@ class SimpleContactForm_IndexController extends Omeka_Controller_AbstractActionC
     {
     }
 
-    protected function _validateFormSubmission($captcha = null)
+    protected function _validateFormSubmission($captcha = null, $additionalFields)
     {
         $valid = true;
         $msg = $this->getRequest()->getPost('message');
@@ -60,6 +60,21 @@ class SimpleContactForm_IndexController extends Omeka_Controller_AbstractActionC
         } else if (empty($msg)) {
             $this->_helper->flashMessenger(__('Please enter a message.'));
             $valid = false;
+        } else {
+          foreach($additionalFields as $additionalField) {
+            if ($additionalField["mandatoryField"]) {
+              $empty = (
+                $additionalField["fieldType"] == "dropdown"
+                  ? ($additionalField["fieldValue"] == -1)
+                  : (empty($additionalField["fieldValue"]))
+              );
+              if ($empty) {
+                $this->_helper->flashMessenger( sprintf(__('You may not leave the "%s" field undefined.'), $additionalField["fieldLabel"]) );
+                $valid = false;
+                break;
+              }
+            }
+          }
         }
 
         return $valid;
