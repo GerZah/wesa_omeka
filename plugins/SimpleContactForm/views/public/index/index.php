@@ -32,8 +32,9 @@
         </div>
 
           <?php
-            $additionalFields = SimpleContactFormPlugin::prepareAdditionalFields();
-            // echo "<pre>" . print_r($additionalFields,true) . "</pre>";
+            $fields = SimpleContactFormPlugin::prepareFields();
+            echo "<pre>" . print_r($fields,true) . "</pre>";
+            $additionalFields = $fields["additionalFields"];
             foreach($additionalFields as $additionalField) {
           ?>
 
