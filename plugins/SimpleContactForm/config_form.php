@@ -191,7 +191,7 @@ $view = get_view();
      <?php echo $view->formText('reorder_fields', $reorder_fields, array('class' => 'textinput')); ?>
      <div class="explanation">
          <p><?php echo __("If you do not want to have the pre-defined fields 'name', 'email', and 'message' at the top of your form, simple specify the field names one by one, separated by semicolons, like this: <pre>field1;name;field2;email;field3;message</pre>"); ?></p>
-         <p><?php echo __("Field with names that are not specified in this list (especially when left black) will be ordered as pre-defined ('name', 'email', and 'message'), followed by the ones that you defined yourself in that particular order that you gave."); ?></p>
+         <p><?php echo __("Field with names that are not specified in this list (especially when left blank) will be ordered as pre-defined ('name', 'email', and 'message'), followed by the ones that you defined yourself in that particular order that you gave."); ?></p>
      </div>
    </div>
 </div>
