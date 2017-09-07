@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: SimpleContactForm\n"
 "Report-Msgid-Bugs-To: http://github.com/GerZah/plugin-Network/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2017-09-06 19:13+0200\n"
+"PO-Revision-Date: 2017-09-07 14:06+0200\n"
 "Last-Translator: Gero Zahn <gerozahn@campus.uni-paderborn.de>, 2017\n"
 "Language-Team: German (Germany) (https://www.transifex.com/upb/teams/56327/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -213,35 +213,39 @@ msgstr "Wenn Sie die vordefinierten Felder 'name', 'email' und 'message' nicht a
 msgid "Field with names that are not specified in this list (especially when left blank) will be ordered as pre-defined ('name', 'email', and 'message'), followed by the ones that you defined yourself in that particular order that you gave."
 msgstr "Felder mit Namen, die nicht in der Liste spezifiziert sind (insbesondere, wenn das Feld leer gelassen wird), erscheinen wir vordefiniert ('name', 'email' und 'message'), gefolgt von den von Ihnen definierten Feldern in der von Ihnen definierten Reihenfolge."
 
-#: controllers/IndexController.php:55
+#: controllers/IndexController.php:57
 msgid "Your CAPTCHA submission was invalid, please try again."
 msgstr "Ihre CAPTCHA Eingabe war ungültig. Bitte versuchen Sie es erneut."
 
-#: controllers/IndexController.php:58
+#: controllers/IndexController.php:60
 msgid "Please enter a valid email address."
 msgstr "Bitte geben Sie eine gültige E-Mail-Adresse ein."
 
-#: controllers/IndexController.php:61
+#: controllers/IndexController.php:63
 msgid "Please enter a message."
 msgstr "Bitte geben Sie eine Nachricht ein."
 
-#: controllers/IndexController.php:72
+#: controllers/IndexController.php:66
+msgid "Please enter a name."
+msgstr "Bitte geben Sie einen Namen ein."
+
+#: controllers/IndexController.php:77
 #, php-format
 msgid "You may not leave the \"%s\" field undefined."
 msgstr "Sie dürfen das “%s\" Feld nicht undefiniert lassen."
 
-#: views/public/index/index.php:20
-msgid "Your Name:"
-msgstr "Ihr Name:"
-
-#: views/public/index/index.php:31
+#: controllers/IndexController.php:113 views/public/index/index.php:38
 msgid "Your Email:"
 msgstr "Ihre E-Mail-Adresse:"
 
-#: views/public/index/index.php:43
+#: controllers/IndexController.php:114 views/public/index/index.php:21
+msgid "Your Name:"
+msgstr "Ihr Name:"
+
+#: controllers/IndexController.php:115 views/public/index/index.php:50
 msgid "Your Message:"
 msgstr "Ihre Nachricht:"
 
-#: views/public/index/index.php:90
+#: views/public/index/index.php:97
 msgid "Send Message"
 msgstr "Nachricht absenden"

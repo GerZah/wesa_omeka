@@ -24,7 +24,7 @@ class SimpleContactForm_IndexController extends Omeka_Controller_AbstractActionC
             $fields = SimpleContactFormPlugin::prepareFields();
             $additionalFields = $fields["additionalFields"];
             // If the form submission is valid, then send out the email
-            if ($this->_validateFormSubmission($captchaObj, $additionalFields)) {
+            if ($this->_validateFormSubmission($captchaObj, $fields)) {
                 $this->sendEmailNotification($_POST['email'], $_POST['name'], $_POST['message'], $fields);
                 $url = WEB_ROOT."/".SIMPLE_CONTACT_FORM_PAGE_PATH."thankyou";
                     $this->_helper->redirector->goToUrl($url);
@@ -46,11 +46,12 @@ class SimpleContactForm_IndexController extends Omeka_Controller_AbstractActionC
     {
     }
 
-    protected function _validateFormSubmission($captcha = null, $additionalFields)
+    protected function _validateFormSubmission($captcha = null, $fields)
     {
         $valid = true;
         $msg = $this->getRequest()->getPost('message');
         $email = $this->getRequest()->getPost('email');
+        $name = $this->getRequest()->getPost('name');
         // ZF ReCaptcha ignores the 1st arg.
         if ($captcha and !$captcha->isValid('foo', $_POST)) {
             $this->_helper->flashMessenger(__('Your CAPTCHA submission was invalid, please try again.'));
@@ -61,8 +62,11 @@ class SimpleContactForm_IndexController extends Omeka_Controller_AbstractActionC
         } else if (empty($msg)) {
             $this->_helper->flashMessenger(__('Please enter a message.'));
             $valid = false;
+        } else if ((isset($fields["mandatoryFields"]["name"])) and (empty($name))) {
+          $this->_helper->flashMessenger(__('Please enter a name.'));
+          $valid = false;
         } else {
-          foreach($additionalFields as $additionalField) {
+          foreach($fields["additionalFields"] as $additionalField) {
             if ($additionalField["mandatoryField"]) {
               $empty = (
                 $additionalField["fieldType"] == "dropdown"

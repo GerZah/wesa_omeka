@@ -17,7 +17,14 @@
             case 'name': {
               ?>
                 <div class="field">
-                  <?php echo $this->formLabel('name', __('Your Name:')); ?>
+                    <?php
+                      echo $this->formLabel('name', __('Your Name:'));
+                      if (isset($fields["mandatoryFields"]["name"])) {
+                    ?>
+                        <span style="color: red;">*</span>
+                    <?php
+                      }
+                    ?>
                     <div class='inputs'>
                     <?php echo $this->formText('name', $name, array('class'=>'textinput')); ?>
                     </div>

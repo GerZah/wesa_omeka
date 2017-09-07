@@ -235,7 +235,8 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
 
       return array(
         "additionalFields" => $additionalFields,
-        "fieldOrder" => $fieldOrder
+        "fieldOrder" => $fieldOrder,
+        "mandatoryFields" => $mandatoryFields,
       );
 
     } // function prepareFields()
