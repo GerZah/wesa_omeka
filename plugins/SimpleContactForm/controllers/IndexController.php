@@ -21,7 +21,8 @@ class SimpleContactForm_IndexController extends Omeka_Controller_AbstractActionC
         $captchaObj = $this->_setupCaptcha();
 
         if ($this->getRequest()->isPost()) {
-            $additionalFields = SimpleContactFormPlugin::prepareAdditionalFields();
+            $fields = SimpleContactFormPlugin::prepareFields();
+            $additionalFields = $fields["additionalFields"];
             // If the form submission is valid, then send out the email
             if ($this->_validateFormSubmission($captchaObj, $additionalFields)) {
                 $this->sendEmailNotification($_POST['email'], $_POST['name'], $_POST['message'], $additionalFields);

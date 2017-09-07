@@ -238,6 +238,6 @@ class SimpleContactFormPlugin extends Omeka_Plugin_AbstractPlugin
         "fieldOrder" => $fieldOrder
       );
 
-    } // function prepareAdditionalFields()
+    } // function prepareFields()
 
 }
